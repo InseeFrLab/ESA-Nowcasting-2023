@@ -7,3 +7,8 @@ Repository of the Insee team competing for the [European Statistics Awards for N
 ## Licence
 
 This work is licenced under the [European Union Public Licence 1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+
+## Setting up
+
+```
+renv::restore()
