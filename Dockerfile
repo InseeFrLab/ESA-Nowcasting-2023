@@ -1,4 +1,4 @@
-FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
+FROM inseefrlab/onyxia-rstudio:ds-r4.2.1
 
 RUN git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
     cd ESA-Nowcasting-2023 && \
