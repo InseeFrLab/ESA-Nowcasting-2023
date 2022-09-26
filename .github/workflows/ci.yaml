@@ -34,8 +34,6 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./Dockerfile
           push: true
           tags: |
             ${{ steps.docker_meta.outputs.tags }}
