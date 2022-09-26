@@ -21,7 +21,7 @@ jobs:
             # set latest tag for main branch
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             # propagate valid semver tags
-            type=semver,pattern={{raw}}${{ matrix.device_suffix }}
+            type=semver,pattern={{raw}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
