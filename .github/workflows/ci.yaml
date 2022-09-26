@@ -39,7 +39,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.docker_meta.outputs.tags }}
-            ${{ github.ref == 'refs/heads/main' && 'inseefrlab/ ESA-Nowcasting-2023:latest' || '' }}
+            ${{ github.ref == 'refs/heads/main' && 'inseefrlab/ESA-Nowcasting-2023:latest' || '' }}
           labels: ${{ steps.docker_meta.outputs.labels }}
       - 
         name: Image digest
