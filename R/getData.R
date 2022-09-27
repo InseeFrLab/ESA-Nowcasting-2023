@@ -6,9 +6,9 @@
 # 0.a) Import packages
 #########################################
 
+library(eurostat)
 library(dplyr)
 library(tidyr)
-library(eurostat)
 library(ggplot2)
 
 #########################################
@@ -18,7 +18,7 @@ library(ggplot2)
 source("R/globalVariables.R")
 
 #########################################
-# 1. Import global variables
+# 1. Get the data and create the dataframes
 #########################################
 
 ppi_data <- get_eurostat("sts_inppd_m",
@@ -74,7 +74,7 @@ tourism_data <- get_eurostat("tour_occ_nim",
 #########################################
 
 #A) Give global variables
-country = 'FR'
+country = 'GE'
 
 #B) Compute plots
 ppi_plots <- ggplot(ppi_data, aes(time, FR)) + geom_point()
@@ -82,6 +82,5 @@ pvi_plots <- ggplot(pvi_data, aes(time, FR)) + geom_point()
 tourism_plots <- ggplot(tourism_data, aes(time, FR)) + geom_line()
 
 #C) Show plots
-tourism_plots
-
+#tourism_plots
 

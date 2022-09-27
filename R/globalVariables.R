@@ -12,3 +12,5 @@ countries_tourism <- c("AT","BE","CY","CZ","DE","DK","EL","ES","FI","FR",
                        "RO","SE","SI","SK")
 
 countries_to_exclude <- c("FR")
+
+date_to_predict <- "2022-09-01"
