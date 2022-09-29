@@ -30,8 +30,12 @@ pvi_all_preds <- rbindlist(list_pvi_preds)
 tourism_all_preds <- rbindlist(list_tourism_preds)
 
 #########################################
-# 1) Concatenate the predictions
+# 2) Transform results into json
 #########################################
+
+# WARNING: The obtained json file does not match the constraints for the challenge
+# For now I formatted it by hand to match the requirements
+# Remember to put "NULL" for France predictions by hand on the json
 
 ppi_json <- toJSON(ppi_all_preds)
 pvi_json <- toJSON(pvi_all_preds)
@@ -42,8 +46,4 @@ ppi_json
 pvi_json
 
 tourism_json
-
-
-
-
 
