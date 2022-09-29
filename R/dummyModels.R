@@ -93,20 +93,20 @@ for (country in countries_PPI){
 ppi_preds_naive_3m
 
 # 2.b) PVI
-# Use the value of the last 6 available months
+# Use the value of the last 3 available months
 
-pvi_preds_naive_6m <- data.frame(matrix(ncol = length(countries_PVI), nrow = 1))
-colnames(pvi_preds_naive_6m) <- countries_PVI
+pvi_preds_naive_3m <- data.frame(matrix(ncol = length(countries_PVI), nrow = 1))
+colnames(pvi_preds_naive_3m) <- countries_PVI
 
 for (country in countries_PVI){
   last_available_values <- tail(pvi_data %>%
                                  select(country) %>%
                                  drop_na(),
-                               n = 6)
-  pvi_preds_naive_6m[[country]][1] <- mean(as.matrix(last_available_values))
+                               n = 3)
+  pvi_preds_naive_3m[[country]][1] <- mean(as.matrix(last_available_values))
 }
 
-pvi_preds_naive_6m
+pvi_preds_naive_3m
 
 
 # 2.c) Tourism
