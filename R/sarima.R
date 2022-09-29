@@ -16,6 +16,11 @@ library(astsa)
 source("R/globalVariables.R")
 source("R/getData.R")
 
+date_to_predict <- ymd(date_to_predict)
+early_date_to_stop <- ymd(early_date_to_stop)
+
+n_forward <- interval(early_date_to_stop, date_to_predict) %/% months(1) %% 12
+
 #########################################
 # 1. Test the time series
 #########################################
@@ -47,7 +52,8 @@ tourism_ts <- ts(tourism_data %>%
 plot(tourism_ts)
 acf(tourism_ts, na.action = na.pass)
 pacf(tourism_ts, na.action = na.pass)
-sarima(tourism_ts, 0, 1, 1, 0, 1, 1, 12, details = FALSE)
+sarima(tourism_ts, 0, 1, 1, 0, 1, 2, 12, details = FALSE)
+#sarima(tourism_ts, 0, 1, 1, 0, 1, 2, 12, details = TRUE)
 
 
 #########################################
@@ -63,7 +69,7 @@ for (country in countries_PPI){
   pred <- sarima.for(ppi_data %>%
                        select(country), 1,
                      0, 1, 1, plot = FALSE)
-  ppi_preds_arima[[country]][1] <- pred
+  ppi_preds_arima[[country]][1] <- round(as.numeric(pred),1)
 }
 
 ppi_preds_arima
@@ -77,7 +83,7 @@ for (country in countries_PVI){
   pred <- sarima.for(pvi_data %>%
                        select(country), 1,
                      0, 1, 1, plot = FALSE)
-  pvi_preds_arima[[country]][1] <- pred
+  pvi_preds_arima[[country]][1] <- round(as.numeric(pred),1)
 }
 
 pvi_preds_arima
@@ -88,15 +94,12 @@ tourism_preds_sarima <- data.frame(matrix(ncol = length(countries_tourism), nrow
 colnames(tourism_preds_sarima) <- countries_tourism
 
 for (country in countries_tourism){
-  pred <- sarima.for(tourism_data %>%
-                       select(country), 1,
-                     0, 1, 1, 0, 1, 1, 12, plot = FALSE)
-  tourism_preds_sarima[[country]][1] <- pred
+  preds <- sarima.for(tourism_data %>%
+                       filter(time <= ymd(early_date_to_stop)) %>%
+                       select(country), n_forward,
+                     0, 1, 1, 0, 1, 1, 12, plot = FALSE)$pred
+  tourism_preds_sarima[[country]][1] <- round(as.numeric(tail(preds,1)),1)
 }
 
 tourism_preds_sarima
-
-
-
-
 
