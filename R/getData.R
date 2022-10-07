@@ -74,12 +74,12 @@ tourism_data <- get_eurostat("tour_occ_nim",
 #########################################
 
 #A) Give global variables
-country = 'GE'
+country = 'DE'
 
 #B) Compute plots
-ppi_plots <- ggplot(ppi_data, aes(time, FR)) + geom_point()
-pvi_plots <- ggplot(pvi_data, aes(time, FR)) + geom_point()
-tourism_plots <- ggplot(tourism_data, aes(time, FR)) + geom_line()
+ppi_plots <- ggplot(ppi_data, aes(time, country)) + geom_point()
+pvi_plots <- ggplot(pvi_data, aes(time, country)) + geom_point()
+tourism_plots <- ggplot(tourism_data, aes(time, country)) + geom_line()
 
 #C) Show plots
 #tourism_plots

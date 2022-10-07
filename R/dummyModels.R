@@ -32,7 +32,7 @@ for (country in countries_PPI){
                                  select(country) %>%
                                  drop_na(),
                                n = 1)
-  ppi_preds_naive_1m[[country]][1] <- last_available_value
+  ppi_preds_naive_1m[[country]][1] <- round(as.numeric(last_available_value),1)
 }
 
 ppi_preds_naive_1m
@@ -48,7 +48,7 @@ for (country in countries_PVI){
                                  select(country) %>%
                                  drop_na(),
                                n = 1)
-  pvi_preds_naive_1m[[country]][1] <- last_available_value
+  pvi_preds_naive_1m[[country]][1] <- round(as.numeric(last_available_value),1)
 }
 
 pvi_preds_naive_1m
@@ -57,8 +57,8 @@ pvi_preds_naive_1m
 # 1.c) Tourism
 # Use the value of the last available year at the same month
 
-tourism_preds_naive_1m <- data.frame(matrix(ncol = length(countries_tourism), nrow = 1))
-colnames(tourism_preds_naive_1m) <- countries_tourism
+tourism_preds_naive_1y <- data.frame(matrix(ncol = length(countries_tourism), nrow = 1))
+colnames(tourism_preds_naive_1y) <- countries_tourism
 
 for (country in countries_tourism){
   last_available_value <- tail(tourism_data %>%
@@ -66,54 +66,54 @@ for (country in countries_tourism){
                                  select(country) %>%
                                  drop_na(),
                                n = 1)
-  tourism_preds_naive_1m[[country]][1] <- last_available_value
+  tourism_preds_naive_1y[[country]][1] <- round(as.numeric(last_available_value),1)
 }
 
-tourism_preds_naive_1m
+tourism_preds_naive_1y
 
 
 #########################################
-# 2. Models re-using the 6 last relevant values
+# 2. Models re-using the x last relevant values
 #########################################
 
 # 2.a) PPI
-# Use the value of the last 6 available months
+# Use the value of the last 3 available months
 
-ppi_preds_naive_6m <- data.frame(matrix(ncol = length(countries_PPI), nrow = 1))
-colnames(ppi_preds_naive_6m) <- countries_PPI
+ppi_preds_naive_3m <- data.frame(matrix(ncol = length(countries_PPI), nrow = 1))
+colnames(ppi_preds_naive_3m) <- countries_PPI
 
 for (country in countries_PPI){
   last_available_values <- tail(ppi_data %>%
                                  select(country) %>%
                                  drop_na(),
-                               n = 6)
-  ppi_preds_naive_6m[[country]][1] <- mean(as.matrix(last_available_values))
+                               n = 3)
+  ppi_preds_naive_3m[[country]][1] <- round(as.numeric(mean(as.matrix(last_available_values))),1)
 }
 
-ppi_preds_naive_6m
+ppi_preds_naive_3m
 
 # 2.b) PVI
-# Use the value of the last 6 available months
+# Use the value of the last 3 available months
 
-pvi_preds_naive_6m <- data.frame(matrix(ncol = length(countries_PVI), nrow = 1))
-colnames(pvi_preds_naive_6m) <- countries_PVI
+pvi_preds_naive_3m <- data.frame(matrix(ncol = length(countries_PVI), nrow = 1))
+colnames(pvi_preds_naive_3m) <- countries_PVI
 
 for (country in countries_PVI){
   last_available_values <- tail(pvi_data %>%
                                  select(country) %>%
                                  drop_na(),
-                               n = 6)
-  pvi_preds_naive_6m[[country]][1] <- mean(as.matrix(last_available_values))
+                               n = 3)
+  pvi_preds_naive_3m[[country]][1] <- round(as.numeric(mean(as.matrix(last_available_values))),1)
 }
 
-pvi_preds_naive_6m
+pvi_preds_naive_3m
 
 
 # 2.c) Tourism
 # Use the value of the last available 6 years at the same month
 
-tourism_preds_naive_6m <- data.frame(matrix(ncol = length(countries_tourism), nrow = 1))
-colnames(tourism_preds_naive_6m) <- countries_tourism
+tourism_preds_naive_6y <- data.frame(matrix(ncol = length(countries_tourism), nrow = 1))
+colnames(tourism_preds_naive_6y) <- countries_tourism
 
 for (country in countries_tourism){
   last_available_values <- tail(tourism_data %>%
@@ -121,11 +121,9 @@ for (country in countries_tourism){
                                  select(country) %>%
                                  drop_na(),
                                n = 6)
-  tourism_preds_naive_6m[[country]][1] <- mean(as.matrix(last_available_values))
+  tourism_preds_naive_6y[[country]][1] <- round(as.numeric(mean(as.matrix(last_available_values))),1)
 }
 
-tourism_preds_naive_6m
-
-
+tourism_preds_naive_6y
 
 
