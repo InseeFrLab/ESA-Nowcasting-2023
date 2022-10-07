@@ -15,7 +15,7 @@ library(ggplot2)
 # 0.b) Import global variables
 #########################################
 
-source("R/globalVariables.R")
+source("R/utils/globalVariables.R")
 
 #########################################
 # 1. Get the data and create the dataframes
@@ -31,7 +31,7 @@ ppi_data <- get_eurostat("sts_inppd_m",
                            unit="I15"
                          ),
                          time_format = "date"
-  ) %>%
+) %>%
   select(geo, time, values) %>%
   drop_na() %>%
   pivot_wider(names_from = geo, values_from = values) %>%
@@ -47,22 +47,22 @@ pvi_data <- get_eurostat("sts_inpr_m",
                            unit="I15"
                          ),
                          time_format = "date"
-  ) %>%
+) %>%
   select(geo, time, values) %>%
   drop_na() %>%
   pivot_wider(names_from = geo, values_from = values) %>%
   arrange(time)
 
 tourism_data <- get_eurostat("tour_occ_nim",
-                         select_time = "M",
-                         filters = list(
-                           geo = countries_tourism, #How about keeping all countries here?
-                           c_resid="TOTAL",
-                           nace_r2="I551-I553", 
-                           unit="NR"
-                         ),
-                         time_format = "date"
-  ) %>%
+                             select_time = "M",
+                             filters = list(
+                               geo = countries_tourism, #How about keeping all countries here?
+                               c_resid="TOTAL",
+                               nace_r2="I551-I553", 
+                               unit="NR"
+                             ),
+                             time_format = "date"
+) %>%
   select(geo, time, values) %>%
   drop_na() %>%
   pivot_wider(names_from = geo, values_from = values) %>%
@@ -83,4 +83,3 @@ tourism_plots <- ggplot(tourism_data, aes(time, country)) + geom_line()
 
 #C) Show plots
 #tourism_plots
-

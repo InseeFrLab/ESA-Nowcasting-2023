@@ -8,13 +8,14 @@
 
 library(dplyr)
 library(astsa)
+library(lubridate)
 
 #########################################
 # 0.b) Import global variables
 #########################################
 
-source("R/globalVariables.R")
-source("R/getData.R")
+source("R/utils/globalVariables.R")
+source("R/utils/getData.R")
 
 date_to_predict <- ymd(date_to_predict)
 early_date_to_stop <- ymd(early_date_to_stop)
@@ -48,7 +49,7 @@ sarima(pvi_ts, 0, 1, 1, details = FALSE)
 # 1.c) Tourism
 
 tourism_ts <- ts(tourism_data %>%
-               select(country))
+                   select(country))
 plot(tourism_ts)
 acf(tourism_ts, na.action = na.pass)
 pacf(tourism_ts, na.action = na.pass)
@@ -95,11 +96,10 @@ colnames(tourism_preds_sarima) <- countries_tourism
 
 for (country in countries_tourism){
   preds <- sarima.for(tourism_data %>%
-                       filter(time <= ymd(early_date_to_stop)) %>%
-                       select(country), n_forward,
-                     0, 1, 1, 0, 1, 1, 12, plot = FALSE)$pred
+                        filter(time <= ymd(early_date_to_stop)) %>%
+                        select(country), n_forward,
+                      0, 1, 1, 0, 1, 1, 12, plot = FALSE)$pred
   tourism_preds_sarima[[country]][1] <- round(as.numeric(tail(preds,1)),1)
 }
 
 tourism_preds_sarima
-

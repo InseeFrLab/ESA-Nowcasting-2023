@@ -13,8 +13,8 @@ library(lubridate)
 # 0.b) Import global variables
 #########################################
 
-source("R/globalVariables.R")
-source("R/getData.R")
+source("R/utils/globalVariables.R")
+source("R/utils/getData.R")
 date_to_predict <- ymd(date_to_predict)
 
 #########################################
@@ -84,9 +84,9 @@ colnames(ppi_preds_naive_3m) <- countries_PPI
 
 for (country in countries_PPI){
   last_available_values <- tail(ppi_data %>%
-                                 select(country) %>%
-                                 drop_na(),
-                               n = 3)
+                                  select(country) %>%
+                                  drop_na(),
+                                n = 3)
   ppi_preds_naive_3m[[country]][1] <- round(as.numeric(mean(as.matrix(last_available_values))),1)
 }
 
@@ -100,9 +100,9 @@ colnames(pvi_preds_naive_3m) <- countries_PVI
 
 for (country in countries_PVI){
   last_available_values <- tail(pvi_data %>%
-                                 select(country) %>%
-                                 drop_na(),
-                               n = 3)
+                                  select(country) %>%
+                                  drop_na(),
+                                n = 3)
   pvi_preds_naive_3m[[country]][1] <- round(as.numeric(mean(as.matrix(last_available_values))),1)
 }
 
@@ -117,13 +117,11 @@ colnames(tourism_preds_naive_6y) <- countries_tourism
 
 for (country in countries_tourism){
   last_available_values <- tail(tourism_data %>%
-                                 filter(month(time) == month(date_to_predict)) %>%
-                                 select(country) %>%
-                                 drop_na(),
-                               n = 6)
+                                  filter(month(time) == month(date_to_predict)) %>%
+                                  select(country) %>%
+                                  drop_na(),
+                                n = 6)
   tourism_preds_naive_6y[[country]][1] <- round(as.numeric(mean(as.matrix(last_available_values))),1)
 }
 
 tourism_preds_naive_6y
-
-

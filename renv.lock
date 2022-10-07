@@ -35,18 +35,6 @@
         "lattice"
       ]
     },
-    "OECD": {
-      "Package": "OECD",
-      "Version": "0.2.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c74ebc909a0c70b59d02b384b0f0071d",
-      "Requirements": [
-        "httr",
-        "readsdmx",
-        "xml2"
-      ]
-    },
     "R6": {
       "Package": "R6",
       "Version": "2.5.1",
@@ -102,6 +90,14 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "50c838a310445e954bc13f26f26a6ecf",
+      "Requirements": []
+    },
+    "astsa": {
+      "Package": "astsa",
+      "Version": "1.16",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "59b76f8aef3514a8db02f7fe4fcf262d",
       "Requirements": []
     },
     "backports": {
@@ -237,6 +233,14 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "022c42d49c28e95d69ca60446dbabf88",
+      "Requirements": []
+    },
+    "data.table": {
+      "Package": "data.table",
+      "Version": "1.14.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "36b67b5adf57b292923f5659f5f0c853",
       "Requirements": []
     },
     "digest": {
@@ -620,16 +624,6 @@
         "tibble",
         "tzdb",
         "vroom"
-      ]
-    },
-    "readsdmx": {
-      "Package": "readsdmx",
-      "Version": "0.3.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "585f8b011a2be895f74967bbab6cfece",
-      "Requirements": [
-        "Rcpp"
       ]
     },
     "readxl": {
