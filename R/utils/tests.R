@@ -27,8 +27,8 @@ brent_data <- data.frame(date=index(`BZ=F`), coredata(`BZ=F`))
 getSymbols(eur_usd_id, src="yahoo")
 eur_usd_data <- data.frame(date=index(`EURUSD=X`), coredata(`EURUSD=X`))
 
-getSymbols(eur_usd_id, src="yahoo")
-eur_usd_data <- data.frame(date=index(`EURUSD=X`), coredata(`EURUSD=X`))
+getSymbols(sp500_id, src="yahoo")
+sp500_data <- data.frame(date=index(`GSPC`), coredata(`GSPC`))
 
 
 
