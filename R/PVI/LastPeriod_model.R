@@ -5,21 +5,27 @@
 #########################################
 # Required packages
 #########################################
+
 library(dplyr)
+library(lubridate)
 
 #############################################
 # Use the value of the last available month
 #############################################
 
-preds_naive_1m <- c()
+preds_naive_1m <- tibble(Country=character(),
+                         Date=as.POSIXct(NA),
+                         value=numeric()
+                         )
+
 for (country in countries_PVI){
+  pred <- data$PVI%>%
+                  filter(geo %in% country)%>%
+                  arrange(time)%>%
+                  tail(1)%>%
+                  pull(values, time)
   
-  preds_naive_1m <- c(preds_naive_1m, data$PVI%>%
-                            filter(geo %in% country)%>%
-                            arrange(time)%>%
-                            tail(1)%>%
-                            pull(values))
-  
+  preds_naive_1m <- preds_naive_1m%>%
+    add_row(Country=country, Date=as.POSIXct(names(pred)) %m+% months(1), value=as.numeric(pred))
   
 }
-preds_naive_1m <- setNames(preds_naive_1m, nm = countries_PVI)
