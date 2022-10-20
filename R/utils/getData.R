@@ -129,7 +129,7 @@ getData <- function(case){
          },
          
          # Retrieve data for TOUR challenge
-         TOUR={
+         TOURISM={
            data <- get_eurostat("tour_occ_nim",
                                         select_time = "M",
                                         filters = list(
@@ -143,10 +143,10 @@ getData <- function(case){
              select(geo, time, values) %>%
              drop_na(values)
            
-           db[["TOUR"]] = data
+           db[["TOURISM"]] = data
          },
          
-         stop("Enter one of the 3 following chalenges : PPI, PVI, TOUR")
+         stop("Enter one of the 3 following chalenges : PPI, PVI, TOURISM")
   )
   options(warn = defaultW)
   return(db)
