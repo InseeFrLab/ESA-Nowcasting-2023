@@ -28,5 +28,4 @@ for (country in countries_PPI){
   preds_sarima <- preds_sarima %>%
     add_row(Country=country, Date=as.POSIXct(date_to_pred), value=round(as.numeric(pred),1))
 
-  
 }

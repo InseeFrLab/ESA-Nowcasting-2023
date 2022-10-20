@@ -23,8 +23,7 @@ for (country in countries_PPI){
                   tail(1)%>%
                   pull(values, time)
                 
-  
   preds_naive_1m <- preds_naive_1m%>%
     add_row(Country=country, Date=as.POSIXct(names(pred)) %m+% months(1), value=as.numeric(pred))
-  
+
 }
