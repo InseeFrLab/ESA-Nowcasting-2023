@@ -19,6 +19,6 @@ for (country in countries_PVI){
                      1,
                      0, 1, 1, plot = FALSE)$pred[1]
   
-  preds_sarima <- c(preds_sarima, pred)
+  preds_sarima <- c(preds_sarima, round(pred, 1))
 }
 preds_sarima <- setNames(preds_sarima, nm = countries_PVI)
