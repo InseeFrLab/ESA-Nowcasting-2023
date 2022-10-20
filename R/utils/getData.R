@@ -10,6 +10,8 @@ library(eurostat)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(dplyr)
+library(quantmod)
 
 source("R/utils/globalVariables.R")
 
@@ -89,6 +91,35 @@ getData <- function(case){
            
            db[["PSURVEY"]] = data
            
+           # Retrieve daily BRENT index from Yahoo Finance
+           brent_id <- "BZ=F"
+           getSymbols(brent_id, src="yahoo")
+           data <- data.frame(date=index(`BZ=F`), coredata(`BZ=F`))
+           db[["brent"]] = data
+           
+           # Retrieve daily euro/dollar exchange rate from Yahoo Finance
+           eur_usd_id <- "EURUSD=X"
+           getSymbols(eur_usd_id, src="yahoo")
+           data <- data.frame(date=index(`EURUSD=X`), coredata(`EURUSD=X`))
+           db[["eur_usd"]] = data
+           
+           # Retrieve daily SP&500 index from Yahoo Finance
+           sp500_id <- "^GSPC"
+           getSymbols(sp500_id, src="yahoo")
+           data <- data.frame(date=index(`GSPC`), coredata(`GSPC`))
+           db[["sp500"]] = data
+           
+           # Retrieve daily EUROSTOXX500 index from Yahoo Finance
+           eurostoxx500_id <- "^STOXX50E"
+           getSymbols(eurostoxx500_id, src="yahoo")
+           data <- data.frame(date=index(`STOXX50E`), coredata(`STOXX50E`))
+           db[["eurostoxx500"]] = data
+           
+           # Retrieve daily CAC40 index from Yahoo Finance
+           cac40_id <- "^FCHI"
+           getSymbols(cac40_id, src="yahoo")
+           data <- data.frame(date=index(`FCHI`), coredata(`FCHI`))
+           db[["cac40"]] = data
          },
          
          # Retrieve data for PVI challenge
@@ -126,6 +157,35 @@ getData <- function(case){
            
            db[["PSURVEY"]] = data
            
+           # Retrieve daily BRENT index from Yahoo Finance
+           brent_id <- "BZ=F"
+           getSymbols(brent_id, src="yahoo")
+           data <- data.frame(date=index(`BZ=F`), coredata(`BZ=F`))
+           db[["brent"]] = data
+           
+           # Retrieve daily euro/dollar exchange rate from Yahoo Finance
+           eur_usd_id <- "EURUSD=X"
+           getSymbols(eur_usd_id, src="yahoo")
+           data <- data.frame(date=index(`EURUSD=X`), coredata(`EURUSD=X`))
+           db[["eur_usd"]] = data
+           
+           # Retrieve daily SP&500 index from Yahoo Finance
+           sp500_id <- "^GSPC"
+           getSymbols(sp500_id, src="yahoo")
+           data <- data.frame(date=index(`GSPC`), coredata(`GSPC`))
+           db[["sp500"]] = data
+           
+           # Retrieve daily EUROSTOXX500 index from Yahoo Finance
+           eurostoxx500_id <- "^STOXX50E"
+           getSymbols(eurostoxx500_id, src="yahoo")
+           data <- data.frame(date=index(`STOXX50E`), coredata(`STOXX50E`))
+           db[["eurostoxx500"]] = data
+           
+           # Retrieve daily CAC40 index from Yahoo Finance
+           cac40_id <- "^FCHI"
+           getSymbols(cac40_id, src="yahoo")
+           data <- data.frame(date=index(`FCHI`), coredata(`FCHI`))
+           db[["cac40"]] = data
          },
          
          # Retrieve data for TOUR challenge
@@ -144,6 +204,18 @@ getData <- function(case){
              drop_na(values)
            
            db[["TOURISM"]] = data
+
+           # Retrieve daily BRENT index from Yahoo Finance
+           brent_id <- "BZ=F"
+           getSymbols(brent_id, src="yahoo")
+           data <- data.frame(date=index(`BZ=F`), coredata(`BZ=F`))
+           db[["brent"]] = data
+           
+           # Retrieve daily euro/dollar exchange rate from Yahoo Finance
+           eur_usd_id <- "EURUSD=X"
+           getSymbols(eur_usd_id, src="yahoo")
+           data <- data.frame(date=index(`EURUSD=X`), coredata(`EURUSD=X`))
+           db[["eur_usd"]] = data
          },
          
          stop("Enter one of the 3 following chalenges : PPI, PVI, TOURISM")
