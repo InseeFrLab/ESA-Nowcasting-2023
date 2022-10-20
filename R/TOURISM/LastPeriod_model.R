@@ -25,6 +25,6 @@ for (country in countries_tourism){
                 pull(values, time)
   
   preds_naive_1y <- preds_naive_1y%>%
-    add_row(Country=country, Date=as.POSIXct(names(pred)) %m+% months(1), value=as.numeric(pred))
+    add_row(Country=country, Date=as.POSIXct(names(pred)) %m+% months(12), value=as.numeric(pred))
 
 }
