@@ -74,6 +74,18 @@
         "xml2"
       ]
     },
+    "TTR": {
+      "Package": "TTR",
+      "Version": "0.24.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c553a7be22ec50faaebee27be54a1313",
+      "Requirements": [
+        "curl",
+        "xts",
+        "zoo"
+      ]
+    },
     "askpass": {
       "Package": "askpass",
       "Version": "1.1",
@@ -598,6 +610,19 @@
         "rlang"
       ]
     },
+    "quantmod": {
+      "Package": "quantmod",
+      "Version": "0.4.20",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e8c1ef1a6bc7ea89c1801ab4994b87bb",
+      "Requirements": [
+        "TTR",
+        "curl",
+        "xts",
+        "zoo"
+      ]
+    },
     "rappdirs": {
       "Package": "rappdirs",
       "Version": "0.3.3",
@@ -864,6 +889,26 @@
       "Repository": "CRAN",
       "Hash": "40682ed6a969ea5abfd351eb67833adc",
       "Requirements": []
+    },
+    "xts": {
+      "Package": "xts",
+      "Version": "0.12.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6731cbcbe2f9633865b59392aee7966d",
+      "Requirements": [
+        "zoo"
+      ]
+    },
+    "zoo": {
+      "Package": "zoo",
+      "Version": "1.8-11",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "874a5b77fe0cfacf2a3450069ae70926",
+      "Requirements": [
+        "lattice"
+      ]
     }
   }
 }
