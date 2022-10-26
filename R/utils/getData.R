@@ -90,6 +90,23 @@ getData <- function(case){
            
            db[["PSURVEY"]] = data
            
+           # Import PVI serie
+           data <- get_eurostat("sts_inpr_m",
+                                select_time = "M",
+                                filters = list(
+                                  geo = countries_PVI, #How about keeping all countries here?
+                                  indic_bt="PROD",
+                                  nace_r2="B-D", 
+                                  s_adj="SCA",
+                                  unit="I15"
+                                ),
+                                time_format = "date"
+           ) %>%
+             select(geo, time, values) %>%
+             drop_na(values)
+           
+           db[["PVI"]] = data
+           
            # Retrieve daily BRENT index from Yahoo Finance
            brent_id <- "BZ=F"
            getSymbols(brent_id, src="yahoo")
