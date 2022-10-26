@@ -14,7 +14,7 @@ library(data.table)
 library(xgboost)
 
 source("R/utils/globalVariables.R")
-source("R/PPI/create_table_large.R")
+source("R/PVI/create_table_large.R")
 
 #########################################
 # Global variables
@@ -43,14 +43,14 @@ df_for_regression <- one_hot(df_for_regression)
 df_for_regression <-df_for_regression %>%
   mutate(across(c(where(is.numeric)), scale))
 
-mean_ppi_to_predict <- attr(df_for_regression$PPI_to_predict,"scaled:center")
-scale_ppi_to_predict <- attr(df_for_regression$PPI_to_predict,"scaled:scale")
+mean_pvi_to_predict <- attr(df_for_regression$PVI_to_predict,"scaled:center")
+scale_pvi_to_predict <- attr(df_for_regression$PVI_to_predict,"scaled:scale")
 
 # Separate what we will use for training and the rows to predict
 
 df_for_regression_to_use <- df_for_regression %>%
   filter(time < current_date) %>%
-  drop_na(PPI_to_predict)
+  drop_na(PVI_to_predict)
 
 df_for_regression_to_predict <- df_for_regression %>%
   filter(time == current_date)
@@ -72,12 +72,12 @@ df_xgboost_train_valid <- df_xgboost_train %>%
   anti_join((df_xgboost_train_train))
 
 X_train = as.matrix(df_xgboost_train_train %>%
-                      select(-c(PPI_to_predict, time)))
-y_train = df_xgboost_train_train$PPI_to_predict
+                      select(-c(PVI_to_predict, time)))
+y_train = df_xgboost_train_train$PVI_to_predict
 
 X_valid = as.matrix(df_xgboost_train_valid %>%
-                      select(-c(PPI_to_predict, time)))
-y_valid = df_xgboost_train_valid$PPI_to_predict
+                      select(-c(PVI_to_predict, time)))
+y_valid = df_xgboost_train_valid$PVI_to_predict
 
 gb_train = xgb.DMatrix(data = X_train, label = y_train)
 gb_valid = xgb.DMatrix(data = X_valid, label = y_valid)
@@ -88,7 +88,7 @@ watchlist = list(train = gb_train, valid = gb_valid)
 #########################################
 
 if (do_grid_search){
-
+  
   # The ranges of the parameters to check
   
   nrounds = 100 # nrounds = 25 * (1:6)  # Can also be tried with x100
@@ -127,7 +127,7 @@ if (do_grid_search){
   best_params
   best_n_rounds
   best_score
-
+  
 }
 
 best_max_depth = 3
@@ -155,8 +155,8 @@ if (do_full_dataset_model){
   # Test & performances
   
   X_test = as.matrix(df_xgboost_test %>%
-                        select(-c(PPI_to_predict, time)))
-  y_test = df_xgboost_test$PPI_to_predict
+                       select(-c(PVI_to_predict, time)))
+  y_test = df_xgboost_test$PVI_to_predict
   
   dtest = xgb.DMatrix(data = X_test)
   y_pred <- predict(best_model, dtest)
@@ -168,12 +168,12 @@ if (do_full_dataset_model){
   # Predictions for next month
   
   X_to_pred = as.matrix(df_for_regression_to_predict %>%
-                          select(-c(PPI_to_predict, time)))
+                          select(-c(PVI_to_predict, time)))
   d_to_pred = xgb.DMatrix(data = X_to_pred)
   
   y_pred_next_month <- predict(best_model, d_to_pred)
-  y_pred_next_month <- y_pred_next_month * scale_ppi_to_predict +
-    mean_ppi_to_predict
+  y_pred_next_month <- y_pred_next_month * scale_pvi_to_predict +
+    mean_pvi_to_predict
   
   preds_xgboost_europe <- countries %>%
     select(geo) %>%
@@ -181,7 +181,7 @@ if (do_full_dataset_model){
     bind_cols(y_pred_next_month) %>%
     rename(Country = geo,
            value = ...3)
-
+  
 }
 
 #########################################
@@ -218,8 +218,8 @@ for (country in countries$geo){
   df_country <- df_country %>%
     mutate(across(c(where(is.numeric)), scale))
   
-  mean_ppi_to_predict_country <- attr(df_country$PPI_to_predict,"scaled:center")
-  scale_ppi_to_predict_country <- attr(df_country$PPI_to_predict,"scaled:scale")
+  mean_pvi_to_predict_country <- attr(df_country$PVI_to_predict,"scaled:center")
+  scale_pvi_to_predict_country <- attr(df_country$PVI_to_predict,"scaled:scale")
   
   df_country <- as.data.table(df_country)
   
@@ -231,17 +231,17 @@ for (country in countries$geo){
   
   df_country_for_regression <- df_country %>%
     filter(time < current_date) %>%
-    drop_na(PPI_to_predict)
+    drop_na(PVI_to_predict)
   df_country_to_predict <- df_country %>%
     filter(time == current_date)
   
   X_train = as.matrix(df_country_for_regression %>%
-                        select(-c(PPI_to_predict, time)))
-  y_train = df_country_for_regression$PPI_to_predict
+                        select(-c(PVI_to_predict, time)))
+  y_train = df_country_for_regression$PVI_to_predict
   gb_train = xgb.DMatrix(data = X_train, label = y_train)
   
   X_to_pred = as.matrix(df_country_to_predict %>%
-                          select(-c(PPI_to_predict, time)))
+                          select(-c(PVI_to_predict, time)))
   d_to_pred = xgb.DMatrix(data = X_to_pred)
   
   model = xgb.train(data = gb_train,
@@ -250,8 +250,8 @@ for (country in countries$geo){
                     nrounds = best_nrounds_per_country)
   
   y_pred_next_month <- predict(model, d_to_pred)
-  y_pred_next_month <- y_pred_next_month * scale_ppi_to_predict_country +
-    mean_ppi_to_predict_country
+  y_pred_next_month <- y_pred_next_month * scale_pvi_to_predict_country +
+    mean_pvi_to_predict_country
   # If "value" is the 3rd column
   preds_xgboost_per_country[i, 3] <- y_pred_next_month
   print(i)
@@ -272,6 +272,3 @@ if (do_full_dataset_model){
 }
 
 preds_xgboost <- preds_xgboost_per_country
-
-
-

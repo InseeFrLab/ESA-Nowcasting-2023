@@ -203,6 +203,21 @@ getData <- function(case){
              select(time, brent_adjusted, brent_volume)
            db[["brent"]] = data
            
+           data <- get_eurostat("sts_inppd_m",
+                                select_time = "M",
+                                filters = list(
+                                  geo = countries_PPI,
+                                  indic_bt="PRIN",
+                                  nace_r2="B-E36", 
+                                  s_adj="NSA",
+                                  unit="I15"
+                                ),
+                                time_format = "date")%>%
+             select(geo, nace_r2, time, values) %>%
+             drop_na(values)
+           
+           db[["PPI"]] = data
+           
            # Retrieve daily euro/dollar exchange rate from Yahoo Finance
            eur_usd_id <- "EURUSD=X"
            getSymbols(eur_usd_id, src="yahoo")
