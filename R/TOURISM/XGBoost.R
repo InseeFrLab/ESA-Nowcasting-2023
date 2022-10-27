@@ -188,7 +188,7 @@ if (do_full_dataset_model){
   preds_xgboost_europe <- countries %>%
     select(geo) %>%
     mutate(Date = ymd(date_to_predict)) %>%
-    bind_cols(y_pred_next_month) %>%
+    bind_cols(round(as.numeric(y_pred_next_month),1)) %>%
     rename(Country = geo,
            value = ...3)
   
@@ -265,7 +265,7 @@ for (country in countries$geo){
   y_pred_next_month <- y_pred_next_month * scale_tourism_to_predict_country +
     mean_tourism_to_predict_country
   # If "value" is the 3rd column
-  preds_xgboost_per_country[i, 3] <- y_pred_next_month
+  preds_xgboost_per_country[i, 3] <- round(as.numeric(y_pred_next_month),1)
   print(i)
   i <- i+1
 }
