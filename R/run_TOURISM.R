@@ -19,9 +19,8 @@ source("R/TOURISM/XGBoost.R") # to be converted to functions
 #### Plotting the results #### 
 predictions <- bind_rows(list(
   "entry_1"= preds_naive_1y%>%mutate(Entries = "Naive"), 
-  "entry_2"= preds_sarima%>%mutate(Entries = "S-ARIMA")#,
-  #"entry_3"= preds_xgboost%>%mutate(Entries = "XGBoost")
-  )
+  "entry_2"= preds_sarima%>%mutate(Entries = "S-ARIMA"),
+  "entry_3"= preds_xgboost%>%mutate(Entries = "XGBoost"))
 )
 
 plot_preds(data$TOURISM, predictions, countries_tourism[1:9], ncol = 3)

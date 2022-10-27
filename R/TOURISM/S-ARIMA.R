@@ -23,6 +23,8 @@ preds_sarima <- tibble(Country=character(),
 
 for (country in countries_tourism){
   
+  print(country)
+  
   last_month_given <- data$TOURISM %>%
     filter(geo %in% country) %>%
     arrange(time) %>%
