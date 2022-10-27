@@ -21,7 +21,7 @@ source("R/PVI/create_table_large.R")
 #########################################
 
 do_grid_search = FALSE
-do_full_dataset_model = FALSE
+do_full_dataset_model = TRUE
 
 #########################################
 # Adapt the table for the regressions
@@ -57,16 +57,26 @@ df_for_regression_to_predict <- df_for_regression %>%
 
 # Train/test split
 
-df_xgboost_train <- df_for_regression_to_use %>%
-  sample_frac(3/4)
+if (do_full_dataset_model){
+  df_xgboost_train <- df_for_regression_to_use %>%
+    sample_frac(3/4)
+}else{
+  df_xgboost_train <- df_for_regression_to_use %>%
+    sample_frac(1)
+}
 
 df_xgboost_test <- df_for_regression_to_use %>%
   anti_join((df_xgboost_train))
 
 # Train/valid split
 
-df_xgboost_train_train <- df_xgboost_train %>%
-  sample_frac(3/4)
+if (do_full_dataset_model || do_grid_search){
+  df_xgboost_train_train <- df_xgboost_train %>%
+    sample_frac(3/4)
+}else{
+  df_xgboost_train_train <- df_xgboost_train %>%
+    sample_frac(1)
+}
 
 df_xgboost_train_valid <- df_xgboost_train %>%
   anti_join((df_xgboost_train_train))
@@ -93,7 +103,7 @@ if (do_grid_search){
   
   nrounds = 100 # nrounds = 25 * (1:6)  # Can also be tried with x100
   max_depths = (3:9)
-  etas = 0.05 * (1:10)
+  etas = 0.025 * (1:20)
   count = 1
   
   ## The effective grid search
@@ -106,7 +116,7 @@ if (do_grid_search){
                           eta = eta, 
                           nrounds = nround, 
                           watchlist = watchlist, 
-                          early_stopping_rounds = 20,
+                          early_stopping_rounds = 25,
                           print_every_n = 10)
         if(count == 1){
           best_params = model$params
@@ -124,15 +134,15 @@ if (do_grid_search){
     }
   }
   
-  best_params
-  best_n_rounds
-  best_score
+  print(best_params)
+  print(best_n_rounds)
+  print(best_score)
   
 }
 
-best_max_depth = 3
+best_max_depth = 5
 best_nrounds = 100
-best_eta = 0.3
+best_eta = 0.25
 
 #########################################
 # Use the best model on the whole dataset

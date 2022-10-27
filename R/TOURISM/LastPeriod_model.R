@@ -13,20 +13,23 @@ library(lubridate)
 # Use the value of preceding year 
 #############################################
 
+date_to_predict <- ymd(date_to_predict)
+
 preds_naive_1y <- tibble(Country=character(),
                                         Date=as.POSIXct(NA),
                                         value=numeric()
 )
 
 for (country in countries_tourism){
-  pred <- data$TOURISM%>%
-                filter(geo %in% country)%>%
-                arrange(time)%>%
-                tail(12)%>% # take the last 12 months
-                head(1)%>% # select the value of reference 1-year before
-                pull(values, time)
+  pred <- data$TOURISM %>%
+    filter(geo %in% country) %>%
+    arrange(time) %>%
+    filter(month(time) == month(date_to_predict)) %>%
+    drop_na() %>%
+    tail(1) %>%
+    pull(values, time)
   
-  preds_naive_1y <- preds_naive_1y%>%
-    add_row(Country=country, Date=as.POSIXct(names(pred)) %m+% months(12), value=as.numeric(pred))
+  preds_naive_1y <- preds_naive_1y %>%
+    add_row(Country=country, Date = date_to_predict, value=as.numeric(pred))
 
 }
