@@ -10,15 +10,11 @@ library(tidyverse)
 library(dfms)
 library(xts)
 library(lubridate)
-
+library(progress)
 #data <- getData("PPI")
-
-library("progress")
 
 date_to_pred <- "2022-10-01"
 
-defaultW <- getOption("warn") 
-options(warn = -1) 
 #########################################
 # Loop
 #########################################
@@ -29,8 +25,9 @@ preds_dfm <- tibble(Country=character(),
 
 pb <- progress_bar$new(
   format = " [:bar] :percent eta: :eta \n",
-  total = 26, clear = FALSE, width= 60)
-for (country in c("DE", "FR", "IT","ES", "NL", "BE", "AT","FI", "PT", "EL")) {
+  total = 26, clear = FALSE)
+
+for (country in setdiff(countries_PPI, "IE")) {
   cat(paste0("Running estimation for ", country, "\n"))
   
   pb$tick()
