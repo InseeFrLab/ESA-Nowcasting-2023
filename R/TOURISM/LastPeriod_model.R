@@ -30,6 +30,8 @@ for (country in countries_tourism){
     pull(values, time)
   
   preds_naive_1y <- preds_naive_1y %>%
-    add_row(Country=country, Date = date_to_predict, value=as.numeric(pred))
+    add_row(Country=country,
+            Date = ymd(date_to_predict),
+            value=as.numeric(pred))
 
 }

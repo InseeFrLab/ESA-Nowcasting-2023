@@ -41,7 +41,7 @@ for (country in countries_tourism){
   
   preds_sarima <- preds_sarima %>%
     add_row(Country=country,
-            Date=date_to_predict,
+            Date=ymd(date_to_predict),
             value=round(as.numeric(pred),1))
   
 }
