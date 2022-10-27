@@ -23,26 +23,25 @@ preds_sarima <- tibble(Country=character(),
 
 for (country in countries_tourism){
   
-  print(country)
+#  last_month_given <- data$TOURISM %>%
+#    filter(geo == country) %>%
+#    arrange(time) %>%
+#    tail(1) %>%
+#    pull(time)
   
-  last_month_given <- data$TOURISM %>%
-    filter(geo %in% country) %>%
-    arrange(time) %>%
-    tail(1) %>%
-    pull(time)
-  
-  n_forward <- interval(last_month_given, date_to_predict)
+  n_forward <- interval(early_date_to_stop, date_to_predict) %/% months(1) %% 12
   
   pred <- sarima.for(data$TOURISM %>%
-                       filter(geo %in% country & time <= early_date_to_stop) %>%
+                       filter(geo == country & time <= early_date_to_stop) %>%
                        pull(values),
                      n_forward,
                      0, 1, 1, 
-                     0, 1, 1, 12, plot = FALSE)$pred[1]
+                     0, 1, 1, 12, plot = FALSE)$pred %>%
+    tail(1)
   
   preds_sarima <- preds_sarima %>%
     add_row(Country=country,
             Date=date_to_predict,
             value=round(as.numeric(pred),1))
-
+  
 }

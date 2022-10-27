@@ -22,8 +22,8 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-nb_months_past_to_use = 10
-nb_years_past_to_use = 10
+nb_months_past_to_use = 11
+nb_years_past_to_use = 11
 
 list_eurostat_tables <- c()
 list_yahoo_finance <- c('brent', 'eur_usd')
@@ -45,6 +45,7 @@ countries <- db$TOURISM %>%
 dates <- db$TOURISM %>%
   select(time) %>%
   add_row(time = current_date) %>%
+  add_row(time = date(current_date - dmonths(1))) %>%
   unique() %>%
   filter(year(time) >= 2007) %>%
   mutate(dummy = 1)
