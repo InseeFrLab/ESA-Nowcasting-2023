@@ -132,3 +132,12 @@ for (country in setdiff(countries_PPI, "IE")) {
     add_row(Country=country, Date=as.POSIXct(date_to_pred), value=round(pred,1))
   
 }
+
+#########################################
+# Add missing countries in the list
+#########################################
+missing_countries <- setdiff(countries_PPI, preds_dfm$Country)
+for (country in missing_countries) {
+  preds_dfm <- preds_dfm %>%
+    add_row(Country = country, Date = as.POSIXct(date_to_pred))
+}
