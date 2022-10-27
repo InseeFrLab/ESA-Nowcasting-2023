@@ -36,4 +36,4 @@ entries <- list(
   "entry_3"= preds_xgboost%>%pull(value, Country)
   )
 
-save_entries(entries, "Submissions/PPI/results_november.json")
+save_entries(entries, "Submissions/PPI/results_october.json")
