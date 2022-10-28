@@ -873,7 +873,7 @@
       "Requirements": [
         "Matrix",
         "data.table"
-        ]
+      ]
     },
     "modelr": {
       "Package": "modelr",
@@ -1498,6 +1498,14 @@
       "Hash": "c0e49a9760983e81e55cdd9be92e7182",
       "Requirements": []
     },
+    "xfun": {
+      "Package": "xfun",
+      "Version": "0.34",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9eba2411b0b1f879797141bd24df7407",
+      "Requirements": []
+    },
     "xgboost": {
       "Package": "xgboost",
       "Version": "1.6.0.1",
@@ -1509,14 +1517,6 @@
         "data.table",
         "jsonlite"
       ]
-    },
-      "xfun": {
-      "Package": "xfun",
-      "Version": "0.34",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "9eba2411b0b1f879797141bd24df7407",
-      "Requirements": []
     },
     "xml2": {
       "Package": "xml2",
