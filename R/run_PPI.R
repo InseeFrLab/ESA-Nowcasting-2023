@@ -12,7 +12,7 @@ source("R/utils/plot_routines.R")
 data <- getData("PPI")
 
 #### Run the different models ####
-date_to_pred <- "2022-10-01"
+date_to_pred <- ymd("2022-10-01")
 
 source("R/PPI/LastPeriod_model.R") # to be converted to functions
 source("R/PPI/S-ARIMA.R") # to be converted to functions

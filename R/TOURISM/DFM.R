@@ -46,8 +46,8 @@ for (country in countries_tourism) {
     filter(time>as.Date("2000-01-01"))%>% # Max 2004-09 # 2003 ok BG
     arrange(time)
   
-  if (last(DB$time) %--% ymd(date_to_pred) %/% months(1) > 1){
-    line_to_add <- last(DB$time) %--% ymd(date_to_pred) %/% months(1) - 1
+  if (last(DB$time) %--% date_to_pred %/% months(1) > 1){
+    line_to_add <- last(DB$time) %--% date_to_pred %/% months(1) - 1
     for (i in 1:line_to_add) {
       cat("No data in", as.character(last(DB$time) %m+% months(1)),"for country", country, "\n")
       DB <- DB %>%
@@ -63,7 +63,7 @@ for (country in countries_tourism) {
   #########################################
   # Dealing with multiple NaNs columns
   #########################################
-  range_3year <- paste(ymd(date_to_pred) %m-% months(36+4), ymd(date_to_pred) %m-% months(5), sep="/")
+  range_3year <- paste(date_to_pred %m-% months(36+4), date_to_pred %m-% months(5), sep="/")
   nan_cols <- as.double(which(colSums(is.na(DB_diff[range_3year])) > 18))
   
   if (!is_empty(nan_cols)) {
@@ -76,7 +76,7 @@ for (country in countries_tourism) {
   #########################################
   
   # Creating a squared matrix to check collinearity
-  range_square_mat <- paste(ymd(date_to_pred) %m-% months(dim(DB_diff)[2]+1), ymd(date_to_pred) %m-% months(2), sep="/")
+  range_square_mat <- paste(date_to_pred %m-% months(dim(DB_diff)[2]+1), date_to_pred %m-% months(2), sep="/")
   #diff(dim(DB_diff[range_square_mat]))
   
   # Get the positions of collinear columns
@@ -134,7 +134,7 @@ for (country in countries_tourism) {
   #########################################
   # Forecasting
   #########################################
-  current_month <- ymd(date_to_pred) %m-% months(1)
+  current_month <- date_to_pred %m-% months(1)
   if (is.na(DB[current_month][,paste0(country, "_TOURISM")])) {
     h = 2
   }else{
@@ -147,12 +147,12 @@ for (country in countries_tourism) {
   # Storing the predictions
   #########################################
   
-  last_available_date<- ymd(date_to_pred) %m-% months(h)
+  last_available_date<- date_to_pred %m-% months(h)
   pred <- as.double(DB[,paste0(country, "_TOURISM")][last_available_date] + 
                       sum(fc$X_fcst[, paste0(country, "_TOURISM")]))
   
   preds_dfm <- preds_dfm %>%
-    add_row(Country=country, Date=as.POSIXct(date_to_pred), value=round(pred,1))
+    add_row(Country=country, Date=date_to_pred, value=round(pred,1))
   
 }
 
@@ -162,7 +162,7 @@ for (country in countries_tourism) {
 missing_countries <- setdiff(countries_tourism, preds_dfm$Country)
 for (country in missing_countries) {
   preds_dfm <- preds_dfm %>%
-    add_row(Country = country, Date = as.POSIXct(date_to_pred))
+    add_row(Country = country, Date = date_to_pred)
 }
 
 # Re-arranging countries

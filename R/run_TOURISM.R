@@ -12,7 +12,7 @@ source("R/utils/plot_routines.R")
 data <- getData("TOURISM")
 
 #### Run the different models ####
-date_to_pred <- "2022-10-01"
+date_to_pred <- ymd("2022-10-01")
 
 source("R/TOURISM/LastPeriod_model.R") # to be converted to functions
 source("R/TOURISM/S-ARIMA.R") # to be converted to functions

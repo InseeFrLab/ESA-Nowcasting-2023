@@ -21,7 +21,7 @@ preds_sarima <- tibble(Country=character(),
 
 for (country in countries_PPI){
   
-  n_forward <- interval(current_date, date_to_predict) %/% months(1)
+  n_forward <- interval(current_date, date_to_pred) %/% months(1)
   
   pred <- sarima.for(data$PPI %>%
                        filter(geo == country) %>%
@@ -32,7 +32,7 @@ for (country in countries_PPI){
   
   preds_sarima <- preds_sarima %>%
     add_row(Country=country,
-            Date=ymd(date_to_predict),
+            Date=date_to_pred,
             value=round(as.numeric(pred),1))
 
 }

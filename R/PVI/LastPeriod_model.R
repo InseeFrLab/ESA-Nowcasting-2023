@@ -27,6 +27,6 @@ for (country in countries_PVI){
     pull(values, time)
   
   preds_naive_1m <- preds_naive_1m%>%
-    add_row(Country=country, Date=ymd(date_to_predict), value=as.numeric(pred))
+    add_row(Country=country, Date=date_to_pred, value=as.numeric(pred))
   
 }
