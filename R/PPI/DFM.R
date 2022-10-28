@@ -51,7 +51,77 @@ for (country in setdiff(countries_PPI, "IE")) {
     filter(geo %in% country)%>%
     pivot_wider(names_from =  c(geo, var, indic), values_from = values)
   
-  DB <- list(ppi, ppi_nace2, ipi, psurvey)%>%
+  pvi <- data$PVI%>%
+    mutate(var = "PVI")%>%
+    filter(geo %in% country)%>%
+    pivot_wider(names_from =  c(geo, var), values_from = values)
+  
+  brent <- data$brent%>%
+    as_tibble()%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      brent_adjusted = mean(brent_adjusted,na.rm=T),
+      brent_volume = mean(brent_volume,na.rm=T),
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, brent_adjusted, brent_volume)
+  
+  eur_usd <- data$eur_usd%>%
+    as_tibble()%>%
+    select(time, eur_usd_adjusted)%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      eur_usd_adjusted = mean(eur_usd_adjusted,na.rm=T)
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, eur_usd_adjusted)
+    
+  sp500 <- data$sp500%>%
+    as_tibble()%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      sp500_adjusted = mean(sp500_adjusted,na.rm=T),
+      sp500_volume = mean(sp500_volume,na.rm=T),
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, sp500_adjusted, sp500_volume)
+  
+  eurostoxx500 <- data$eurostoxx500%>%
+    as_tibble()%>%
+    select(time, eurostoxx500_adjusted)%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      eurostoxx500_adjusted = mean(eurostoxx500_adjusted,na.rm=T)
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, eurostoxx500_adjusted)
+  
+  cac40 <- data$cac40%>%
+    as_tibble()%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      cac40_adjusted = mean(cac40_adjusted,na.rm=T),
+      cac40_volume = mean(cac40_volume,na.rm=T),
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, cac40_adjusted, cac40_volume)
+    
+  DB <- list(ppi, ppi_nace2, ipi, psurvey, brent, eur_usd, sp500, eurostoxx500, cac40)%>%
     reduce(full_join, by="time")%>%
     filter(time>as.Date("2000-01-01"))%>% # Max 2004-09 # 2003 ok BG
     arrange(time)

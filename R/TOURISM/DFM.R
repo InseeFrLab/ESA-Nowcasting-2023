@@ -36,12 +36,33 @@ for (country in countries_tourism) {
     filter(geo %in% country)%>%
     pivot_wider(names_from =  c(geo, var), values_from = values)
   
-  placeholder <- data$placeholder%>%
-    mutate(var = "placeholder")%>%
-    filter(geo %in% country)%>%
-    pivot_wider(names_from =  c(geo, var, placeholder), values_from = values)
+  brent <- data$brent%>%
+    as_tibble()%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      brent_adjusted = mean(brent_adjusted,na.rm=T),
+      brent_volume = mean(brent_volume,na.rm=T),
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, brent_adjusted, brent_volume)
   
-  DB <- list(tourism, placeholder)%>%
+  eur_usd <- data$eur_usd%>%
+    as_tibble()%>%
+    select(time, eur_usd_adjusted)%>%
+    mutate(month = month(time), 
+           year = year(time))%>%
+    group_by(year, month)%>%
+    summarise(
+      eur_usd_adjusted = mean(eur_usd_adjusted,na.rm=T)
+    )%>%
+    ungroup()%>%
+    mutate(time = ymd(paste(year, month,"01", sep="-")))%>%
+    select(time, eur_usd_adjusted)
+  
+  DB <- list(tourism, brent, eur_usd)%>%
     reduce(full_join, by="time")%>%
     filter(time>as.Date("2000-01-01"))%>% # Max 2004-09 # 2003 ok BG
     arrange(time)
@@ -135,10 +156,13 @@ for (country in countries_tourism) {
   # Forecasting
   #########################################
   current_month <- date_to_pred %m-% months(1)
-  if (is.na(DB[current_month][,paste0(country, "_TOURISM")])) {
+
+  if (!is.na(DB[current_month][,paste0(country, "_TOURISM")])) {
+    h = 1
+  }else if((!is.na(DB[current_month%m-% months(1)][,paste0(country, "_TOURISM")]))){
     h = 2
   }else{
-    h = 1
+    h = 3
   }
   
   fc = predict(model, h = h)
