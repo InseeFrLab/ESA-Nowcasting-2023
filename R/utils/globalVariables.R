@@ -12,6 +12,8 @@ countries_tourism <- c("AT","BE","CY","CZ","DE","DK","EL","ES","FI","FR",
 
 countries_to_exclude <- c("FR")
 
-date_to_predict <- "2022-09-01"
-early_date_to_stop <- "2018-08-01"
-date_to_stop <- "2020-02-01"
+current_date <- "2022-09-01"
+date_to_predict <- "2022-10-01"
+
+early_date_to_stop <- "2019-07-01"
+date_to_stop <- "2020-01-01"
