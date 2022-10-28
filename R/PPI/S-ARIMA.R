@@ -5,6 +5,7 @@
 #########################################
 # Required packages
 #########################################
+
 library(dplyr)
 library(astsa)
 library(lubridate)
@@ -19,13 +20,19 @@ preds_sarima <- tibble(Country=character(),
                        )
 
 for (country in countries_PPI){
-  pred <- sarima.for(data$PPI%>%filter(geo %in% country)%>%pull(values),
-                     1,
-                     0, 1, 1, plot = FALSE)$pred[1]
   
-  date_to_pred <-  data$PPI%>%filter(geo %in% country)%>%arrange(time)%>%tail(1)%>%pull(time) %m+% months(1)
+  n_forward <- interval(current_date, date_to_predict) %/% months(1)
+  
+  pred <- sarima.for(data$PPI %>%
+                       filter(geo == country) %>%
+                       pull(values),
+                     n_forward,
+                     0, 1, 1, plot = FALSE)$pred %>%
+    tail(1)
   
   preds_sarima <- preds_sarima %>%
-    add_row(Country=country, Date=as.POSIXct(date_to_pred), value=round(as.numeric(pred),1))
+    add_row(Country=country,
+            Date=ymd(date_to_predict),
+            value=round(as.numeric(pred),1))
 
 }
