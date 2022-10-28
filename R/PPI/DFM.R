@@ -176,3 +176,8 @@ for (country in missing_countries) {
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = as.POSIXct(date_to_pred))
 }
+
+# Re-arranging countries
+preds_dfm <- preds_dfm%>%
+  mutate(Country = factor(Country, levels = countries_PPI))%>%
+  arrange(Country)
