@@ -12,8 +12,6 @@ library(xts)
 library(lubridate)
 library(progress)
 
-date_to_pred <- "2022-10-01"
-
 #########################################
 # Loop
 #########################################
