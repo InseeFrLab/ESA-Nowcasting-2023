@@ -13,8 +13,7 @@ library(mltools)
 library(data.table)
 library(xgboost)
 
-source("R/utils/globalVariables.R")
-source("R/PVI/create_table_large.R")
+source("R/utils/create_table_large_PVI.R")
 
 #########################################
 # Global variables
