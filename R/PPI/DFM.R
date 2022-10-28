@@ -11,7 +11,6 @@ library(dfms)
 library(xts)
 library(lubridate)
 library(progress)
-#data <- getData("PPI")
 
 date_to_pred <- "2022-10-01"
 
@@ -99,7 +98,7 @@ for (country in setdiff(countries_PPI, "IE")) {
   if (dim(positions)[1] > 0) {
     var_to_remove <- sapply(positions, function(x) names(DB_diff[range_square_mat])[x])["col"]
     DB_diff <- DB_diff[,-as.double(positions["col"])]
-    cat("Removing ", var_to_remove, "due to collinearity.\n")
+    cat("Removing", var_to_remove, "due to collinearity.\n")
   }
   
   #########################################
@@ -107,7 +106,18 @@ for (country in setdiff(countries_PPI, "IE")) {
   #########################################
   
   # We determine the optimal number of factor and lags
-  ic = ICr(DB_diff)
+  ic <- tryCatch({
+    ICr(DB_diff)
+    
+  }
+  ,
+  error=function(e) {
+    cat(paste0("Failed for country", country, ", too little variables available \n"))
+    e
+  }
+  )
+  
+  if(inherits(ic, "error")) next
 
   r <- as.double(names(sort(table(ic$r.star),decreasing=TRUE)[1]))
   lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection),decreasing=TRUE)[1]))
@@ -126,7 +136,7 @@ for (country in setdiff(countries_PPI, "IE")) {
   }
   ,
   error=function(e) {
-    cat(paste0("Failed for country ", country, "\n"))
+    cat(paste0("Failed for country", country, "\n"))
     e
   }
   )
