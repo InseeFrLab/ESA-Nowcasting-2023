@@ -24,7 +24,7 @@ preds_dfm <- tibble(Country=character(),
 
 pb <- progress_bar$new(
   format = " [:bar] :percent eta: :eta \n",
-  total = 26, clear = FALSE)
+  total = length(setdiff(countries_PPI, "IE")), clear = FALSE)
 
 for (country in setdiff(countries_PPI, "IE")) {
   cat(paste0("Running estimation for ", country, "\n"))
@@ -112,7 +112,7 @@ for (country in setdiff(countries_PPI, "IE")) {
   }
   ,
   error=function(e) {
-    cat(paste0("Failed for country", country, ", too little variables available \n"))
+    cat(paste0("Failed for country ", country, ", too little variables available \n"))
     e
   }
   )
@@ -136,7 +136,7 @@ for (country in setdiff(countries_PPI, "IE")) {
   }
   ,
   error=function(e) {
-    cat(paste0("Failed for country", country, "\n"))
+    cat(paste0("Failed for country ", country, "\n"))
     e
   }
   )
