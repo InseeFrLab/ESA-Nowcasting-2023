@@ -57,8 +57,8 @@ subplot_pred <- function(sample, country, xlim, predictions, legend=F){
     ggtitle(country)+
     geom_line(data= subset(sample, geo %in% country), aes(x=as.POSIXct(time, format = "%Y-%m-%d"), y=values))+
     geom_point(data= subset(predictions, Country %in% country), aes(x=as.POSIXct(Date, format = "%Y-%m-%d"), y=value, color=Entries))+
-    geom_text(data= subset(predictions, Country %in% country & Entries %in% "Naive"), aes(x=Date %m-% months(4), y=value, label=Date), 
-              color = ifelse(Lastpoint_released, rgb(255, 75, 0, maxColorValue = 255), rgb(83, 83, 83, maxColorValue = 255)))+
+    #geom_text(data= subset(predictions, Country %in% country & Entries %in% "Naive"), aes(x=Date %m-% months(4), y=value, label=Date), 
+    #          color = ifelse(Lastpoint_released, rgb(255, 75, 0, maxColorValue = 255), rgb(83, 83, 83, maxColorValue = 255)))+
     scale_x_datetime(limits = as.POSIXct(c(xlim, NA) , format = "%Y-%m-%d"))+
     scale_color_manual("", values=Palette_col)+
     theme_custom()+

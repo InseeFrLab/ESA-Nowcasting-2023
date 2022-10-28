@@ -13,8 +13,7 @@ library(mltools)
 library(data.table)
 library(xgboost)
 
-source("R/utils/globalVariables.R")
-source("R/TOURISM/create_table_large.R")
+source("R/utils/create_table_large_TOURISM.R")
 
 #########################################
 # Global variables
@@ -187,7 +186,7 @@ if (do_full_dataset_model){
   
   preds_xgboost_europe <- countries %>%
     select(geo) %>%
-    mutate(Date = ymd(date_to_predict)) %>%
+    mutate(Date = date_to_pred) %>%
     bind_cols(round(as.numeric(y_pred_next_month),1)) %>%
     rename(Country = geo,
            value = ...3)
@@ -205,7 +204,7 @@ best_eta_per_country = 0.3
 preds_xgboost_per_country <- countries %>%
   select(geo) %>%
   rename(Country = geo) %>%
-  mutate(Date = ymd(date_to_predict),
+  mutate(Date = date_to_pred,
          value = 0)
 
 i <- 1
