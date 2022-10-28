@@ -29,7 +29,6 @@ pb <- progress_bar$new(
 
 for (country in setdiff(countries_PPI, "IE")) {
   cat(paste0("Running estimation for ", country, "\n"))
-  
   pb$tick()
     
   #########################################
@@ -70,11 +69,27 @@ for (country in setdiff(countries_PPI, "IE")) {
   }
   
   DB <- xts(as.data.frame(DB[,-1]), order.by=as.Date(DB[,1]%>%pull()))
-#  plot(scale(DB), lwd = 1)
-  
+
   # We differenciate the series
   DB_diff = diff(DB)
-#  plot(scale(DB_diff), lwd = 1)
+
+  #########################################
+  # Dealing with collinearity
+  #########################################
+  
+  # Creating a squared matrix to check collinearity
+  range_square_mat <- paste(ymd(date_to_pred) %m-% months(dim(DB_diff)[2]), ymd(date_to_pred) %m-% months(1), sep="/")
+  #diff(dim(DB_diff[range_square_mat]))
+  
+  # Get the positions of collinear columns
+  positions <- subset(as.data.frame(which(cor(DB_diff[range_square_mat]) > 0.9999, arr.ind=TRUE)), row < col)
+  
+  # If necessary, remove collinear columns
+  if (dim(positions)[1] > 0) {
+    var_to_remove <- sapply(positions, function(x) names(DB_diff[range_square_mat])[x])["col"]
+    DB_diff <- DB_diff[,-as.double(positions["col"])]
+    cat("Removing ", var_to_remove, "due to collinearity.\n")
+  }
   
   #########################################
   # Determination of parameters
@@ -82,8 +97,7 @@ for (country in setdiff(countries_PPI, "IE")) {
   
   # We determine the optimal number of factor and lags
   ic = ICr(DB_diff)
-#  plot(ic)
-#  screeplot(ic)
+
   r <- as.double(names(sort(table(ic$r.star),decreasing=TRUE)[1]))
   lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection),decreasing=TRUE)[1]))
   
