@@ -62,7 +62,7 @@ for (country in setdiff(countries_PPI, "IE")) {
   if (last(DB$time) %--% ymd(date_to_pred) %/% months(1) > 1){
     line_to_add <- last(DB$time) %--% ymd(date_to_pred) %/% months(1) - 1
     for (i in 1:line_to_add) {
-      cat("No data in", as.character(last(DB$time) %m+% months(1)),"for country ", country, "\n")
+      cat("No data in", as.character(last(DB$time) %m+% months(1)),"for country", country, "\n")
       DB <- DB %>%
         add_row(time = last(DB$time) %m+% months(1))
     }
@@ -74,13 +74,24 @@ for (country in setdiff(countries_PPI, "IE")) {
   DB_diff = diff(DB)
 
   #########################################
+  # Dealing with multiple NaNs columns
+  #########################################
+  range_3year <- paste(ymd(date_to_pred) %m-% months(36+1), ymd(date_to_pred) %m-% months(2), sep="/")
+  nan_cols <- as.double(which(colSums(is.na(DB_diff[range_3year])) > 0))
+
+  if (!is_empty(nan_cols)) {
+    cat("Removing", names(which(colSums(is.na(DB_diff[range_3year])) > 0)), "due to missing values.\n")
+    DB_diff <- DB_diff[,-nan_cols]
+  }
+  
+  #########################################
   # Dealing with collinearity
   #########################################
   
   # Creating a squared matrix to check collinearity
-  range_square_mat <- paste(ymd(date_to_pred) %m-% months(dim(DB_diff)[2]), ymd(date_to_pred) %m-% months(1), sep="/")
+  range_square_mat <- paste(ymd(date_to_pred) %m-% months(dim(DB_diff)[2]+1), ymd(date_to_pred) %m-% months(2), sep="/")
   #diff(dim(DB_diff[range_square_mat]))
-  
+
   # Get the positions of collinear columns
   positions <- subset(as.data.frame(which(cor(DB_diff[range_square_mat]) > 0.9999, arr.ind=TRUE)), row < col)
   
