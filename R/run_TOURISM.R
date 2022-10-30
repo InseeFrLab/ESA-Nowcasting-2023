@@ -38,6 +38,6 @@ entries <- list(
   "entry_1"= preds_naive_1y%>%pull(value, Country), 
   "entry_2"= preds_sarima%>%pull(value, Country),
   "entry_3"= preds_xgboost%>%pull(value, Country),
-  "entry_3"= preds_dfm%>%pull(value, Country)
+  "entry_4"= preds_dfm%>%pull(value, Country)
 )
 save_entries(entries, "Submissions/TOURISM/results_october.json")
