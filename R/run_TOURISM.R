@@ -48,8 +48,10 @@ entries <- list(
 )
 save_entries(entries, "Submissions/TOURISM/results_october.json")
 
-entries <- list(
-  "entry_5"= preds_ets%>%pull(value, Country),
-  "entry_6"= preds_tbats%>%pull(value, Country)
-)
-add_entries(entries, "Submissions/TOURISM/results_october.json")
+# entries <- list(
+#   "entry_5"= preds_ets%>%pull(value, Country),
+#   "entry_6"= preds_tbats%>%pull(value, Country)
+# )
+# add_entries(entries, "Submissions/TOURISM/results_october.json")
+
+reorder_entries(2:6, "Submissions/TOURISM/results_october.json")
