@@ -4,13 +4,6 @@ library(fabletools)
 library(feasts)
 library(forecast)
 
-to_tsibble <- function(x) {
-  x %>% 
-    mutate(time = yearmonth(time)) %>% 
-    drop_na() %>%
-    as_tsibble(key = c(geo), index = time)
-}
-
 tbats_tourism = function(dates, y) {
   first_date = dates[1]
   y = ts(y, 
@@ -30,13 +23,16 @@ preds_tbats = data$TOURISM  %>%
   group_by(geo) %>%
   mutate(values = zoo::na.locf(values)) %>%
   mutate(values = tbats_tourism(time, values)) %>%
-  ungroup() %>%
   as_tibble() %>% 
+  group_by(geo) %>% 
+  summarise(
+    values = dplyr::last(values),
+    time = date_to_pred
+  ) %>% 
   mutate(Country = geo,
-         Date = date_to_pred,
-         value = values)
-# as_tibble() %>%
-#   select(Country, Date, value)
+         Date = time,
+         value = values) %>% 
+  select(Country, Date, value)
 # ?forecast::tbats()
 # data$TOURISM %>% 
 #   filter(time >= ymd("2003-01-01")) %>% 
