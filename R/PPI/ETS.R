@@ -25,6 +25,6 @@ preds_ets = preds_ets %>%
   as_tibble() %>% 
   select(Country, Date, value)
 
-# models %>% forecast(h = "1 month")%>%  filter(geo == "AT") %>% 
-#   autoplot(data$PPI %>%   to_tsibble()  %>% filter(geo == "AT") %>% 
-#              filter(time >= ymd("2022-01-01")))
+models %>% forecast(h = "1 month")%>%  filter(geo == "BE") %>%
+  autoplot(data$PPI %>%   to_tsibble()  %>% filter(geo == "BE") %>%
+             filter(time >= ymd("2022-01-01")))

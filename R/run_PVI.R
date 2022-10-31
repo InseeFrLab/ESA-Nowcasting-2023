@@ -18,7 +18,7 @@ source("R/PVI/LastPeriod_model.R") # to be converted to functions
 source("R/PVI/S-ARIMA.R") # to be converted to functions
 source("R/PVI/XGBoost.R") # to be converted to functions
 source("R/PVI/DFM.R") # to be converted to functions
-source("R/PPI/ETS.R") # to be converted to functions
+source("R/PVI/ETS.R") # to be converted to functions
 
 #### Plotting the results #### 
 predictions <- bind_rows(list(
@@ -45,5 +45,6 @@ entries <- list(
 )
 save_entries(entries, "Submissions/PVI/results_october.json")
 
-entries = list("entry_5"= preds_ets%>%pull(value, Country))
-add_entries(entries, "Submissions/PVI/results_october.json")
+# entries = list("entry_5"= preds_ets%>%pull(value, Country))
+# add_entries(entries, "Submissions/PVI/results_october.json")
+
