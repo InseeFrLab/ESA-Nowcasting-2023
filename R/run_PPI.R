@@ -18,13 +18,15 @@ source("R/PPI/LastPeriod_model.R") # to be converted to functions
 source("R/PPI/S-ARIMA.R") # to be converted to functions
 source("R/PPI/XGBoost.R") # to be converted to functions
 source("R/PPI/DFM.R") # to be converted to functions
+source("R/PPI/ETS.R") # to be converted to functions
 
 #### Plotting the results #### 
 predictions <- bind_rows(list(
   "entry_1"= preds_naive_1m%>%mutate(Entries = "Naive"), 
   "entry_2"= preds_sarima%>%mutate(Entries = "S-ARIMA"),
   "entry_3"= preds_xgboost%>%mutate(Entries = "XGBoost"),
-  "entry_4"= preds_dfm%>%mutate(Entries = "DFM")
+  "entry_4"= preds_dfm%>%mutate(Entries = "DFM"),
+  "entry_5"= preds_ets%>%mutate(Entries = "ETS")
 )
 )
 
@@ -38,6 +40,10 @@ entries <- list(
   "entry_1"= preds_naive_1m%>%pull(value, Country), 
   "entry_2"= preds_sarima%>%pull(value, Country),
   "entry_3"= preds_xgboost%>%pull(value, Country),
-  "entry_4"= preds_dfm%>%pull(value, Country)
+  "entry_4"= preds_dfm%>%pull(value, Country),
+  "entry_5"= preds_ets%>%pull(value, Country)
 )
 save_entries(entries, "Submissions/PPI/results_october.json")
+
+# entries = list("entry_5"= preds_ets%>%pull(value, Country))
+# add_entries(entries, "Submissions/PPI/results_october.json")
