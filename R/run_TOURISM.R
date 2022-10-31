@@ -20,7 +20,6 @@ source("R/TOURISM/XGBoost.R") # to be converted to functions
 source("R/TOURISM/DFM.R") # to be converted to functions
 source("R/TOURISM/ETS.R") # to be converted to functions
 source("R/TOURISM/TBATS.R") # to be converted to functions
-source("R/TOURISM/SNAIVE.R") # to be converted to functions
 
 #### Plotting the results #### 
 predictions <- bind_rows(list(
@@ -29,8 +28,7 @@ predictions <- bind_rows(list(
   "entry_3"= preds_xgboost%>%mutate(Entries = "XGBoost"),
   "entry_4"= preds_dfm%>%mutate(Entries = "DFM"),
   "entry_5"= preds_ets%>%mutate(Entries = "ETS"),
-  "entry_6"= preds_tbats%>%mutate(Entries = "TBATS"),
-  "entry_7"= preds_snaive%>%mutate(Entries = "SNAIVE")
+  "entry_6"= preds_tbats%>%mutate(Entries = "TBATS")
 )
 )
 
@@ -46,17 +44,15 @@ entries <- list(
   "entry_3"= preds_xgboost%>%pull(value, Country),
   "entry_4"= preds_dfm%>%pull(value, Country),
   "entry_5"= preds_ets%>%pull(value, Country),
-  "entry_6"= preds_tbats%>%pull(value, Country),
-  "entry_7"= preds_snaive%>%pull(value, Country)
+  "entry_6"= preds_tbats%>%pull(value, Country)
 )
 save_entries(entries, "Submissions/TOURISM/results_october.json")
 
 entries <- list(
   "entry_5"= preds_ets%>%pull(value, Country),
-  "entry_6"= preds_tbats%>%pull(value, Country),
-  "entry_7"= preds_snaive%>%pull(value, Country)
+  "entry_6"= preds_tbats%>%pull(value, Country)
 )
 add_entries(entries, "Submissions/TOURISM/results_october.json")
 
-reorder_entries(c(1:4,7), "Submissions/TOURISM/results_october.json")
+reorder_entries(c(1:4), "Submissions/TOURISM/results_october.json")
 
