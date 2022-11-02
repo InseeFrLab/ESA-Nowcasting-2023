@@ -1,6 +1,6 @@
 FROM inseefrlab/onyxia-rstudio:latest
 
-COPY ./* ${HOME}/
+ADD ./* ${HOME}/
 
 RUN ls $HOME/
 
