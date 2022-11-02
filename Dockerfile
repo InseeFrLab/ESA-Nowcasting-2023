@@ -2,6 +2,8 @@ FROM inseefrlab/onyxia-rstudio:latest
 
 COPY ./* ${HOME}/
 
+RUN ls $HOME/
+
 RUN cd ${HOME}/ && \
     install2.r renv && \
     Rscript -e "renv::restore()" && \
