@@ -59,6 +59,16 @@
       "Hash": "45f0398006e83a5b10b72a90663d8d8c",
       "Requirements": []
     },
+    "RJDemetra": {
+      "Package": "RJDemetra",
+      "Version": "0.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "63222b78f75810f35188ee268c59fc13",
+      "Requirements": [
+        "rJava"
+      ]
+    },
     "Rcpp": {
       "Package": "Rcpp",
       "Version": "1.0.9",
@@ -1027,6 +1037,14 @@
         "xts",
         "zoo"
       ]
+    },
+    "rJava": {
+      "Package": "rJava",
+      "Version": "1.0-6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "0415819f6baa75d86d52483f7292b623",
+      "Requirements": []
     },
     "rappdirs": {
       "Package": "rappdirs",
