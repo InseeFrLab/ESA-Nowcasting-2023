@@ -1,10 +1,7 @@
 FROM inseefrlab/onyxia-rstudio:latest
 
-ADD ./* ${HOME}/
+#COPY renv/ ${HOME}/renv
 
-RUN ls $HOME/
-
-RUN cd ${HOME}/ && \
-    install2.r renv && \
+RUN install2.r renv && \
     Rscript -e "renv::restore()" && \
     chown -R ${USERNAME}:${GROUPNAME} ${HOME}
