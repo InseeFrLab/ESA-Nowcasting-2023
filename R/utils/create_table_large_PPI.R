@@ -27,7 +27,8 @@ nb_months_past_to_use_pvi = 6
 
 list_eurostat_tables <- c('PPI_NACE2',
                           'IPI',
-                          'PSURVEY')
+                          'PSURVEY',
+                          'HICP')
 list_yahoo_finance <- c('brent', 'eur_usd', 'sp500', 'eurostoxx500', 'cac40')
 
 db <- getData("PPI")
@@ -144,7 +145,7 @@ for (table in list_yahoo_finance){
 
 df <- df[c(rep(TRUE, 3),
            lapply(df[-(1:3)],
-                  var, na.rm = TRUE) != 0)] 
+                  var, na.rm = TRUE) != 0)]
 
 df_large <- data.frame(df)
 
