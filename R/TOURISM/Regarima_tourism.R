@@ -21,49 +21,55 @@ preds_sarima <- tibble(Country=character(),
                        value=numeric()
                        )
 
-for (country in countries_PVI){
+for (country in countries_tourism){
 
-  n_forward <- interval(current_date, date_to_pred) %/% months(1)
-  
   #série cible + vérif date de début
-  debut <- data$PVI%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
+  debut <- data$TOURISM%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
   debut<-c(year(debut),month(debut))
-  pvi_ts <- ts(data$PVI%>%filter(geo %in% country)%>%pull(values),start=debut,frequency=12)
-  dlpvi <- log(pvi_ts)-stats::lag(log(pvi_ts),-1)
-  #Exogènes
-  debut <- data$PSURVEY%>%filter(geo %in% country)%>% filter(indic == "BS-ICI")%>%slice(1:1)%>%pull(time)
-  debut<-c(year(debut),month(debut))
-  IS <- ts(data$PSURVEY%>%filter(geo %in% country) %>% filter(indic == "BS-ICI") %>%pull(values),start=debut,frequency=12)
-  debut <- data$PSURVEY%>%filter(geo %in% country)%>% filter(indic == "BS-IPT")%>%slice(1:1)%>%pull(time)
-  debut<-c(year(debut),month(debut))
-  IPT <- ts(data$PSURVEY%>%filter(geo %in% country) %>% filter(indic == "BS-IPT") %>%pull(values),start=debut,frequency=12)
   
-  var <- ts.union(IPT/100,diff(IPT)/100)
+  fin <- data$TOURISM%>%filter(geo %in% country)%>%last%>%pull(time)
   
-  pvi_spec <- regarima_spec_tramoseats(transform.function="None",
+  n_forward <- interval(fin, date_to_pred) %/% months(1)
+  
+  tour <- ts(data$TOURISM%>%filter(geo %in% country)%>%pull(values),start=debut,frequency=12)
+  dltour <- window(log(tour)-stats::lag(log(tour),-1),start=c(2010,1))
+  
+  tour_spec <- regarima_spec_tramoseats(transform.function="Auto",
+                                        arima.coefType="Undefined",
+                                        arima.p=0,
+                                        arima.q=1,
+                                        arima.bp=0,
+                                        arima.bq=1,
+                                        arima.d = 1,
+                                        arima.bd=1,
                                        estimate.from="2010-01-01",
-                                       automdl.enabled=TRUE,
+                                       estimate.to="2019-01-01",
+                                       automdl.enabled=FALSE,
                                        usrdef.outliersEnabled=TRUE,
                                        usrdef.outliersType = c("AO","AO", "AO","AO", "AO","AO",
                                                                "AO", "AO","AO", "AO","AO","AO",
-                                                               "AO", "AO","AO", "AO","AO", "AO"),
+                                                               "AO", "AO","AO", "AO","AO", "AO",
+                                                               "AO", "AO","AO", "AO","AO", "AO",
+                                                               "AO", "AO","AO"),
                                        usrdef.outliersDate = c("2020-01-01","2020-02-01","2020-03-01", "2020-04-01","2020-05-01","2020-06-01",
                                                                "2020-07-01","2020-08-01","2020-09-01", "2020-10-01","2020-11-01","2020-12-01",
-                                                               "2021-01-01","2021-02-01","2021-03-01", "2021-04-01","2021-05-01", "2021-06-01"),
+                                                               "2021-01-01","2021-02-01","2021-03-01", "2021-04-01","2021-05-01", "2021-06-01",
+                                                               "2021-07-01","2021-08-01","2021-09-01", "2021-10-01","2021-11-01", "2021-12-01",
+                                                               "2022-01-01","2022-02-01","2022-03-01"),
                                       outlier.enabled=TRUE,
                                       outlier.ao=TRUE,
                                       outlier.tc=FALSE,
                                       outlier.ls = TRUE,
                                       outlier.usedefcv=FALSE,
                                       outlier.cv=3.5,
-                                      usrdef.varEnabled = TRUE,
-                                      usrdef.var = var,
+                                      #usrdef.varEnabled = TRUE,
+                                      #usrdef.var = var,
                                       fcst.horizon=2)
-  pvi_regarima <- regarima(dlpvi,pvi_spec)
+  tour_regarima <- regarima(tour,tour_spec)
   
   #Deux cas : pred à 1 ou 2 horizons
-  if (n_forward==1) {pred <- pvi_ts %>% tail(1) * exp(pvi_regarima$forecast[1])}
-  if (n_forward==2) {pred <- pvi_ts %>% tail(1) * exp(pvi_regarima$forecast[1]) * exp(pvi_regarima$forecast[2])}
+  if (n_forward==1) {pred <- tour_regarima$forecast[1]}
+  if (n_forward==2) {pred <- tour_regarima$forecast[2]}
   
   preds_sarima <- preds_sarima %>%
     add_row(Country=country,

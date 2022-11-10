@@ -9,7 +9,7 @@ library(RJDemetra)
 data <- getData("PVI")
 data$PVI %>% filter(geo %in% "DE")
 
-country = c('AT')
+country = c('BE')
 
 #Récupération des données
 debut <- data$PVI%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
@@ -168,7 +168,7 @@ myreg3
 
 #PPI
 
-country = c('FR')
+country = c('DE')
 data$PPI %>% filter(geo %in% country)
 
 
@@ -189,14 +189,32 @@ brent <- ts(brent%>%pull(brent_adjusted),start=debut,frequency=12)
 brent_1=stats::lag(brent,-1)
 brent_2=stats::lag(brent,-2)
 
+ipi <- data$IPI%>%filter(geo %in% country)%>%filter(time==ymd("20100101"))
+print(ipi,n=40)
+
 dlbrent=log(brent)-stats::lag(log(brent),-1)
 dlbrent_1=stats::lag(dlbrent,-1)
 dlbrent_2=stats::lag(dlbrent,-2)
 var=ts.union(dlbrent,dlbrent_1,dlbrent_2)
 
+debut <- data$IPI%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
+debut<-c(year(debut),month(debut))
+ipi <-ts(data$IPI %>% filter(geo %in% country & nace_r2 == "B-D") %>% 
+           pull(values),start=debut,frequency=12)
+dlipi=log(ipi)-stats::lag(log(ipi),-1)
+dlipi_1=stats::lag(dlipi,-1)
+dlipi_2=stats::lag(dlipi,-2)
+dlipi_3=stats::lag(dlipi,-3)
+dlipi_4=stats::lag(dlipi,-4)
+
+lcointeg=stats::lag(log(ppi),-1)-stats::lag(log(ipi),-1)
+
+var=ts.union(dlbrent,dlipi_1,dlipi_2,dlipi_3,dlipi_4)
+
 
 ppi_spec <- regarima_spec_tramoseats(transform.function="None",
                                      estimate.from="2010-01-01",
+                                     estimate.to = "2019-12-01",
                                     automdl.enabled=TRUE,
                                     outlier.enabled=TRUE,
                                     outlier.ao=TRUE,
@@ -208,7 +226,10 @@ ppi_spec <- regarima_spec_tramoseats(transform.function="None",
                                     fcst.horizon=2)
 ppi_regarima <- regarima(dlppi,ppi_spec)
 ppi_regarima
+ls(ppi_regarima)
+ppi_regarima$residuals
 
+last(dlipi)
 
 #BS-ISPE
 
@@ -230,11 +251,23 @@ brent <- ts(brent%>%pull(brent_adjusted),start=debut,frequency=12)
 dlbrent=log(brent)-stats::lag(log(brent),-12)
 dlbrent_1=stats::lag(dlbrent,-1)
 dlbrent_2=stats::lag(dlbrent,-2)
-var=ts.union(dlbrent,dlbrent_1,dlbrent_2)
 
+print(data$IPI %>% filter(geo=="DE" & time == ymd("20200101")),n=36)
+debut <- data$IPI%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
+debut<-c(year(debut),month(debut))
+ipi <-ts(data$IPI %>% filter(geo %in% country & nace_r2 == "B-D") %>% 
+    pull(values),start=debut,frequency=12)
+dlipi=log(ipi)-stats::lag(log(ipi),-12)
+dlipi_1=stats::lag(dlipi,-1)
+dlipi_2=stats::lag(dlipi,-2)
+dlipi_3=stats::lag(dlipi,-3)
+dlipi_4=stats::lag(dlipi,-4)
+
+var=ts.union(dlbrent,dlbrent_1,dlipi_2,dlipi_3,dlipi_4)
 
 ppi_spec <- regarima_spec_tramoseats(transform.function="None",
                                      estimate.from="2010-01-01",
+                                     #estimate.to = "2019-12-01",
                                      automdl.enabled=TRUE,
                                      outlier.enabled=TRUE,
                                      outlier.ao=TRUE,
@@ -246,7 +279,7 @@ ppi_spec <- regarima_spec_tramoseats(transform.function="None",
                                      fcst.horizon=2)
 ppi_regarima <- regarima(dlppi,ppi_spec)
 ppi_regarima
-
+ppi_regarima$residuals
 
 #Modèle en niveau
 lbrent=log(brent)
