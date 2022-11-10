@@ -1,0 +1,12 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+countries_PPI|object|d0055b379fee678a|||||||||||||||
+countries_PVI|object|475834ad2e7c3c8d|||||||||||||||
+countries_to_exclude|object|2ab40f46af3381c5|||||||||||||||
+countries_tourism|object|5e342b933fecb932|||||||||||||||
+current_date|object|fba6481bb22e254b|||||||||||||||
+data|stem|265807e7772b8cb5|98f1120f6dd920a7|8d0612ce262f7a5a|1588979285||t19306.5089258931s|70cd0d854432e263|325430|rds|local|vector|||14.919|lengthx  5  1 in coercion to logical1. lengthx  4  1 in coercion to logical1. BZF contains missing values. Some functions will not work if objects contain missing values in the middle of the series. Consider using na.omit, na.approx, na.fill, etc to remove or replace them.. lengthx  5  1 in coercion to logical1. EURUSDX contains missing values. Some functions will not work if objects contain missing values in the middle of the series. Consider using na.omit, na.approx, na.fill, etc to remove or replace them.. STOXX50E contains missing values. Some functions will not work if objects contain missing values in the middle of the series. Consider using na.omit, na.approx, na.fill, etc to remove or replace them.. FCHI contains missing values. Some functions will not work if objects contain missing values in the middle of the series. Consider using na.omit, na.approx, na.fill, etc to remove or replace them.|
+date_to_stop|object|3a069c70dcc3c87e|||||||||||||||
+early_date_to_stop|object|5379d3a20a944efd|||||||||||||||
+getData|function|cd3e4bc38845b88c|||||||||||||||
+model|stem|fa414575f26f5f5e|54d7b43fa44390ea|4b680cba670f34e0|1816327236||t19306.5111762781s|a1c456b03adbfbf8|44|rds|local|vector|||0.33||
+run_last_period_model|function|95164038225c7fba|||||||||||||||

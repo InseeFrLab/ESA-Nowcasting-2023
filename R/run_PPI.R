@@ -8,6 +8,7 @@ source("R/utils/getData.R")
 source("R/utils/save_entries.R")
 source("R/utils/plot_routines.R")
 
+tar_option_set(packages = c("readr", "dplyr", "ggplot2"))
 #### Import the data ####
 data <- getData("PPI")
 
