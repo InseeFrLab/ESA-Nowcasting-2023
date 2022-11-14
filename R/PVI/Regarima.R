@@ -65,7 +65,7 @@ for (country in countries_PVI){
                                       outlier.cv=3.5,
                                       usrdef.varEnabled = TRUE,
                                       usrdef.var = var,
-                                      fcst.horizon=3)
+                                      fcst.horizon=n_forward)
   pvi_regarima <- regarima(dlpvi,pvi_spec)
   
   #Deux cas : pred à 1 ou 2 horizons

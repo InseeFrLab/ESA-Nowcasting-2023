@@ -63,7 +63,7 @@ for (country in countries_PPI){
     dlipi_3=stats::lag(dlipi,-3)
     dlipi_4=stats::lag(dlipi,-4)
     #différence éventuelle entre dernière date ppi et dernière date prix d'imports
-    ecart_dernier_mois <- interval(fin, data$IPI%>%filter(geo %in% country)%>%last%>%pull(time)) %/% months(1)
+    ecart_dernier_mois <- interval(fin, data$IPI%>%filter(geo %in% country & nace_r2 == "B-D")%>%last%>%pull(time)) %/% months(1)
     
     if (ecart_dernier_mois==0) {
       var=ts.union(dlbrent,dlipi_1,dlipi_2,dlipi_3,dlipi_4)
@@ -88,7 +88,7 @@ for (country in countries_PPI){
                                        outlier.cv=3.5,
                                        usrdef.varEnabled = TRUE,
                                        usrdef.var = var,
-                                       fcst.horizon=3)
+                                       fcst.horizon=n_forward)
   ppi_regarima <- regarima(dlppi,ppi_spec)
   
   #Deux cas : pred à 1 ou 2 horizons
