@@ -1,7 +1,7 @@
 ###############################################################################
 #                             Main file for TOURISM                           #  
 ###############################################################################
-rm(list = ls())
+library(lubridate)
 #### Import global variables ####
 source("R/utils/globalVariables.R")
 source("R/utils/getData.R")

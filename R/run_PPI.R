@@ -1,7 +1,7 @@
 ###############################################################################
 #                             Main file for PPI                               #  
 ###############################################################################
-rm(list = ls())
+library(lubridate)
 #### Import global variables ####
 source("R/utils/globalVariables.R")
 source("R/utils/getData.R")
@@ -16,7 +16,7 @@ date_to_pred <- ymd("2022-11-01")
 
 source("R/PPI/LastPeriod_model.R") # to be converted to functions
 # source("R/PPI/S-ARIMA.R") # to be converted to functions
-source("R/PPI/Regarima_ppi.R") # to be converted to functions
+source("R/PPI/Regarima.R") # to be converted to functions
 source("R/PPI/XGBoost.R") # to be converted to functions
 source("R/PPI/DFM.R") # to be converted to functions
 

@@ -1,7 +1,7 @@
 ###############################################################################
 #                             Main file for PVI                               #  
 ###############################################################################
-rm(list = ls())
+library(lubridate)
 #### Import global variables ####
 source("R/utils/globalVariables.R")
 source("R/utils/getData.R")
@@ -16,7 +16,7 @@ date_to_pred <- ymd("2022-11-01")
 
 source("R/PVI/LastPeriod_model.R") # to be converted to functions
 # source("R/PVI/S-ARIMA.R") # to be converted to functions
-source("R/PVI/Regarima_pvi.R") # to be converted to functions
+source("R/PVI/Regarima.R") # to be converted to functions
 source("R/PVI/XGBoost.R") # to be converted to functions
 source("R/PVI/DFM.R") # to be converted to functions
 
