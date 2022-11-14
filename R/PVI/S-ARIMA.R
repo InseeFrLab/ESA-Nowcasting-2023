@@ -20,8 +20,15 @@ preds_sarima <- tibble(Country=character(),
                        )
 
 for (country in countries_PVI){
+  
+  current_date_country <- data$PVI %>%
+    filter(geo == country) %>%
+    select(time) %>%
+    arrange() %>%
+    tail(1) %>%
+    pull()
 
-  n_forward <- interval(current_date, date_to_pred) %/% months(1)
+  n_forward <- interval(current_date_country, date_to_pred) %/% months(1)
   
   pred <- sarima.for(data$PVI %>%
                        filter(geo == country) %>%

@@ -9,6 +9,7 @@
 library(dplyr)
 library(astsa)
 library(lubridate)
+library(RJDemetra)
 
 #########################################
 # Estimate a SARIMA
