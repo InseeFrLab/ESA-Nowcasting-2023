@@ -13,10 +13,10 @@ library(lubridate)
 library(RJDemetra)
 
 #########################################
-# Estimate a SARIMA
+# Estimate a REGARIMA
 #########################################
 
-preds_sarima <- tibble(Country=character(),
+preds_regarima <- tibble(Country=character(),
                        Date=as.POSIXct(NA),
                        value=numeric()
                        )
@@ -71,7 +71,7 @@ for (country in countries_tourism){
   if (n_forward==1) {pred <- tour_regarima$forecast[1]}
   if (n_forward==2) {pred <- tour_regarima$forecast[2]}
   
-  preds_sarima <- preds_sarima %>%
+  preds_regarima <- preds_regarima %>%
     add_row(Country=country,
             Date=date_to_pred,
             value=round(as.numeric(pred),1))

@@ -1,5 +1,5 @@
 ###############################################################################
-#                  Time series models : (S)ARIMA                              #  
+#                  Time series models : REGARIMA                              #  
 ###############################################################################
 
 #########################################
@@ -12,17 +12,15 @@ library(lubridate)
 library(RJDemetra)
 
 #########################################
-# Estimate a SARIMA
+# Estimate a REGARIMA
 #########################################
 
-preds_sarima <- tibble(Country=character(),
+preds_regarima <- tibble(Country=character(),
                        Date=as.POSIXct(NA),
                        value=numeric()
                        )
 
 for (country in countries_PPI){
-  
-  # n_forward <- interval(current_date, date_to_pred) %/% months(1)
   
   #série cible + vérif date de début et de fin
   debut <- data$PPI%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
@@ -57,22 +55,22 @@ for (country in countries_PPI){
   dispo <- length(data$IPI %>% filter(geo %in% country & nace_r2 == "B-D") %>% 
                     pull(values))>0
   if (dispo) {
-  ipi <-ts(data$IPI %>% filter(geo %in% country & nace_r2 == "B-D") %>% 
-             pull(values),start=debut,frequency=12)
-  dlipi=log(ipi)-stats::lag(log(ipi),-1)
-  dlipi_1=stats::lag(dlipi,-1)
-  dlipi_2=stats::lag(dlipi,-2)
-  dlipi_3=stats::lag(dlipi,-3)
-  dlipi_4=stats::lag(dlipi,-4)
-  #différence éventuelle entre dernière date ppi et dernière date prix d'imports
-  ecart_dernier_mois <- interval(fin, data$IPI%>%filter(geo %in% country)%>%last%>%pull(time)) %/% months(1)
-  
-  if (ecart_dernier_mois==0 & dispo) {
-    var=ts.union(dlbrent,dlipi_1,dlipi_2,dlipi_3,dlipi_4)
-  }
-  if (ecart_dernier_mois>0 & dispo) {
-    var=ts.union(dlbrent,dlbrent_1,dlipi_2,dlipi_3,dlipi_4)
-  }
+    ipi <-ts(data$IPI %>% filter(geo %in% country & nace_r2 == "B-D") %>% 
+               pull(values),start=debut,frequency=12)
+    dlipi=log(ipi)-stats::lag(log(ipi),-1)
+    dlipi_1=stats::lag(dlipi,-1)
+    dlipi_2=stats::lag(dlipi,-2)
+    dlipi_3=stats::lag(dlipi,-3)
+    dlipi_4=stats::lag(dlipi,-4)
+    #différence éventuelle entre dernière date ppi et dernière date prix d'imports
+    ecart_dernier_mois <- interval(fin, data$IPI%>%filter(geo %in% country)%>%last%>%pull(time)) %/% months(1)
+    
+    if (ecart_dernier_mois==0) {
+      var=ts.union(dlbrent,dlipi_1,dlipi_2,dlipi_3,dlipi_4)
+    }
+    if (ecart_dernier_mois>0) {
+      var=ts.union(dlbrent,dlbrent_1,dlipi_2,dlipi_3,dlipi_4)
+    }
   }
   
   if (!dispo) {
@@ -98,7 +96,7 @@ for (country in countries_PPI){
   if (n_forward==2) {pred <- ppi %>% tail(1) * exp(ppi_regarima$forecast[1]) * exp(ppi_regarima$forecast[2])}
   if (n_forward==3) {pred <- ppi %>% tail(1) * exp(ppi_regarima$forecast[1]) * exp(ppi_regarima$forecast[2]) * exp(ppi_regarima$forecast[3])}
   
-  preds_sarima <- preds_sarima %>%
+  preds_regarima <- preds_regarima %>%
     add_row(Country=country,
             Date=date_to_pred,
             value=round(as.numeric(pred),1))

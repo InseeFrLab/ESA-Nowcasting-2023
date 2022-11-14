@@ -23,7 +23,7 @@ source("R/PVI/DFM.R") # to be converted to functions
 #### Plotting the results #### 
 predictions <- bind_rows(list(
   "entry_1"= preds_naive_1m%>%mutate(Entries = "Naive"), 
-  "entry_2"= preds_sarima%>%mutate(Entries = "Regarima"),
+  "entry_2"= preds_regarima%>%mutate(Entries = "Regarima"),
   "entry_3"= preds_xgboost%>%mutate(Entries = "XGBoost"),
   "entry_4"= preds_dfm%>%mutate(Entries = "DFM")
 )

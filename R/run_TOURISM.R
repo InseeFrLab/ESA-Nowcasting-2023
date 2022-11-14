@@ -16,7 +16,7 @@ date_to_pred <- ymd("2022-11-01")
 
 source("R/TOURISM/LastPeriod_model.R") # to be converted to functions
 source("R/TOURISM/S-ARIMA.R") # to be converted to functions
-# Add Regarima at some point?
+# source("R/TOURISM/Regarima.R") # to be converted to functions
 source("R/TOURISM/XGBoost.R") # to be converted to functions
 source("R/TOURISM/DFM.R") # to be converted to functions
 
