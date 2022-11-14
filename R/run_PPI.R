@@ -12,10 +12,11 @@ source("R/utils/plot_routines.R")
 data <- getData("PPI")
 
 #### Run the different models ####
-date_to_pred <- ymd("2022-10-01")
+date_to_pred <- ymd("2022-11-01")
 
 source("R/PPI/LastPeriod_model.R") # to be converted to functions
-source("R/PPI/S-ARIMA.R") # to be converted to functions
+# source("R/PPI/S-ARIMA.R") # to be converted to functions
+source("R/PPI/Regarima_ppi.R") # to be converted to functions
 source("R/PPI/XGBoost.R") # to be converted to functions
 source("R/PPI/DFM.R") # to be converted to functions
 
@@ -40,4 +41,4 @@ entries <- list(
   "entry_3"= preds_xgboost%>%pull(value, Country),
   "entry_4"= preds_dfm%>%pull(value, Country)
 )
-save_entries(entries, "Submissions/PPI/results_october.json")
+save_entries(entries, "Submissions/PPI/results_november.json")

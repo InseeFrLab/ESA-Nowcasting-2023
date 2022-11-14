@@ -21,7 +21,7 @@ preds_sarima <- tibble(Country=character(),
 
 for (country in countries_PPI){
   
-  n_forward <- interval(current_date, date_to_pred) %/% months(1)
+  # n_forward <- interval(current_date, date_to_pred) %/% months(1)
   
   #série cible + vérif date de début et de fin
   debut <- data$PPI%>%filter(geo %in% country)%>%slice(1:1)%>%pull(time)
@@ -89,12 +89,13 @@ for (country in countries_PPI){
                                        outlier.cv=3.5,
                                        usrdef.varEnabled = TRUE,
                                        usrdef.var = var,
-                                       fcst.horizon=2)
+                                       fcst.horizon=3)
   ppi_regarima <- regarima(dlppi,ppi_spec)
   
   #Deux cas : pred à 1 ou 2 horizons
   if (n_forward==1) {pred <- ppi %>% tail(1) * exp(ppi_regarima$forecast[1])}
   if (n_forward==2) {pred <- ppi %>% tail(1) * exp(ppi_regarima$forecast[1]) * exp(ppi_regarima$forecast[2])}
+  if (n_forward==3) {pred <- ppi %>% tail(1) * exp(ppi_regarima$forecast[1]) * exp(ppi_regarima$forecast[2]) * exp(ppi_regarima$forecast[3])}
   
   preds_sarima <- preds_sarima %>%
     add_row(Country=country,
