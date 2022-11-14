@@ -1,5 +1,5 @@
 ###############################################################################
-#                             Main file for PVI                               #  
+#                             Main file for PVI                               #
 ###############################################################################
 rm(list = ls())
 #### Import global variables ####
@@ -19,25 +19,24 @@ source("R/PVI/S-ARIMA.R") # to be converted to functions
 source("R/PVI/XGBoost.R") # to be converted to functions
 source("R/PVI/DFM.R") # to be converted to functions
 
-#### Plotting the results #### 
+#### Plotting the results ####
 predictions <- bind_rows(list(
-  "entry_1"= preds_naive_1m%>%mutate(Entries = "Naive"), 
-  "entry_2"= preds_sarima%>%mutate(Entries = "S-ARIMA"),
-  "entry_3"= preds_xgboost%>%mutate(Entries = "XGBoost"),
-  "entry_4"= preds_dfm%>%mutate(Entries = "DFM")
-)
-)
+  "entry_1" = preds_naive_1m %>% mutate(Entries = "Naive"),
+  "entry_2" = preds_sarima %>% mutate(Entries = "S-ARIMA"),
+  "entry_3" = preds_xgboost %>% mutate(Entries = "XGBoost"),
+  "entry_4" = preds_dfm %>% mutate(Entries = "DFM")
+))
 
 plot_preds(data$PVI, predictions, countries_PVI[1:9], ncol = 3)
 plot_preds(data$PVI, predictions, countries_PVI[10:18], ncol = 3)
 plot_preds(data$PVI, predictions, countries_PVI[-1:-18], ncol = 3)
 
 
-#### Save the results #### 
+#### Save the results ####
 entries <- list(
-  "entry_1"= preds_naive_1m%>%pull(value, Country), 
-  "entry_2"= preds_sarima%>%pull(value, Country),
-  "entry_3"= preds_xgboost%>%pull(value, Country),
-  "entry_4"= preds_dfm%>%pull(value, Country)
+  "entry_1" = preds_naive_1m %>% pull(value, Country),
+  "entry_2" = preds_sarima %>% pull(value, Country),
+  "entry_3" = preds_xgboost %>% pull(value, Country),
+  "entry_4" = preds_dfm %>% pull(value, Country)
 )
 save_entries(entries, "Submissions/PVI/results_october.json")
