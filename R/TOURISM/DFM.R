@@ -101,8 +101,15 @@ for (country in countries_tourism) {
       }
   }
   
-
-
+  #########################################
+  # Seasonality removal (TO BE ADD HERE)
+  #########################################
+  sa <- RJDemetra::x13(ts_ts(DB[,var_to_predict]), spec = c("RSA2"))
+  sa_xts <- tsbox::ts_xts(sa$final$series[,"sa"])
+  names(sa_xts) <- paste0(var_to_predict, "_SA")
+  DB <-merge(DB, sa_xts)
+  DB <- DB[, !(names(DB) %in% var_to_predict)]
+  
   #########################################
   # Differenciate the series
   #########################################
@@ -159,11 +166,7 @@ for (country in countries_tourism) {
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
   lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
 
-  #########################################
-  # Seasonality removal (TO BE ADD HERE)
-  #########################################
-
-  #########################################
+    #########################################
   # Simulation of DFM
   #########################################
 
