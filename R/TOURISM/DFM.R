@@ -29,7 +29,7 @@ pb <- progress_bar$new(
 for (country in countries_tourism) {
   cat(paste0("Running estimation for ", country, "\n"))
   pb$tick()
-
+  var_to_predict <- paste0(country, "_TOURISM")
   #########################################
   # Reshaping the data
   #########################################
@@ -82,11 +82,34 @@ for (country in countries_tourism) {
     }
   }
 
+  #########################################
+  # Lagging the most recent variables
+  #########################################
   DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
+  
+  latest_dates <- sapply(names(DB), get_latest_dates, data = DB) 
+  
+  for (variable in setdiff(names(DB), var_to_predict)) {
+    # Check gap in months between Y and Xs 
+    gap <- as.Date(latest_dates[[var_to_predict]]) %--%  as.Date(latest_dates[[variable]]) %/% months(1)
+    
+    # We lag the variable with a window equal to the gap
+    if (gap > 0) {
+      lagged_var <- stats::lag(DB[,variable],-gap)
+      names(lagged_var) <- paste(variable, "LAG", gap, sep = "_")
+      DB <-merge(DB, lagged_var)
+      }
+  }
+  
 
-  # We differenciate the series
+
+  #########################################
+  # Differenciate the series
+  #########################################
   DB_diff <- diff(DB)
-
+  # restrict the dataset to the last available value of Y
+  DB_diff <- DB_diff[paste0("/",latest_dates[[var_to_predict]])]
+  
   #########################################
   # Dealing with multiple NaNs columns
   #########################################
