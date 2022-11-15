@@ -75,15 +75,6 @@ for (country in countries_tourism) {
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
 
-  if (last(DB$time) %--% date_to_pred %/% months(1) > 1) {
-    line_to_add <- last(DB$time) %--% date_to_pred %/% months(1) - 1
-    for (i in 1:line_to_add) {
-      cat("No data in", as.character(last(DB$time) %m+% months(1)), "for country", country, "\n")
-      DB <- DB %>%
-        add_row(time = last(DB$time) %m+% months(1))
-    }
-  }
-
   #########################################
   # Lagging the most recent variables
   #########################################
