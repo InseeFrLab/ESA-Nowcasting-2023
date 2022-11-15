@@ -117,7 +117,8 @@ for (country in countries_tourism) {
   #########################################
   DB_diff <- diff(DB)
   # restrict the dataset to the last available value of Y
-  DB_diff <- DB_diff[paste0("/",latest_dates[[var_to_predict]])]
+  # We might want to extent the starting value depending on the data that we will use
+  DB_diff <- DB_diff[paste0("2007-05-01/",latest_dates[[var_to_predict]])]
   
   #########################################
   # Dealing with multiple NaNs columns
@@ -167,6 +168,7 @@ for (country in countries_tourism) {
   if (inherits(ic, "error")) next
 
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
+  r <- ifelse(r>2, 2, r)
   lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
 
     #########################################
