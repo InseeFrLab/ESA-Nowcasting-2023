@@ -97,7 +97,7 @@ for (country in countries_tourism) {
   #########################################
   # Seasonality removal (TO BE ADD HERE)
   #########################################
-  sa <- RJDemetra::x13(ts_ts(DB[,var_to_predict]), spec = c("RSA2"))
+  sa <- RJDemetra::x13(tsbox::ts_ts(DB[,var_to_predict]), spec = c("RSA2"))
   sa_xts <- tsbox::ts_xts(sa$final$series[,"sa"])
   names(sa_xts) <- paste0(var_to_predict, "_SA")
   DB <-merge(DB, sa_xts)
@@ -158,11 +158,25 @@ for (country in countries_tourism) {
 
   if (inherits(ic, "error")) next
 
+  #########################################
+  # Deducing parameters
+  #########################################
+  # Define a threshold for the number of factor and lags
+  max_lags <- 4
+  max_factor <- 3
+  # Take the most optimal number of factor following Bain and NG (2002)
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
-  r <- ifelse(r>2, 2, r)
+  if (r > max_factor) r <- max_factor
+  
+  # We loop until we get a number of factor that allows convergence
+  while (any(is.na((vars::VARselect(ic$F_pca[, 1:r])$criteria)))  & r != 1) {
+    r <- r-1
+  }
+  
   lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
-
-    #########################################
+  if (lag > max_lags) lag <- max_lags
+  
+  #########################################
   # Simulation of DFM
   #########################################
 
