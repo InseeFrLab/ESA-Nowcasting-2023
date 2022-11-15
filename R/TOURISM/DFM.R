@@ -185,25 +185,17 @@ for (country in countries_tourism) {
   #########################################
   # Forecasting
   #########################################
-  current_month <- date_to_pred %m-% months(1)
-
-  if (!is.na(DB[current_month][, paste0(country, "_TOURISM")])) {
-    h <- 1
-  } else if ((!is.na(DB[current_month %m-% months(1)][, paste0(country, "_TOURISM")]))) {
-    h <- 2
-  } else {
-    h <- 3
-  }
-
-  fc <- predict(model, h = h)
+  # Define the appropriate forecast horizon
+  h <- as.Date(latest_dates[[var_to_predict]]) %--%  date_to_pred %/% months(1)
+  # Forecast the model, pay attention to the standardized option
+  fc <- predict(model, h = h, standardized = F)
 
   #########################################
   # Storing the predictions
   #########################################
-
   last_available_date <- date_to_pred %m-% months(h)
-  pred <- as.double(DB[, paste0(country, "_TOURISM")][last_available_date] +
-    sum(fc$X_fcst[, paste0(country, "_TOURISM")]))
+  pred <- as.double(DB[, paste0(var_to_predict, "_SA")][last_available_date] +
+    sum(fc$X_fcst[, paste0(var_to_predict, "_SA")]))
 
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
