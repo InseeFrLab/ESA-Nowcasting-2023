@@ -193,10 +193,12 @@ for (country in countries_tourism) {
   #########################################
   # Storing the predictions
   #########################################
-  last_available_date <- date_to_pred %m-% months(h)
-  pred <- as.double(DB[, paste0(var_to_predict, "_SA")][last_available_date] +
-    sum(fc$X_fcst[, paste0(var_to_predict, "_SA")]))
+  pred_sa <- as.double(DB[, paste0(var_to_predict, "_SA")][latest_dates[[var_to_predict]]] +
+    sum(fc$X_fcst[, paste0(var_to_predict, "_SA")])) 
 
+  # we add the seasonal component so that we obtain the initial variable
+  pred <- pred_sa +  sa$final$forecasts[h, "s_f"] 
+  
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
 }
