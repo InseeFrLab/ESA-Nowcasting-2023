@@ -6,11 +6,13 @@
 # Required packages
 #########################################
 library(dplyr)
-library(tidyverse)
+library(purrr)
+library(RJDemetra)
 library(dfms)
 library(xts)
 library(lubridate)
 library(progress)
+library(tsbox)
 
 #########################################
 # Loop
@@ -69,7 +71,7 @@ for (country in countries_tourism) {
     select(time, eur_usd_adjusted)
 
   DB <- list(tourism, brent, eur_usd) %>%
-    reduce(full_join, by = "time") %>%
+    purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
 
@@ -133,6 +135,7 @@ for (country in countries_tourism) {
   #########################################
 
   # Creating a squared matrix to check collinearity
+  # Now we could use last() for the interval
   range_square_mat <- paste(date_to_pred %m-% months(dim(DB_diff)[2] + 1), date_to_pred %m-% months(2), sep = "/")
   # diff(dim(DB_diff[range_square_mat]))
 
