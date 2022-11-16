@@ -11,7 +11,7 @@ library(dfms)
 library(xts)
 library(lubridate)
 library(progress)
-
+options(dplyr.summarise.inform = FALSE)
 #########################################
 # Loop
 #########################################

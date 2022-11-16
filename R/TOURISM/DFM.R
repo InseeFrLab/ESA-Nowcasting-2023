@@ -13,7 +13,7 @@ library(xts)
 library(lubridate)
 library(progress)
 library(tsbox)
-
+options(dplyr.summarise.inform = FALSE)
 #########################################
 # Loop
 #########################################
