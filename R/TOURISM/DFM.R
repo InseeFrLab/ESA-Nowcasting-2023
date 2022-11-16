@@ -151,7 +151,7 @@ for (country in countries_tourism) {
       ICr(DB_diff)
     },
     error = function(e) {
-      cat(paste0("Failed for country ", country, ", too little variables available \n"))
+      cat(paste0("Failed for country ", country, ", not enough variables available \n"))
       e
     }
   )
@@ -163,7 +163,7 @@ for (country in countries_tourism) {
   #########################################
   # Define a threshold for the number of factor and lags
   max_lags <- 4
-  max_factor <- 3
+  max_factor <- 2
   # Take the most optimal number of factor following Bain and NG (2002)
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
   if (r > max_factor) r <- max_factor

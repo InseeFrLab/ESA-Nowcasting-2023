@@ -191,7 +191,7 @@ for (country in setdiff(countries_PPI, "IE")) {
       ICr(DB_diff)
     },
     error = function(e) {
-      cat(paste0("Failed for country ", country, ", too little variables available \n"))
+      cat(paste0("Failed for country ", country, ", not enough variables available \n"))
       e
     }
   )
