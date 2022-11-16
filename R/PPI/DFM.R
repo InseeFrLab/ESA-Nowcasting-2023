@@ -23,10 +23,10 @@ preds_dfm <- tibble(
 
 pb <- progress_bar$new(
   format = " [:bar] :percent eta: :eta \n",
-  total = length(setdiff(countries_PPI, "IE")), clear = FALSE
+  total = length(countries_PPI), clear = FALSE
 )
 
-for (country in setdiff(countries_PPI, "IE")) {
+for (country in countries_PPI) {
   cat(paste0("Running estimation for ", country, "\n"))
   pb$tick()
   var_to_predict <- paste0(country, "_PPI_B.E36")
