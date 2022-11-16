@@ -216,7 +216,7 @@ for (country in setdiff(countries_PPI, "IE")) {
 
   if (inherits(ic, "error")) next
 
-  # Define a threshold for the number of factor and lags
+  # Define a threshold for the number of factors and lags
   max_lags <- 4
   max_factor <- 2
   # Take the most optimal number of factor following Bain and NG (2002)
@@ -239,19 +239,26 @@ for (country in setdiff(countries_PPI, "IE")) {
   converged = F
   while (!converged & r != 0){
     model <- tryCatch(
-      {
+      {# We try to simulate the model
         DFM(DB_diff, r = r, p = lag)
       },
       error = function(e) {
+        # If it fails we print a message
         cat(paste0("Failed for country ", country, "\n"))
         e
       }
     )
+    if (inherits(model, "error")){
+      # If it fails due to a singular or not positive definite matrix
+      # we set convergence to FALSE
+      converged <- FALSE
+    }else{
+      # Otherwise we use the output from the model to know
+      converged <- model$converged
+    }
+    # We reduce the number of factor, so that we can resimulate when it failed
     r <- r-1
-    converged <- model$converged
   }
-  
-  if (inherits(model, "error")) next
 
   #########################################
   # Forecasting

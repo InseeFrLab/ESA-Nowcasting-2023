@@ -95,7 +95,7 @@ for (country in countries_tourism) {
   }
   
   #########################################
-  # Seasonality removal (TO BE ADD HERE)
+  # Seasonality removal
   #########################################
   sa <- RJDemetra::x13(tsbox::ts_ts(DB[,var_to_predict]), spec = c("RSA2"))
   sa_xts <- tsbox::ts_xts(sa$final$series[,"sa"])
@@ -125,7 +125,6 @@ for (country in countries_tourism) {
   #########################################
   # Dealing with collinearity
   #########################################
-
   # Creating a squared matrix to check collinearity
   # Now we could use last() for the interval
   range_square_mat <- paste(date_to_pred %m-% months(dim(DB_diff)[2] + 1), date_to_pred %m-% months(2), sep = "/")
@@ -144,8 +143,7 @@ for (country in countries_tourism) {
   #########################################
   # Determination of parameters
   #########################################
-
-  # We determine the optimal number of factor and lags
+  # We determine the optimal number of factors and lags based on IC
   ic <- tryCatch(
     {
       ICr(DB_diff)
@@ -158,9 +156,6 @@ for (country in countries_tourism) {
 
   if (inherits(ic, "error")) next
 
-  #########################################
-  # Deducing parameters
-  #########################################
   # Define a threshold for the number of factor and lags
   max_lags <- 4
   max_factor <- 2
@@ -180,17 +175,29 @@ for (country in countries_tourism) {
   # Simulation of DFM
   #########################################
 
-  model <- tryCatch(
-    {
-      DFM(DB_diff, r = r, p = lag)
-    },
-    error = function(e) {
-      cat(paste0("Failed for country ", country, "\n"))
-      e
+  converged = F
+  while (!converged & r != 0){
+    model <- tryCatch(
+      {# We try to simulate the model
+        DFM(DB_diff, r = r, p = lag)
+      },
+      error = function(e) {
+        # If it fails we print a message
+        cat(paste0("Failed for country ", country, "\n"))
+        e
+      }
+    )
+    if (inherits(model, "error")){
+      # If it fails due to a singular or not positive definite matrix
+      # we set convergence to FALSE
+      converged <- FALSE
+    }else{
+      # Otherwise we use the output from the model to know
+      converged <- model$converged
     }
-  )
-
-  if (inherits(model, "error")) next
+    # We reduce the number of factor, so that we can resimulate when it failed
+    r <- r-1
+  }
 
   #########################################
   # Forecasting
