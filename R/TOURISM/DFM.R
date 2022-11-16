@@ -11,7 +11,6 @@ library(RJDemetra)
 library(dfms)
 library(xts)
 library(lubridate)
-library(progress)
 library(tsbox)
 options(dplyr.summarise.inform = FALSE)
 #########################################
@@ -23,14 +22,8 @@ preds_dfm <- tibble(
   value = numeric()
 )
 
-pb <- progress_bar$new(
-  format = " [:bar] :percent eta: :eta \n",
-  total = length(countries_tourism), clear = FALSE
-)
-
 for (country in countries_tourism) {
   cat(paste0("Running estimation for ", country, "\n"))
-  pb$tick()
   var_to_predict <- paste0(country, "_TOURISM")
   #########################################
   # Reshaping the data

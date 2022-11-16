@@ -10,7 +10,6 @@ library(purrr)
 library(dfms)
 library(xts)
 library(lubridate)
-library(progress)
 options(dplyr.summarise.inform = FALSE)
 #########################################
 # Loop
@@ -21,14 +20,8 @@ preds_dfm <- tibble(
   value = numeric()
 )
 
-pb <- progress_bar$new(
-  format = " [:bar] :percent eta: :eta \n",
-  total = length(countries_PPI), clear = FALSE
-)
-
 for (country in countries_PPI) {
   cat(paste0("Running estimation for ", country, "\n"))
-  pb$tick()
   var_to_predict <- paste0(country, "_PPI_B.E36")
   #########################################
   # Reshaping the data
