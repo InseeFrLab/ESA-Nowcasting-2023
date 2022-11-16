@@ -116,23 +116,23 @@ for (country in countries_PVI) {
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
 
-  
+
   #########################################
   # Lagging the most recent variables
   #########################################
   DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
   # replacing - by . in column names to avoid conflicts
   colnames(DB) <- gsub("-", ".", colnames(DB))
-  
-  latest_dates <- sapply(names(DB), get_latest_dates, data = DB) 
-  
+
+  latest_dates <- sapply(names(DB), get_latest_dates, data = DB)
+
   for (variable in setdiff(names(DB), var_to_predict)) {
-    # Check gap in months between Y and Xs 
-    gap <- as.Date(latest_dates[[var_to_predict]]) %--%  as.Date(latest_dates[[variable]]) %/% months(1)
-    
+    # Check gap in months between Y and Xs
+    gap <- as.Date(latest_dates[[var_to_predict]]) %--% as.Date(latest_dates[[variable]]) %/% months(1)
+
     # We lag the variable with a window equal to the gap
     if (gap > 0) {
-      lagged_var <- stats::lag(DB[,variable],-gap)
+      lagged_var <- stats::lag(DB[, variable], -gap)
       names(lagged_var) <- paste(variable, "LAG", gap, sep = "_")
       DB <- merge(DB, lagged_var)
     }
@@ -141,15 +141,15 @@ for (country in countries_PVI) {
   #########################################
   # Seasonality removal
   #########################################
-  
+
   #########################################
   # Differenciate the series
   #########################################
   DB_diff <- diff(DB)
   # restrict the dataset to the last available value of Y
   # We might want to extent the starting value depending on the data that we will use
-  DB_diff <- DB_diff[paste0("2005-02-01/",latest_dates[[var_to_predict]])]
-  
+  DB_diff <- DB_diff[paste0("2005-02-01/", latest_dates[[var_to_predict]])]
+
   #########################################
   # Dealing with multiple NaNs columns
   #########################################
@@ -201,24 +201,24 @@ for (country in countries_PVI) {
   # Take the most optimal number of factor following Bain and NG (2002)
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
   if (r > max_factor) r <- max_factor
-  
+
   # We loop until we get a number of factor that allows convergence
-  while (any(is.na((vars::VARselect(ic$F_pca[, 1:r])$criteria)))  & r != 1) {
-    r <- r-1
+  while (any(is.na((vars::VARselect(ic$F_pca[, 1:r])$criteria))) & r != 1) {
+    r <- r - 1
   }
-  
+
   lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
   if (lag > max_lags) lag <- max_lags
-  
+
   #########################################
   # Simulation of DFM
   #########################################
   # Sometimes when the number of factors is too high the model doesnt converge
   # Until we do not converge we re-simulate with less factors
-  converged = F
-  while (!converged & r != 0){
+  converged <- F
+  while (!converged & r != 0) {
     model <- tryCatch(
-      {# We try to simulate the model
+      { # We try to simulate the model
         DFM(DB_diff, r = r, p = lag)
       },
       error = function(e) {
@@ -227,32 +227,32 @@ for (country in countries_PVI) {
         e
       }
     )
-    if (inherits(model, "error")){
+    if (inherits(model, "error")) {
       # If it fails due to a singular or not positive definite matrix
       # we set convergence to FALSE
       converged <- FALSE
-    }else{
+    } else {
       # Otherwise we use the output from the model to know
       converged <- model$converged
     }
     # We reduce the number of factor, so that we can resimulate when it failed
-    r <- r-1
+    r <- r - 1
   }
 
   #########################################
   # Forecasting
   #########################################
   # Define the appropriate forecast horizon
-  h <- as.Date(latest_dates[[var_to_predict]]) %--%  date_to_pred %/% months(1)
+  h <- as.Date(latest_dates[[var_to_predict]]) %--% date_to_pred %/% months(1)
   # Forecast the model, pay attention to the standardized option
   fc <- predict(model, h = h, standardized = F)
-  
+
   #########################################
   # Storing the predictions
   #########################################
-  pred <- as.double(DB[, var_to_predict][latest_dates[[var_to_predict]]] + 
-                      sum(fc$X_fcst[, var_to_predict]))
-  
+  pred <- as.double(DB[, var_to_predict][latest_dates[[var_to_predict]]] +
+    sum(fc$X_fcst[, var_to_predict]))
+
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
 }
