@@ -1,5 +1,12 @@
 FROM inseefrlab/onyxia-rstudio:latest
 
+# Install packages specified in the renv.lock file
+RUN git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
+    cd ESA-Nowcasting-2023 && \
+    install2.r renv && \
+    #Rscript -e "renv::restore()" && \
+    chown -R ${USERNAME}:${GROUPNAME} ${HOME}
+    
 SHELL ["/bin/bash", "-c"]
 
 ARG PYTHON_VERSION="3.10.4"
@@ -30,10 +37,3 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Ma
 USER ${USERNAME}
 
 CMD ["python3"]
-
-# Install packages specified in the renv.lock file
-RUN git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
-    cd ESA-Nowcasting-2023 && \
-    install2.r renv && \
-    #Rscript -e "renv::restore()" && \
-    chown -R ${USERNAME}:${GROUPNAME} ${HOME}
