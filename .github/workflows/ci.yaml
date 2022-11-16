@@ -23,7 +23,7 @@ jobs:
           images: thomasfaria/esa-nowcasting-2023
           tags: |
             # set latest tag for main branch
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=ref,event=branch
             # propagate valid semver tags
             type=semver,pattern={{raw}}
       -
