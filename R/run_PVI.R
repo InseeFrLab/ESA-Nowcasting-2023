@@ -1,18 +1,17 @@
 ###############################################################################
 #                             Main file for PVI                               #
 ###############################################################################
-rm(list = ls())
+library(lubridate)
 #### Import global variables ####
 source("R/utils/globalVariables.R")
 source("R/utils/getData.R")
-source("R/utils/save_entries.R")
-source("R/utils/plot_routines.R")
+source("R/utils/functions.R")
 
 #### Import the data ####
 data <- getData("PVI")
 
 #### Run the different models ####
-date_to_pred <- ymd("2022-10-01")
+date_to_pred <- ymd("2022-11-01")
 
 source("R/PVI/LastPeriod_model.R") # to be converted to functions
 source("R/PVI/S-ARIMA.R") # to be converted to functions
@@ -39,4 +38,4 @@ entries <- list(
   "entry_3" = preds_xgboost %>% pull(value, Country),
   "entry_4" = preds_dfm %>% pull(value, Country)
 )
-save_entries(entries, "Submissions/PVI/results_october.json")
+save_entries(entries, "Submissions/PVI/results_november.json")
