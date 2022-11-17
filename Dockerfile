@@ -1,4 +1,4 @@
-FROM inseefrlab/onyxia-rstudio:latest
+FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 
 # Install packages specified in the renv.lock file
 RUN git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
@@ -14,7 +14,8 @@ ARG PYTHON_VERSION="3.10.4"
 ENV MAMBA_DIR="/opt/mamba"
 ENV PATH="${MAMBA_DIR}/bin:${PATH}"
 
-USER root
+# Rstudio doit se lancer en root donc garder 
+#USER root
 
 COPY conda-env.yml .
 
@@ -33,7 +34,5 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Ma
     # Clean
     rm mambaforge.sh conda-env.yml && \ 
     mamba clean --all -f -y
-
-USER ${USERNAME}
 
 CMD ["python3"]
