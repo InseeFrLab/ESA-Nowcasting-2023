@@ -3,7 +3,6 @@ channels:
 
 dependencies:
   - boto3
-  - flake8
   - hvac
   - ipykernel
   - ipywidgets
@@ -12,8 +11,9 @@ dependencies:
   - numpy
   - pandas
   - pip
-  - pyarrow
-  - pylint
-  - requests
-  - s3fs
-  - wheel
+  - dill
+  - pmdarima
+  - torch==1.13.0
+  - torchvision==0.14.0
+  - torchaudio==0.13.0
+  - nowcast-lstm
