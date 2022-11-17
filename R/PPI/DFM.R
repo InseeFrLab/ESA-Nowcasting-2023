@@ -6,12 +6,11 @@
 # Required packages
 #########################################
 library(dplyr)
-library(tidyverse)
+library(purrr)
 library(dfms)
 library(xts)
 library(lubridate)
-library(progress)
-
+options(dplyr.summarise.inform = FALSE)
 #########################################
 # Loop
 #########################################
@@ -21,15 +20,9 @@ preds_dfm <- tibble(
   value = numeric()
 )
 
-pb <- progress_bar$new(
-  format = " [:bar] :percent eta: :eta \n",
-  total = length(setdiff(countries_PPI, "IE")), clear = FALSE
-)
-
-for (country in setdiff(countries_PPI, "IE")) {
+for (country in countries_PPI) {
   cat(paste0("Running estimation for ", country, "\n"))
-  pb$tick()
-
+  var_to_predict <- paste0(country, "_PPI_B.E36")
   #########################################
   # Reshaping the data
   #########################################
@@ -134,23 +127,42 @@ for (country in setdiff(countries_PPI, "IE")) {
     select(time, cac40_adjusted, cac40_volume)
 
   DB <- list(ppi, ppi_nace2, ipi, psurvey, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
-    reduce(full_join, by = "time") %>%
+    purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
 
-  if (last(DB$time) %--% date_to_pred %/% months(1) > 1) {
-    line_to_add <- last(DB$time) %--% date_to_pred %/% months(1) - 1
-    for (i in 1:line_to_add) {
-      cat("No data in", as.character(last(DB$time) %m+% months(1)), "for country", country, "\n")
-      DB <- DB %>%
-        add_row(time = last(DB$time) %m+% months(1))
+  #########################################
+  # Lagging the most recent variables
+  #########################################
+  DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
+  # replacing - by . in column names to avoid conflicts
+  colnames(DB) <- gsub("-", ".", colnames(DB))
+
+  latest_dates <- sapply(names(DB), get_latest_dates, data = DB)
+
+  for (variable in setdiff(names(DB), var_to_predict)) {
+    # Check gap in months between Y and Xs
+    gap <- as.Date(latest_dates[[var_to_predict]]) %--% as.Date(latest_dates[[variable]]) %/% months(1)
+
+    # We lag the variable with a window equal to the gap
+    if (gap > 0) {
+      lagged_var <- stats::lag(DB[, variable], -gap)
+      names(lagged_var) <- paste(variable, "LAG", gap, sep = "_")
+      DB <- merge(DB, lagged_var)
     }
   }
 
-  DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
+  #########################################
+  # Seasonality removal
+  #########################################
 
-  # We differenciate the series
+  #########################################
+  # Differenciate the series
+  #########################################
   DB_diff <- diff(DB)
+  # restrict the dataset to the last available value of Y
+  # We might want to extent the starting value depending on the data that we will use
+  DB_diff <- DB_diff[paste0("2005-02-01/", latest_dates[[var_to_predict]])]
 
   #########################################
   # Dealing with multiple NaNs columns
@@ -166,8 +178,8 @@ for (country in setdiff(countries_PPI, "IE")) {
   #########################################
   # Dealing with collinearity
   #########################################
-
   # Creating a squared matrix to check collinearity
+  # Now we could use last() for the interval
   range_square_mat <- paste(date_to_pred %m-% months(dim(DB_diff)[2] + 1), date_to_pred %m-% months(2), sep = "/")
   # diff(dim(DB_diff[range_square_mat]))
 
@@ -184,62 +196,76 @@ for (country in setdiff(countries_PPI, "IE")) {
   #########################################
   # Determination of parameters
   #########################################
-
-  # We determine the optimal number of factor and lags
+  # We determine the optimal number of factor and lags based on IC
   ic <- tryCatch(
     {
       ICr(DB_diff)
     },
     error = function(e) {
-      cat(paste0("Failed for country ", country, ", too little variables available \n"))
+      cat(paste0("Failed for country ", country, ", not enough variables available \n"))
       e
     }
   )
 
   if (inherits(ic, "error")) next
 
+  # Define a threshold for the number of factors and lags
+  max_lags <- 4
+  max_factor <- 2
+  # Take the most optimal number of factor following Bain and NG (2002)
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
-  lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
+  if (r > max_factor) r <- max_factor
 
-  #########################################
-  # Seasonality removal (TO BE ADD HERE)
-  #########################################
+  # We loop until we get a number of factor that allows convergence
+  while (any(is.na((vars::VARselect(ic$F_pca[, 1:r])$criteria))) & r != 1) {
+    r <- r - 1
+  }
+
+  lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
+  if (lag > max_lags) lag <- max_lags
 
   #########################################
   # Simulation of DFM
   #########################################
-
-  model <- tryCatch(
-    {
-      DFM(DB_diff, r = r, p = lag)
-    },
-    error = function(e) {
-      cat(paste0("Failed for country ", country, "\n"))
-      e
+  # Sometimes when the number of factors is too high the model doesnt converge
+  # Until we do not converge we re-simulate with less factors
+  converged <- F
+  while (!converged & r != 0) {
+    model <- tryCatch(
+      { # We try to simulate the model
+        DFM(DB_diff, r = r, p = lag)
+      },
+      error = function(e) {
+        # If it fails we print a message
+        cat(paste0("Failed for country ", country, "\n"))
+        e
+      }
+    )
+    if (inherits(model, "error")) {
+      # If it fails due to a singular or not positive definite matrix
+      # we set convergence to FALSE
+      converged <- FALSE
+    } else {
+      # Otherwise we use the output from the model to know
+      converged <- model$converged
     }
-  )
-
-  if (inherits(model, "error")) next
+    # We reduce the number of factor, so that we can resimulate when it failed
+    r <- r - 1
+  }
 
   #########################################
   # Forecasting
   #########################################
-  current_month <- date_to_pred %m-% months(1)
-  if (is.na(DB[current_month][, paste0(country, "_PPI_B-E36")])) {
-    h <- 2
-  } else {
-    h <- 1
-  }
-
-  fc <- predict(model, h = h)
+  # Define the appropriate forecast horizon
+  h <- as.Date(latest_dates[[var_to_predict]]) %--% date_to_pred %/% months(1)
+  # Forecast the model, pay attention to the standardized option
+  fc <- predict(model, h = h, standardized = F)
 
   #########################################
   # Storing the predictions
   #########################################
-
-  last_available_date <- date_to_pred %m-% months(h)
-  pred <- as.double(DB[, paste0(country, "_PPI_B-E36")][last_available_date] +
-    sum(fc$X_fcst[, paste0(country, "_PPI_B-E36")]))
+  pred <- as.double(DB[, var_to_predict][latest_dates[[var_to_predict]]] +
+    sum(fc$X_fcst[, var_to_predict]))
 
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))

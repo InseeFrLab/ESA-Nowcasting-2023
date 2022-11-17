@@ -5,8 +5,7 @@ library(lubridate)
 #### Import global variables ####
 source("R/utils/globalVariables.R")
 source("R/utils/getData.R")
-source("R/utils/save_entries.R")
-source("R/utils/plot_routines.R")
+source("R/utils/functions.R")
 
 #### Import the data ####
 data <- getData("PPI")
