@@ -29,8 +29,8 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Ma
     # Activate custom Conda env by default in shell
     echo ". ${MAMBA_DIR}/etc/profile.d/conda.sh && conda activate" >> ${HOME}/.bashrc && \
     # fix for version GLIBCXX_3.4.30
-    sudo rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6
-    sudo ln -s /opt/mamba/lib/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+    sudo rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6 && \
+    sudo ln -s /opt/mamba/lib/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6 && \
     # Fix permissions
     chown -R ${USERNAME}:${GROUPNAME} ${HOME} ${MAMBA_DIR} && \
     # Clean
