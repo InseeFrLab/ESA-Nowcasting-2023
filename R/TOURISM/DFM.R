@@ -28,10 +28,8 @@ for (country in countries_tourism) {
   #########################################
   # Reshaping the data
   #########################################
-  tourism <- data$TOURISM %>%
-    mutate(var = "TOURISM") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var), values_from = values)
+  tourism <- reshape_eurostat_data(data$TOURISM, "TOURISM", country)
+  hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
 
   brent <- data$brent %>%
     as_tibble() %>%
@@ -63,7 +61,7 @@ for (country in countries_tourism) {
     mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
     select(time, eur_usd_adjusted)
 
-  DB <- list(tourism, brent, eur_usd) %>%
+  DB <- list(tourism, hicp, brent, eur_usd) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)

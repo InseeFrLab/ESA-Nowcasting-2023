@@ -18,7 +18,5 @@ countries_tourism <- c(
 
 countries_to_exclude <- c("FR")
 
-current_date <- "2022-09-01"
-
 early_date_to_stop <- "2019-07-01"
 date_to_stop <- "2020-01-01"

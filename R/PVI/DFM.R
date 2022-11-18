@@ -26,15 +26,9 @@ for (country in countries_PVI) {
   #########################################
   # Reshaping the data
   #########################################
-  pvi <- data$PVI %>%
-    mutate(var = "PVI") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var), values_from = values)
-
-  psurvey <- data$PSURVEY %>%
-    mutate(var = "PSURVEY") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var, indic), values_from = values)
+  pvi <- reshape_eurostat_data(data$PVI, "PVI", country)
+  psurvey <- reshape_eurostat_data(data$PSURVEY, "PSURVEY", country, "indic")
+  hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
 
   brent <- data$brent %>%
     as_tibble() %>%
@@ -111,7 +105,7 @@ for (country in countries_PVI) {
     mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
     select(time, cac40_adjusted, cac40_volume)
 
-  DB <- list(pvi, psurvey, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
+  DB <- list(pvi, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
