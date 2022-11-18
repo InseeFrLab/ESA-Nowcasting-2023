@@ -17,4 +17,3 @@ dependencies:
   - pytorch::pytorch
   - pytorch::torchaudio
   - pytorch::torchvision
-  - nowcast-lstm
