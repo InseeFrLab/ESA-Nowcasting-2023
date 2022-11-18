@@ -13,4 +13,8 @@ dependencies:
   - pip
   - dill
   - pmdarima
+  - pytorch::cpuonly
+  - pytorch::pytorch
+  - pytorch::torchaudio
+  - pytorch::torchvision
   - nowcast-lstm
