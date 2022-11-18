@@ -3,7 +3,7 @@ FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 # Install packages specified in the renv.lock file
 RUN git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
     cd ESA-Nowcasting-2023 && \
-    install2.r renv && \
+    #install2.r renv && \
     Rscript -e "renv::restore()" && \
     chown -R ${USERNAME}:${GROUPNAME} ${HOME}
     
