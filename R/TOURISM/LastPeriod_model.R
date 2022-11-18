@@ -19,6 +19,12 @@ preds_naive_1y <- tibble(
   value = numeric()
 )
 
+resid_naive_1y <- tibble(
+  Country = character(),
+  Date = as.POSIXct(NA),
+  value = numeric()
+)
+
 for (country in countries_tourism) {
   pred <- data$TOURISM %>%
     filter(geo %in% country) %>%
@@ -34,4 +40,11 @@ for (country in countries_tourism) {
       Date = date_to_pred,
       value = as.numeric(pred)
     )
+  
+  resid_naive_1y <- rbind(resid_naive_1y, 
+                          ww<-data$TOURISM %>%
+                            filter(geo %in% country) %>%
+                            arrange(time) %>% mutate(value = c(rep(NA,12), diff(values,12)))%>%
+                            rename(Country = geo, Date = time)%>%
+                            select(Country, Date, value))
 }
