@@ -84,6 +84,20 @@ save_entries <- function(entries, filename) {
   write(jsonlite::prettify(file), filename)
 }
 
+reshape_eurostat_data <- function(data, variable, country, measure) {
+  if (missing(measure)) {
+    reshaped_data <- data %>%
+      mutate(var = variable) %>%
+      filter(geo %in% country) %>%
+      pivot_wider(names_from = c(geo, var), values_from = values)
+  } else {
+    reshaped_data <- data %>%
+      mutate(var = variable) %>%
+      filter(geo %in% country) %>%
+      pivot_wider(names_from = c(geo, var, measure), values_from = values)
+  }
+  return(reshaped_data)
+}
 
 ## Customize palette
 pal_col <- rbind(
