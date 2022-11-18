@@ -4,7 +4,7 @@ FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 RUN git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
     cd ESA-Nowcasting-2023 && \
     install2.r renv && \
-    Rscript -e "renv::restore()" && \
+    #Rscript -e "renv::restore()" && \
     chown -R ${USERNAME}:${GROUPNAME} ${HOME}
     
 SHELL ["/bin/bash", "-c"]
@@ -27,6 +27,7 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Ma
     mamba install python=="${PYTHON_VERSION}" && \
     # Install essential Python packages
     mamba env update -n base -f conda-env.yml && \
+    pip install torch==1.13.0+cpu torchvision==0.14.0+cpu torchaudio==0.13.0 -f https://download.pytorch.org/whl/torch_stable.html
     # Activate custom Conda env by default in shell
     echo ". ${MAMBA_DIR}/etc/profile.d/conda.sh && conda activate" >> ${HOME}/.bashrc && \
     # Fix permissions
