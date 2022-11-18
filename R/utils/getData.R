@@ -111,13 +111,16 @@ getData <- function(case) {
       db[["PVI"]] <- data
 
       data <- get_eurostat("prc_hicp_midx",
-                            select_time = "M") %>%
-         filter(geo %in% countries_PPI,
-                unit == "I15",
-                nchar(coicop) == 4) %>%
-         select(-unit)
+        select_time = "M"
+      ) %>%
+        filter(
+          geo %in% countries_PPI,
+          unit == "I15",
+          nchar(coicop) == 4
+        ) %>%
+        select(-unit)
 
-      db[["HICP"]] = data
+      db[["HICP"]] <- data
 
       # Retrieve daily BRENT index from Yahoo Finance
       brent_id <- "BZ=F"
@@ -244,13 +247,16 @@ getData <- function(case) {
       db[["PPI"]] <- data
 
       data <- get_eurostat("prc_hicp_midx",
-                          select_time = "M") %>%
-       filter(geo %in% countries_PPI,
-              unit == "I15",
-              nchar(coicop) == 4) %>%
-       select(-unit)
+        select_time = "M"
+      ) %>%
+        filter(
+          geo %in% countries_PPI,
+          unit == "I15",
+          nchar(coicop) == 4
+        ) %>%
+        select(-unit)
 
-      db[["HICP"]] = data
+      db[["HICP"]] <- data
 
       # Retrieve daily euro/dollar exchange rate from Yahoo Finance
       eur_usd_id <- "EURUSD=X"
@@ -319,13 +325,16 @@ getData <- function(case) {
       db[["TOURISM"]] <- data
 
       data <- get_eurostat("prc_hicp_midx",
-                          select_time = "M") %>%
-       filter(geo %in% countries_PPI,
-              unit == "I15",
-              nchar(coicop) == 4) %>%
-       select(-unit)
+        select_time = "M"
+      ) %>%
+        filter(
+          geo %in% countries_PPI,
+          unit == "I15",
+          nchar(coicop) == 4
+        ) %>%
+        select(-unit)
 
-      db[["HICP"]] = data
+      db[["HICP"]] <- data
 
       # Retrieve daily BRENT index from Yahoo Finance
       brent_id <- "BZ=F"

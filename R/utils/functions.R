@@ -4,7 +4,7 @@ library(rjson)
 library(jsonlite)
 library(styler)
 # Just a placeholder so that renv detect styler
-#styler::style_dir("R")
+# styler::style_dir("R")
 
 get_latest_dates <- function(data, var) {
   # Returns a list with last available value for each variable of the xts dataset
@@ -43,7 +43,7 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
     max() > predictions %>%
     filter(Country == country & Entries %in% "Naive") %>%
     pull(Date)
-  
+
   plot <- ggplot() +
     ggtitle(country) +
     geom_line(data = subset(sample, geo %in% country), aes(x = as.POSIXct(time, format = "%Y-%m-%d"), y = values)) +
@@ -58,23 +58,23 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
         theme(legend.position = "none")
       }
     }
-  
+
   return(plot)
 }
 
 plot_preds <- function(sample, predictions, Countries, xlim = "2020-01-01", ncol = 2) {
   ListPlots <- sapply(Countries, subplot_pred, sample = sample, xlim = xlim, predictions = predictions, simplify = FALSE)
-  
+
   legend <- get_legend(
     subplot_pred(sample, Countries[1], xlim, predictions, legend = T)
     + theme(legend.box.margin = margin(0, 0, 0, 0))
   )
-  
+
   prow <- plot_grid(plotlist = ListPlots, align = "h", ncol = ncol, vjust = -0.8)
-  
+
   plot <- plot_grid(prow + theme(plot.margin = unit(c(0, 0, 0, 0), "cm")),
-                    legend,
-                    ncol = 1, rel_heights = c(1, 0.1)
+    legend,
+    ncol = 1, rel_heights = c(1, 0.1)
   )
   return(plot)
 }
