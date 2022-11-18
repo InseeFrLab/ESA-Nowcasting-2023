@@ -10,10 +10,11 @@ dependencies:
   - nbformat
   - numpy
   - pandas
-  - pip
   - dill
   - pmdarima
   - pytorch::cpuonly
   - pytorch::pytorch
   - pytorch::torchaudio
   - pytorch::torchvision
+  - pip:
+    - nowcast-lstm
