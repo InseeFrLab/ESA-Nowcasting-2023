@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - '16-add-python-to-use-lstm-models'
+      - 'main'
     tags:
       - "*"
   workflow_dispatch:
