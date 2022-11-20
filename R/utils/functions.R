@@ -1,5 +1,15 @@
 library(ggplot2)
 library(cowplot)
+library(rjson)
+library(jsonlite)
+library(styler)
+# Just a placeholder so that renv detect styler
+# styler::style_dir("R")
+
+get_latest_dates <- function(data, var) {
+  # Returns a list with last available value for each variable of the xts dataset
+  return(as.character(last(index(data)[!is.na(data[, var])])))
+}
 
 theme_custom <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
@@ -27,31 +37,6 @@ theme_custom <- function() {
     )
 }
 
-## Customize palette
-pal_col <- rbind(
-  c(0, 50, 153),
-  c(255, 180, 0),
-  c(255, 75, 0),
-  c(101, 184, 0),
-  c(0, 177, 234),
-  c(0, 120, 22),
-  c(129, 57, 198),
-  c(92, 92, 92),
-  c(152, 161, 208),
-  c(253, 221, 167),
-  c(246, 177, 131),
-  c(206, 225, 175),
-  c(215, 238, 248),
-  c(141, 184, 141),
-  c(174, 151, 199),
-  c(169, 169, 169),
-  c(217, 217, 217)
-)
-
-Palette_col <- rgb(pal_col[, 1], pal_col[, 2], pal_col[, 3], maxColorValue = 255)
-
-#### Plots
-
 subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
   Lastpoint_released <- predictions %>%
     pull(Date) %>%
@@ -76,6 +61,7 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
 
   return(plot)
 }
+
 plot_preds <- function(sample, predictions, Countries, xlim = "2020-01-01", ncol = 2) {
   ListPlots <- sapply(Countries, subplot_pred, sample = sample, xlim = xlim, predictions = predictions, simplify = FALSE)
 
@@ -92,3 +78,46 @@ plot_preds <- function(sample, predictions, Countries, xlim = "2020-01-01", ncol
   )
   return(plot)
 }
+
+save_entries <- function(entries, filename) {
+  file <- rjson::toJSON(entries)
+  write(jsonlite::prettify(file), filename)
+}
+
+reshape_eurostat_data <- function(data, variable, country, measure) {
+  if (missing(measure)) {
+    reshaped_data <- data %>%
+      mutate(var = variable) %>%
+      filter(geo %in% country) %>%
+      pivot_wider(names_from = c(geo, var), values_from = values)
+  } else {
+    reshaped_data <- data %>%
+      mutate(var = variable) %>%
+      filter(geo %in% country) %>%
+      pivot_wider(names_from = c(geo, var, measure), values_from = values)
+  }
+  return(reshaped_data)
+}
+
+## Customize palette
+pal_col <- rbind(
+  c(0, 50, 153),
+  c(255, 180, 0),
+  c(255, 75, 0),
+  c(101, 184, 0),
+  c(0, 177, 234),
+  c(0, 120, 22),
+  c(129, 57, 198),
+  c(92, 92, 92),
+  c(152, 161, 208),
+  c(253, 221, 167),
+  c(246, 177, 131),
+  c(206, 225, 175),
+  c(215, 238, 248),
+  c(141, 184, 141),
+  c(174, 151, 199),
+  c(169, 169, 169),
+  c(217, 217, 217)
+)
+
+Palette_col <- rgb(pal_col[, 1], pal_col[, 2], pal_col[, 3], maxColorValue = 255)

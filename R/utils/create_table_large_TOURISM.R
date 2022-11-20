@@ -25,7 +25,7 @@ source("R/utils/getData.R")
 nb_months_past_to_use <- 11
 nb_years_past_to_use <- 11
 
-list_eurostat_tables <- c()
+list_eurostat_tables <- c("HICP")
 list_yahoo_finance <- c("brent", "eur_usd")
 
 db <- getData("TOURISM")
