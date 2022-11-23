@@ -31,6 +31,13 @@ plot_preds(data$TOURISM, predictions, countries_tourism[1:9], ncol = 3)
 plot_preds(data$TOURISM, predictions, countries_tourism[10:18], ncol = 3)
 plot_preds(data$TOURISM, predictions, countries_tourism[-1:-18], ncol = 3)
 
+#### Analyse the residuals
+resids <- bind_rows(list(
+  "entry_1" = resid_naive_1y %>% mutate(Entries = "Naive"),
+  "entry_4" = resid_dfm %>% mutate(Entries = "DFM")
+))
+
+plot_statistics(get_metrics(resids, countries_tourism, as.Date("2022-09-01"), as.Date("2008-06-01")))
 
 #### Save the results ####
 entries <- list(
