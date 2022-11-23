@@ -20,6 +20,12 @@ preds_dfm <- tibble(
   value = numeric()
 )
 
+resid_dfm <- tibble(
+  Country = character(),
+  Date = as.POSIXct(NA),
+  value = numeric()
+)
+
 for (country in countries_PPI) {
   cat(paste0("Running estimation for ", country, "\n"))
   var_to_predict <- paste0(country, "_PPI_B.E36")
@@ -231,7 +237,7 @@ for (country in countries_PPI) {
       # Otherwise we use the output from the model to know
       converged <- model$converged
     }
-    # We reduce the number of factor, so that we can resimulate when it failed
+    # We reduce the number of factor, so that we can resimulate when it has failed
     r <- r - 1
   }
 
@@ -251,6 +257,21 @@ for (country in countries_PPI) {
 
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
+
+  #########################################
+  # Storing the residuals
+  #########################################
+  resid_dfm <- rbind(
+    resid_dfm,
+    resid(model, orig.format = TRUE)[, var_to_predict] %>%
+      as_tibble() %>%
+      mutate(
+        Date = index(resid(model, orig.format = TRUE)[, var_to_predict]),
+        Country = country
+      ) %>%
+      rename(value = paste(var_to_predict)) %>%
+      select(Country, Date, value)
+  )
 }
 
 #########################################
