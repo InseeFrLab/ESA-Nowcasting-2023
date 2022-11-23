@@ -129,6 +129,16 @@
         "Rcpp"
       ]
     },
+    "RcppTOML": {
+      "Package": "RcppTOML",
+      "Version": "0.1.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f8a578aa91321ecec1292f1e2ffadeda",
+      "Requirements": [
+        "Rcpp"
+      ]
+    },
     "RefManageR": {
       "Package": "RefManageR",
       "Version": "1.3.0",
@@ -664,6 +674,23 @@
         "lattice"
       ]
     },
+    "nowcastLSTM": {
+      "Package": "nowcastLSTM",
+      "Version": "0.0.0.0000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "nowcastLSTM",
+      "RemoteUsername": "dhopp1",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "802cdefdf6a82b6f491bd41c9369a9993789d9e9",
+      "Hash": "9dce6a5621eda1f102fac0a9671b6f19",
+      "Requirements": [
+        "dplyr",
+        "reticulate",
+        "stringr"
+      ]
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "2.0.3",
@@ -707,6 +734,14 @@
       "Requirements": [
         "Rcpp"
       ]
+    },
+    "png": {
+      "Package": "png",
+      "Version": "0.1-7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "03b7076c234cb3331288919983326c55",
+      "Requirements": []
     },
     "prettyunits": {
       "Package": "prettyunits",
@@ -847,6 +882,23 @@
       "Repository": "RSPM",
       "Hash": "c9e8442ab69bc21c9697ecf856c1e6c7",
       "Requirements": []
+    },
+    "reticulate": {
+      "Package": "reticulate",
+      "Version": "1.26",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "91c176c84a2e3558572d2cbaddc08bd4",
+      "Requirements": [
+        "Matrix",
+        "Rcpp",
+        "RcppTOML",
+        "here",
+        "jsonlite",
+        "png",
+        "rappdirs",
+        "withr"
+      ]
     },
     "rjson": {
       "Package": "rjson",
