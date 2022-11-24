@@ -37,7 +37,8 @@ resids <- bind_rows(list(
   "entry_4" = resid_dfm %>% mutate(Entries = "DFM")
 ))
 
-plot_statistics(get_metrics(resids, countries_PPI, as.Date("2022-09-01"), as.Date("2022-01-01")))
+plot_statistics(get_metrics(resids, countries_PPI, current_date, as.Date("2022-01-01")))
+plot_statistics(get_metrics(resids, countries_PPI, current_date, as.Date("2010-01-01")))
 
 #### Save the results ####
 entries <- list(
