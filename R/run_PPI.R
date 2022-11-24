@@ -41,9 +41,9 @@ plot_statistics(get_metrics(resids, countries_PPI, as.Date("2022-09-01"), as.Dat
 
 #### Save the results ####
 entries <- list(
-  "entry_1" = preds_naive_1m %>% pull(value, Country),
-  "entry_2" = preds_sarima %>% pull(value, Country),
-  "entry_3" = preds_xgboost %>% pull(value, Country),
-  "entry_4" = preds_dfm %>% pull(value, Country)
+  "entry_1" = lapply(split(preds_naive_1m %>% pull(value, Country), names(preds_naive_1m %>% pull(value, Country))), unname),
+  "entry_2" = lapply(split(preds_sarima %>% pull(value, Country), names(preds_sarima %>% pull(value, Country))), unname),
+  "entry_3" = lapply(split(preds_xgboost %>% pull(value, Country), names(preds_xgboost %>% pull(value, Country))), unname),
+  "entry_4" = lapply(split(preds_dfm %>% pull(value, Country), names(preds_dfm %>% pull(value, Country))), unname)
 )
 save_entries(entries, "Submissions/PPI/results_november.json")

@@ -166,9 +166,17 @@ plot_statistics <- function(sample) {
 }
 
 save_entries <- function(entries, filename) {
-  file <- rjson::toJSON(entries)
-  write(jsonlite::prettify(file), filename)
+  if (file.exists(filename)) {
+    current_file <- rjson::fromJSON(file = filename)
+    current_file[names(entries)] <- entries
+    file <- rjson::toJSON(current_file)
+    write(jsonlite::prettify(file), filename)
+  } else {
+    file <- rjson::toJSON(entries)
+    write(jsonlite::prettify(file), filename)
+  }
 }
+
 
 reshape_eurostat_data <- function(data, variable, country, measure) {
   if (missing(measure)) {
