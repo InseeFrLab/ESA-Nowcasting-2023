@@ -92,9 +92,9 @@ get_metrics <- function(sample, Countries, up_date, low_date) {
     ),
     by = .(Entries)
   ]
-  
+
   sample <- melt(sample, id.vars = c("Entries"), value.name = "value", variable.name = "Statistic")
-  
+
   return(sample)
 }
 

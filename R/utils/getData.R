@@ -74,7 +74,7 @@ getData <- function(case) {
       # ) %>%
       #   select(geo, nace_r2, time, values) %>%
       #   drop_na(values)
-      # 
+      #
       # db[["IPI"]] <- data
 
       # Retrieve several surveys on production prices (confidence, price expectations, employment expectations)

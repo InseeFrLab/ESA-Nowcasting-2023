@@ -239,10 +239,10 @@ for (country in countries_PPI) {
     }
     # We reduce the number of factor, so that we can resimulate when it has failed
     if (r > 1) {
-      r <- r - 1 
+      r <- r - 1
       lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
       if (lag > max_lags) lag <- max_lags
-    }else{
+    } else {
       lag <- lag - 1
     }
   }
