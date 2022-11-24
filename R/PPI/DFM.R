@@ -34,7 +34,7 @@ for (country in countries_PPI) {
   #########################################
   ppi <- reshape_eurostat_data(data$PPI, "PPI", country, "nace_r2")
   ppi_nace2 <- reshape_eurostat_data(data$PPI_NACE2, "PPI", country, "nace_r2")
-  ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "nace_r2")
+  # ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "nace_r2")
   psurvey <- reshape_eurostat_data(data$PSURVEY, "PSURVEY", country, "indic")
   pvi <- reshape_eurostat_data(data$PVI, "PVI", country)
   hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
@@ -114,7 +114,7 @@ for (country in countries_PPI) {
     mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
     select(time, cac40_adjusted, cac40_volume)
 
-  DB <- list(ppi, ppi_nace2, ipi, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
+  DB <- list(ppi, ppi_nace2, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)

@@ -27,7 +27,7 @@ nb_months_past_to_use_pvi <- 6
 
 list_eurostat_tables <- c(
   "PPI_NACE2",
-  "IPI",
+  #"IPI",
   "PSURVEY",
   "HICP"
 )
