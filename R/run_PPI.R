@@ -33,11 +33,11 @@ plot_preds(data$PPI, predictions, countries_PPI[-1:-18], ncol = 3)
 
 #### Analyse the residuals
 resids <- bind_rows(list(
-  "entry_1" = resid_naive_1y %>% mutate(Entries = "Naive"),
+  "entry_1" = resid_naive_1m %>% mutate(Entries = "Naive"),
   "entry_4" = resid_dfm %>% mutate(Entries = "DFM")
 ))
 
-plot_statistics(get_metrics(resids, countries_PPI, as.Date("2022-09-01"), as.Date("2008-06-01")))
+plot_statistics(get_metrics(resids, countries_PPI, as.Date("2022-09-01"), as.Date("2021-01-01")))
 
 #### Save the results ####
 entries <- list(
