@@ -35,8 +35,6 @@ list_yahoo_finance <- c("brent", "eur_usd", "sp500", "eurostoxx500", "cac40")
 
 db <- getData("PPI")
 
-current_date <- ymd(current_date)
-
 #########################################
 # Create the tables for the regression
 #########################################

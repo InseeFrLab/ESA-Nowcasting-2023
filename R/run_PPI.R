@@ -12,7 +12,7 @@ data <- getData("PPI")
 
 #### Run the different models ####
 date_to_pred <- ymd("2022-11-01")
-current_date <- "2022-10-01"
+current_date <- date_to_pred %m-% months(1)
 
 source("R/PPI/LastPeriod_model.R") # to be converted to functions
 source("R/PPI/S-ARIMA.R") # to be converted to functions
@@ -37,7 +37,7 @@ resids <- bind_rows(list(
   "entry_4" = resid_dfm %>% mutate(Entries = "DFM")
 ))
 
-plot_statistics(get_metrics(resids, countries_PPI, as.Date("2022-09-01"), as.Date("2021-01-01")))
+plot_statistics(get_metrics(resids, countries_PPI, as.Date("2022-09-01"), as.Date("2022-01-01")))
 
 #### Save the results ####
 entries <- list(

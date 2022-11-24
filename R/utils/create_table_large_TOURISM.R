@@ -30,8 +30,6 @@ list_yahoo_finance <- c("brent", "eur_usd")
 
 db <- getData("TOURISM")
 
-current_date <- ymd(current_date)
-
 #########################################
 # Create the tables for the regression
 #########################################
