@@ -86,14 +86,15 @@ get_metrics <- function(sample, Countries, up_date, low_date) {
       (Date %between% c(low_date, up_date)),
     .(
       ME = mean(value, na.rm = TRUE),
-      N = sum(!is.na(value)),
+      N = as.double(sum(!is.na(value))),
       MAE = mean(abs(value), na.rm = TRUE),
       RMSE = sqrt(mean(value^2, na.rm = TRUE))
     ),
     by = .(Entries)
   ]
-
+  
   sample <- melt(sample, id.vars = c("Entries"), value.name = "value", variable.name = "Statistic")
+  
   return(sample)
 }
 
