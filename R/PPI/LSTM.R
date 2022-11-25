@@ -13,64 +13,82 @@ library(tidyr)
 library(lubridate)
 library(mltools)
 library(data.table)
-library(xgboost)
 
 #########################################
 # Global variables
 #########################################
 
-current_date = c('2022-11-01')
-nb_months_past_to_use <- 0
-nb_months_past_to_use_pvi <- 0
+current_date = c('2022-10-01')
+nb_months_past_to_use = 0
+nb_months_past_to_use_pvi = 0
+nb_months_past_to_use_ppi = 0
+lags = FALSE
+date_to_pred <- ymd("2022-11-01")
+target_col = 'PVI'
+country = 'DE'
 
 #########################################
 # Get data
 #########################################
 
 source("R/utils/create_table_large_PVI.R")
-country = 'DE'
+
 df_country = df_large %>%
   filter(geo == country) %>%
   select(-geo)%>%
   select(-PVI_minus_1_months)%>%
+  select(-PVI_minus_0_months)%>%
   select(-PVI_to_predict)%>%
   select(-month)%>%
   select(-year)
 
-# df_country[is.na(df_country)] <- 0
-# Arnaque à solutionner -- on remplace les Na par 0
+#########################################
+# Fit model
+#########################################
 
-#### Run the different models ####
-date_to_pred <- ymd("2022-11-01")
-current_date <- "2022-10-01"
-
-
-df_current_date <- df_country %>%
-  filter(time == current_date)
-df_country <- df_country[c(
-  rep(TRUE, 2),
-  colSums(!is.na(df_current_date[-(1:2)])) > 0
-)]
-
-#range_3year <- paste(date_to_pred %m-% months(36 + 1), date_to_pred %m-% months(2), sep = "/")
-#nan_cols <- as.double(which(colSums(is.na(df_country[range_3year])) > 0))
-
-target_col = 'PVI'
-end_training = "2022-10-01"
+end_training = "2020-09-01"
 train = df_country%>%
   filter(time<=end_training)
 names(train)[names(train)=="time"] <- "date"
 
-mod <- LSTM(data = df_country, 
+test = df_country%>%
+  filter(time>end_training)
+test = test%>%
+  filter(time<current_date)
+names(test)[names(test)=="time"] <- "date"
+
+### Scale the variables
+train_scaled <- train%>% mutate_at(c(2:62), ~(scale(.) %>% as.vector))
+test_scaled <- test%>% mutate_at(c(2:62), ~(scale(.) %>% as.vector))
+
+### Fit model 
+mod <- LSTM(data = train_scaled, 
             target_variable = "PVI", 
-            n_timesteps=12, 
+            n_timesteps = 12, 
             fill_na_func = "median", 
+            n_models = 15, 
+            train_episodes = 80, 
             python_model_name = "model") # default parameters with 12 timestep history
 
-train_pred = predict(mod, train, only_actuals_obs = F)
-df
+### Predict in sample to get RMSE measure
+train_pred = predict(mod, train_scaled, only_actuals_obs = F)
+test_pred = predict(mod, test_scaled, only_actuals_obs = F)
+RMSE_is = mean((train_pred[,3]-train_pred[,2]))^2
+RMSE_oss = mean((test_pred[,3]-test_pred[,2]))^2
 
-nowcastLSTM::predict(model, df_country)
-ragged_preds(model, pub_lags=c(1,4), lag = -2, train)
+#########################################
+# Predictions
+#########################################
 
+names(df_country)[names(df_country)=="time"] <- "date"
+df_country_scaled = df_country%>% mutate_at(c(2:62), ~(scale(.) %>% as.vector))
+#rag = ragged_preds(mod, pub_lags=c(1,4), lag = -2, df_country_scaled)
+
+pred = predict(mod, df_country_scaled, only_actuals_obs = F)
+pred['level'] = pred[,3]*sd(df_country$PVI[1:61]) + mean(df_country$PVI[1:61])
+pred['actual'] = df_country['PVI']
+
+#########################################
+# RMSE computation 
+#########################################
 
