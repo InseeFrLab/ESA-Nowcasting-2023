@@ -12,6 +12,7 @@ library(lubridate)
 library(mltools)
 library(data.table)
 library(xgboost)
+options(dplyr.summarise.inform = FALSE)
 
 source("R/utils/create_table_large_TOURISM.R")
 
@@ -246,7 +247,7 @@ for (country in countries$geo) {
   scale_tourism_to_predict_country <- attr(
     df_country$TOURISM_to_predict, "scaled:scale"
   )
-  
+
   # One-hot encoding
 
   df_country <- as.data.table(df_country)
@@ -256,7 +257,7 @@ for (country in countries$geo) {
     df_country[[variable]] <- as.factor(df_country[[variable]])
   }
   df_country <- one_hot(df_country)
-  
+
   # Train-pred split
 
   df_country_for_regression <- df_country %>%
@@ -273,7 +274,7 @@ for (country in countries$geo) {
   X_to_pred <- as.matrix(df_country_to_predict %>%
     select(-c(TOURISM_to_predict, time)))
   d_to_pred <- xgb.DMatrix(data = X_to_pred)
-  
+
   # Compute model
 
   model <- xgb.train(
@@ -282,7 +283,7 @@ for (country in countries$geo) {
     eta = best_eta_per_country,
     nrounds = best_nrounds_per_country
   )
-  
+
   # Make predictions
 
   y_pred_next_month <- predict(model, d_to_pred)
@@ -290,22 +291,24 @@ for (country in countries$geo) {
     mean_tourism_to_predict_country
   # If "value" is the 3rd column
   preds_xgboost_per_country[i, 3] <- round(as.numeric(y_pred_next_month), 1)
-  
+
   # Make predictions on training set for residuals
-  
+
   y_pred_residuals <- predict(model, xgb.DMatrix(data = X_train))
   y_pred_residuals <- y_pred_residuals * scale_tourism_to_predict_country +
     mean_tourism_to_predict_country
-  
+
   y_pred_residuals_with_index <- df_country_for_regression %>%
     select(time) %>%
-    mutate(geo = country,
-           time = time %m+% months(1))
+    mutate(
+      geo = country,
+      time = time %m+% months(1)
+    )
   y_pred_residuals_with_index$tourism_pred_residuals <- round(y_pred_residuals, 1)
-  
+
   residuals_xgboost_per_country <- residuals_xgboost_per_country %>%
     rbind(y_pred_residuals_with_index)
-  
+
   print(i)
   i <- i + 1
 }
@@ -332,8 +335,7 @@ preds_xgboost <- preds_xgboost_per_country
 
 resid_xgboost <- residuals_xgboost_per_country %>%
   left_join(df_large %>%
-              select(time, geo, TOURISM)) %>%
+    select(time, geo, TOURISM)) %>%
   mutate(value = tourism_pred_residuals - TOURISM) %>%
   rename(Country = geo, Date = time) %>%
   select(Country, Date, value)
-
