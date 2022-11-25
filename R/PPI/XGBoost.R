@@ -12,6 +12,7 @@ library(lubridate)
 library(mltools)
 library(data.table)
 library(xgboost)
+options(dplyr.summarise.inform = FALSE)
 
 source("R/utils/create_table_large_PPI.R")
 
