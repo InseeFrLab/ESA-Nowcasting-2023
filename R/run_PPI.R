@@ -12,6 +12,7 @@ data <- getData("PPI")
 
 #### Run the different models ####
 date_to_pred <- ymd("2022-11-01")
+current_date <- "2022-10-01"
 
 source("R/PPI/LastPeriod_model.R") # to be converted to functions
 # source("R/PPI/S-ARIMA.R") # to be converted to functions

@@ -26,30 +26,12 @@ for (country in countries_PPI) {
   #########################################
   # Reshaping the data
   #########################################
-  ppi <- data$PPI %>%
-    mutate(var = "PPI") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var, nace_r2), values_from = values)
-
-  ppi_nace2 <- data$PPI_NACE2 %>%
-    mutate(var = "PPI") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var, nace_r2), values_from = values)
-
-  ipi <- data$IPI %>%
-    mutate(var = "IPI") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var, nace_r2), values_from = values)
-
-  psurvey <- data$PSURVEY %>%
-    mutate(var = "PSURVEY") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var, indic), values_from = values)
-
-  pvi <- data$PVI %>%
-    mutate(var = "PVI") %>%
-    filter(geo %in% country) %>%
-    pivot_wider(names_from = c(geo, var), values_from = values)
+  ppi <- reshape_eurostat_data(data$PPI, "PPI", country, "nace_r2")
+  ppi_nace2 <- reshape_eurostat_data(data$PPI_NACE2, "PPI", country, "nace_r2")
+  ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "nace_r2")
+  psurvey <- reshape_eurostat_data(data$PSURVEY, "PSURVEY", country, "indic")
+  pvi <- reshape_eurostat_data(data$PVI, "PVI", country)
+  hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
 
   brent <- data$brent %>%
     as_tibble() %>%
@@ -126,7 +108,7 @@ for (country in countries_PPI) {
     mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
     select(time, cac40_adjusted, cac40_volume)
 
-  DB <- list(ppi, ppi_nace2, ipi, psurvey, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
+  DB <- list(ppi, ppi_nace2, ipi, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
