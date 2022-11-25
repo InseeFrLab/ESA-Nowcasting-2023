@@ -22,8 +22,9 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-nb_months_past_to_use <- 11
-nb_years_past_to_use <- 11
+nb_months_past_to_use <- 10
+nb_years_past_to_use <- 5
+nb_months_past_to_use_others <- 6
 
 list_eurostat_tables <- c("HICP")
 list_yahoo_finance <- c("brent", "eur_usd")
@@ -67,7 +68,7 @@ for (i in 1:nb_months_past_to_use) {
 for (i in 1:nb_years_past_to_use) {
   variable <- paste("TOURISM", "minus", i, "years", sep = "_")
   df_TOURISM <- df_TOURISM %>%
-    mutate(!!variable := lag(TOURISM, n = 12 * i))
+    mutate(!!variable := lag(TOURISM, n = 12 * i - 1))
 }
 df_TOURISM <- df_TOURISM %>%
   ungroup()
@@ -98,6 +99,25 @@ for (table in list_eurostat_tables) {
       by = c("geo", "time")
     )
 }
+
+# B - bis) Add history of Eurostat data
+
+df <- df %>%
+  group_by(geo)
+
+list_other_variables <- colnames(df)[
+  (7+nb_months_past_to_use+nb_years_past_to_use):(length(colnames(df)))]
+
+for (i in 1:nb_months_past_to_use_others) {
+  for (other_variable in list_other_variables){
+    variable <- paste(other_variable, "minus", i, "months", sep = "_")
+    df <- df %>%
+      mutate(!!variable := lag(UQ(rlang::sym(other_variable)), n = i))
+  }
+}
+
+df <- df %>%
+  ungroup()
 
 # C) Add Yahoo Finance data
 
@@ -144,6 +164,8 @@ for (table in list_yahoo_finance) {
 }
 
 # Delete dummy columns (to do by country if models specific to countries)
+
+df <- df[colSums(!is.na(df)) > 0]
 
 df <- df[c(
   rep(TRUE, 3),
