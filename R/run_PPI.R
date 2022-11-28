@@ -34,6 +34,7 @@ plot_preds(data$PPI, predictions, countries_PPI[-1:-18], ncol = 3)
 #### Analyse the residuals
 resids <- bind_rows(list(
   "entry_1" = resid_naive_1m %>% mutate(Entries = "Naive"),
+  "entry_2" = resid_regarima %>% mutate(Entries = "REG-ARIMA"),
   "entry_3" = resid_xgboost %>% mutate(Entries = "XGBoost"),
   "entry_4" = resid_dfm %>% mutate(Entries = "DFM")
 ))

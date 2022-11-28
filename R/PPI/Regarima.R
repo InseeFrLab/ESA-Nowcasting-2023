@@ -10,12 +10,19 @@ library(dplyr)
 library(astsa)
 library(lubridate)
 library(RJDemetra)
+library(tsbox)
 
 #########################################
 # Estimate a REGARIMA
 #########################################
 
 preds_regarima <- tibble(
+  Country = character(),
+  Date = as.POSIXct(NA),
+  value = numeric()
+)
+
+resid_regarima <- tibble(
   Country = character(),
   Date = as.POSIXct(NA),
   value = numeric()
@@ -177,4 +184,15 @@ for (country in countries_PPI) {
       Date = date_to_pred,
       value = round(as.numeric(pred), 1)
     )
+  
+  resid_regarima <- rbind(
+    resid_regarima,
+    tsbox::ts_xts(resid(ppi_regarima)) %>%
+      as_tibble() %>%
+      mutate(
+        Date = index(tsbox::ts_xts(resid(ppi_regarima))),
+        Country = country
+      ) %>%
+      select(Country, Date, value)
+  )
 }

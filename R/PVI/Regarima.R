@@ -12,6 +12,7 @@ library(astsa)
 library(lubridate)
 library(RJDemetra)
 library(xts)
+library(tsbox)
 
 #########################################
 # Estimate a REGARIMA
@@ -189,4 +190,14 @@ for (country in countries_PVI) {
       value = round(as.numeric(pred), 1)
     )
   
+  resid_regarima <- rbind(
+    resid_regarima,
+    tsbox::ts_xts(resid(pvi_regarima)) %>%
+      as_tibble() %>%
+      mutate(
+        Date = index(tsbox::ts_xts(resid(pvi_regarima))),
+        Country = country
+      ) %>%
+      select(Country, Date, value)
+  )
 }
