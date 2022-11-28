@@ -116,6 +116,24 @@ for (country in countries_PPI) {
     pred <- ppi %>% tail(1) * exp(ppi_regarima$forecast[1]) * exp(ppi_regarima$forecast[2]) * exp(ppi_regarima$forecast[3])
   }
 
+  if (is.na(pred))
+  {
+    ppi_spec <- regarima_spec_tramoseats(
+      transform.function = "None",
+      estimate.from = "2010-01-01",
+      # estimate.to = "2019-12-01",
+      automdl.enabled = TRUE,
+      outlier.enabled = TRUE,
+      outlier.ao = TRUE,
+      outlier.tc = FALSE,
+      outlier.usedefcv = FALSE,
+      outlier.cv = 3.5,
+      usrdef.varEnabled = TRUE,
+      fcst.horizon = n_forward
+    )
+    ppi_regarima <- regarima(dlppi, ppi_spec)
+  }
+  
   preds_regarima <- preds_regarima %>%
     add_row(
       Country = country,
