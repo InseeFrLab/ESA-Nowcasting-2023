@@ -61,21 +61,21 @@ getData <- function(case) {
       db[["PPI_NACE2"]] <- data
 
       # Import price index for all subcategories of level 2 + two aggregates
-      data <- get_eurostat("sts_inpi_m",
-        select_time = "M",
-        filters = list(
-          geo = countries_PPI,
-          indic_bt = "IMPR",
-          nace_r2 = c(paste0("B", str_pad(5:8, 2, pad = "0")), paste0("C", 10:32), "D35", "B-E36", "B-D"),
-          s_adj = "NSA",
-          unit = "I15"
-        ),
-        time_format = "date"
-      ) %>%
-        select(geo, nace_r2, time, values) %>%
-        drop_na(values)
-
-      db[["IPI"]] <- data
+      # data <- get_eurostat("sts_inpi_m",
+      #   select_time = "M",
+      #   filters = list(
+      #     geo = c("FR"),
+      #     indic_bt = "IMPR",
+      #     nace_r2 = c(paste0("B", str_pad(5:8, 2, pad = "0")), paste0("C", 10:32), "D35", "B-E36", "B-D"),
+      #     s_adj = "NSA",
+      #     unit = "I15"
+      #   ),
+      #   time_format = "date"
+      # ) %>%
+      #   select(geo, nace_r2, time, values) %>%
+      #   drop_na(values)
+      #
+      # db[["IPI"]] <- data
 
       # Retrieve several surveys on production prices (confidence, price expectations, employment expectations)
       data <- get_eurostat("ei_bsin_m_r2",
