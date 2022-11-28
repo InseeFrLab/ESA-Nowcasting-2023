@@ -24,7 +24,7 @@ preds_regarima <- tibble(
 for (country in countries_PPI) {
   # série cible + vérif date de début et de fin
   
-  print(country)
+  #print(country)
   
   debut <- data$PPI %>%
     filter(geo %in% country) %>%
