@@ -66,13 +66,15 @@ getData <- function(case) {
         filters = list(
           geo = countries_PPI,
           indic_bt = "IMPR",
-          nace_r2 = c(paste0("B", str_pad(5:8, 2, pad = "0")), paste0("C", 10:32), "D35", "B-E36", "B-D"),
+          cpa2_1 = c(paste0("CPA_B", str_pad(5:8, 2, pad = "0")), paste0("CPA_C", 10:32),
+                      "CPA_D35", "CPA_B-E36", "CPA_B-D",
+                     "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"),
           s_adj = "NSA",
           unit = "I15"
         ),
         time_format = "date"
       ) %>%
-        select(geo, nace_r2, time, values) %>%
+        select(geo, cpa2_1, time, values) %>%
         drop_na(values)
 
       db[["IPI"]] <- data
