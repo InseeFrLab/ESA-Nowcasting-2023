@@ -1,5 +1,5 @@
 ###############################################################################
-#             Naive model based on the last observed value                    #  
+#             Naive model based on the last observed value                    #
 ###############################################################################
 
 #########################################
@@ -13,20 +13,20 @@ library(lubridate)
 # Use the value of the last available month
 #############################################
 
-preds_naive_1m <- tibble(Country=character(),
-                         Date=as.POSIXct(NA),
-                         value=numeric()
-                         )
+preds_naive_1m <- tibble(
+  Country = character(),
+  Date = as.POSIXct(NA),
+  value = numeric()
+)
 
-for (country in countries_PVI){
-  pred <- data$PVI%>%
+for (country in countries_PVI) {
+  pred <- data$PVI %>%
     filter(geo %in% country) %>%
     arrange(time) %>%
     drop_na() %>%
     tail(1) %>%
     pull(values, time)
-  
-  preds_naive_1m <- preds_naive_1m%>%
-    add_row(Country=country, Date=date_to_pred, value=as.numeric(pred))
-  
+
+  preds_naive_1m <- preds_naive_1m %>%
+    add_row(Country = country, Date = date_to_pred, value = as.numeric(pred))
 }
