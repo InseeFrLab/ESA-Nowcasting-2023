@@ -15,7 +15,6 @@ date_to_pred <- ymd("2022-11-01")
 current_date <- date_to_pred %m-% months(1)
 
 source("R/PVI/LastPeriod_model.R") # to be converted to functions
-#source("R/PVI/S-ARIMA.R") # to be converted to functions
 source("R/PVI/Regarima.R") # to be converted to functions
 source("R/PVI/XGBoost.R") # to be converted to functions
 source("R/PVI/DFM.R") # to be converted to functions
