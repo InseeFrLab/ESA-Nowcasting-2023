@@ -28,8 +28,18 @@ models = data_tourism_ts  %>%
   refit(data_tourism_ts, reinitialise = FALSE, reestimate = FALSE)
 
 preds_ets = models %>% forecast(h = "12 months") %>% 
-  filter(time == date_to_pred) 
-
+  filter(as.Date(time) == date_to_pred) %>% 
+  mutate(Country = geo,
+         Date = as.Date(time),
+         value = .mean) %>% 
+  as_tibble() %>% 
+  select(Country, Date, value)
+resid_ets = models %>% residuals() %>% 
+  mutate(Country = geo,
+         Date = as.Date(time),
+         value = .resid) %>% 
+  as_tibble() %>% 
+  select(Country, Date, value)
 # models = data_tourism_ts %>% 
 #   to_tsibble() %>% 
 #   fill_gaps() %>% 

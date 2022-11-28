@@ -10,19 +10,24 @@ to_tsibble <- function(x) {
 }
 
 models = data$PVI  %>% 
-  filter(time >= ymd("2003-01-01")) %>% 
+  filter(year(time) >= 2003) %>% 
   to_tsibble() %>% 
   model(#naive = NAIVE(values),
     #rw = RW(values ~ drift()),
     # mean3m = MEAN(values~window(3)),
     #arima = ARIMA(log(values)),
     ETS = ETS(values))
-preds_ets = models %>% forecast(h = "3 months") %>% 
-  filter(time == date_to_pred) 
-preds_ets = preds_ets %>% 
+preds_ets = models %>% forecast(h = "12 months") %>% 
+  filter(as.Date(time) == date_to_pred) %>% 
   mutate(Country = geo,
-         Date = time,
+         Date = as.Date(time),
          value = .mean) %>% 
+  as_tibble() %>% 
+  select(Country, Date, value)
+resid_ets = models %>% residuals() %>% 
+  mutate(Country = geo,
+         Date = as.Date(time),
+         value = .resid) %>% 
   as_tibble() %>% 
   select(Country, Date, value)
 
