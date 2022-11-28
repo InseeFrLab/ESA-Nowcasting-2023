@@ -66,9 +66,11 @@ getData <- function(case) {
         filters = list(
           geo = countries_PPI,
           indic_bt = "IMPR",
-          cpa2_1 = c(paste0("CPA_B", str_pad(5:8, 2, pad = "0")), paste0("CPA_C", 10:32),
-                      "CPA_D35", "CPA_B-E36", "CPA_B-D",
-                     "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"),
+          cpa2_1 = c(
+            paste0("CPA_B", str_pad(5:8, 2, pad = "0")), paste0("CPA_C", 10:32),
+            "CPA_D35", "CPA_B-E36", "CPA_B-D",
+            "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"
+          ),
           s_adj = "NSA",
           unit = "I15"
         ),
