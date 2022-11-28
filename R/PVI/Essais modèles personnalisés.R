@@ -7,6 +7,8 @@ country <- "BE"
 country <- "PL"
 country <- "AT"
 country <- "PT"
+country <- "NL"
+country <- "SE"
 
 current_date_country <- data$PVI %>%
   filter(geo == country) %>%
@@ -40,10 +42,14 @@ debut <- data$PSURVEY %>%
   pull(time)
 debut <- c(year(debut), month(debut))
 IPT <- ts(data$PSURVEY %>% filter(geo %in% country) %>% filter(indic == "BS-IPT") %>% pull(values), start = debut, frequency = 12)
+IPT <- IPT/100
+dIPT <- diff(IPT)
+dIPT2 <- stats::lag(dIPT,-1)
+IS <- IS/100
+dIS <- diff(IS)
+dIS2 <- stats::lag(dIS,-1)
 
-
-var <- ts.union(IPT / 100,
-                IS/100,diff(IS)/100,stats::lag(diff(IS),-1)/100)
+var <- ts.union(IPT,dIPT)
 var <- ts.union(IS / 100,
                 diff(IS)/100)
 var <- window(var,start=c(2010,1))
@@ -77,4 +83,4 @@ pvi_spec <- regarima_spec_tramoseats(
 )
 pvi_regarima <- regarima(dlpvi, pvi_spec)
 
-pvi_regarima
+pvi_regarima$residuals
