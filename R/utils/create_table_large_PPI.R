@@ -111,14 +111,15 @@ df <- df %>%
 
 # If available, let's use the last months of the other variables as well
 list_other_variables <- colnames(df)[
-  (7+nb_months_past_to_use):(length(colnames(df))-1)]
+  (7 + nb_months_past_to_use):(length(colnames(df)) - 1)
+]
 
 for (i in 1:nb_months_past_to_use_others) {
   variable <- paste("PVI", "minus", i, "months", sep = "_")
   df <- df %>%
     mutate(!!variable := lag(PVI, n = i))
-  
-  for (other_variable in list_other_variables){
+
+  for (other_variable in list_other_variables) {
     variable <- paste(other_variable, "minus", i, "months", sep = "_")
     df <- df %>%
       mutate(!!variable := lag(UQ(rlang::sym(other_variable)), n = i))

@@ -106,10 +106,11 @@ df <- df %>%
   group_by(geo)
 
 list_other_variables <- colnames(df)[
-  (7+nb_months_past_to_use+nb_years_past_to_use):(length(colnames(df)))]
+  (7 + nb_months_past_to_use + nb_years_past_to_use):(length(colnames(df)))
+]
 
 for (i in 1:nb_months_past_to_use_others) {
-  for (other_variable in list_other_variables){
+  for (other_variable in list_other_variables) {
     variable <- paste(other_variable, "minus", i, "months", sep = "_")
     df <- df %>%
       mutate(!!variable := lag(UQ(rlang::sym(other_variable)), n = i))
