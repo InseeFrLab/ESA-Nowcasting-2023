@@ -13,8 +13,8 @@ data_tourism_ts <- data$TOURISM  %>% to_tsibble() %>%
   group_by(geo) %>% 
   mutate(values = zoo::na.locf(values)) %>% 
   ungroup() %>% 
-  filter((year(time) >= 2003 & !geo%in% c("MT", "FR")) |
-           (year(time) >= 2010 & geo%in% c("MT", "FR")))
+  filter((year(time) >= 2003 & !geo %in% c("MT", "FR")) |
+           (year(time) >= 2010 & geo %in% c("MT", "FR")))
 
 # Model identified without COVID
 # Could be changed for AT and HR
