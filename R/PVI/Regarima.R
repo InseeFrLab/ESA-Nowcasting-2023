@@ -186,7 +186,7 @@ for (country in countries_PVI) {
       plot = FALSE
     )$pred %>%
       tail(1)
-    print(paste0("attention, prediction dégradée sur ", country))
+    print(paste0("Attention, prediction dégradée sur ", country))
   }
 
   preds_regarima <- preds_regarima %>%
@@ -198,7 +198,7 @@ for (country in countries_PVI) {
 
   resid_regarima <- rbind(
     resid_regarima,
-    tsbox::ts_xts(resid(pvi_regarima)) %>%
+    tsbox::ts_xts(pvi_ts-exp(dlpvi-resid(pvi_regarima))*(stats::lag(pvi_ts,-1))) %>%
       as_tibble() %>%
       mutate(
         Date = index(tsbox::ts_xts(resid(pvi_regarima))),
