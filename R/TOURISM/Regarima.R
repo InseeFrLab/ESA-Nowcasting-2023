@@ -35,7 +35,7 @@ for (country in countries_tourism) {
     last() %>%
     pull(time)
 
-  n_forward <- interval(fin, date_to_pred) %/% months(1)
+  n_forward <- lubridate::interval(fin, date_to_pred) %/% months(1)
 
   tour <- ts(data$TOURISM %>% filter(geo %in% country) %>% pull(values), start = debut, frequency = 12)
   dltour <- window(log(tour) - stats::lag(log(tour), -1), start = c(2010, 1))

@@ -264,7 +264,7 @@ for (country in countries_PVI) {
     resid(model, orig.format = TRUE)[, var_to_predict] %>%
       as_tibble() %>%
       mutate(
-        Date = index(resid(model, orig.format = TRUE)[, var_to_predict]),
+        Date = zoo::index(resid(model, orig.format = TRUE)[, var_to_predict]),
         Country = country
       ) %>%
       rename(value = paste(var_to_predict)) %>%

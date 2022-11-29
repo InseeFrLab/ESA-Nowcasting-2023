@@ -6,7 +6,6 @@
 # Required packages
 #########################################
 
-# install.packages("RJDemetra")
 library(dplyr)
 library(astsa)
 library(lubridate)
@@ -38,7 +37,7 @@ for (country in countries_PVI) {
     tail(1) %>%
     pull()
 
-  n_forward <- interval(current_date_country, date_to_pred) %/% months(1)
+  n_forward <- lubridate::interval(current_date_country, date_to_pred) %/% months(1)
 
   # série cible + vérif date de début
   debut <- data$PVI %>%
@@ -106,7 +105,7 @@ for (country in countries_PVI) {
     usrdef.outliersType = c(
       "AO", "AO", "AO", "AO", "AO",
       "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO"
+      "AO", "AO", "AO", "AO", "AO"
     ),
     usrdef.outliersDate = c(
       "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
@@ -198,10 +197,10 @@ for (country in countries_PVI) {
 
   resid_regarima <- rbind(
     resid_regarima,
-    tsbox::ts_xts(pvi_ts-exp(dlpvi-resid(pvi_regarima))*(stats::lag(pvi_ts,-1))) %>%
+    tsbox::ts_xts(pvi_ts - exp(dlpvi - resid(pvi_regarima)) * (stats::lag(pvi_ts, -1))) %>%
       as_tibble() %>%
       mutate(
-        Date = index(tsbox::ts_xts(resid(pvi_regarima))),
+        Date = zoo::index(tsbox::ts_xts(resid(pvi_regarima))),
         Country = country
       ) %>%
       select(Country, Date, value)

@@ -3,12 +3,13 @@ library(cowplot)
 library(rjson)
 library(jsonlite)
 library(styler)
+library(data.table)
 # Just a placeholder so that renv detect styler
 # styler::style_dir("R")
 
 get_latest_dates <- function(data, var) {
   # Returns a list with last available value for each variable of the xts dataset
-  return(as.character(last(index(data)[!is.na(data[, var])])))
+  return(as.character(last(zoo::index(data)[!is.na(data[, var])])))
 }
 
 theme_custom <- function() {
@@ -100,7 +101,7 @@ get_metrics <- function(sample, Countries, up_date, low_date) {
 
 subplot_statistic <- function(sample, statistic, legend = TRUE, y_labs = TRUE) {
   sample <- sample[, c("Entries", "Statistic") := list(
-    factor(Entries, levels = c("Naive", "REG-ARIMA", "XGBoost", "DFM")),
+    factor(Entries, levels = c("Naive", "SARIMA", "REG-ARIMA", "XGBoost", "DFM", "ETS")),
     factor(Statistic, levels = c("N", "ME", "MIN", "MAX", "MAE", "RMSE"))
   )]
 
@@ -215,3 +216,24 @@ pal_col <- rbind(
 )
 
 Palette_col <- rgb(pal_col[, 1], pal_col[, 2], pal_col[, 3], maxColorValue = 255)
+
+
+add_entries <- function(entries, filename) {
+  current_file <- rjson::fromJSON(paste0(readLines(filename), collapse = ""))
+  file <- rjson::toJSON(c(current_file, entries))
+  write(jsonlite::prettify(file), filename)
+}
+reorder_entries <- function(entries, filename) {
+  current_file <- rjson::fromJSON(paste0(readLines(filename), collapse = ""))
+  current_file <- current_file[entries]
+  names(current_file) <- sprintf("entry_%i", 1:length(current_file))
+  file <- rjson::toJSON(current_file)
+  write(jsonlite::prettify(file), filename)
+}
+
+to_tsibble <- function(x) {
+  x %>%
+    mutate(time = yearmonth(time)) %>%
+    drop_na() %>%
+    as_tsibble(key = c(geo), index = time)
+}
