@@ -14,7 +14,7 @@ library(data.table)
 library(xgboost)
 options(dplyr.summarise.inform = FALSE)
 
-source("R/utils/create_table_large_PPI.R")
+source("R/utils/create_table_large_PVI.R")
 
 #########################################
 # Global variables
@@ -39,7 +39,7 @@ preds_xgboost_per_country <- countries %>%
   )
 
 residuals_xgboost_per_country <- data.frame(matrix(ncol = 3, nrow = 0))
-x <- c("geo", "time", "PPI_diff_pred_residuals")
+x <- c("geo", "time", "PVI_diff_pred_residuals")
 colnames(residuals_xgboost_per_country) <- x
 
 i <- 1
@@ -71,7 +71,7 @@ for (country in countries$geo) {
       df_country <- df_country %>%
         mutate(
           !!variable := UQ(rlang::sym(variable)) - lag(UQ(rlang::sym(variable)), n=3)
-          )
+        )
     }
   }
   
@@ -80,8 +80,8 @@ for (country in countries$geo) {
   df_country <- df_country %>%
     mutate(across(c(where(is.numeric)), scale))
   
-  mean_ppi_to_predict_country <- attr(df_country$PPI_to_predict, "scaled:center")
-  scale_ppi_to_predict_country <- attr(df_country$PPI_to_predict, "scaled:scale")
+  mean_pvi_to_predict_country <- attr(df_country$PVI_to_predict, "scaled:center")
+  scale_pvi_to_predict_country <- attr(df_country$PVI_to_predict, "scaled:scale")
   
   # One-hot encoding
   
@@ -97,17 +97,17 @@ for (country in countries$geo) {
   
   df_country_for_regression <- df_country %>%
     filter(time < current_date) %>%
-    drop_na(PPI_to_predict)
+    drop_na(PVI_to_predict)
   df_country_to_predict <- df_country %>%
     filter(time == current_date)
   
   X_train <- as.matrix(df_country_for_regression %>%
-                         select(-c(PPI_to_predict, time)))
-  y_train <- df_country_for_regression$PPI_to_predict
+                         select(-c(PVI_to_predict, time)))
+  y_train <- df_country_for_regression$PVI_to_predict
   gb_train <- xgb.DMatrix(data = X_train, label = y_train)
   
   X_to_pred <- as.matrix(df_country_to_predict %>%
-                           select(-c(PPI_to_predict, time)))
+                           select(-c(PVI_to_predict, time)))
   d_to_pred <- xgb.DMatrix(data = X_to_pred)
   
   # Compute model
@@ -122,16 +122,16 @@ for (country in countries$geo) {
   # Make predictions
   
   y_pred_next_month <- predict(model, d_to_pred)
-  y_pred_next_month <- y_pred_next_month * scale_ppi_to_predict_country +
-    mean_ppi_to_predict_country
+  y_pred_next_month <- y_pred_next_month * scale_pvi_to_predict_country +
+    mean_pvi_to_predict_country
   # If "value" is the 3rd column
   preds_xgboost_per_country[i, 3] <- round(as.numeric(y_pred_next_month), 1)
   
   # Make predictions on training set for residuals
   
   y_pred_residuals <- predict(model, xgb.DMatrix(data = X_train))
-  y_pred_residuals <- y_pred_residuals * scale_ppi_to_predict_country +
-    mean_ppi_to_predict_country
+  y_pred_residuals <- y_pred_residuals * scale_pvi_to_predict_country +
+    mean_pvi_to_predict_country
   
   y_pred_residuals_with_index <- df_country_for_regression %>%
     select(time) %>%
@@ -139,7 +139,7 @@ for (country in countries$geo) {
       geo = country,
       time = time %m+% months(1)
     )
-  y_pred_residuals_with_index$PPI_pred_residuals <- round(y_pred_residuals, 1)
+  y_pred_residuals_with_index$PVI_pred_residuals <- round(y_pred_residuals, 1)
   
   residuals_xgboost_per_country <- residuals_xgboost_per_country %>%
     rbind(y_pred_residuals_with_index)
@@ -156,18 +156,18 @@ for (country in countries$geo) {
 
 preds_xgboost_diff <- preds_xgboost_per_country %>%
   inner_join(df_large %>%
-              filter(time == current_date) %>%
-              select(geo, PPI_minus_2_months) %>%
-              rename(Country = geo) %>%
-              mutate(Date = date_to_pred)) %>%
-  mutate(value = PPI_minus_2_months + value, .keep = "unused")
+               filter(time == current_date) %>%
+               select(geo, PVI_minus_2_months) %>%
+               rename(Country = geo) %>%
+               mutate(Date = date_to_pred)) %>%
+  mutate(value = PVI_minus_2_months + value, .keep = "unused")
 
 
 # Residuals
 
 resid_xgboost_diff <- residuals_xgboost_per_country %>%
   left_join(df_large %>%
-              select(time, geo, PPI, PPI_minus_3_months)) %>%
-  mutate(value = PPI_pred_residuals - (PPI - PPI_minus_3_months)) %>%
+              select(time, geo, PVI, PVI_minus_3_months)) %>%
+  mutate(value = PVI_pred_residuals - (PVI - PVI_minus_3_months)) %>%
   rename(Country = geo, Date = time) %>%
   select(Country, Date, value)
