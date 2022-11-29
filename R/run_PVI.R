@@ -38,8 +38,8 @@ resids <- bind_rows(list(
   "entry_1" = resid_naive_1m %>% mutate(Entries = "Naive"),
   "entry_2" = resid_regarima %>% mutate(Entries = "REG-ARIMA"),
   "entry_3" = resid_xgboost %>% mutate(Entries = "XGBoost"),
-  "entry_4" = resid_dfm %>% mutate(Entries = "DFM") # ,
-  # "entry_5" = resid_ets %>% mutate(Entries = "ETS")
+  "entry_4" = resid_dfm %>% mutate(Entries = "DFM"),
+  "entry_5" = resid_ets %>% mutate(Entries = "ETS")
 ))
 
 plot_statistics(get_metrics(resids, countries_PVI, current_date, as.Date("2022-01-01")))
@@ -51,7 +51,7 @@ entries <- list(
   "entry_2" = lapply(split(preds_regarima %>% pull(value, Country), names(preds_regarima %>% pull(value, Country))), unname),
   "entry_3" = lapply(split(preds_xgboost %>% pull(value, Country), names(preds_xgboost %>% pull(value, Country))), unname),
   "entry_4" = lapply(split(preds_dfm %>% pull(value, Country), names(preds_dfm %>% pull(value, Country))), unname),
-  "entry_5" = preds_ets %>% pull(value, Country)
+  "entry_5" = lapply(split(preds_ets %>% pull(value, Country), names(preds_ets %>% pull(value, Country))), unname)
 )
 save_entries(entries, "Submissions/PVI/results_november.json")
 # entries = list("entry_5"= preds_ets%>%pull(value, Country))
