@@ -100,7 +100,7 @@ get_metrics <- function(sample, Countries, up_date, low_date) {
 
 subplot_statistic <- function(sample, statistic, legend = TRUE, y_labs = TRUE) {
   sample <- sample[, c("Entries", "Statistic") := list(
-    factor(Entries, levels = c("Naive", "S-ARIMA", "XGBoost", "DFM")),
+    factor(Entries, levels = c("Naive", "S-ARIMA", "XGBoost", "XGBoost_diff", "DFM")),
     factor(Statistic, levels = c("N", "ME", "MIN", "MAX", "MAE", "RMSE"))
   )]
 
