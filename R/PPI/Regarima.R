@@ -194,7 +194,7 @@ for (country in countries_PPI) {
 
   resid_regarima <- rbind(
     resid_regarima,
-    tsbox::ts_xts(ppi-exp(dlppi-resid(ppi_regarima))*(stats::lag(ppi,-1))) %>%
+    tsbox::ts_xts(ppi - exp(dlppi - resid(ppi_regarima)) * (stats::lag(ppi, -1))) %>%
       as_tibble() %>%
       mutate(
         Date = index(tsbox::ts_xts(resid(ppi_regarima))),

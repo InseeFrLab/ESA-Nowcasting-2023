@@ -16,7 +16,6 @@ current_date <- date_to_pred %m-% months(1)
 
 source("R/TOURISM/LastPeriod_model.R") # to be converted to functions
 source("R/TOURISM/S-ARIMA.R") # to be converted to functions
-# source("R/TOURISM/Regarima.R") # to be converted to functions
 source("R/TOURISM/XGBoost.R") # to be converted to functions
 source("R/TOURISM/DFM.R") # to be converted to functions
 source("R/TOURISM/ETS.R") # to be converted to functions
