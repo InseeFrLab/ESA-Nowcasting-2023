@@ -3,6 +3,7 @@ library(cowplot)
 library(rjson)
 library(jsonlite)
 library(styler)
+library(data.table)
 # Just a placeholder so that renv detect styler
 # styler::style_dir("R")
 
@@ -228,4 +229,11 @@ reorder_entries <- function(entries, filename) {
   names(current_file) <- sprintf("entry_%i", 1:length(current_file))
   file <- rjson::toJSON(current_file)
   write(jsonlite::prettify(file), filename)
+}
+
+to_tsibble <- function(x) {
+  x %>%
+    mutate(time = yearmonth(time)) %>%
+    drop_na() %>%
+    as_tsibble(key = c(geo), index = time)
 }
