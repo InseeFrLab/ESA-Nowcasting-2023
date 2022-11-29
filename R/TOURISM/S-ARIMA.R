@@ -21,7 +21,7 @@ preds_sarima <- tibble(
 )
 
 for (country in countries_tourism) {
-  n_forward <- interval(early_date_to_stop, date_to_pred) %/% months(1) %% 12
+  n_forward <- lubridate::interval(early_date_to_stop, date_to_pred) %/% months(1) %% 12
 
   pred <- sarima.for(
     data$TOURISM %>%

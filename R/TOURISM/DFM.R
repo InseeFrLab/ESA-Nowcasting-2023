@@ -227,7 +227,7 @@ for (country in countries_tourism) {
     resid_nsa %>%
       as_tibble() %>%
       mutate(
-        Date = index(resid(model, orig.format = TRUE)[, paste0(var_to_predict, "_SA")]),
+        Date = zoo::index(resid(model, orig.format = TRUE)[, paste0(var_to_predict, "_SA")]),
         Country = country
       ) %>%
       rename(value = paste0(var_to_predict, "_SA")) %>%
