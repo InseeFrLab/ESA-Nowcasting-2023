@@ -37,7 +37,7 @@ plot_preds(data$PPI, predictions, countries_PPI[-1:-18], ncol = 3)
 resids <- bind_rows(list(
   "entry_1" = resid_naive_1m %>% mutate(Entries = "Naive"),
   "entry_3" = resid_xgboost %>% mutate(Entries = "XGBoost"),
-  "entry_4" = resid_dfm %>% mutate(Entries = "DFM")#,
+  "entry_4" = resid_dfm %>% mutate(Entries = "DFM") # ,
   # "entry_5" = resid_ets %>% mutate(Entries = "ETS")
 ))
 
@@ -50,7 +50,7 @@ entries <- list(
   "entry_2" = lapply(split(preds_sarima %>% pull(value, Country), names(preds_sarima %>% pull(value, Country))), unname),
   "entry_3" = lapply(split(preds_xgboost %>% pull(value, Country), names(preds_xgboost %>% pull(value, Country))), unname),
   "entry_4" = lapply(split(preds_dfm %>% pull(value, Country), names(preds_dfm %>% pull(value, Country))), unname),
-  "entry_5"= preds_ets %>% pull(value, Country)
+  "entry_5" = preds_ets %>% pull(value, Country)
 )
 save_entries(entries, "Submissions/PPI/results_november.json")
 # entries = list("entry_5"= preds_ets%>%pull(value, Country))

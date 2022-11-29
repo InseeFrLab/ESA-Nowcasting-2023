@@ -37,7 +37,7 @@ plot_preds(data$PVI, predictions, countries_PVI[-1:-18], ncol = 3)
 resids <- bind_rows(list(
   "entry_1" = resid_naive_1m %>% mutate(Entries = "Naive"),
   "entry_3" = resid_xgboost %>% mutate(Entries = "XGBoost"),
-  "entry_4" = resid_dfm %>% mutate(Entries = "DFM")#,
+  "entry_4" = resid_dfm %>% mutate(Entries = "DFM") # ,
   # "entry_5" = resid_ets %>% mutate(Entries = "ETS")
 ))
 
