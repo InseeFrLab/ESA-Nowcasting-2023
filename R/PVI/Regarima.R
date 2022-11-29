@@ -37,7 +37,7 @@ for (country in countries_PVI) {
     tail(1) %>%
     pull()
 
-  n_forward <- interval(current_date_country, date_to_pred) %/% months(1)
+  n_forward <- lubridate::interval(current_date_country, date_to_pred) %/% months(1)
 
   # série cible + vérif date de début
   debut <- data$PVI %>%
@@ -200,7 +200,7 @@ for (country in countries_PVI) {
     tsbox::ts_xts(pvi_ts - exp(dlpvi - resid(pvi_regarima)) * (stats::lag(pvi_ts, -1))) %>%
       as_tibble() %>%
       mutate(
-        Date = index(tsbox::ts_xts(resid(pvi_regarima))),
+        Date = zoo::index(tsbox::ts_xts(resid(pvi_regarima))),
         Country = country
       ) %>%
       select(Country, Date, value)

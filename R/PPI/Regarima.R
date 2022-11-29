@@ -44,7 +44,7 @@ for (country in countries_PPI) {
     last() %>%
     pull(time)
 
-  n_forward <- interval(fin, date_to_pred) %/% months(1)
+  n_forward <- lubridate::interval(fin, date_to_pred) %/% months(1)
 
   ppi <- ts(data$PPI %>% filter(geo %in% country) %>% pull(values), start = debut, frequency = 12)
   dlppi <- window(log(ppi) - stats::lag(log(ppi), -1), start = c(2010, 1))
@@ -104,7 +104,7 @@ for (country in countries_PPI) {
     dlipi_3 <- stats::lag(dlipi, -3)
     dlipi_4 <- stats::lag(dlipi, -4)
     # différence éventuelle entre dernière date ppi et dernière date prix d'imports
-    ecart_dernier_mois <- interval(date_to_pred, data$IPI %>% filter(geo %in% country & cpa2_1 == "CPA_B-D") %>% last() %>% pull(time)) %/% months(1)
+    ecart_dernier_mois <- lubridate::interval(date_to_pred, data$IPI %>% filter(geo %in% country & cpa2_1 == "CPA_B-D") %>% last() %>% pull(time)) %/% months(1)
 
 
     if (ecart_dernier_mois == -1) {
@@ -197,7 +197,7 @@ for (country in countries_PPI) {
     tsbox::ts_xts(ppi - exp(dlppi - resid(ppi_regarima)) * (stats::lag(ppi, -1))) %>%
       as_tibble() %>%
       mutate(
-        Date = index(tsbox::ts_xts(resid(ppi_regarima))),
+        Date = zoo::index(tsbox::ts_xts(resid(ppi_regarima))),
         Country = country
       ) %>%
       select(Country, Date, value)

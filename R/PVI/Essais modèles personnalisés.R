@@ -17,7 +17,7 @@ current_date_country <- data$PVI %>%
   tail(1) %>%
   pull()
 
-n_forward <- interval(current_date_country, date_to_pred) %/% months(1)
+n_forward <- lubridate::interval(current_date_country, date_to_pred) %/% months(1)
 
 # série cible + vérif date de début
 debut <- data$PVI %>%
