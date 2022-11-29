@@ -35,7 +35,7 @@ preds_ets <- models %>%
   mutate(
     Country = geo,
     Date = as.Date(time),
-    value = .mean
+    value = round(.mean, 1)
   ) %>%
   as_tibble() %>%
   select(Country, Date, value)
