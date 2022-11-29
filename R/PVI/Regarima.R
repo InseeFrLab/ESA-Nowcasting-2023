@@ -6,7 +6,6 @@
 # Required packages
 #########################################
 
-# install.packages("RJDemetra")
 library(dplyr)
 library(astsa)
 library(lubridate)
@@ -106,7 +105,7 @@ for (country in countries_PVI) {
     usrdef.outliersType = c(
       "AO", "AO", "AO", "AO", "AO",
       "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO"
+      "AO", "AO", "AO", "AO", "AO"
     ),
     usrdef.outliersDate = c(
       "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
