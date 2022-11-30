@@ -22,8 +22,8 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-nb_months_past_to_use <- 10
-nb_years_past_to_use <- 5
+nb_months_past_to_use <- 12
+nb_years_past_to_use <- 6
 nb_months_past_to_use_others <- 6
 
 list_eurostat_tables <- c("HICP")
@@ -45,9 +45,12 @@ countries <- db$TOURISM %>%
 dates <- db$TOURISM %>%
   select(time) %>%
   add_row(time = current_date) %>%
-  add_row(time = date(current_date - dmonths(1))) %>%
+  add_row(time = date(current_date %m-% months(1))) %>%
   unique() %>%
-  filter(year(time) >= 2007) %>%
+  filter(
+    year(time) >= 2007,
+    day(time) == 1
+  ) %>%
   mutate(dummy = 1)
 
 df <- dates %>%
@@ -65,7 +68,7 @@ for (i in 1:nb_months_past_to_use) {
   df_TOURISM <- df_TOURISM %>%
     mutate(!!variable := lag(TOURISM, n = i))
 }
-for (i in 1:nb_years_past_to_use) {
+for (i in 2:nb_years_past_to_use) {
   variable <- paste("TOURISM", "minus", i, "years", sep = "_")
   df_TOURISM <- df_TOURISM %>%
     mutate(!!variable := lag(TOURISM, n = 12 * i - 1))
@@ -106,7 +109,7 @@ df <- df %>%
   group_by(geo)
 
 list_other_variables <- colnames(df)[
-  (7 + nb_months_past_to_use + nb_years_past_to_use):(length(colnames(df)))
+  (6 + nb_months_past_to_use + nb_years_past_to_use):(length(colnames(df)))
 ]
 
 for (i in 1:nb_months_past_to_use_others) {
