@@ -47,8 +47,10 @@ dates <- db$TOURISM %>%
   add_row(time = current_date) %>%
   add_row(time = date(current_date %m-% months(1))) %>%
   unique() %>%
-  filter(year(time) >= 2007,
-         day(time) == 1) %>%
+  filter(
+    year(time) >= 2007,
+    day(time) == 1
+  ) %>%
   mutate(dummy = 1)
 
 df <- dates %>%

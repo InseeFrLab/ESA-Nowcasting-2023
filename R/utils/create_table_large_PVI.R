@@ -45,8 +45,10 @@ dates <- db$PVI %>%
   select(time) %>%
   add_row(time = current_date) %>%
   unique() %>%
-  filter(year(time) >= 2007,
-         day(time) == 1) %>%
+  filter(
+    year(time) >= 2007,
+    day(time) == 1
+  ) %>%
   mutate(dummy = 1)
 
 df <- dates %>%
