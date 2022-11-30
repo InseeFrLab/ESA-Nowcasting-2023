@@ -54,7 +54,27 @@ entries <- list(
   "entry_4" = lapply(split(preds_dfm %>% pull(value, Country), names(preds_dfm %>% pull(value, Country))), unname),
   "entry_5" = lapply(split(preds_ets %>% pull(value, Country), names(preds_ets %>% pull(value, Country))), unname)
 )
-save_entries(entries, "Submissions/TOURISM/results_november.json")
+month <- "november"
+
+save_entries(entries, paste0("Submissions/TOURISM/results_", month, ".json"))
+
+#### Save the results in S3 ####
+system(
+  paste(
+    paste0("mc cp Submissions/TOURISM/results_", month, ".json"),
+    paste0("s3/projet-esa-nowcasting/submissions/TOURISM/results_", month, ".json")
+  )
+)
+
+#### Save the data in S3 ####
+save(data, file = paste0("data_TOURISM_", month, ".R"))
+system(
+  paste(
+    paste0("mc cp data_TOURISM_", month, ".R"),
+    paste0("s3/projet-esa-nowcasting/data/TOURISM/data_", month, ".R")
+  )
+)
+
 # entries <- list(
 #   "entry_5"= preds_ets%>%pull(value, Country)#,
 #   # "entry_6"= preds_tbats%>%pull(value, Country)
