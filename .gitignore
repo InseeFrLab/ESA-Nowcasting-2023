@@ -4,3 +4,6 @@
 .Ruserdata
 .bash_history
 *.RData
+*.zip
+*.docx
+point_estimates.json
