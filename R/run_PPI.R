@@ -68,11 +68,11 @@ system(
 )
 
 #### Save the data in S3 ####
-save(data, file = paste0("data_PPI_", month, ".R"))
+save(data, file = paste0("data_PPI_", month, ".RData"))
 system(
   paste(
-    paste0("mc cp data_PPI_", month, ".R"),
-    paste0("s3/projet-esa-nowcasting/data/PPI/data_", month, ".R")
+    paste0("mc cp data_PPI_", month, ".RData"),
+    paste0("s3/projet-esa-nowcasting/data/PPI/data_", month, ".RData")
   )
 )
 # entries = list("entry_5"= preds_ets%>%pull(value, Country))

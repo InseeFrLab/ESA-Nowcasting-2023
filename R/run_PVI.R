@@ -69,10 +69,10 @@ system(
 )
 
 #### Save the data in S3 ####
-save(data, file = paste0("data_PVI_", month, ".R"))
+save(data, file = paste0("data_PVI_", month, ".RData"))
 system(
   paste(
-    paste0("mc cp data_PVI_", month, ".R"),
-    paste0("s3/projet-esa-nowcasting/data/PVI/data_", month, ".R")
+    paste0("mc cp data_PVI_", month, ".RData"),
+    paste0("s3/projet-esa-nowcasting/data/PVI/data_", month, ".RData")
   )
 )
