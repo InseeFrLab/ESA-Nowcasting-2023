@@ -25,7 +25,7 @@ source("R/utils/getData.R")
 nb_months_past_to_use <- 24
 nb_months_past_to_use_others <- 4
 
-list_eurostat_tables <- c("PSURVEY", "HICP")
+list_eurostat_tables <- c("PSURVEY", "IPI", "HICP")
 list_yahoo_finance <- c("brent", "eur_usd", "sp500", "eurostoxx500", "cac40")
 
 db <- getData("PVI")

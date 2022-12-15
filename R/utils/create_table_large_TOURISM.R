@@ -26,7 +26,7 @@ nb_months_past_to_use <- 12
 nb_years_past_to_use <- 6
 nb_months_past_to_use_others <- 6
 
-list_eurostat_tables <- c("HICP")
+list_eurostat_tables <- c("PSURVEY", "HICP")
 list_yahoo_finance <- c("brent", "eur_usd")
 
 db <- getData("TOURISM")

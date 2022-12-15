@@ -222,6 +222,27 @@ getData <- function(case) {
         drop_na(values)
 
       db[["PSURVEY"]] <- data
+      
+      # Import price index for all subcategories of level 2 + two aggregates
+      data <- get_eurostat("sts_inpi_m",
+                           select_time = "M",
+                           filters = list(
+                             geo = countries_PPI,
+                             indic_bt = "IMPR",
+                             cpa2_1 = c(
+                               paste0("CPA_B", str_pad(5:8, 2, pad = "0")), paste0("CPA_C", 10:32),
+                               "CPA_D35", "CPA_B-E36", "CPA_B-D",
+                               "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"
+                             ),
+                             s_adj = "NSA",
+                             unit = "I15"
+                           ),
+                           time_format = "date"
+      ) %>%
+        select(geo, cpa2_1, time, values) %>%
+        drop_na(values)
+      
+      db[["IPI"]] <- data
 
       # Retrieve daily BRENT index from Yahoo Finance
       brent_id <- "BZ=F"
@@ -328,6 +349,22 @@ getData <- function(case) {
         drop_na(values)
 
       db[["TOURISM"]] <- data
+      
+      # Retrieve several surveys on production prices (confidence, price expectations, employment expectations)
+      data <- get_eurostat("ei_bsin_m_r2",
+                           select_time = "M",
+                           filters = list(
+                             geo = countries_PVI,
+                             indic = c("BS-ICI", "BS-ISPE", "BS-IEME"),
+                             s_adj = "NSA",
+                             unit = "BAL"
+                           ),
+                           time_format = "date"
+      ) %>%
+        select(geo, indic, time, values) %>%
+        drop_na(values)
+      
+      db[["PSURVEY"]] <- data
 
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"

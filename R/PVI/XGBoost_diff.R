@@ -27,7 +27,7 @@ do_grid_search <- FALSE
 #########################################
 
 best_max_depth_per_country <- 3
-best_nrounds_per_country <- 60
+best_nrounds_per_country <- 90
 best_eta_per_country <- 0.3
 
 preds_xgboost_per_country <- countries %>%
