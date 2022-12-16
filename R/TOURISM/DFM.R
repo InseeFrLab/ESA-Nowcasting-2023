@@ -22,6 +22,12 @@ preds_dfm <- tibble(
   value = numeric()
 )
 
+resid_dfm <- tibble(
+  Country = character(),
+  Date = as.POSIXct(NA),
+  value = numeric()
+)
+
 for (country in countries_tourism) {
   cat(paste0("Running estimation for ", country, "\n"))
   var_to_predict <- paste0(country, "_TOURISM")
@@ -186,7 +192,7 @@ for (country in countries_tourism) {
       # Otherwise we use the output from the model to know
       converged <- model$converged
     }
-    # We reduce the number of factor, so that we can resimulate when it failed
+    # We reduce the number of factor, so that we can resimulate when it has failed
     r <- r - 1
   }
 
@@ -209,6 +215,24 @@ for (country in countries_tourism) {
 
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
+
+  #########################################
+  # Storing the residuals
+  #########################################
+  resid_sa <- resid(model, orig.format = TRUE)[, paste0(var_to_predict, "_SA")]
+  resid_nsa <- resid_sa + tsbox::ts_xts(sa$final$series[, "s"])
+
+  resid_dfm <- rbind(
+    resid_dfm,
+    resid_nsa %>%
+      as_tibble() %>%
+      mutate(
+        Date = zoo::index(resid(model, orig.format = TRUE)[, paste0(var_to_predict, "_SA")]),
+        Country = country
+      ) %>%
+      rename(value = paste0(var_to_predict, "_SA")) %>%
+      select(Country, Date, value)
+  )
 }
 
 #########################################

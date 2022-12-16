@@ -21,7 +21,7 @@ preds_sarima <- tibble(
 )
 
 for (country in countries_PPI) {
-  n_forward <- interval(current_date, date_to_pred) %/% months(1)
+  n_forward <- lubridate::interval(current_date, date_to_pred) %/% months(1)
 
   pred <- sarima.for(
     data$PPI %>%

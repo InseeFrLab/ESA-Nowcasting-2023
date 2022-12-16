@@ -20,6 +20,12 @@ preds_dfm <- tibble(
   value = numeric()
 )
 
+resid_dfm <- tibble(
+  Country = character(),
+  Date = as.POSIXct(NA),
+  value = numeric()
+)
+
 for (country in countries_PPI) {
   cat(paste0("Running estimation for ", country, "\n"))
   var_to_predict <- paste0(country, "_PPI_B.E36")
@@ -28,7 +34,7 @@ for (country in countries_PPI) {
   #########################################
   ppi <- reshape_eurostat_data(data$PPI, "PPI", country, "nace_r2")
   ppi_nace2 <- reshape_eurostat_data(data$PPI_NACE2, "PPI", country, "nace_r2")
-  ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "nace_r2")
+  # ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "nace_r2")
   psurvey <- reshape_eurostat_data(data$PSURVEY, "PSURVEY", country, "indic")
   pvi <- reshape_eurostat_data(data$PVI, "PVI", country)
   hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
@@ -108,7 +114,7 @@ for (country in countries_PPI) {
     mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
     select(time, cac40_adjusted, cac40_volume)
 
-  DB <- list(ppi, ppi_nace2, ipi, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
+  DB <- list(ppi, ppi_nace2, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
@@ -231,8 +237,14 @@ for (country in countries_PPI) {
       # Otherwise we use the output from the model to know
       converged <- model$converged
     }
-    # We reduce the number of factor, so that we can resimulate when it failed
-    r <- r - 1
+    # We reduce the number of factor, so that we can resimulate when it has failed
+    if (r > 1) {
+      r <- r - 1
+      lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
+      if (lag > max_lags) lag <- max_lags
+    } else {
+      lag <- lag - 1
+    }
   }
 
   #########################################
@@ -251,6 +263,21 @@ for (country in countries_PPI) {
 
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
+
+  #########################################
+  # Storing the residuals
+  #########################################
+  resid_dfm <- rbind(
+    resid_dfm,
+    resid(model, orig.format = TRUE)[, var_to_predict] %>%
+      as_tibble() %>%
+      mutate(
+        Date = zoo::index(resid(model, orig.format = TRUE)[, var_to_predict]),
+        Country = country
+      ) %>%
+      rename(value = paste(var_to_predict)) %>%
+      select(Country, Date, value)
+  )
 }
 
 #########################################

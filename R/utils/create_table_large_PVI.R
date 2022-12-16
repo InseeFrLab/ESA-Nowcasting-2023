@@ -22,12 +22,13 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-list_eurostat_tables <- c("PSURVEY", "HICP")
+nb_months_past_to_use <- 24
+nb_months_past_to_use_others <- 4
+
+list_eurostat_tables <- c("PSURVEY", "IPI", "HICP")
 list_yahoo_finance <- c("brent", "eur_usd", "sp500", "eurostoxx500", "cac40")
 
 db <- getData("PVI")
-
-current_date <- ymd(current_date)
 
 #########################################
 # Create the tables for the regression
@@ -44,7 +45,10 @@ dates <- db$PVI %>%
   select(time) %>%
   add_row(time = current_date) %>%
   unique() %>%
-  filter(year(time) >= 2007) %>%
+  filter(
+    year(time) >= 2007,
+    day(time) == 1
+  ) %>%
   mutate(dummy = 1)
 
 df <- dates %>%
@@ -103,10 +107,21 @@ df <- df %>%
   ) %>%
   group_by(geo)
 
-for (i in 1:nb_months_past_to_use_ppi) {
+# If available, let's use the last months of the other variables as well
+list_other_variables <- colnames(df)[
+  (7 + nb_months_past_to_use):(length(colnames(df)) - 1)
+]
+
+for (i in 1:nb_months_past_to_use_others) {
   variable <- paste("PPI", "minus", i, "months", sep = "_")
   df <- df %>%
-    mutate(!!variable := lag(PVI, n = i))
+    mutate(!!variable := lag(PPI, n = i))
+
+  for (other_variable in list_other_variables) {
+    variable <- paste(other_variable, "minus", i, "months", sep = "_")
+    df <- df %>%
+      mutate(!!variable := lag(UQ(rlang::sym(other_variable)), n = i))
+  }
 }
 df <- df %>%
   ungroup()
@@ -156,6 +171,8 @@ for (table in list_yahoo_finance) {
 }
 
 # Delete dummy columns (to do by country if models specific to countries)
+
+df <- df[colSums(!is.na(df)) > 0]
 
 df <- df[c(
   rep(TRUE, 3),

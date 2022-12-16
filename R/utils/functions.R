@@ -3,12 +3,13 @@ library(cowplot)
 library(rjson)
 library(jsonlite)
 library(styler)
+library(data.table)
 # Just a placeholder so that renv detect styler
 # styler::style_dir("R")
 
 get_latest_dates <- function(data, var) {
   # Returns a list with last available value for each variable of the xts dataset
-  return(as.character(last(index(data)[!is.na(data[, var])])))
+  return(as.character(last(zoo::index(data)[!is.na(data[, var])])))
 }
 
 theme_custom <- function() {
@@ -79,10 +80,104 @@ plot_preds <- function(sample, predictions, Countries, xlim = "2020-01-01", ncol
   return(plot)
 }
 
-save_entries <- function(entries, filename) {
-  file <- rjson::toJSON(entries)
-  write(jsonlite::prettify(file), filename)
+get_metrics <- function(sample, Countries, up_date, low_date) {
+  setDT(sample)
+  sample <- sample[
+    (Country %in% Countries) &
+      (Date %between% c(low_date, up_date)),
+    .(
+      ME = mean(value, na.rm = TRUE),
+      N = as.double(sum(!is.na(value))),
+      MAE = mean(abs(value), na.rm = TRUE),
+      RMSE = sqrt(mean(value^2, na.rm = TRUE))
+    ),
+    by = .(Entries)
+  ]
+
+  sample <- melt(sample, id.vars = c("Entries"), value.name = "value", variable.name = "Statistic")
+
+  return(sample)
 }
+
+subplot_statistic <- function(sample, statistic, legend = TRUE, y_labs = TRUE) {
+  sample <- sample[, c("Entries", "Statistic") := list(
+    factor(Entries, levels = c("Naive", "SARIMA", "REG-ARIMA", "XGBoost", "XGBoost_diff", "DFM", "ETS")),
+    factor(Statistic, levels = c("N", "ME", "MIN", "MAX", "MAE", "RMSE"))
+  )]
+
+  temp <- sample[(Statistic == "N")][order(Entries)]
+
+  NewTitle <- paste0(temp$Entries, "\n(", temp$value, ")")
+  names(NewTitle) <- temp$Entries
+
+  sample <- sample[(Statistic != "N")][, Entries := factor(dplyr::recode(Entries, !!!NewTitle), levels = NewTitle)]
+
+  plot <- ggplot(data = subset(sample, Statistic == statistic)) +
+    ggtitle(statistic) +
+
+    # makes the bar and format
+    geom_bar(aes(x = Entries, y = value, fill = Entries), stat = "identity", position = "dodge", width = 0.8) +
+    geom_hline(yintercept = 0) +
+    # Add labels
+    geom_text(aes(x = Entries, y = value, vjust = ifelse(value > 0, -0.2, 1.15), label = round(value, 2)), size = 3) +
+    # set general theme
+    theme_custom() +
+    theme(plot.title = element_text(size = 9, face = "plain", colour = "black")) +
+    {
+      if (!legend) {
+        theme(legend.position = "none")
+      }
+    } +
+    {
+      if (!y_labs) {
+        theme(
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank()
+        )
+      }
+    } +
+    # set colors and name of data
+    scale_fill_manual("", values = Palette_col)
+
+  return(plot)
+}
+
+plot_statistics <- function(sample) {
+  Plot1 <- subplot_statistic(sample, "ME", FALSE, TRUE)
+  Plot2 <- subplot_statistic(sample, "MAE", FALSE, FALSE)
+  Plot3 <- subplot_statistic(sample, "RMSE", FALSE, FALSE)
+
+  legend <- cowplot::get_legend(
+    subplot_statistic(sample, "ME", TRUE, FALSE)
+    + theme(legend.box.margin = margin(-15, 0, 0, 0))
+  )
+
+  prow <- plot_grid(Plot1,
+    Plot2,
+    Plot3,
+    align = "h", ncol = 3, vjust = -0.8
+  )
+
+  plot <- plot_grid(legend,
+    prow,
+    ncol = 1, rel_heights = c(0.1, 1)
+  )
+
+  return(plot)
+}
+
+save_entries <- function(entries, filename) {
+  if (file.exists(filename)) {
+    current_file <- rjson::fromJSON(file = filename)
+    current_file[names(entries)] <- entries
+    file <- rjson::toJSON(current_file)
+    write(jsonlite::prettify(file), filename)
+  } else {
+    file <- rjson::toJSON(entries)
+    write(jsonlite::prettify(file), filename)
+  }
+}
+
 
 reshape_eurostat_data <- function(data, variable, country, measure) {
   if (missing(measure)) {
@@ -121,3 +216,24 @@ pal_col <- rbind(
 )
 
 Palette_col <- rgb(pal_col[, 1], pal_col[, 2], pal_col[, 3], maxColorValue = 255)
+
+
+add_entries <- function(entries, filename) {
+  current_file <- rjson::fromJSON(paste0(readLines(filename), collapse = ""))
+  file <- rjson::toJSON(c(current_file, entries))
+  write(jsonlite::prettify(file), filename)
+}
+reorder_entries <- function(entries, filename) {
+  current_file <- rjson::fromJSON(paste0(readLines(filename), collapse = ""))
+  current_file <- current_file[entries]
+  names(current_file) <- sprintf("entry_%i", 1:length(current_file))
+  file <- rjson::toJSON(current_file)
+  write(jsonlite::prettify(file), filename)
+}
+
+to_tsibble <- function(x) {
+  x %>%
+    mutate(time = yearmonth(time)) %>%
+    drop_na() %>%
+    as_tsibble(key = c(geo), index = time)
+}
