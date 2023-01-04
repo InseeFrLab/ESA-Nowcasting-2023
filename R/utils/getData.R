@@ -402,7 +402,7 @@ getData <- function(case) {
         select(time, eur_usd_adjusted, eur_usd_volume)
       db[["eur_usd"]] <- data
     },
-    stop("Enter one of the 3 following chalenges: PPI, PVI, TOURISM")
+    stop("Enter one of the 3 following challenges: PPI, PVI, TOURISM")
   )
   options(warn = defaultW)
   return(db)
