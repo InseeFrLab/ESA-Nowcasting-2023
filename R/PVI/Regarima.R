@@ -42,7 +42,7 @@ for (country in countries_PVI) {
   # série cible + vérif date de début
   debut <- data$PVI %>%
     filter(geo %in% country) %>%
-    slice_head(n = 1) %>%
+    dplyr::slice_head(n = 1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
   pvi_ts <- ts(data$PVI %>% filter(geo %in% country) %>% pull(values), start = debut, frequency = 12)
@@ -51,14 +51,14 @@ for (country in countries_PVI) {
   debut <- data$PSURVEY %>%
     filter(geo %in% country) %>%
     filter(indic == "BS-ICI") %>%
-    slice_head(n = 1) %>%
+    dplyr::slice_head(n = 1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
   IS <- ts(data$PSURVEY %>% filter(geo %in% country) %>% filter(indic == "BS-ICI") %>% pull(values), start = debut, frequency = 12)
   debut <- data$PSURVEY %>%
     filter(geo %in% country) %>%
     filter(indic == "BS-IPT") %>%
-    slice_head(n = 1) %>%
+    dplyr::slice_head(n = 1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
   IPT <- ts(data$PSURVEY %>% filter(geo %in% country) %>% filter(indic == "BS-IPT") %>% pull(values), start = debut, frequency = 12)
