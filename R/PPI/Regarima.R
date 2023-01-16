@@ -35,7 +35,7 @@ for (country in countries_PPI) {
 
   debut <- data$PPI %>%
     filter(geo %in% country) %>%
-    slice(1:1) %>%
+    dplyr::slice(1:1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
 
@@ -56,7 +56,7 @@ for (country in countries_PPI) {
     summarize(brent_adjusted = mean(brent_adjusted, na.rm = TRUE)) %>%
     select(c(time, brent_adjusted))
   debut <- brent %>%
-    slice(1:1) %>%
+    dplyr::slice(1:1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
   brent <- ts(brent %>% pull(brent_adjusted), start = debut, frequency = 12)
@@ -68,7 +68,7 @@ for (country in countries_PPI) {
     summarize(eur_usd_adjusted = mean(eur_usd_adjusted, na.rm = TRUE)) %>%
     select(c(time, eur_usd_adjusted))
   debut <- eur_usd %>%
-    slice(1:1) %>%
+    dplyr::slice(1:1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
   eur_usd <- ts(eur_usd %>% pull(eur_usd_adjusted), start = debut, frequency = 12)
@@ -86,7 +86,7 @@ for (country in countries_PPI) {
   # Autres exogènes : prix d'importation industrie + retards
   debut <- data$IPI %>%
     filter(geo %in% country) %>%
-    slice(1:1) %>%
+    dplyr::slice(1:1) %>%
     pull(time)
   debut <- c(year(debut), month(debut))
 
