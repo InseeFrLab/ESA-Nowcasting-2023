@@ -115,6 +115,7 @@ getData <- function(case) {
 
       db[["PVI"]] <- data
 
+      # Import inflation data
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"
       ) %>%
@@ -272,6 +273,7 @@ getData <- function(case) {
 
       db[["PPI"]] <- data
 
+      # Import inflation data
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"
       ) %>%
@@ -366,6 +368,7 @@ getData <- function(case) {
       
       db[["PSURVEY"]] <- data
 
+      # Import inflation data
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"
       ) %>%
