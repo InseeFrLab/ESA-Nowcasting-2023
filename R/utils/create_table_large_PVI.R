@@ -190,7 +190,7 @@ for (i in 1:4) {
   mean_price <- paste("mean_electricity_price_week", i,
                       sep = "_"
   )
-  
+
   df_weekly <- df_electricity %>%
     filter(
       day > 7 * (i - 1),
@@ -200,10 +200,15 @@ for (i in 1:4) {
       !!mean_price := mean(electricity_price,
                            na.rm = TRUE)
     )
-  
+
   df <- df %>%
     left_join(df_weekly)
 }
+
+# E) Add number of weeekend days per month
+
+df <- df %>%
+  left_join(db[['nb_weekend_days']])
 
 # Delete dummy columns (to do by country if models specific to countries)
 

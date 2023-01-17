@@ -361,6 +361,15 @@ getData <- function(case) {
         inner_join(countries_codes %>% select(-geo_3_letters))  %>%
         select(geo, time, electricity_price)
       db[["electricity_prices"]] <- data
+      
+      dates <- seq(as.Date("2007-01-01"), date_to_pred, by = "month")
+      nb_weekend_days <- data.frame(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
+      for (i in 1:length(dates)) {
+        month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
+        month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6,7))
+      }
+      db[["nb_weekend_days"]] <- nb_weekend_days
     },
 
     # Retrieve data for TOUR challenge
@@ -432,6 +441,15 @@ getData <- function(case) {
         ) %>%
         select(time, eur_usd_adjusted, eur_usd_volume)
       db[["eur_usd"]] <- data
+      
+      dates <- seq(as.Date("2007-01-01"), date_to_pred, by = "month")
+      nb_weekend_days <- data.frame(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
+      for (i in 1:length(dates)) {
+        month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
+        month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6,7))
+      }
+      db[["nb_weekend_days"]] <- nb_weekend_days
     },
     stop("Enter one of the 3 following challenges: PPI, PVI, TOURISM")
   )

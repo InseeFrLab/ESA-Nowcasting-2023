@@ -170,7 +170,7 @@ for (table in list_yahoo_finance) {
           na.rm = TRUE
         )
       )
-    
+
     df <- df %>%
       left_join(df_table_weekly)
   }
@@ -195,7 +195,7 @@ for (i in 1:4) {
   mean_price <- paste("mean_electricity_price_week", i,
                                 sep = "_"
   )
-  
+
   df_weekly <- df_electricity %>%
     filter(
       day > 7 * (i - 1),
