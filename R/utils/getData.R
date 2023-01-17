@@ -16,6 +16,18 @@ library(lubridate)
 source("R/utils/globalVariables.R")
 
 #########################################
+# Import tables that can be useful for all other data imports
+#########################################
+
+# Matching table between country names and ISO codes
+
+countries_codes <- read_csv('https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv') %>%
+  rename(country_name = Country,
+         geo = `Alpha-2 code`,
+         geo_3_letters = `Alpha-3 code`) %>%
+  select(country_name, geo, geo_3_letters)
+
+#########################################
 # Define a function that retrieves data
 #########################################
 
@@ -187,6 +199,14 @@ getData <- function(case) {
         ) %>%
         select(time, cac40_adjusted, cac40_volume)
       db[["cac40"]] <- data
+      
+      data <- read_csv('https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv') %>%
+        rename(country_name = Country,
+               time = Date,
+               electricity_price = `Price (EUR/MWhe)`) %>%
+        inner_join(countries_codes %>% select(-geo_3_letters))  %>%
+        select(geo, time, electricity_price)
+      db[["electricity_prices"]] <- data
     },
 
     # Retrieve data for PVI challenge
@@ -333,6 +353,14 @@ getData <- function(case) {
         ) %>%
         select(time, cac40_adjusted, cac40_volume)
       db[["cac40"]] <- data
+      
+      data <- read_csv('https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv') %>%
+        rename(country_name = Country,
+               time = Date,
+               electricity_price = `Price (EUR/MWhe)`) %>%
+        inner_join(countries_codes %>% select(-geo_3_letters))  %>%
+        select(geo, time, electricity_price)
+      db[["electricity_prices"]] <- data
     },
 
     # Retrieve data for TOUR challenge
