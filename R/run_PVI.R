@@ -62,8 +62,6 @@ entries <- list(
 )
 
 save_entries(entries, paste0("Submissions/PVI/results_", month, ".json"))
-# entries = list("entry_5"= preds_ets%>%pull(value, Country))
-# add_entries(entries, "Submissions/PVI/results_november.json")
 
 #### Save the results in S3 ####
 system(

@@ -12,6 +12,7 @@ library(tidyr)
 library(stringr)
 library(quantmod)
 library(lubridate)
+library(readr)
 
 source("R/utils/globalVariables.R")
 
