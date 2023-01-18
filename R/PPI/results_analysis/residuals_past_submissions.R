@@ -104,8 +104,10 @@ plot_preds(df_recent_ppi, df_submissions_ppi,
            ncol = 3)
 
 ##################################
-# Comparison in a dataframe
+# Comparison in dataframes
 ##################################
+
+### The general dataframe with the residuals
 
 df_compare_ppi <- df_submissions_ppi %>%
   rename(Prediction = value) %>%
@@ -114,7 +116,41 @@ df_compare_ppi <- df_submissions_ppi %>%
               rename(Date = time,
                      Country = geo,
                      TrueValue = values)) %>%
-  mutate(Diff = Prediction - TrueValue) %>%
+  mutate(Diff = Prediction - TrueValue,
+         AbsoluteDiff = abs(Diff)) %>%
   arrange(Country, Date)
 
-            
+### The residuals grouped by country
+
+df_MAE_by_country_ppi <- df_compare_ppi %>%
+  filter(!is.na(Diff)) %>%
+  group_by(Country, Entries) %>%
+    summarise(MAE_country = mean(AbsoluteDiff, na.rm = TRUE),
+              n_predictions = n()) %>%
+  arrange(Country, MAE_country) %>%
+  ungroup() %>%
+  group_by(Country) %>%
+  mutate(rank = rank(MAE_country))
+
+### The residuals grouped by month
+
+df_MAE_by_month_ppi <- df_compare_ppi %>%
+  filter(!is.na(Diff)) %>%
+  group_by(Date, Entries) %>%
+  summarise(MAE_month = mean(AbsoluteDiff, na.rm = TRUE),
+            n_predictions = n()) %>%
+  arrange(Date, MAE_month) %>%
+  ungroup() %>%
+  group_by(Date) %>%
+  mutate(rank = rank(MAE_month)) 
+  
+### The residuals grouped by model only
+
+df_MAE_by_model_ppi <- df_compare_ppi %>%
+  filter(!is.na(Diff)) %>%
+  group_by(Entries) %>%
+  summarise(MAE_model = mean(AbsoluteDiff, na.rm = TRUE),
+            n_predictions = n()) %>%
+  arrange(MAE_model) %>%
+  ungroup() %>%
+  mutate(rank = rank(MAE_model)) 
