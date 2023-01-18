@@ -28,6 +28,14 @@ correspondance_entries <- list(
     "entry_3" = "XGBoost_diff",
     "entry_4" = "DFM",
     "entry_5" = "ETS"
+  ),
+  
+  'january' = list(
+    "entry_1" = "REG-ARIMA",
+    "entry_2" = "XGBoost",
+    "entry_3" = "XGBoost_diff",
+    # "entry_4" = "DFM",
+    "entry_5" = "ETS"
   )
   
 )

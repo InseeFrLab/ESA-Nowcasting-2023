@@ -24,9 +24,9 @@ source("R/utils/functions.R")
 
 ### Global variables
 
-start_date <- as.Date("2022-07-01")
+start_date <- as.Date("2022-06-01")
 date <- start_date
-months_past <- c('september', 'october', 'november', 'december')
+months_past <- c('september', 'october', 'november', 'december', 'january')
 # This list must be linear in time
 
 ##################################
