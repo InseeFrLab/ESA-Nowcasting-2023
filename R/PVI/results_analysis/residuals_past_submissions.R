@@ -35,7 +35,7 @@ months_past <- c('september', 'october', 'november', 'december')
 
 ### Submissions
 
-df_submissions <- data.frame(matrix(ncol = 4, nrow = 0))
+df_submissions_pvi <- data.frame(matrix(ncol = 4, nrow = 0))
 x <- c("Country", "Date", "value", "Entry")
 
 for (month in months_past){
@@ -60,7 +60,7 @@ for (month in months_past){
                Entries = correspondance_entries[[month]][[entry]]) %>%
         relocate(Country, Date, value, Entries)
       
-      df_submissions <- df_submissions %>%
+      df_submissions_pvi <- df_submissions_pvi %>%
         rbind(df_entry)
     }
   }
@@ -91,15 +91,28 @@ df_recent_pvi <- df_pvi %>%
 # Compare the results
 ##################################
 
-plot_preds(df_recent_pvi, df_submissions,
+plot_preds(df_recent_pvi, df_submissions_pvi,
            countries_PVI[1:9], xlim = start_date,
            ncol = 3)
 
-plot_preds(df_recent_pvi, df_submissions,
+plot_preds(df_recent_pvi, df_submissions_pvi,
            countries_PVI[10:18], xlim = start_date,
            ncol = 3)
 
-plot_preds(df_recent_pvi, df_submissions,
+plot_preds(df_recent_pvi, df_submissions_pvi,
            countries_PVI[-1:-18], xlim = start_date,
            ncol = 3)
+
+##################################
+# Comparison in a dataframe
+##################################
+
+df_compare_pvi <- df_submissions_pvi %>%
+  rename(Prediction = value) %>%
+  left_join(df_recent_pvi %>%
+              rename(Date = time,
+                     Country = geo,
+                     TrueValue = values)) %>%
+  mutate(Diff = Prediction - TrueValue) %>%
+  arrange(Country, Date)
 
