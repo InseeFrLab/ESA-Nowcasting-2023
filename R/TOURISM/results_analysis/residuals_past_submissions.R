@@ -19,7 +19,7 @@ library(eurostat)
 ### Other files
 
 source("R/utils/globalVariables.R")
-source("R/PPI/results_analysis/models_submissions.R")
+source("R/TOURISM/results_analysis/models_submissions.R")
 source("R/utils/functions.R")
 
 ### Global variables
@@ -46,7 +46,7 @@ for (month in months_past){
   }
   
   json_data <- jsonlite::fromJSON(
-    paste0("Submissions/PPI/results_", month,".json"))
+    paste0("Submissions/TOURISM/results_", month,".json"))
   list_df_entries <- lapply(json_data, as.data.frame)
   
   for (entry in names(list_df_entries)){
@@ -68,38 +68,37 @@ for (month in months_past){
 
 ### Actual values
 
-df_ppi <- get_eurostat("sts_inppd_m",
-                       select_time = "M",
-                       filters = list(
-                         geo = countries_PPI,
-                         indic_bt = "PRIN",
-                         nace_r2 = "B-E36",
-                         s_adj = "NSA",
-                         unit = "I15"
-                       ),
-                       time_format = "date"
+df_tourism <- get_eurostat("tour_occ_nim",
+                           select_time = "M",
+                           filters = list(
+                             geo = countries_tourism,
+                             c_resid = "TOTAL",
+                             nace_r2 = "I551-I553",
+                             unit = "NR"
+                           ),
+                           time_format = "date"
 ) %>%
-  select(geo, nace_r2, time, values) %>%
+  select(geo, time, values) %>%
   drop_na(values)
 
 # Restrict to the recent dates
 
-df_recent_ppi <- df_ppi %>%
+df_recent_tourism <- df_tourism %>%
   filter(time >= start_date)
 
 ##################################
 # Compare the results
 ##################################
 
-plot_preds(df_recent_ppi, df_submissions,
-           countries_PPI[1:9], xlim = start_date,
+plot_preds(df_recent_tourism, df_submissions,
+           countries_tourism[1:9], xlim = start_date,
            ncol = 3)
 
-plot_preds(df_recent_ppi, df_submissions,
-           countries_PPI[10:18], xlim = start_date,
+plot_preds(df_recent_tourism, df_submissions,
+           countries_tourism[10:18], xlim = start_date,
            ncol = 3)
 
-plot_preds(df_recent_ppi, df_submissions,
-           countries_PPI[-1:-18], xlim = start_date,
+plot_preds(df_recent_tourism, df_submissions,
+           countries_tourism[-1:-18], xlim = start_date,
            ncol = 3)
 
