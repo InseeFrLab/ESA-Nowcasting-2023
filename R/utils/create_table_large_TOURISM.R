@@ -22,9 +22,9 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-nb_months_past_to_use <- 12
-nb_years_past_to_use <- 6
-nb_months_past_to_use_others <- 6
+#nb_months_past_to_use <- 12
+#nb_years_past_to_use <- 6
+#nb_months_past_to_use_others <- 6
 
 list_eurostat_tables <- c("PSURVEY", "HICP")
 list_yahoo_finance <- c("brent", "eur_usd")
@@ -45,6 +45,7 @@ countries <- db$TOURISM %>%
 dates <- db$TOURISM %>%
   select(time) %>%
   add_row(time = current_date) %>%
+  add_row(time = date_to_pred)%>%
   add_row(time = date(current_date %m-% months(1))) %>%
   unique() %>%
   filter(
@@ -197,3 +198,4 @@ df_for_regression <- df_for_regression[c(
 
 
 df_large_for_regression <- as.data.table(df_for_regression)
+

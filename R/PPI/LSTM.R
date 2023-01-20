@@ -32,7 +32,6 @@ target_col = 'PPI'
 
 source("R/utils/create_table_large_PPI.R")
 
-
 #########################################
 # Countries predictions 
 #########################################
