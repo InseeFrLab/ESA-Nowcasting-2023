@@ -22,8 +22,8 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-nb_months_past_to_use <- 24
-nb_months_past_to_use_others <- 4
+#nb_months_past_to_use <- 24
+#nb_months_past_to_use_others <- 4
 
 list_eurostat_tables <- c("PSURVEY", "IPI", "HICP")
 list_yahoo_finance <- c("brent", "eur_usd", "sp500", "eurostoxx500", "cac40")
@@ -44,6 +44,7 @@ countries <- db$PVI %>%
 dates <- db$PVI %>%
   select(time) %>%
   add_row(time = current_date) %>%
+  add_row(time = date_to_pred) %>%
   unique() %>%
   filter(
     year(time) >= 2007,
@@ -61,6 +62,7 @@ df_PVI <- db$PVI %>%
   rename(PVI = values) %>%
   group_by(geo) %>%
   mutate(PVI_to_predict = lead(PVI))
+
 for (i in 1:nb_months_past_to_use) {
   variable <- paste("PVI", "minus", i, "months", sep = "_")
   df_PVI <- df_PVI %>%
@@ -92,7 +94,7 @@ for (table in list_eurostat_tables) {
     )
   df <- df %>%
     left_join(df_table,
-      by = c("geo", "time")
+              by = c("geo", "time")
     )
 }
 
@@ -116,7 +118,7 @@ for (i in 1:nb_months_past_to_use_others) {
   variable <- paste("PPI", "minus", i, "months", sep = "_")
   df <- df %>%
     mutate(!!variable := lag(PPI, n = i))
-
+  
   for (other_variable in list_other_variables) {
     variable <- paste(other_variable, "minus", i, "months", sep = "_")
     df <- df %>%
@@ -136,7 +138,7 @@ for (table in list_yahoo_finance) {
       year = year(time)
     ) %>%
     group_by(month, year)
-
+  
   for (i in 1:4) {
     max_day <- if (i < 4) {
       7 * i
@@ -146,12 +148,12 @@ for (table in list_yahoo_finance) {
     adjusted_string <- paste(table, "adjusted", sep = "_")
     volume_string <- paste(table, "volume", sep = "_")
     mean_adjusted_string <- paste("mean", adjusted_string, "week", i,
-      sep = "_"
+                                  sep = "_"
     )
     mean_volume_string <- paste("mean", volume_string, "week", i,
-      sep = "_"
+                                sep = "_"
     )
-
+    
     df_table_weekly <- df_table %>%
       filter(
         day > 7 * (i - 1),
@@ -159,10 +161,10 @@ for (table in list_yahoo_finance) {
       ) %>%
       summarise(
         !!mean_adjusted_string := mean((!!rlang::sym(adjusted_string)),
-          na.rm = TRUE
+                                       na.rm = TRUE
         ),
         !!mean_volume_string := mean((!!rlang::sym(volume_string)),
-          na.rm = TRUE
+                                     na.rm = TRUE
         )
       )
     df <- df %>%
@@ -177,8 +179,8 @@ df <- df[colSums(!is.na(df)) > 0]
 df <- df[c(
   rep(TRUE, 3),
   lapply(df[-(1:3)],
-    var,
-    na.rm = TRUE
+         var,
+         na.rm = TRUE
   ) != 0
 )]
 

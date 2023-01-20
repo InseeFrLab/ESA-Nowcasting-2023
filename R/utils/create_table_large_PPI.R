@@ -22,9 +22,6 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-nb_months_past_to_use <- 24
-nb_months_past_to_use_others <- 4
-
 list_eurostat_tables <- c(
   "PPI_NACE2",
   "IPI",
@@ -49,6 +46,7 @@ countries <- db$PPI %>%
 dates <- db$PPI %>%
   select(time) %>%
   add_row(time = current_date) %>%
+  add_row(time = date_to_pred) %>%
   unique() %>%
   filter(
     year(time) >= 2007,
