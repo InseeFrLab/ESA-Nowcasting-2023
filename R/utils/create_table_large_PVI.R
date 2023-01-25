@@ -30,7 +30,7 @@ list_yahoo_finance <- c("brent", "eur_usd", "sp500", "eurostoxx500", "cac40")
 
 db <- getData("PVI")
 
-create_table_large_ppi = function(nb_months_past_to_use = 24,
+create_table_large_pvi = function(nb_months_past_to_use = 24,
                                   nb_months_past_to_use_others = 4){
   
   #########################################

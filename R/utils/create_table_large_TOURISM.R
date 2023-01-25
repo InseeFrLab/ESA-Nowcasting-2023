@@ -31,9 +31,9 @@ list_yahoo_finance <- c("brent", "eur_usd")
 
 db <- getData("TOURISM")
 
-create_table_large_ppi = function(nb_months_past_to_use = 12,
-                                  nb_past_years_to_use = 6,
-                                  nb_months_past_to_use_others = 6){
+create_table_large_tourism = function(nb_months_past_to_use = 12,
+                                      nb_past_years_to_use = 6,
+                                      nb_months_past_to_use_others = 6){
   
   #########################################
   # Create the tables for the regression
