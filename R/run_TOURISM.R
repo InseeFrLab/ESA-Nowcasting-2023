@@ -13,9 +13,9 @@ source("R/utils/functions.R")
 data <- getData("TOURISM")
 
 #### Run the different models ####
-date_to_pred <- ymd("2022-12-01")
+date_to_pred <- ymd("2023-01-01")
 current_date <- date_to_pred %m-% months(1)
-month <- "december"
+month <- "january"
 
 # source("R/TOURISM/LastPeriod_model.R") # to be converted to functions
 source("R/TOURISM/S-ARIMA.R") # to be converted to functions

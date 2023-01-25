@@ -12,8 +12,21 @@ library(tidyr)
 library(stringr)
 library(quantmod)
 library(lubridate)
+library(readr)
 
 source("R/utils/globalVariables.R")
+
+#########################################
+# Import tables that can be useful for all other data imports
+#########################################
+
+# Matching table between country names and ISO codes
+
+countries_codes <- read_csv('https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv') %>%
+  rename(country_name = Country,
+         geo = `Alpha-2 code`,
+         geo_3_letters = `Alpha-3 code`) %>%
+  select(country_name, geo, geo_3_letters)
 
 #########################################
 # Define a function that retrieves data
@@ -115,6 +128,7 @@ getData <- function(case) {
 
       db[["PVI"]] <- data
 
+      # Import inflation data
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"
       ) %>%
@@ -186,6 +200,14 @@ getData <- function(case) {
         ) %>%
         select(time, cac40_adjusted, cac40_volume)
       db[["cac40"]] <- data
+      
+      data <- read_csv('https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv') %>%
+        rename(country_name = Country,
+               time = Date,
+               electricity_price = `Price (EUR/MWhe)`) %>%
+        inner_join(countries_codes %>% select(-geo_3_letters))  %>%
+        select(geo, time, electricity_price)
+      db[["electricity_prices"]] <- data
     },
 
     # Retrieve data for PVI challenge
@@ -272,6 +294,7 @@ getData <- function(case) {
 
       db[["PPI"]] <- data
 
+      # Import inflation data
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"
       ) %>%
@@ -331,6 +354,23 @@ getData <- function(case) {
         ) %>%
         select(time, cac40_adjusted, cac40_volume)
       db[["cac40"]] <- data
+      
+      data <- read_csv('https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv') %>%
+        rename(country_name = Country,
+               time = Date,
+               electricity_price = `Price (EUR/MWhe)`) %>%
+        inner_join(countries_codes %>% select(-geo_3_letters))  %>%
+        select(geo, time, electricity_price)
+      db[["electricity_prices"]] <- data
+      
+      dates <- seq(as.Date("2007-01-01"), date_to_pred, by = "month")
+      nb_weekend_days <- data.frame(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
+      for (i in 1:length(dates)) {
+        month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
+        month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6,7))
+      }
+      db[["nb_weekend_days"]] <- nb_weekend_days
     },
 
     # Retrieve data for TOUR challenge
@@ -366,6 +406,7 @@ getData <- function(case) {
       
       db[["PSURVEY"]] <- data
 
+      # Import inflation data
       data <- get_eurostat("prc_hicp_midx",
         select_time = "M"
       ) %>%
@@ -401,8 +442,17 @@ getData <- function(case) {
         ) %>%
         select(time, eur_usd_adjusted, eur_usd_volume)
       db[["eur_usd"]] <- data
+      
+      dates <- seq(as.Date("2007-01-01"), date_to_pred, by = "month")
+      nb_weekend_days <- data.frame(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
+      for (i in 1:length(dates)) {
+        month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
+        month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6,7))
+      }
+      db[["nb_weekend_days"]] <- nb_weekend_days
     },
-    stop("Enter one of the 3 following chalenges: PPI, PVI, TOURISM")
+    stop("Enter one of the 3 following challenges: PPI, PVI, TOURISM")
   )
   options(warn = defaultW)
   return(db)

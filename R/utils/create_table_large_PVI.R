@@ -165,10 +165,50 @@ for (table in list_yahoo_finance) {
           na.rm = TRUE
         )
       )
+    
     df <- df %>%
       left_join(df_table_weekly)
   }
 }
+
+# D) Add electricity data
+
+df_electricity <- db[['electricity_prices']] %>%
+  mutate(
+    day = day(time),
+    month = month(time),
+    year = year(time)
+  ) %>%
+  group_by(geo, month, year)
+
+for (i in 1:4) {
+  max_day <- if (i < 4) {
+    7 * i
+  } else {
+    31
+  }
+  mean_price <- paste("mean_electricity_price_week", i,
+                      sep = "_"
+  )
+
+  df_weekly <- df_electricity %>%
+    filter(
+      day > 7 * (i - 1),
+      day < max_day
+    ) %>%
+    summarise(
+      !!mean_price := mean(electricity_price,
+                           na.rm = TRUE)
+    )
+
+  df <- df %>%
+    left_join(df_weekly)
+}
+
+# E) Add number of weeekend days per month
+
+df <- df %>%
+  left_join(db[['nb_weekend_days']])
 
 # Delete dummy columns (to do by country if models specific to countries)
 
