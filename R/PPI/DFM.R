@@ -253,7 +253,7 @@ for (country in countries_PPI) {
   # Define the appropriate forecast horizon
   h <- as.Date(latest_dates[[var_to_predict]]) %--% date_to_pred %/% months(1)
   # Forecast the model, pay attention to the standardized option
-  fc <- predict(model, h = h, standardized = F)
+  fc <- stats::predict(model, h = h, standardized = F)
 
   #########################################
   # Storing the predictions
