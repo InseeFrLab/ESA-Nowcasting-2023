@@ -169,7 +169,7 @@ if (do_full_dataset_model) {
   y_test <- df_xgboost_test$PVI_to_predict
 
   dtest <- xgb.DMatrix(data = X_test)
-  y_pred <- predict(best_model, dtest)
+  y_pred <- stats::predict(best_model, dtest)
 
   test_mse <- mean(((y_pred - y_test)^2))
   test_rmse <- sqrt(test_mse)
@@ -181,7 +181,7 @@ if (do_full_dataset_model) {
     select(-c(PVI_to_predict, time)))
   d_to_pred <- xgb.DMatrix(data = X_to_pred)
 
-  y_pred_next_month <- predict(best_model, d_to_pred)
+  y_pred_next_month <- stats::predict(best_model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_pvi_to_predict +
     mean_pvi_to_predict
 
@@ -282,7 +282,7 @@ for (country in countries$geo) {
 
   # Make predictions
 
-  y_pred_next_month <- predict(model, d_to_pred)
+  y_pred_next_month <- stats::predict(model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_pvi_to_predict_country +
     mean_pvi_to_predict_country
   # If "value" is the 3rd column
@@ -290,7 +290,7 @@ for (country in countries$geo) {
 
   # Make predictions on training set for residuals
 
-  y_pred_residuals <- predict(model, xgb.DMatrix(data = X_train))
+  y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
   y_pred_residuals <- y_pred_residuals * scale_pvi_to_predict_country +
     mean_pvi_to_predict_country
 
