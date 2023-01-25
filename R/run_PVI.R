@@ -13,9 +13,9 @@ source("R/utils/functions.R")
 data <- getData("PVI")
 
 #### Run the different models ####
-date_to_pred <- ymd("2022-12-01")
+date_to_pred <- ymd("2023-01-01")
 current_date <- date_to_pred %m-% months(1)
-month <- "december"
+month <- "january"
 
 source("R/PVI/LastPeriod_model.R") # to be converted to functions
 source("R/PVI/Regarima.R") # to be converted to functions
@@ -62,8 +62,6 @@ entries <- list(
 )
 
 save_entries(entries, paste0("Submissions/PVI/results_", month, ".json"))
-# entries = list("entry_5"= preds_ets%>%pull(value, Country))
-# add_entries(entries, "Submissions/PVI/results_november.json")
 
 #### Save the results in S3 ####
 system(

@@ -21,13 +21,14 @@ source("R/utils/create_table_large_PPI.R")
 #########################################
 
 do_grid_search <- FALSE
-do_full_dataset_model <- FALSE
+do_full_dataset_model <- TRUE
 
 #########################################
 # Adapt the table for the regressions
 #########################################
 
-df_for_regression <- as.data.table(df_large_for_regression)
+df_for_regression <- as.data.table(df_large_for_regression) %>%
+  mutate(geo = "Europe") # EXPERIMENTATION SANS LA VARIABLE PAYS
 
 # One-hot encoding of categorical variables
 
@@ -100,9 +101,9 @@ watchlist <- list(train = gb_train, valid = gb_valid)
 if (do_grid_search) {
   # The ranges of the parameters to check
 
-  nrounds <- 100 # nrounds = 25 * (1:6)  # Can also be tried with x100
-  max_depths <- (3:9)
-  etas <- 0.025 * (1:20)
+  nrounds <- 25 * (1:7)  # Can also be tried with x100
+  max_depths <- (3:10)
+  etas <- 0.05 * (1:25)
   count <- 1
 
   ## The effective grid search
@@ -139,9 +140,9 @@ if (do_grid_search) {
   print(best_score)
 }
 
-best_max_depth <- 5
-best_nrounds <- 100
-best_eta <- 0.25
+best_max_depth <- 8
+best_nrounds <- 125
+best_eta <- 0.4
 
 #########################################
 # Use the best model on the whole dataset
@@ -325,6 +326,7 @@ if (do_full_dataset_model) {
 }
 
 preds_xgboost <- preds_xgboost_per_country
+# preds_xgboost <- preds_xgboost_europe
 
 
 # Residuals
