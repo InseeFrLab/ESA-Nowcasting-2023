@@ -23,6 +23,21 @@ source("R/utils/create_table_large_TOURISM.R")
 do_grid_search <- FALSE
 do_full_dataset_model <- FALSE
 
+nb_months_past_to_use <- 12
+nb_years_past_to_use <- 6
+nb_months_past_to_use_others <- 6
+
+#########################################
+# Create the large table for tourism
+#########################################
+
+list_df <- create_table_large_tourism(nb_months_past_to_use,
+                                      nb_past_years_to_use,
+                                      nb_months_past_to_use_others)
+countries <- list_df$countries
+df_large <- list_df$df_large
+df_large_for_regression <- list_df$df_large_for_regression
+
 #########################################
 # Adapt the table for the regressions
 #########################################
@@ -239,7 +254,9 @@ for (country in countries$geo) {
   # Scale the variables
 
   df_country <- df_country %>%
-    mutate(across(c(where(is.numeric)), scale))
+    mutate(month = as.character(month),
+           year = as.character(year),
+           across(c(where(is.numeric)), scale))
 
   mean_tourism_to_predict_country <- attr(
     df_country$TOURISM_to_predict, "scaled:center"

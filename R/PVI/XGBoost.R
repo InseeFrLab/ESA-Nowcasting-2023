@@ -23,6 +23,19 @@ source("R/utils/create_table_large_PVI.R")
 do_grid_search <- FALSE
 do_full_dataset_model <- FALSE
 
+nb_months_past_to_use <- 24
+nb_months_past_to_use_others <- 4
+
+#########################################
+# Create the large table for PVI
+#########################################
+
+list_df <- create_table_large_pvi(nb_months_past_to_use,
+                                  nb_months_past_to_use_others)
+countries <- list_df$countries
+df_large <- list_df$df_large
+df_large_for_regression <- list_df$df_large_for_regression
+
 #########################################
 # Adapt the table for the regressions
 #########################################
@@ -239,7 +252,9 @@ for (country in countries$geo) {
   # Scale the variables
 
   df_country <- df_country %>%
-    mutate(across(c(where(is.numeric)), scale))
+    mutate(month = as.character(month),
+           year = as.character(year),
+           across(c(where(is.numeric)), scale))
 
   mean_pvi_to_predict_country <- attr(df_country$PVI_to_predict, "scaled:center")
   scale_pvi_to_predict_country <- attr(df_country$PVI_to_predict, "scaled:scale")

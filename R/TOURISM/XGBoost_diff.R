@@ -22,6 +22,21 @@ source("R/utils/create_table_large_TOURISM.R")
 
 do_grid_search <- FALSE
 
+nb_months_past_to_use <- 12
+nb_years_past_to_use <- 6
+nb_months_past_to_use_others <- 6
+
+#########################################
+# Create the large table for tourism
+#########################################
+
+list_df <- create_table_large_tourism(nb_months_past_to_use,
+                                      nb_past_years_to_use,
+                                      nb_months_past_to_use_others)
+countries <- list_df$countries
+df_large <- list_df$df_large
+df_large_for_regression <- list_df$df_large_for_regression
+
 #########################################
 # Make one model per country
 #########################################
