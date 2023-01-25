@@ -5,6 +5,7 @@
 #########################################
 # Import packages and set-up
 #########################################
+
 library(nowcastLSTM)
 nowcastLSTM::initialize_session(python_path = "/opt/mamba/bin/python")
 library(dplyr)
@@ -12,26 +13,28 @@ library(tidyr)
 library(lubridate)
 library(mltools)
 library(data.table)
+library(rlang)
 
 #########################################
 # Global variables
 #########################################
 
 current_date = ymd('2022-12-01')
-nb_months_past_to_use = 0
-nb_months_past_to_use_pvi = 0
-nb_months_past_to_use_ppi = 0
+nb_months_past_to_use = 1 # Must be at least 1
 nb_months_past_to_use_others = 4
 lags = FALSE
-date_to_pred <- ymd("2023-01-01")
-target_col = 'PVI'
-country = 'DE'# loop over country 
 
 #########################################
 # Get data
 #########################################
 
 source("R/utils/create_table_large_PVI.R")
+
+list_df <- create_table_large_pvi(nb_months_past_to_use,
+                                  nb_months_past_to_use_others)
+countries <- list_df$countries
+df_large <- list_df$df_large
+df_large_for_regression <- list_df$df_large_for_regression
 
 #########################################
 # Countries predictions 
@@ -56,7 +59,6 @@ for (country in countries$geo) {
     filter(geo == country) %>%
     select(-geo)%>%
     select(-PVI_minus_1_months)%>%
-    select(-PVI_minus_0_months)%>%
     select(-PVI_to_predict)%>%
     select(-month)%>%
     select(-year)
@@ -95,7 +97,6 @@ for (country in countries$geo) {
   
   # hyper param selection & fit model
   
-  library(rlang)
   #hyperparam = nowcastLSTM::hyperparameter_tuning(data = train_scaled,  target_variable = "PVI", n_timesteps_grid=c(10,24))
   #best_param = hyperparam$hyper_params 
   #which.min(hyperparam$performance)
