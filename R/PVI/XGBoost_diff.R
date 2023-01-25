@@ -121,7 +121,7 @@ for (country in countries$geo) {
 
   # Make predictions
 
-  y_pred_next_month <- predict(model, d_to_pred)
+  y_pred_next_month <- stats::predict(model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_pvi_to_predict_country +
     mean_pvi_to_predict_country
   # If "value" is the 3rd column
@@ -129,7 +129,7 @@ for (country in countries$geo) {
 
   # Make predictions on training set for residuals
 
-  y_pred_residuals <- predict(model, xgb.DMatrix(data = X_train))
+  y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
   y_pred_residuals <- y_pred_residuals * scale_pvi_to_predict_country +
     mean_pvi_to_predict_country
 
