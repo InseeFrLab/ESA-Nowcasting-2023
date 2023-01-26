@@ -1,0 +1,141 @@
+PPI:
+  name: 
+    - "Producer Price in Industry"
+  source : 
+    - Eurostat
+  challenge: 
+    - PPI
+    - PVI
+    - TOURISM
+  id: sts_inppd_m
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    indic_bt: PRIN
+    nace_r2: ["B-E36", "B05", "B06", "B07", "B08", "B09", "C10", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "C23", "C24", "C25", "C26", "C27", "C28", "C29", "C30", "C31", "C32", "C33", "D35", "E36"]
+    s_adj: NSA
+    unit: I15
+
+IPI:
+  name: "Industrial Production Index"
+  source : Eurostat
+  challenge: 
+    - PPI
+    - PVI
+  id: sts_inpi_m
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    indic_bt: IMPR
+    cpa2_1: ["CPA_B05", "CPA_B06", "CPA_B07", "CPA_B08", "CPA_C10", "CPA_C11", "CPA_C12", "CPA_C13", "CPA_C14", "CPA_C15", "CPA_C16", "CPA_C17", "CPA_C18", "CPA_C19", "CPA_C20", "CPA_C21", "CPA_C22", "CPA_C23", "CPA_C24", "CPA_C25", "CPA_C26", "CPA_C27", "CPA_C28", "CPA_C29", "CPA_C30", "CPA_C31", "CPA_C32", "CPA_D35", "CPA_B-E36", "CPA_B-D", "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"]
+    s_adj: NSA
+    unit: I15
+    
+PSURVEY:
+  name: "Production surveys"
+  source : Eurostat
+  challenge: 
+    - PPI
+    - PVI
+    - TOURISM
+  id: ei_bsin_m_r2
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    s_adj: NSA
+    indic: ["BS-ICI", "BS-ISPE", "BS-IEME", "BS-IPT", "BS-IOB", "BS-ISFP", "BS-IPE"]
+    unit: BAL
+    
+HICP:
+  name: "Harmonised Index of Consumer Prices "
+  source : Eurostat
+  challenge: 
+    - PPI
+    - PVI
+    - TOURISM
+  id: sts_inpi_m
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    unit: I15
+    coicop: ["CP00", "CP01", "CP02", "CP03", "CP04", "CP05", "CP06", "CP07", "CP08", "CP09", "CP10", "CP11", "CP12", "FOOD", "FUEL", "SERV"]
+    
+PVI:
+  name: "Production Volume in Industry"
+  source : Eurostat
+  challenge: 
+    - PPI
+    - PVI
+  id: sts_inpr_m
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    indic_bt: PROD
+    nace_r2: "B-D"
+    s_adj: SCA
+    unit: I15
+    
+TOURISM:
+  name: "Number of nights spent at tourist accommodation establishments"
+  source : Eurostat
+  challenge: 
+    - TOURISM
+  id: tour_occ_nim
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    c_resid: TOTAL
+    nace_r2: "I551-I553"
+    unit: NR
+    
+BRENT:
+  name: "Brent Crude Oil Price"
+  source : Yahoo
+  challenge: 
+    - PPI
+    - PVI
+    - TOURISM
+  id: "BZ=F"
+
+EUR_USD:
+  name: "EUR to USD Exchange Rate"
+  source : Yahoo
+  challenge: 
+    - PPI
+    - PVI
+    - TOURISM
+  id: "EURUSD=X"
+
+SP500:
+  name: "S&P 500 Index stock"
+  source : Yahoo
+  challenge: 
+    - PPI
+    - PVI
+  id: "^GSPC"
+
+EUROSTOXX500:
+  name: "Euro stoxx 50 Index stock"
+  source : Yahoo
+  challenge: 
+    - PPI
+    - PVI
+  id: "^STOXX50E"
+
+CAC40:
+  name: "CAC 40 Index"
+  source : Yahoo
+  challenge: 
+    - PPI
+    - PVI
+  id: "^FCHI"
+
+ELEC_PRICES:
+  name: "Electricity prices"
+  source: ember-climate
+  challenge: 
+    - PPI
+    - PVI
+  url: "https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv"
+  url-geo-code: "https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv"
+  
+
+NB_WE:
+  name: "Number of week-end days"
+  challenge: 
+    - PVI
+    - TOURISM
