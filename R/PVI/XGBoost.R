@@ -72,7 +72,7 @@ df_for_regression_to_predict <- df_for_regression %>%
 
 if (do_full_dataset_model) {
   df_xgboost_train <- df_for_regression_to_use %>%
-    sample_frac(3 / 4)
+    sample_frac(4/5)
 } else {
   df_xgboost_train <- df_for_regression_to_use %>%
     sample_frac(1)
@@ -85,7 +85,7 @@ df_xgboost_test <- df_for_regression_to_use %>%
 
 if (do_full_dataset_model || do_grid_search) {
   df_xgboost_train_train <- df_xgboost_train %>%
-    sample_frac(3 / 4)
+    sample_frac(4/5)
 } else {
   df_xgboost_train_train <- df_xgboost_train %>%
     sample_frac(1)
@@ -137,7 +137,7 @@ if (do_grid_search) {
               colsample_bytree = colsample_bytree,
               watchlist = watchlist,
               early_stopping_rounds = 25,
-              print_every_n = 10
+              print_every_n = 25
             )
             if (count == 1) {
               best_params <- model$params
@@ -161,11 +161,11 @@ if (do_grid_search) {
   print(best_score)
 }
 
-best_nround <- 
-best_eta <- 
-best_max_depth <- 
-best_subsample <- 
-best_colsample_bytree <- 
+best_nround <- 50
+best_eta <- 0.15
+best_max_depth <- 8
+best_subsample <- 0.5
+best_colsample_bytree <- 0.5
 
 #########################################
 # Use the best model on the whole dataset
@@ -227,11 +227,11 @@ if (do_full_dataset_model) {
 # Make one model per country
 #########################################
 
-best_nround_per_country <- 
-best_eta_per_country <- 
-best_max_depth_per_country <- 
-best_subsample_per_country <- 
-best_colsample_bytree_per_country <- 
+best_nround_per_country <- 300
+best_eta_per_country <- 0.15
+best_max_depth_per_country <- 5
+best_subsample_per_country <- 0.5
+best_colsample_bytree_per_country <- 0.5
 
 preds_xgboost_per_country <- countries %>%
   select(geo) %>%
