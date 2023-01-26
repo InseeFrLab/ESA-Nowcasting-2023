@@ -22,18 +22,18 @@ source("R/utils/getData.R")
 # Global variables
 #########################################
 
-# nb_months_past_to_use <- 12
-# nb_years_past_to_use <- 6
-# nb_months_past_to_use_others <- 6
+# nb_months_past_to_use <- 10
+# nb_years_past_to_use <- 5
+# nb_months_past_to_use_others <- 5
 
 list_eurostat_tables <- c("PSURVEY", "HICP")
 list_yahoo_finance <- c("brent", "eur_usd")
 
 db <- getData("TOURISM")
 
-create_table_large_tourism = function(nb_months_past_to_use = 12,
-                                      nb_past_years_to_use = 6,
-                                      nb_months_past_to_use_others = 6){
+create_table_large_tourism = function(nb_months_past_to_use = 10,
+                                      nb_past_years_to_use = 5,
+                                      nb_months_past_to_use_others = 5){
   
   #########################################
   # Create the tables for the regression
@@ -73,7 +73,7 @@ create_table_large_tourism = function(nb_months_past_to_use = 12,
     df_TOURISM <- df_TOURISM %>%
       mutate(!!variable := lag(TOURISM, n = i))
   }
-  for (i in 2:nb_years_past_to_use) {
+  for (i in 1:nb_years_past_to_use) {
     variable <- paste("TOURISM", "minus", i, "years", sep = "_")
     df_TOURISM <- df_TOURISM %>%
       mutate(!!variable := lag(TOURISM, n = 12 * i - 1))
@@ -114,7 +114,7 @@ create_table_large_tourism = function(nb_months_past_to_use = 12,
     group_by(geo)
   
   list_other_variables <- colnames(df)[
-    (6 + nb_months_past_to_use + nb_years_past_to_use):(length(colnames(df)))
+    (7 + nb_months_past_to_use + nb_years_past_to_use):(length(colnames(df)))
   ]
   
   for (i in 1:nb_months_past_to_use_others) {
