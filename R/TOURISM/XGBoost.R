@@ -21,11 +21,11 @@ source("R/utils/create_table_large_TOURISM.R")
 #########################################
 
 do_grid_search <- FALSE
-do_full_dataset_model <- FALSE
+do_full_dataset_model <- TRUE
 
-nb_months_past_to_use <- 12
-nb_years_past_to_use <- 6
-nb_months_past_to_use_others <- 6
+nb_months_past_to_use <- 10
+nb_years_past_to_use <- 5
+nb_months_past_to_use_others <- 5
 
 #########################################
 # Create the large table for tourism

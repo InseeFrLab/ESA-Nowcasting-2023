@@ -21,7 +21,7 @@ source("R/utils/create_table_large_PPI.R")
 #########################################
 
 do_grid_search <- FALSE
-do_full_dataset_model <- FALSE
+do_full_dataset_model <- TRUE
 
 nb_months_past_to_use <- 24
 nb_months_past_to_use_others <- 4
