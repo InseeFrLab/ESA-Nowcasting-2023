@@ -66,8 +66,8 @@ save_entries(entries, paste0("Submissions/PVI/results_", month, ".json"))
 #### Save the results in S3 ####
 system(
   paste(
-  paste0("mc cp Submissions/PVI/results_", month, ".json"),
-  paste0("s3/projet-esa-nowcasting/submissions/PVI/results_", month, ".json")
+    paste0("mc cp Submissions/PVI/results_", month, ".json"),
+    paste0("s3/projet-esa-nowcasting/submissions/PVI/results_", month, ".json")
   )
 )
 

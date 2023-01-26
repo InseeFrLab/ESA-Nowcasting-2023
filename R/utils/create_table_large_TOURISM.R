@@ -170,7 +170,7 @@ for (table in list_yahoo_finance) {
 # D) Add number of weeekend days per month
 
 df <- df %>%
-  left_join(db[['nb_weekend_days']])
+  left_join(db[["nb_weekend_days"]])
 
 # Delete dummy columns (to do by country if models specific to countries)
 

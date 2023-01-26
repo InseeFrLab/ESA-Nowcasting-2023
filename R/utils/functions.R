@@ -179,18 +179,17 @@ save_entries <- function(entries, filename) {
   }
 }
 
-
 reshape_eurostat_data <- function(data, variable, country, measure) {
   if (missing(measure)) {
     reshaped_data <- data %>%
-      mutate(var = variable) %>%
-      filter(geo %in% country) %>%
-      pivot_wider(names_from = c(geo, var), values_from = values)
+      dplyr::mutate(var = variable) %>%
+      dplyr::filter(geo %in% country) %>%
+      tidyr::pivot_wider(names_from = c(geo, var), values_from = values)
   } else {
     reshaped_data <- data %>%
-      mutate(var = variable) %>%
-      filter(geo %in% country) %>%
-      pivot_wider(names_from = c(geo, var, measure), values_from = values)
+      dplyr::mutate(var = variable) %>%
+      dplyr::filter(geo %in% country) %>%
+      tidyr::pivot_wider(names_from = c(geo, var, measure), values_from = values)
   }
   return(reshaped_data)
 }
@@ -218,12 +217,12 @@ pal_col <- rbind(
 
 Palette_col <- rgb(pal_col[, 1], pal_col[, 2], pal_col[, 3], maxColorValue = 255)
 
-
 add_entries <- function(entries, filename) {
   current_file <- rjson::fromJSON(paste0(readLines(filename), collapse = ""))
   file <- rjson::toJSON(c(current_file, entries))
   write(jsonlite::prettify(file), filename)
 }
+
 reorder_entries <- function(entries, filename) {
   current_file <- rjson::fromJSON(paste0(readLines(filename), collapse = ""))
   current_file <- current_file[entries]

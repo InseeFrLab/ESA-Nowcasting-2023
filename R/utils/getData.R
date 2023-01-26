@@ -22,10 +22,12 @@ source("R/utils/globalVariables.R")
 
 # Matching table between country names and ISO codes
 
-countries_codes <- read_csv('https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv') %>%
-  rename(country_name = Country,
-         geo = `Alpha-2 code`,
-         geo_3_letters = `Alpha-3 code`) %>%
+countries_codes <- read_csv("https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv") %>%
+  rename(
+    country_name = Country,
+    geo = `Alpha-2 code`,
+    geo_3_letters = `Alpha-3 code`
+  ) %>%
   select(country_name, geo, geo_3_letters)
 
 #########################################
@@ -200,12 +202,14 @@ getData <- function(case) {
         ) %>%
         select(time, cac40_adjusted, cac40_volume)
       db[["cac40"]] <- data
-      
-      data <- read_csv('https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv') %>%
-        rename(country_name = Country,
-               time = Date,
-               electricity_price = `Price (EUR/MWhe)`) %>%
-        inner_join(countries_codes %>% select(-geo_3_letters))  %>%
+
+      data <- read_csv("https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv") %>%
+        rename(
+          country_name = Country,
+          time = Date,
+          electricity_price = `Price (EUR/MWhe)`
+        ) %>%
+        inner_join(countries_codes %>% select(-geo_3_letters)) %>%
         select(geo, time, electricity_price)
       db[["electricity_prices"]] <- data
     },
@@ -244,26 +248,26 @@ getData <- function(case) {
         drop_na(values)
 
       db[["PSURVEY"]] <- data
-      
+
       # Import price index for all subcategories of level 2 + two aggregates
       data <- get_eurostat("sts_inpi_m",
-                           select_time = "M",
-                           filters = list(
-                             geo = countries_PPI,
-                             indic_bt = "IMPR",
-                             cpa2_1 = c(
-                               paste0("CPA_B", str_pad(5:8, 2, pad = "0")), paste0("CPA_C", 10:32),
-                               "CPA_D35", "CPA_B-E36", "CPA_B-D",
-                               "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"
-                             ),
-                             s_adj = "NSA",
-                             unit = "I15"
-                           ),
-                           time_format = "date"
+        select_time = "M",
+        filters = list(
+          geo = countries_PPI,
+          indic_bt = "IMPR",
+          cpa2_1 = c(
+            paste0("CPA_B", str_pad(5:8, 2, pad = "0")), paste0("CPA_C", 10:32),
+            "CPA_D35", "CPA_B-E36", "CPA_B-D",
+            "CPA_MIG_ING", "CPA_MIG_CAG", "CPA_MIG_NRG_X_E"
+          ),
+          s_adj = "NSA",
+          unit = "I15"
+        ),
+        time_format = "date"
       ) %>%
         select(geo, cpa2_1, time, values) %>%
         drop_na(values)
-      
+
       db[["IPI"]] <- data
 
       # Retrieve daily BRENT index from Yahoo Finance
@@ -354,21 +358,23 @@ getData <- function(case) {
         ) %>%
         select(time, cac40_adjusted, cac40_volume)
       db[["cac40"]] <- data
-      
-      data <- read_csv('https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv') %>%
-        rename(country_name = Country,
-               time = Date,
-               electricity_price = `Price (EUR/MWhe)`) %>%
-        inner_join(countries_codes %>% select(-geo_3_letters))  %>%
+
+      data <- read_csv("https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv") %>%
+        rename(
+          country_name = Country,
+          time = Date,
+          electricity_price = `Price (EUR/MWhe)`
+        ) %>%
+        inner_join(countries_codes %>% select(-geo_3_letters)) %>%
         select(geo, time, electricity_price)
       db[["electricity_prices"]] <- data
-      
+
       dates <- seq(as.Date("2007-01-01"), date_to_pred, by = "month")
       nb_weekend_days <- data.frame(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
       for (i in 1:length(dates)) {
         month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
         month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
-        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6,7))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6, 7))
       }
       db[["nb_weekend_days"]] <- nb_weekend_days
     },
@@ -389,21 +395,21 @@ getData <- function(case) {
         drop_na(values)
 
       db[["TOURISM"]] <- data
-      
+
       # Retrieve several surveys on production prices (confidence, price expectations, employment expectations)
       data <- get_eurostat("ei_bsin_m_r2",
-                           select_time = "M",
-                           filters = list(
-                             geo = countries_PVI,
-                             indic = c("BS-ICI", "BS-ISPE", "BS-IEME"),
-                             s_adj = "NSA",
-                             unit = "BAL"
-                           ),
-                           time_format = "date"
+        select_time = "M",
+        filters = list(
+          geo = countries_PVI,
+          indic = c("BS-ICI", "BS-ISPE", "BS-IEME"),
+          s_adj = "NSA",
+          unit = "BAL"
+        ),
+        time_format = "date"
       ) %>%
         select(geo, indic, time, values) %>%
         drop_na(values)
-      
+
       db[["PSURVEY"]] <- data
 
       # Import inflation data
@@ -442,13 +448,13 @@ getData <- function(case) {
         ) %>%
         select(time, eur_usd_adjusted, eur_usd_volume)
       db[["eur_usd"]] <- data
-      
+
       dates <- seq(as.Date("2007-01-01"), date_to_pred, by = "month")
       nb_weekend_days <- data.frame(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
       for (i in 1:length(dates)) {
         month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
         month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
-        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6,7))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6, 7))
       }
       db[["nb_weekend_days"]] <- nb_weekend_days
     },

@@ -101,7 +101,7 @@ watchlist <- list(train = gb_train, valid = gb_valid)
 if (do_grid_search) {
   # The ranges of the parameters to check
 
-  nrounds <- 25 * (1:7)  # Can also be tried with x100
+  nrounds <- 25 * (1:7) # Can also be tried with x100
   max_depths <- (3:10)
   etas <- 0.05 * (1:25)
   count <- 1

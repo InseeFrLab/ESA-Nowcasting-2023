@@ -178,7 +178,7 @@ for (table in list_yahoo_finance) {
 
 # D) Add electricity data
 
-df_electricity <- db[['electricity_prices']] %>%
+df_electricity <- db[["electricity_prices"]] %>%
   mutate(
     day = day(time),
     month = month(time),
@@ -193,7 +193,7 @@ for (i in 1:4) {
     31
   }
   mean_price <- paste("mean_electricity_price_week", i,
-                                sep = "_"
+    sep = "_"
   )
 
   df_weekly <- df_electricity %>%
@@ -203,9 +203,10 @@ for (i in 1:4) {
     ) %>%
     summarise(
       !!mean_price := mean(electricity_price,
-                           na.rm = TRUE)
+        na.rm = TRUE
+      )
     )
-  
+
   df <- df %>%
     left_join(df_weekly)
 }
