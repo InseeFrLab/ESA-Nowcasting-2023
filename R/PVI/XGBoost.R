@@ -113,48 +113,59 @@ watchlist <- list(train = gb_train, valid = gb_valid)
 if (do_grid_search) {
   # The ranges of the parameters to check
 
-  nrounds <- 100 # nrounds = 25 * (1:6)  # Can also be tried with x100
-  max_depths <- (3:9)
-  etas <- 0.025 * (1:20)
-  count <- 1
+  nrounds <- 50 * (1:6)
+  etas <- 0.05 * (1:6)
+  max_depths <- (3:10)
+  subsamples <- 0.25 * (2:4)
+  colsample_bytrees <- 0.25 * (2:4)
 
   ## The effective grid search
 
   for (nround in nrounds) {
-    for (depth in max_depths) {
-      for (eta in etas) {
-        model <- xgb.train(
-          data = gb_train,
-          max_depth = depth,
-          eta = eta,
-          nrounds = nround,
-          watchlist = watchlist,
-          early_stopping_rounds = 25,
-          print_every_n = 10
-        )
-        if (count == 1) {
-          best_params <- model$params
-          best_n_rounds <- nround
-          best_score <- model$best_score
-        } else if (model$best_score < best_score) {
-          best_params <- model$params
-          best_n_rounds <- nround
-          best_score <- model$best_score
+    for (eta in etas) {
+      for (max_depth in max_depths) {
+        for (subsample in subsamples) {
+          for (colsample_bytree in colsample_bytrees) {
+            model <- xgb.train(
+              data = gb_train,
+              objective='reg:squarederror',
+              eval_metric='rmse',
+              nrounds = nround,
+              eta = eta,
+              max_depth = max_depth,
+              subsample = subsample,
+              colsample_bytree = colsample_bytree,
+              watchlist = watchlist,
+              early_stopping_rounds = 25,
+              print_every_n = 10
+            )
+            if (count == 1) {
+              best_params <- model$params
+              best_n_rounds <- nround
+              best_score <- model$best_score
+            } else if (model$best_score < best_score) {
+              best_params <- model$params
+              best_n_rounds <- nround
+              best_score <- model$best_score
+            }
+            count <- count + 1
+            print(count)
+          }
         }
-        count <- count + 1
-        print(count)
       }
     }
   }
-
+  
   print(best_params)
   print(best_n_rounds)
   print(best_score)
 }
 
-best_max_depth <- 5
-best_nrounds <- 100
-best_eta <- 0.25
+best_nround <- 
+best_eta <- 
+best_max_depth <- 
+best_subsample <- 
+best_colsample_bytree <- 
 
 #########################################
 # Use the best model on the whole dataset
@@ -165,9 +176,13 @@ if (do_full_dataset_model) {
 
   best_model <- xgb.train(
     data = gb_train,
-    max_depth = best_max_depth,
+    objective='reg:squarederror',
+    eval_metric='rmse',
+    nrounds = best_nround,
     eta = best_eta,
-    nrounds = best_nrounds,
+    max_depth = best_max_depth,
+    subsample = best_subsample,
+    colsample_bytree = best_colsample_bytree,
     watchlist = watchlist,
     early_stopping_rounds = 25
   )
@@ -212,9 +227,11 @@ if (do_full_dataset_model) {
 # Make one model per country
 #########################################
 
-best_max_depth_per_country <- 3
-best_nrounds_per_country <- 90
-best_eta_per_country <- 0.3
+best_nround_per_country <- 
+best_eta_per_country <- 
+best_max_depth_per_country <- 
+best_subsample_per_country <- 
+best_colsample_bytree_per_country <- 
 
 preds_xgboost_per_country <- countries %>%
   select(geo) %>%
@@ -290,9 +307,13 @@ for (country in countries$geo) {
 
   model <- xgb.train(
     data = gb_train,
-    max_depth = best_max_depth_per_country,
+    objective='reg:squarederror',
+    eval_metric='rmse',
+    nrounds = best_nround_per_country,
     eta = best_eta_per_country,
-    nrounds = best_nrounds_per_country
+    max_depth = best_max_depth_per_country,
+    subsample = best_subsample_per_country,
+    colsample_bytree = best_colsample_bytree_per_country
   )
 
   # Make predictions
