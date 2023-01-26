@@ -34,7 +34,7 @@ for (country in countries_PPI) {
   #########################################
   ppi <- reshape_eurostat_data(data$PPI, "PPI", country, "nace_r2")
   ppi_nace2 <- reshape_eurostat_data(data$PPI_NACE2, "PPI", country, "nace_r2")
-  # ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "nace_r2")
+  ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "cpa2_1")
   psurvey <- reshape_eurostat_data(data$PSURVEY, "PSURVEY", country, "indic")
   pvi <- reshape_eurostat_data(data$PVI, "PVI", country)
   hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
@@ -114,43 +114,28 @@ for (country in countries_PPI) {
     mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
     select(time, cac40_adjusted, cac40_volume)
 
-  DB <- list(ppi, ppi_nace2, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
+  DB <- list(ppi, ppi_nace2, psurvey) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
 
-  #########################################
-  # Lagging the most recent variables
-  #########################################
   DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
   # replacing - by . in column names to avoid conflicts
   colnames(DB) <- gsub("-", ".", colnames(DB))
 
   latest_dates <- sapply(names(DB), get_latest_dates, data = DB)
-
-  for (variable in setdiff(names(DB), var_to_predict)) {
-    # Check gap in months between Y and Xs
-    gap <- as.Date(latest_dates[[var_to_predict]]) %--% as.Date(latest_dates[[variable]]) %/% months(1)
-
-    # We lag the variable with a window equal to the gap
-    if (gap > 0) {
-      lagged_var <- stats::lag(DB[, variable], -gap)
-      names(lagged_var) <- paste(variable, "LAG", gap, sep = "_")
-      DB <- merge(DB, lagged_var)
-    }
-  }
-
+  
   #########################################
   # Seasonality removal
   #########################################
+  
 
   #########################################
   # Differenciate the series
   #########################################
+  start_sample <- "2005-02-01"
   DB_diff <- diff(DB)
-  # restrict the dataset to the last available value of Y
-  # We might want to extent the starting value depending on the data that we will use
-  DB_diff <- DB_diff[paste0("2005-02-01/", latest_dates[[var_to_predict]])]
+  DB_diff <- DB_diff[paste0(start_sample, "/", date_to_pred)]
 
   #########################################
   # Dealing with multiple NaNs columns
@@ -158,7 +143,7 @@ for (country in countries_PPI) {
   range_3year <- paste(date_to_pred %m-% months(36 + 1), date_to_pred %m-% months(2), sep = "/")
   nan_cols <- as.double(which(colSums(is.na(DB_diff[range_3year])) > 0))
 
-  if (!is_empty(nan_cols)) {
+  if (!purrr::is_empty(nan_cols)) {
     cat("Removing", names(which(colSums(is.na(DB_diff[range_3year])) > 0)), "due to missing values.\n")
     DB_diff <- DB_diff[, -nan_cols]
   }
@@ -169,10 +154,10 @@ for (country in countries_PPI) {
   # Creating a squared matrix to check collinearity
   # Now we could use last() for the interval
   range_square_mat <- paste(date_to_pred %m-% months(dim(DB_diff)[2] + 1), date_to_pred %m-% months(2), sep = "/")
-  # diff(dim(DB_diff[range_square_mat]))
 
   # Get the positions of collinear columns
-  positions <- subset(as.data.frame(which(cor(DB_diff[range_square_mat]) > 0.9999, arr.ind = TRUE)), row < col)
+  colinearity_thresholds <- 0.9999
+  positions <- subset(as.data.frame(which(cor(DB_diff[range_square_mat]) > colinearity_thresholds, arr.ind = TRUE)), row < col)
 
   # If necessary, remove collinear columns
   if (dim(positions)[1] > 0) {
@@ -215,13 +200,19 @@ for (country in countries_PPI) {
   #########################################
   # Simulation of DFM
   #########################################
-  # Sometimes when the number of factors is too high the model doesnt converge
+  # Sometimes when the number of factors is too high the model does not converge
   # Until we do not converge we re-simulate with less factors
   converged <- F
   while (!converged & r != 0) {
     model <- tryCatch(
       { # We try to simulate the model
-        DFM(DB_diff, r = r, p = lag)
+        DFM(DB_diff,
+          r = r, p = lag,
+          em.method = "auto",
+          na.rm.method = "LE",
+          max.missing = 0.95,
+          na.impute = "median.ma.spline"
+        )
       },
       error = function(e) {
         # If it fails we print a message
@@ -247,20 +238,50 @@ for (country in countries_PPI) {
     }
   }
 
+
   #########################################
   # Forecasting
   #########################################
-  # Define the appropriate forecast horizon
-  h <- as.Date(latest_dates[[var_to_predict]]) %--% date_to_pred %/% months(1)
-  # Forecast the model, pay attention to the standardized option
-  fc <- predict(model, h = h, standardized = F)
+  historical <- as.double(DB[, var_to_predict][latest_dates[[var_to_predict]]])
+  if (date_to_pred > max(latest_dates)) {
+    ### Out of sample forecast
+
+    # Define the appropriate forecast horizon
+    h <- max(latest_dates) %--% date_to_pred %/% months(1)
+
+    # Forecast the model, pay attention to the standardized option
+    fc <- predict(model, h = h, standardized = F)
+
+    if (max(latest_dates) == latest_dates[[var_to_predict]]) {
+      pred <- historical +
+        sum(fc$X_fcst[, var_to_predict])
+    } else {
+      # Define the gap in month between our interest variable and the latest one
+      gap <- latest_dates[[var_to_predict]] %--% max(latest_dates) %/% months(1)
+      model$anyNA <- FALSE
+      Y_hat <- fitted(model, orig.format = TRUE)
+
+      pred <- historical +
+        sum(tail(Y_hat[, var_to_predict], gap)) +
+        sum(fc$X_fcst[, var_to_predict])
+    }
+  } else {
+    ### In sample forecast
+    
+    # https://github.com/SebKrantz/dfms/issues/45
+    model$anyNA <- FALSE
+    Y_hat <- fitted(model, orig.format = TRUE)
+    
+    # Define the gap in month between our interest variable and the latest one
+    gap <- latest_dates[[var_to_predict]] %--% max(latest_dates) %/% months(1)
+    
+    pred <- historical +
+      sum(tail(Y_hat[, var_to_predict], gap))
+  }
 
   #########################################
   # Storing the predictions
   #########################################
-  pred <- as.double(DB[, var_to_predict][latest_dates[[var_to_predict]]] +
-    sum(fc$X_fcst[, var_to_predict]))
-
   preds_dfm <- preds_dfm %>%
     add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
 
