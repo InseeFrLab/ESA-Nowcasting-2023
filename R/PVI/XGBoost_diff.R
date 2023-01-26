@@ -39,9 +39,11 @@ df_large_for_regression <- list_df$df_large_for_regression
 # Make one model per country
 #########################################
 
-best_max_depth_per_country <- 3
-best_nrounds_per_country <- 90
-best_eta_per_country <- 0.3
+best_nround_per_country <- 300
+best_eta_per_country <- 0.15
+best_max_depth_per_country <- 5
+best_subsample_per_country <- 0.5
+best_colsample_bytree_per_country <- 0.5
 
 preds_xgboost_per_country <- countries %>%
   select(geo) %>%
@@ -127,9 +129,13 @@ for (country in countries$geo) {
 
   model <- xgb.train(
     data = gb_train,
-    max_depth = best_max_depth_per_country,
+    objective='reg:squarederror',
+    eval_metric='rmse',
+    nrounds = best_nround_per_country,
     eta = best_eta_per_country,
-    nrounds = best_nrounds_per_country
+    max_depth = best_max_depth_per_country,
+    subsample = best_subsample_per_country,
+    colsample_bytree = best_colsample_bytree_per_country
   )
 
   # Make predictions
