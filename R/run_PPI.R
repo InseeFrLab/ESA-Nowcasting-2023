@@ -17,21 +17,23 @@ date_to_pred <- ymd("2023-01-01")
 current_date <- date_to_pred %m-% months(1)
 month <- "january"
 
-source("R/PPI/LastPeriod_model.R") # to be converted to functions
+# source("R/PPI/LastPeriod_model.R") # to be converted to functions
 source("R/PPI/Regarima.R") # to be converted to functions
 source("R/PPI/XGBoost.R") # to be converted to functions
-source("R/PPI/XGBoost_diff.R") # to be converted to functions
+# source("R/PPI/XGBoost_diff.R") # to be converted to functions
 source("R/PPI/DFM.R") # to be converted to functions
 source("R/PPI/ETS.R") # to be converted to functions
+source("R/PPI/LSTM.R") # to be converted to functions
 
 #### Plotting the results ####
 predictions <- bind_rows(list(
   # "entry_0" = preds_naive_1m %>% mutate(Entries = "Naive"),
   "entry_1" = preds_regarima %>% mutate(Entries = "REG-ARIMA"),
   "entry_2" = preds_xgboost %>% mutate(Entries = "XGBoost"),
-  "entry_3" = preds_xgboost_diff %>% mutate(Entries = "XGBoost_diff"), # A garder ?
-  "entry_4" = preds_dfm %>% mutate(Entries = "DFM"),
-  "entry_5" = preds_ets %>% mutate(Entries = "ETS")
+  # "entry_2bis" = preds_xgboost_diff %>% mutate(Entries = "XGBoost_diff"), # A garder ?
+  "entry_3" = preds_dfm %>% mutate(Entries = "DFM"),
+  "entry_4" = preds_ets %>% mutate(Entries = "ETS"),
+  "entry_5" = preds_lstm %>% mutate(Entries = "LSTM")
 ))
 
 plot_preds(data$PPI, predictions, countries_PPI[1:9], ncol = 3)
@@ -43,9 +45,10 @@ resids <- bind_rows(list(
   # "entry_0" = resid_naive_1m %>% mutate(Entries = "Naive"),
   "entry_1" = resid_regarima %>% mutate(Entries = "REG-ARIMA"),
   "entry_2" = resid_xgboost %>% mutate(Entries = "XGBoost"),
-  "entry_3" = resid_xgboost_diff %>% mutate(Entries = "XGBoost_diff"), # A garder ?
-  "entry_4" = resid_dfm %>% mutate(Entries = "DFM"),
-  "entry_5" = resid_ets %>% mutate(Entries = "ETS")
+  # "entry_2bis" = resid_xgboost_diff %>% mutate(Entries = "XGBoost_diff")
+  "entry_3" = resid_dfm %>% mutate(Entries = "DFM"),
+  "entry_4" = resid_ets %>% mutate(Entries = "ETS"),
+  "entry_5" = resid_lstm %>% mutate(Entries = "LSTM")
 ))
 
 plot_statistics(get_metrics(resids, countries_PPI, current_date, as.Date("2022-01-01")))
@@ -56,9 +59,10 @@ entries <- list(
   # "entry_0" = lapply(split(preds_naive_1m %>% pull(value, Country), names(preds_naive_1m %>% pull(value, Country))), unname),
   "entry_1" = lapply(split(preds_regarima %>% pull(value, Country), names(preds_regarima %>% pull(value, Country))), unname),
   "entry_2" = lapply(split(preds_xgboost %>% pull(value, Country), names(preds_xgboost %>% pull(value, Country))), unname),
-  "entry_3" = lapply(split(preds_xgboost_diff %>% pull(value, Country), names(preds_xgboost_diff %>% pull(value, Country))), unname), # A garder ?
-  "entry_4" = lapply(split(preds_dfm %>% pull(value, Country), names(preds_dfm %>% pull(value, Country))), unname),
-  "entry_5" = lapply(split(preds_ets %>% pull(value, Country), names(preds_ets %>% pull(value, Country))), unname)
+  # "entry_2bis" = lapply(split(preds_xgboost_diff %>% pull(value, Country), names(preds_xgboost_diff %>% pull(value, Country))), unname),
+  "entry_3" = lapply(split(preds_dfm %>% pull(value, Country), names(preds_dfm %>% pull(value, Country))), unname),
+  "entry_4" = lapply(split(preds_ets %>% pull(value, Country), names(preds_ets %>% pull(value, Country))), unname),
+  "entry_5" = lapply(split(preds_lstm %>% pull(value, Country), names(preds_lstm %>% pull(value, Country))), unname),
 )
 
 save_entries(entries, paste0("Submissions/PPI/results_", month, ".json"))
