@@ -63,7 +63,6 @@ for (country in countries$geo) {
     select(-month) %>%
     select(-year) %>%
     add_row(time = date_to_pred)
-
   df_current_date <- df_country %>%
     filter(time == current_date)
   df_country <- df_country[c(
