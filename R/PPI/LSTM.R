@@ -33,13 +33,12 @@ list_df <- create_table_large_ppi(nb_months_past_to_use,
                                   nb_months_past_to_use_others)
 countries <- list_df$countries
 df_large <- list_df$df_large
-df_large_for_regression <- list_df$df_large_for_regression
 
 #########################################
 # Countries predictions 
 #########################################
 
-preds_lstm_per_country = countries %>%
+preds_lstm <- countries %>%
   select(geo) %>%
   rename(Country = geo) %>%
   mutate(
@@ -47,20 +46,21 @@ preds_lstm_per_country = countries %>%
     value = 0
   )
 
-res_lstm_per_country = data.frame(matrix(ncol = 3, nrow = 0))
-x <- c("geo", "time", "PPI_pred_residuals")
-colnames(res_lstm_per_country) <- x
+resid_lstm = data.frame(matrix(ncol = 3, nrow = 0))
+x <- c("Country", "Date", "value")
+colnames(res_lstm) <- x
 
 i <- 1
 
 for (country in countries$geo) {
   df_country = df_large %>%
     filter(geo == country) %>%
-    select(-geo)%>%
-    select(-PPI_minus_1_months)%>%
-    select(-PPI_to_predict)%>%
-    select(-month)%>%
-    select(-year)
+    select(-geo) %>%
+    select(-PPI_minus_1_months) %>%
+    select(-PPI_to_predict) %>%
+    select(-month) %>%
+    select(-year) %>%
+    add_row(time = date_to_pred)
   
   df_current_date <- df_country %>%
     filter(time == current_date)
@@ -115,23 +115,24 @@ for (country in countries$geo) {
   
   # Make predictions
   predictions = predict(mod, df_country, only_actuals_obs = F)
-  pred = predictions %>%
+  
+  df_pred_next_month = predictions %>%
     filter(date == date_to_pred)
-  pred_next_month <- pred$predictions * std_ppi + mean_ppi
+  pred_next_month <- df_pred_next_month$predictions * std_ppi + mean_ppi
   
   # If "value" is the 3rd column
-  preds_lstm_per_country[i, 3] <- round(as.numeric(pred_next_month), 1)
+  preds_lstm[i, 3] <- round(as.numeric(pred_next_month), 1)
   
   # Make predictions on training set for residuals
   
-  predictions
-  
-  pred_residuals <- predictions$predictions * std_ppi + mean_ppi
-  
-  y_pred_residuals <- df_country$PPI - pred_residuals
-  
-  res_lstm_per_country <- res_lstm_per_country %>%
-    rbind(y_pred_residuals)
+  y_pred_residuals_country <- predictions %>%
+    mutate(predictions = predictions * std_ppi + mean_ppi) %>%
+    transmute(Country = country,
+              Date = date,
+              value = predictions - actuals)
+
+  resid_lstm <- resid_lstm %>%
+    rbind(y_pred_residuals_country)
   
   print(i)
   i <- i + 1
