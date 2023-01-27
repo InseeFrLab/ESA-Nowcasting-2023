@@ -12,104 +12,72 @@ library(xts)
 library(lubridate)
 options(dplyr.summarise.inform = FALSE)
 
+date_to_pred <- ymd("2023-01-01")
 
-build_data_dfms <- function(data) {
+source("R/utils/data_retrieval.R")
+source("R/utils/functions.R")
+
+xx <- yaml::read_yaml("config.yaml")
+env <- get_data(xx)
+
+reshape_eurostat_data <- function(data, country) {
+  subset_lists <- Filter(function(x) x$source == "Eurostat", data)
   
-  ppi <- reshape_eurostat_data(data$PPI, "PPI", country, "nace_r2")
-  ppi_nace2 <- reshape_eurostat_data(data$PPI_NACE2, "PPI", country, "nace_r2")
-  ipi <- reshape_eurostat_data(data$IPI, "IPI", country, "cpa2_1")
-  psurvey <- reshape_eurostat_data(data$PSURVEY, "PSURVEY", country, "indic")
-  pvi <- reshape_eurostat_data(data$PVI, "PVI", country)
-  hicp <- reshape_eurostat_data(data$HICP, "HICP", country, "coicop")
+  reshaped_data <- mapply(function(x, name) {
+    x$data %>%
+      dplyr::mutate(var = name) %>%
+      dplyr::filter(geo %in% country) %>%
+      tidyr::pivot_wider(names_from = c(geo, var, names(x$filters)[3]), values_from = values)
+    
+  }, subset_lists, names(subset_lists), SIMPLIFY = FALSE) |>
+    purrr::reduce(full_join, by = "time") 
+    
+    return(reshaped_data)
+}
+
+reshape_yahoo_data <- function(data) {
+  subset_lists <- Filter(function(x) x$source == "Yahoo", data)
   
-  brent <- data$brent %>%
-    as_tibble() %>%
-    mutate(
-      month = month(time),
-      year = year(time)
-    ) %>%
-    group_by(year, month) %>%
-    summarise(
-      brent_adjusted = mean(brent_adjusted, na.rm = T),
-      brent_volume = mean(brent_volume, na.rm = T),
-    ) %>%
-    ungroup() %>%
-    mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
-    select(time, brent_adjusted, brent_volume)
+  reshaped_data <- lapply(subset_lists, function(x) {
+    x$data %>%
+      mutate(
+        month = month(time),
+        year = year(time)
+      ) %>%
+      group_by(year, month) %>%
+      summarise(
+        across(-time, ~ mean(.x, na.rm = TRUE))
+      ) %>%
+      ungroup() %>%
+      mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
+      select(-c(year, month))
+    }) |>
+    purrr::reduce(full_join, by = "time")
+    
+    # Removing columns full of zeros
+    reshaped_data <- reshaped_data[, colSums(reshaped_data != 0, na.rm = TRUE) > 0]
+    
+    return(reshaped_data)
+}
+
+build_data_dfms <- function(challenge, env, country) {
   
-  eur_usd <- data$eur_usd %>%
-    as_tibble() %>%
-    select(time, eur_usd_adjusted) %>%
-    mutate(
-      month = month(time),
-      year = year(time)
-    ) %>%
-    group_by(year, month) %>%
-    summarise(
-      eur_usd_adjusted = mean(eur_usd_adjusted, na.rm = T)
-    ) %>%
-    ungroup() %>%
-    mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
-    select(time, eur_usd_adjusted)
+  selected_data <- Filter(function(x) (challenge %in% x$challenge) & "DFM" %in% x$model, env)
   
-  sp500 <- data$sp500 %>%
-    as_tibble() %>%
-    mutate(
-      month = month(time),
-      year = year(time)
-    ) %>%
-    group_by(year, month) %>%
-    summarise(
-      sp500_adjusted = mean(sp500_adjusted, na.rm = T),
-      sp500_volume = mean(sp500_volume, na.rm = T),
-    ) %>%
-    ungroup() %>%
-    mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
-    select(time, sp500_adjusted, sp500_volume)
-  
-  eurostoxx500 <- data$eurostoxx500 %>%
-    as_tibble() %>%
-    select(time, eurostoxx500_adjusted) %>%
-    mutate(
-      month = month(time),
-      year = year(time)
-    ) %>%
-    group_by(year, month) %>%
-    summarise(
-      eurostoxx500_adjusted = mean(eurostoxx500_adjusted, na.rm = T)
-    ) %>%
-    ungroup() %>%
-    mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
-    select(time, eurostoxx500_adjusted)
-  
-  cac40 <- data$cac40 %>%
-    as_tibble() %>%
-    mutate(
-      month = month(time),
-      year = year(time)
-    ) %>%
-    group_by(year, month) %>%
-    summarise(
-      cac40_adjusted = mean(cac40_adjusted, na.rm = T),
-      cac40_volume = mean(cac40_volume, na.rm = T),
-    ) %>%
-    ungroup() %>%
-    mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
-    select(time, cac40_adjusted, cac40_volume)
-  
-  DB <- list(ppi, ppi_nace2, psurvey, hicp, brent, eur_usd, sp500, eurostoxx500, cac40) %>%
+  DB <- list(reshape_eurostat_data(selected_data, country), reshape_yahoo_data(selected_data)) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
   
   DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
+  
   # replacing - by . in column names to avoid conflicts
   colnames(DB) <- gsub("-", ".", colnames(DB))
   
   return(DB)
 }
 
-run_DFMs <- function(data, countries, target_var, start_sample, SA = FALSE,
+run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = FALSE,
                      max_lags = 4,
                      max_factor = 2,
                      collinearity_threshold = 0.9999){
@@ -133,7 +101,7 @@ run_DFMs <- function(data, countries, target_var, start_sample, SA = FALSE,
     #########################################
     # Prepare data
     #########################################
-    DB <- build_data_dfms(data)
+    DB <- build_data_dfms(challenge, env, country)
   
     latest_dates <- sapply(names(DB), get_latest_dates, data = DB)
     
@@ -141,7 +109,11 @@ run_DFMs <- function(data, countries, target_var, start_sample, SA = FALSE,
     # Seasonality removal
     #########################################
     if (SA) {
-      
+      sa <- RJDemetra::x13(tsbox::ts_ts(DB[, var_to_predict]), spec = c("RSA2"))
+      sa_xts <- tsbox::ts_xts(sa$final$series[, "sa"])
+      names(sa_xts) <- paste0(var_to_predict, "_SA")
+      DB <- merge(DB, sa_xts)
+      DB <- DB[, !(names(DB) %in% var_to_predict)]
     }
   
     #########################################
@@ -153,8 +125,8 @@ run_DFMs <- function(data, countries, target_var, start_sample, SA = FALSE,
     #########################################
     # Dealing with multiple NaNs columns
     #########################################
-    range_3year <- paste(date_to_pred %m-% months(36 + 1), date_to_pred %m-% months(2), sep = "/")
-    nan_cols <- as.double(which(colSums(is.na(DB_diff[range_3year])) > 0))
+    range_3year <- paste(date_to_pred %m-% months(36 + 4), date_to_pred %m-% months(5), sep = "/")
+    nan_cols <- as.double(which(colSums(is.na(DB_diff[range_3year])) > 18))
   
     if (!purrr::is_empty(nan_cols)) {
       cat("Removing", names(which(colSums(is.na(DB_diff[range_3year])) > 0)), "due to missing values.\n")
@@ -327,4 +299,16 @@ run_DFMs <- function(data, countries, target_var, start_sample, SA = FALSE,
   return(preds_dfm)
 }
 
-preds_dfm <-run_DFMs(data, c("FR"), "PPI_B.E36", "2005-02-01")
+preds_dfm <-run_DFMs("PPI", env, c("FR"), "PPI_B.E36", "2005-02-01")
+preds_dfm <-run_DFMs("PVI", env, c("FR"), "PVI_B.D", "2005-02-01")
+preds_dfm <-run_DFMs("TOURISM", env, c("FR"), "TOURISM_I551.I553", "2007-05-01", SA = TRUE)
+
+
+
+challenge<-"TOURISM"  
+countries <- c("FR")
+target_var <- "TOURISM_I551.I553"
+start_sample <- "2007-05-01"
+max_lags <- 4
+max_factor <- 2
+collinearity_threshold <- 0.9999
