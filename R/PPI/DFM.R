@@ -223,7 +223,19 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
     #########################################
     # Forecasting
     #########################################
-    historical <- as.double(DB[, var_to_predict][latest_dates[[var_to_predict]]])
+    # Define the gap in month between our interest variable and the latest one
+    gap <- latest_dates[[var_to_predict]] %--% max(latest_dates) %/% months(1)
+    
+    # Define last observed date of our interest variable
+    last_observed <- latest_dates[[var_to_predict]]
+    
+    if (SA) {
+      historical <- as.double(DB[, paste0(var_to_predict, "_SA")][last_observed])
+      var_to_predict <- paste0(var_to_predict, "_SA")
+    } else {
+      historical <- as.double(DB[, var_to_predict][last_observed])
+    }
+    
     if (date_to_pred > max(latest_dates)) {
       ### Out of sample forecast
   
@@ -233,12 +245,13 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
       # Forecast the model, pay attention to the standardized option
       fc <- predict(model, h = h, standardized = F)
   
-      if (max(latest_dates) == latest_dates[[var_to_predict]]) {
+      if (max(latest_dates) == last_observed) {
+        
         pred <- historical +
           sum(fc$X_fcst[, var_to_predict])
+        
       } else {
-        # Define the gap in month between our interest variable and the latest one
-        gap <- latest_dates[[var_to_predict]] %--% max(latest_dates) %/% months(1)
+
         model$anyNA <- FALSE
         Y_hat <- fitted(model, orig.format = TRUE)
   
@@ -248,18 +261,19 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
       }
     } else {
       ### In sample forecast
-      
       # https://github.com/SebKrantz/dfms/issues/45
       model$anyNA <- FALSE
       Y_hat <- fitted(model, orig.format = TRUE)
-      
-      # Define the gap in month between our interest variable and the latest one
-      gap <- latest_dates[[var_to_predict]] %--% max(latest_dates) %/% months(1)
       
       pred <- historical +
         sum(tail(Y_hat[, var_to_predict], gap))
     }
   
+    if (SA) {
+      # we add the seasonal component so that we obtain the initial variable
+      pred <- pred + sa$final$forecasts[gap, "s_f"]
+    }
+    
     #########################################
     # Storing the predictions
     #########################################
@@ -269,12 +283,18 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
     #########################################
     # Storing the residuals
     #########################################
+    resids <- resid(model, orig.format = TRUE)[, var_to_predict]
+    if (SA) {
+      # we add the seasonal component
+      resids <- resids + tsbox::ts_xts(sa$final$series[, "s"])
+    }
+    
     resid_dfm <- rbind(
       resid_dfm,
-      resid(model, orig.format = TRUE)[, var_to_predict] %>%
+      resids %>%
         as_tibble() %>%
         mutate(
-          Date = zoo::index(resid(model, orig.format = TRUE)[, var_to_predict]),
+          Date = zoo::index(resids),
           Country = country
         ) %>%
         rename(value = paste(var_to_predict)) %>%
