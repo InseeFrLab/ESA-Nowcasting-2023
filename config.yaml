@@ -6,7 +6,9 @@ PPI:
   challenge: 
     - PPI
     - PVI
-    - TOURISM
+  model:
+    - DFM
+    - XGBOOST
   id: sts_inppd_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
@@ -21,6 +23,9 @@ IPI:
   challenge: 
     - PPI
     - PVI
+  model:
+    - DFM
+    - XGBOOST
   id: sts_inpi_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
@@ -35,7 +40,9 @@ PSURVEY:
   challenge: 
     - PPI
     - PVI
-    - TOURISM
+  model:
+    - DFM
+    - XGBOOST
   id: ei_bsin_m_r2
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
@@ -50,6 +57,9 @@ HICP:
     - PPI
     - PVI
     - TOURISM
+  model:
+    - DFM
+    - XGBOOST
   id: prc_hicp_midx
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
@@ -62,6 +72,9 @@ PVI:
   challenge: 
     - PPI
     - PVI
+  model:
+    - DFM
+    - XGBOOST
   id: sts_inpr_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
@@ -75,6 +88,9 @@ TOURISM:
   source : Eurostat
   challenge: 
     - TOURISM
+  model:
+    - DFM
+    - XGBOOST
   id: tour_occ_nim
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
@@ -89,6 +105,9 @@ BRENT:
     - PPI
     - PVI
     - TOURISM
+  model:
+    - DFM
+    - XGBOOST
   id: "BZ=F"
 
 EUR_USD:
@@ -98,6 +117,9 @@ EUR_USD:
     - PPI
     - PVI
     - TOURISM
+  model:
+    - DFM
+    - XGBOOST
   id: "EURUSD=X"
 
 SP500:
@@ -106,6 +128,9 @@ SP500:
   challenge: 
     - PPI
     - PVI
+  model:
+    - DFM
+    - XGBOOST
   id: "^GSPC"
 
 EUROSTOXX500:
@@ -114,6 +139,9 @@ EUROSTOXX500:
   challenge: 
     - PPI
     - PVI
+  model:
+    - DFM
+    - XGBOOST
   id: "^STOXX50E"
 
 CAC40:
@@ -122,6 +150,9 @@ CAC40:
   challenge: 
     - PPI
     - PVI
+  model:
+    - DFM
+    - XGBOOST
   id: "^FCHI"
 
 ELEC_PRICES:
@@ -130,6 +161,8 @@ ELEC_PRICES:
   challenge: 
     - PPI
     - PVI
+  model:
+    - XGBOOST
   url: "https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv"
   url-geo-code: "https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv"
   
@@ -139,4 +172,6 @@ NB_WE:
   challenge: 
     - PVI
     - TOURISM
+  model:
+    - XGBOOST
   init-date: "2007-01-01"
