@@ -22,13 +22,30 @@ source("R/utils/create_table_large_TOURISM.R")
 
 do_grid_search <- FALSE
 
+nb_months_past_to_use <- 12
+nb_years_past_to_use <- 6
+nb_months_past_to_use_others <- 6
+
+#########################################
+# Create the large table for tourism
+#########################################
+
+list_df <- create_table_large_tourism(nb_months_past_to_use,
+                                      nb_past_years_to_use,
+                                      nb_months_past_to_use_others)
+countries <- list_df$countries
+df_large <- list_df$df_large
+df_large_for_regression <- list_df$df_large_for_regression
+
 #########################################
 # Make one model per country
 #########################################
 
-best_max_depth_per_country <- 3
-best_nrounds_per_country <- 90
-best_eta_per_country <- 0.3
+best_nround_per_country <- 300
+best_eta_per_country <- 0.15
+best_max_depth_per_country <- 5
+best_subsample_per_country <- 0.5
+best_colsample_bytree_per_country <- 0.5
 
 preds_xgboost_per_country <- countries %>%
   select(geo) %>%
@@ -114,14 +131,18 @@ for (country in countries$geo) {
 
   model <- xgb.train(
     data = gb_train,
-    max_depth = best_max_depth_per_country,
+    objective='reg:squarederror',
+    eval_metric='rmse',
+    nrounds = best_nround_per_country,
     eta = best_eta_per_country,
-    nrounds = best_nrounds_per_country
+    max_depth = best_max_depth_per_country,
+    subsample = best_subsample_per_country,
+    colsample_bytree = best_colsample_bytree_per_country
   )
 
   # Make predictions
 
-  y_pred_next_month <- predict(model, d_to_pred)
+  y_pred_next_month <- stats::predict(model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_tourism_to_predict_country +
     mean_tourism_to_predict_country
   # If "value" is the 3rd column
@@ -129,7 +150,7 @@ for (country in countries$geo) {
 
   # Make predictions on training set for residuals
 
-  y_pred_residuals <- predict(model, xgb.DMatrix(data = X_train))
+  y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
   y_pred_residuals <- y_pred_residuals * scale_tourism_to_predict_country +
     mean_tourism_to_predict_country
 

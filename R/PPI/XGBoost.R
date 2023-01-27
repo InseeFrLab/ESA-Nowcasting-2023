@@ -23,11 +23,25 @@ source("R/utils/create_table_large_PPI.R")
 do_grid_search <- FALSE
 do_full_dataset_model <- TRUE
 
+nb_months_past_to_use <- 24
+nb_months_past_to_use_others <- 4
+
+#########################################
+# Create the large table for PPI
+#########################################
+
+list_df <- create_table_large_ppi(nb_months_past_to_use,
+                                  nb_months_past_to_use_others)
+countries <- list_df$countries
+df_large <- list_df$df_large
+df_large_for_regression <- list_df$df_large_for_regression
+
 #########################################
 # Adapt the table for the regressions
 #########################################
 
 df_for_regression <- as.data.table(df_large_for_regression) %>%
+  filter(geo == 'FR') %>%
   mutate(geo = "Europe") # EXPERIMENTATION SANS LA VARIABLE PAYS
 
 # One-hot encoding of categorical variables
@@ -60,7 +74,7 @@ df_for_regression_to_predict <- df_for_regression %>%
 
 if (do_full_dataset_model) {
   df_xgboost_train <- df_for_regression_to_use %>%
-    sample_frac(3 / 4)
+    sample_frac(4/5)
 } else {
   df_xgboost_train <- df_for_regression_to_use %>%
     sample_frac(1)
@@ -73,7 +87,7 @@ df_xgboost_test <- df_for_regression_to_use %>%
 
 if (do_full_dataset_model || do_grid_search) {
   df_xgboost_train_train <- df_xgboost_train %>%
-    sample_frac(3 / 4)
+    sample_frac(4/5)
 } else {
   df_xgboost_train_train <- df_xgboost_train %>%
     sample_frac(1)
@@ -101,36 +115,47 @@ watchlist <- list(train = gb_train, valid = gb_valid)
 if (do_grid_search) {
   # The ranges of the parameters to check
 
-  nrounds <- 25 * (1:7)  # Can also be tried with x100
+  nrounds <- 50 * (1:6)
+  etas <- 0.05 * (1:6)
   max_depths <- (3:10)
-  etas <- 0.05 * (1:25)
+  subsamples <- 0.25 * (2:4)
+  colsample_bytrees <- 0.25 * (2:4)
+  
   count <- 1
 
   ## The effective grid search
 
   for (nround in nrounds) {
-    for (depth in max_depths) {
-      for (eta in etas) {
-        model <- xgb.train(
-          data = gb_train,
-          max_depth = depth,
-          eta = eta,
-          nrounds = nround,
-          watchlist = watchlist,
-          early_stopping_rounds = 25,
-          print_every_n = 10
-        )
-        if (count == 1) {
-          best_params <- model$params
-          best_n_rounds <- nround
-          best_score <- model$best_score
-        } else if (model$best_score < best_score) {
-          best_params <- model$params
-          best_n_rounds <- nround
-          best_score <- model$best_score
+    for (eta in etas) {
+      for (max_depth in max_depths) {
+        for (subsample in subsamples) {
+          for (colsample_bytree in colsample_bytrees) {
+            model <- xgb.train(
+              data = gb_train,
+              objective='reg:squarederror',
+              eval_metric='rmse',
+              nrounds = nround,
+              eta = eta,
+              max_depth = max_depth,
+              subsample = subsample,
+              colsample_bytree = colsample_bytree,
+              watchlist = watchlist,
+              early_stopping_rounds = 25,
+              print_every_n = 25
+            )
+            if (count == 1) {
+              best_params <- model$params
+              best_n_rounds <- nround
+              best_score <- model$best_score
+            } else if (model$best_score < best_score) {
+              best_params <- model$params
+              best_n_rounds <- nround
+              best_score <- model$best_score
+            }
+            count <- count + 1
+            print(count)
+          }
         }
-        count <- count + 1
-        print(count)
       }
     }
   }
@@ -140,9 +165,11 @@ if (do_grid_search) {
   print(best_score)
 }
 
+best_nround <- 50
+best_eta <- 0.15
 best_max_depth <- 8
-best_nrounds <- 125
-best_eta <- 0.4
+best_subsample <- 0.5
+best_colsample_bytree <- 0.5
 
 #########################################
 # Use the best model on the whole dataset
@@ -153,9 +180,13 @@ if (do_full_dataset_model) {
 
   best_model <- xgb.train(
     data = gb_train,
-    max_depth = best_max_depth,
+    objective='reg:squarederror',
+    eval_metric='rmse',
+    nrounds = best_nround,
     eta = best_eta,
-    nrounds = best_nrounds,
+    max_depth = best_max_depth,
+    subsample = best_subsample,
+    colsample_bytree = best_colsample_bytree,
     watchlist = watchlist,
     early_stopping_rounds = 25
   )
@@ -170,7 +201,7 @@ if (do_full_dataset_model) {
   y_test <- df_xgboost_test$PPI_to_predict
 
   dtest <- xgb.DMatrix(data = X_test)
-  y_pred <- predict(best_model, dtest)
+  y_pred <- stats::predict(best_model, dtest)
 
   test_mse <- mean(((y_pred - y_test)^2))
   test_rmse <- sqrt(test_mse)
@@ -182,7 +213,7 @@ if (do_full_dataset_model) {
     select(-c(PPI_to_predict, time)))
   d_to_pred <- xgb.DMatrix(data = X_to_pred)
 
-  y_pred_next_month <- predict(best_model, d_to_pred)
+  y_pred_next_month <- stats::predict(best_model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_ppi_to_predict +
     mean_ppi_to_predict
 
@@ -200,9 +231,11 @@ if (do_full_dataset_model) {
 # Make one model per country
 #########################################
 
-best_max_depth_per_country <- 3
-best_nrounds_per_country <- 90
-best_eta_per_country <- 0.3
+best_nround_per_country <- 300
+best_eta_per_country <- 0.15
+best_max_depth_per_country <- 5
+best_subsample_per_country <- 0.5
+best_colsample_bytree_per_country <- 0.5
 
 preds_xgboost_per_country <- countries %>%
   select(geo) %>%
@@ -240,7 +273,9 @@ for (country in countries$geo) {
   # Scale the variables
 
   df_country <- df_country %>%
-    mutate(across(c(where(is.numeric)), scale))
+    mutate(month = as.character(month),
+           year = as.character(year),
+           across(c(where(is.numeric)), scale))
 
   mean_ppi_to_predict_country <- attr(df_country$PPI_to_predict, "scaled:center")
   scale_ppi_to_predict_country <- attr(df_country$PPI_to_predict, "scaled:scale")
@@ -276,14 +311,18 @@ for (country in countries$geo) {
 
   model <- xgb.train(
     data = gb_train,
-    max_depth = best_max_depth_per_country,
+    objective='reg:squarederror',
+    eval_metric='rmse',
+    nrounds = best_nround_per_country,
     eta = best_eta_per_country,
-    nrounds = best_nrounds_per_country
+    max_depth = best_max_depth_per_country,
+    subsample = best_subsample_per_country,
+    colsample_bytree = best_colsample_bytree_per_country
   )
 
   # Make predictions
 
-  y_pred_next_month <- predict(model, d_to_pred)
+  y_pred_next_month <- stats::predict(model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_ppi_to_predict_country +
     mean_ppi_to_predict_country
   # If "value" is the 3rd column
@@ -291,7 +330,7 @@ for (country in countries$geo) {
 
   # Make predictions on training set for residuals
 
-  y_pred_residuals <- predict(model, xgb.DMatrix(data = X_train))
+  y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
   y_pred_residuals <- y_pred_residuals * scale_ppi_to_predict_country +
     mean_ppi_to_predict_country
 
