@@ -22,22 +22,21 @@ env <- get_data(xx)
 
 reshape_eurostat_data <- function(data, country) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
-  
+
   reshaped_data <- mapply(function(x, name) {
     x$data %>%
       dplyr::mutate(var = name) %>%
       dplyr::filter(geo %in% country) %>%
       tidyr::pivot_wider(names_from = c(geo, var, names(x$filters)[3]), values_from = values)
-    
   }, subset_lists, names(subset_lists), SIMPLIFY = FALSE) |>
-    purrr::reduce(full_join, by = "time") 
-    
-    return(reshaped_data)
+    purrr::reduce(full_join, by = "time")
+
+  return(reshaped_data)
 }
 
 reshape_yahoo_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "Yahoo", data)
-  
+
   reshaped_data <- lapply(subset_lists, function(x) {
     x$data %>%
       mutate(
@@ -51,60 +50,58 @@ reshape_yahoo_data <- function(data) {
       ungroup() %>%
       mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
       select(-c(year, month))
-    }) |>
+  }) |>
     purrr::reduce(full_join, by = "time")
-    
-    # Removing columns full of zeros
-    reshaped_data <- reshaped_data[, colSums(reshaped_data != 0, na.rm = TRUE) > 0]
-    
-    return(reshaped_data)
+
+  # Removing columns full of zeros
+  reshaped_data <- reshaped_data[, colSums(reshaped_data != 0, na.rm = TRUE) > 0]
+
+  return(reshaped_data)
 }
 
 build_data_dfms <- function(challenge, env, country) {
-  
   selected_data <- Filter(function(x) (challenge %in% x$challenge) & "DFM" %in% x$model, env)
-  
+
   DB <- list(reshape_eurostat_data(selected_data, country), reshape_yahoo_data(selected_data)) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
     arrange(time)
-  
+
   DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>% pull()))
-  
+
   # replacing - by . in column names to avoid conflicts
   colnames(DB) <- gsub("-", ".", colnames(DB))
-  
+
   return(DB)
 }
 
 run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = FALSE,
                      max_lags = 4,
                      max_factor = 2,
-                     collinearity_threshold = 0.9999){
-  
+                     collinearity_threshold = 0.9999) {
   preds_dfm <- tibble(
     Country = character(),
     Date = as.POSIXct(NA),
     value = numeric()
   )
-  
+
   resid_dfm <- tibble(
     Country = character(),
     Date = as.POSIXct(NA),
     value = numeric()
   )
-  
+
   for (country in countries) {
     cat(paste0("Running estimation for ", country, "\n"))
-    var_to_predict <- paste(country, target_var, sep= "_")
-    
+    var_to_predict <- paste(country, target_var, sep = "_")
+
     #########################################
     # Prepare data
     #########################################
     DB <- build_data_dfms(challenge, env, country)
-  
+
     latest_dates <- sapply(names(DB), get_latest_dates, data = DB)
-    
+
     #########################################
     # Seasonality removal
     #########################################
@@ -115,41 +112,41 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
       DB <- merge(DB, sa_xts)
       DB <- DB[, !(names(DB) %in% var_to_predict)]
     }
-  
+
     #########################################
     # Differenciate the series
     #########################################
     DB_diff <- diff(DB)
     DB_diff <- DB_diff[paste0(start_sample, "/", date_to_pred)]
-  
+
     #########################################
     # Dealing with multiple NaNs columns
     #########################################
     range_3year <- paste(date_to_pred %m-% months(36 + 4), date_to_pred %m-% months(5), sep = "/")
     nan_cols <- as.double(which(colSums(is.na(DB_diff[range_3year])) > 18))
-  
+
     if (!purrr::is_empty(nan_cols)) {
       cat("Removing", names(which(colSums(is.na(DB_diff[range_3year])) > 0)), "due to missing values.\n")
       DB_diff <- DB_diff[, -nan_cols]
     }
-  
+
     #########################################
     # Dealing with collinearity
     #########################################
     # Creating a squared matrix to check collinearity
     # Now we could use last() for the interval
     range_square_mat <- paste(date_to_pred %m-% months(dim(DB_diff)[2] + 1), date_to_pred %m-% months(2), sep = "/")
-  
+
     # Get the positions of collinear columns
     positions <- subset(as.data.frame(which(cor(DB_diff[range_square_mat]) > collinearity_threshold, arr.ind = TRUE)), row < col)
-  
+
     # If necessary, remove collinear columns
     if (dim(positions)[1] > 0) {
       var_to_remove <- sapply(positions, function(x) names(DB_diff[range_square_mat])[x])["col"]
       DB_diff <- DB_diff[, -as.double(positions["col"])]
       cat("Removing", var_to_remove, "due to collinearity.\n")
     }
-  
+
     #########################################
     # Determination of parameters
     #########################################
@@ -163,22 +160,22 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
         e
       }
     )
-  
+
     if (inherits(ic, "error")) next
-  
+
 
     # Take the most optimal number of factor following Bain and NG (2002)
     r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
     if (r > max_factor) r <- max_factor
-  
+
     # We loop until we get a number of factor that allows convergence
     while (any(is.na((vars::VARselect(ic$F_pca[, 1:r])$criteria))) & r != 1) {
       r <- r - 1
     }
-  
+
     lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
     if (lag > max_lags) lag <- max_lags
-  
+
     #########################################
     # Simulation of DFM
     #########################################
@@ -219,42 +216,39 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
         lag <- lag - 1
       }
     }
-  
+
     #########################################
     # Forecasting
     #########################################
     # Define the gap in month between our interest variable and the latest one
     gap <- latest_dates[[var_to_predict]] %--% max(latest_dates) %/% months(1)
-    
+
     # Define last observed date of our interest variable
     last_observed <- latest_dates[[var_to_predict]]
-    
+
     if (SA) {
       historical <- as.double(DB[, paste0(var_to_predict, "_SA")][last_observed])
       var_to_predict <- paste0(var_to_predict, "_SA")
     } else {
       historical <- as.double(DB[, var_to_predict][last_observed])
     }
-    
+
     if (date_to_pred > max(latest_dates)) {
       ### Out of sample forecast
-  
+
       # Define the appropriate forecast horizon
       h <- max(latest_dates) %--% date_to_pred %/% months(1)
-  
+
       # Forecast the model, pay attention to the standardized option
       fc <- predict(model, h = h, standardized = F)
-  
+
       if (max(latest_dates) == last_observed) {
-        
         pred <- historical +
           sum(fc$X_fcst[, var_to_predict])
-        
       } else {
-
         model$anyNA <- FALSE
         Y_hat <- fitted(model, orig.format = TRUE)
-  
+
         pred <- historical +
           sum(tail(Y_hat[, var_to_predict], gap)) +
           sum(fc$X_fcst[, var_to_predict])
@@ -264,22 +258,22 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
       # https://github.com/SebKrantz/dfms/issues/45
       model$anyNA <- FALSE
       Y_hat <- fitted(model, orig.format = TRUE)
-      
+
       pred <- historical +
         sum(tail(Y_hat[, var_to_predict], gap))
     }
-  
+
     if (SA) {
       # we add the seasonal component so that we obtain the initial variable
       pred <- pred + sa$final$forecasts[gap, "s_f"]
     }
-    
+
     #########################################
     # Storing the predictions
     #########################################
     preds_dfm <- preds_dfm %>%
       add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
-  
+
     #########################################
     # Storing the residuals
     #########################################
@@ -288,7 +282,7 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
       # we add the seasonal component
       resids <- resids + tsbox::ts_xts(sa$final$series[, "s"])
     }
-    
+
     resid_dfm <- rbind(
       resid_dfm,
       resids %>%
@@ -301,7 +295,7 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
         select(Country, Date, value)
     )
   }
-  
+
   #########################################
   # Add missing countries in the list
   #########################################
@@ -310,7 +304,7 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
     preds_dfm <- preds_dfm %>%
       add_row(Country = country, Date = date_to_pred)
   }
-  
+
   # Re-arranging countries
   preds_dfm <- preds_dfm %>%
     mutate(Country = factor(Country, levels = countries)) %>%
@@ -319,13 +313,13 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
   return(preds_dfm)
 }
 
-preds_dfm <-run_DFMs("PPI", env, c("FR"), "PPI_B.E36", "2005-02-01")
-preds_dfm <-run_DFMs("PVI", env, c("FR"), "PVI_B.D", "2005-02-01")
-preds_dfm <-run_DFMs("TOURISM", env, c("FR"), "TOURISM_I551.I553", "2007-05-01", SA = TRUE)
+preds_dfm <- run_DFMs("PPI", env, c("FR"), "PPI_B.E36", "2005-02-01")
+preds_dfm <- run_DFMs("PVI", env, c("FR"), "PVI_B.D", "2005-02-01")
+preds_dfm <- run_DFMs("TOURISM", env, c("FR"), "TOURISM_I551.I553", "2007-05-01", SA = TRUE)
 
 
 
-challenge<-"TOURISM"  
+challenge <- "TOURISM"
 countries <- c("FR")
 target_var <- "TOURISM_I551.I553"
 start_sample <- "2007-05-01"
