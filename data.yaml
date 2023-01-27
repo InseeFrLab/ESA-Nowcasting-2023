@@ -1,5 +1,6 @@
 PPI:
   name: "Producer Price in Industry"
+  short_name: "PPI"
   source : Eurostat
   challenge: 
     - PPI
@@ -22,6 +23,7 @@ PPI:
 
 IPI:
   name: "Industrial Production Index"
+  short_name: "IPI"
   source : Eurostat
   challenge: 
     - PPI
@@ -46,6 +48,7 @@ IPI:
     
 PSURVEY:
   name: "Production surveys"
+  short_name: "PSURVEY"
   source : Eurostat
   challenge: 
     - PPI
@@ -64,7 +67,8 @@ PSURVEY:
     unit: BAL
     
 HICP:
-  name: "Harmonised Index of Consumer Prices "
+  name: "Harmonised Index of Consumer Prices"
+  short_name: "HICP"
   source : Eurostat
   challenge: 
     - PPI
@@ -84,6 +88,7 @@ HICP:
     
 PVI:
   name: "Production Volume in Industry"
+  short_name: "PVI"
   source : Eurostat
   challenge: 
     - PPI
@@ -103,6 +108,7 @@ PVI:
     
 TOURISM:
   name: "Number of nights spent at tourist accommodation establishments"
+  short_name: "TOURISM"
   source : Eurostat
   challenge: 
     - TOURISM
@@ -120,6 +126,7 @@ TOURISM:
     
 BRENT:
   name: "Brent Crude Oil Price"
+  short_name: "BRENT"
   source : Yahoo
   challenge: 
     - PPI
@@ -132,6 +139,7 @@ BRENT:
 
 EUR_USD:
   name: "EUR to USD Exchange Rate"
+  short_name: "EUR_USD"
   source : Yahoo
   challenge: 
     - PPI
@@ -144,6 +152,7 @@ EUR_USD:
 
 SP500:
   name: "S&P 500 Index stock"
+  short_name: "SP500"
   source : Yahoo
   challenge: 
     - PPI
@@ -155,6 +164,7 @@ SP500:
 
 EUROSTOXX500:
   name: "Euro stoxx 50 Index stock"
+  short_name: "EUROSTOXX500"
   source : Yahoo
   challenge: 
     - PPI
@@ -166,6 +176,7 @@ EUROSTOXX500:
 
 CAC40:
   name: "CAC 40 Index"
+  short_name: "CAC40"
   source : Yahoo
   challenge: 
     - PPI
@@ -177,6 +188,7 @@ CAC40:
 
 ELEC_PRICES:
   name: "Electricity prices"
+  short_name: "ELEC_PRICES"
   source: ember-climate
   challenge: 
     - PPI
@@ -188,10 +200,11 @@ ELEC_PRICES:
   
 NB_WE:
   name: "Number of week-end days"
+  short_name: "NB_WE"
   source: Week-end
   challenge: 
     - PVI
     - TOURISM
   model:
     - XGBOOST
-  init-date: "2007-01-01"
+  init_date: "2000-01-01"

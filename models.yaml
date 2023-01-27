@@ -9,3 +9,4 @@ XGBOOST:
     nb_months_past_to_use : 10
     nb_months_past_to_use_others : 5
     nb_years_past_to_use : 5
+  init_year: 2007
