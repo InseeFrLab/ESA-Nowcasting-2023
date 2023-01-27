@@ -233,7 +233,7 @@ reorder_entries <- function(entries, filename) {
 
 to_tsibble <- function(x) {
   x %>%
-    mutate(time = yearmonth(time)) %>%
-    drop_na() %>%
-    as_tsibble(key = c(geo), index = time)
+    mutate(time = tsibble::yearmonth(time)) %>%
+    tidyr::drop_na() %>%
+    tsibble::as_tsibble(key = c(geo), index = time)
 }
