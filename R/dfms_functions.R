@@ -1,10 +1,3 @@
-###############################################################################
-#                  Time series models : DFMs                                  #
-###############################################################################
-
-#########################################
-# Required packages
-#########################################
 library(dplyr)
 library(purrr)
 library(dfms)
@@ -67,7 +60,7 @@ build_data_dfms <- function(challenge, env, country) {
   return(DB)
 }
 
-run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = FALSE,
+run_DFMs <- function(challenge, env, countries, start_sample, SA = FALSE,
                      max_lags = 4,
                      max_factor = 2,
                      collinearity_threshold = 0.9999) {
@@ -85,7 +78,9 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
 
   for (country in countries) {
     cat(paste0("Running estimation for ", country, "\n"))
-    var_to_predict <- paste(country, target_var, sep = "_")
+    code_variable_interest <- gsub("-", ".", env[[challenge]]$filters[[names(env[[challenge]]$filters)[3]]][1])
+    
+    var_to_predict <- paste(country, challenge, code_variable_interest, sep = "_")
 
     #########################################
     # Prepare data
@@ -302,5 +297,6 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
     mutate(Country = factor(Country, levels = countries)) %>%
     arrange(Country)
 
-  return(preds_dfm)
+  return(list("preds" = preds_dfm,
+              "resids" = resid_dfm))
 }

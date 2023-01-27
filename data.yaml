@@ -8,6 +8,7 @@ PPI:
   model:
     - DFM
     - XGBOOST
+    - ETS
   id: sts_inppd_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -96,6 +97,7 @@ PVI:
   model:
     - DFM
     - XGBOOST
+    - ETS
   id: sts_inpr_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -115,6 +117,7 @@ TOURISM:
   model:
     - DFM
     - XGBOOST
+    - ETS
   id: tour_occ_nim
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
