@@ -8,6 +8,7 @@ PPI:
     - DFM
     - XGBOOST
     - ETS
+    - REGARIMA
   id: sts_inppd_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -30,6 +31,7 @@ IPI:
   model:
     - DFM
     - XGBOOST
+    - REGARIMA
   id: sts_inpi_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -54,6 +56,7 @@ PSURVEY:
   model:
     - DFM
     - XGBOOST
+    - REGARIMA
   id: ei_bsin_m_r2
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -131,6 +134,7 @@ BRENT:
   model:
     - DFM
     - XGBOOST
+    - REGARIMA
   id: "BZ=F"
 
 EUR_USD:
@@ -143,6 +147,7 @@ EUR_USD:
   model:
     - DFM
     - XGBOOST
+    - REGARIMA
   id: "EURUSD=X"
 
 SP500:
