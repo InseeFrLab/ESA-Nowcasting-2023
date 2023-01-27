@@ -12,14 +12,6 @@ library(xts)
 library(lubridate)
 options(dplyr.summarise.inform = FALSE)
 
-date_to_pred <- ymd("2023-01-01")
-
-source("R/utils/data_retrieval.R")
-source("R/utils/functions.R")
-
-xx <- yaml::read_yaml("config.yaml")
-env <- get_data(xx)
-
 reshape_eurostat_data <- function(data, country) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
 
@@ -312,17 +304,3 @@ run_DFMs <- function(challenge, env, countries, target_var, start_sample, SA = F
 
   return(preds_dfm)
 }
-
-preds_dfm <- run_DFMs("PPI", env, c("FR"), "PPI_B.E36", "2005-02-01")
-preds_dfm <- run_DFMs("PVI", env, c("FR"), "PVI_B.D", "2005-02-01")
-preds_dfm <- run_DFMs("TOURISM", env, c("FR"), "TOURISM_I551.I553", "2007-05-01", SA = TRUE)
-
-
-
-challenge <- "TOURISM"
-countries <- c("FR")
-target_var <- "TOURISM_I551.I553"
-start_sample <- "2007-05-01"
-max_lags <- 4
-max_factor <- 2
-collinearity_threshold <- 0.9999
