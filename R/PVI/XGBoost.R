@@ -30,8 +30,10 @@ nb_months_past_to_use_others <- 4
 # Create the large table for PVI
 #########################################
 
-list_df <- create_table_large_pvi(nb_months_past_to_use,
-                                  nb_months_past_to_use_others)
+list_df <- create_table_large_pvi(
+  nb_months_past_to_use,
+  nb_months_past_to_use_others
+)
 countries <- list_df$countries
 df_large <- list_df$df_large
 df_large_for_regression <- list_df$df_large_for_regression
@@ -72,7 +74,7 @@ df_for_regression_to_predict <- df_for_regression %>%
 
 if (do_full_dataset_model) {
   df_xgboost_train <- df_for_regression_to_use %>%
-    sample_frac(4/5)
+    sample_frac(4 / 5)
 } else {
   df_xgboost_train <- df_for_regression_to_use %>%
     sample_frac(1)
@@ -85,7 +87,7 @@ df_xgboost_test <- df_for_regression_to_use %>%
 
 if (do_full_dataset_model || do_grid_search) {
   df_xgboost_train_train <- df_xgboost_train %>%
-    sample_frac(4/5)
+    sample_frac(4 / 5)
 } else {
   df_xgboost_train_train <- df_xgboost_train %>%
     sample_frac(1)
@@ -128,8 +130,8 @@ if (do_grid_search) {
           for (colsample_bytree in colsample_bytrees) {
             model <- xgb.train(
               data = gb_train,
-              objective='reg:squarederror',
-              eval_metric='rmse',
+              objective = "reg:squarederror",
+              eval_metric = "rmse",
               nrounds = nround,
               eta = eta,
               max_depth = max_depth,
@@ -155,7 +157,7 @@ if (do_grid_search) {
       }
     }
   }
-  
+
   print(best_params)
   print(best_n_rounds)
   print(best_score)
@@ -176,8 +178,8 @@ if (do_full_dataset_model) {
 
   best_model <- xgb.train(
     data = gb_train,
-    objective='reg:squarederror',
-    eval_metric='rmse',
+    objective = "reg:squarederror",
+    eval_metric = "rmse",
     nrounds = best_nround,
     eta = best_eta,
     max_depth = best_max_depth,
@@ -269,9 +271,11 @@ for (country in countries$geo) {
   # Scale the variables
 
   df_country <- df_country %>%
-    mutate(month = as.character(month),
-           year = as.character(year),
-           across(c(where(is.numeric)), scale))
+    mutate(
+      month = as.character(month),
+      year = as.character(year),
+      across(c(where(is.numeric)), scale)
+    )
 
   mean_pvi_to_predict_country <- attr(df_country$PVI_to_predict, "scaled:center")
   scale_pvi_to_predict_country <- attr(df_country$PVI_to_predict, "scaled:scale")
@@ -307,8 +311,8 @@ for (country in countries$geo) {
 
   model <- xgb.train(
     data = gb_train,
-    objective='reg:squarederror',
-    eval_metric='rmse',
+    objective = "reg:squarederror",
+    eval_metric = "rmse",
     nrounds = best_nround_per_country,
     eta = best_eta_per_country,
     max_depth = best_max_depth_per_country,

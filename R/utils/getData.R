@@ -374,7 +374,7 @@ getData <- function(case) {
       for (i in 1:length(dates)) {
         month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
         month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
-        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(7,1))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(7, 1))
       }
       db[["nb_weekend_days"]] <- nb_weekend_days
     },
@@ -454,7 +454,7 @@ getData <- function(case) {
       for (i in 1:length(dates)) {
         month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
         month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
-        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(7,1))
+        nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(7, 1))
       }
       db[["nb_weekend_days"]] <- nb_weekend_days
     },

@@ -30,9 +30,11 @@ nb_months_past_to_use_others <- 6
 # Create the large table for tourism
 #########################################
 
-list_df <- create_table_large_tourism(nb_months_past_to_use,
-                                      nb_past_years_to_use,
-                                      nb_months_past_to_use_others)
+list_df <- create_table_large_tourism(
+  nb_months_past_to_use,
+  nb_past_years_to_use,
+  nb_months_past_to_use_others
+)
 countries <- list_df$countries
 df_large <- list_df$df_large
 df_large_for_regression <- list_df$df_large_for_regression
@@ -131,8 +133,8 @@ for (country in countries$geo) {
 
   model <- xgb.train(
     data = gb_train,
-    objective='reg:squarederror',
-    eval_metric='rmse',
+    objective = "reg:squarederror",
+    eval_metric = "rmse",
     nrounds = best_nround_per_country,
     eta = best_eta_per_country,
     max_depth = best_max_depth_per_country,

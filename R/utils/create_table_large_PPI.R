@@ -35,20 +35,19 @@ list_yahoo_finance <- c("brent", "eur_usd", "sp500", "eurostoxx500", "cac40")
 
 db <- getData("PPI")
 
-create_table_large_ppi = function(nb_months_past_to_use = 24,
-                                  nb_months_past_to_use_others = 4){
-  
+create_table_large_ppi <- function(nb_months_past_to_use = 24,
+                                   nb_months_past_to_use_others = 4) {
   #########################################
   # Create the tables for the regression
   #########################################
-  
+
   # A) Initialize table
-  
+
   countries <- db$PPI %>%
     select(geo) %>%
     unique() %>%
     mutate(dummy = 1)
-  
+
   dates <- db$PPI %>%
     select(time) %>%
     add_row(time = current_date) %>%
@@ -59,12 +58,12 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       day(time) == 1
     ) %>%
     mutate(dummy = 1)
-  
+
   df <- dates %>%
     full_join(countries) %>%
     select(-dummy) %>%
     arrange(geo, time)
-  
+
   df_PPI <- db$PPI %>%
     full_join(df) %>%
     select(-nace_r2) %>%
@@ -78,7 +77,7 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
   }
   df_PPI <- df_PPI %>%
     ungroup()
-  
+
   df <- df %>%
     left_join(df_PPI) %>%
     mutate(
@@ -86,9 +85,9 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       year = year(time)
     ) %>%
     relocate(time, geo, PPI_to_predict)
-  
+
   # B) Add Eurostat data
-  
+
   for (table in list_eurostat_tables) {
     df_table <- db[[table]] %>%
       pivot_wider(
@@ -105,9 +104,9 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
         by = c("geo", "time")
       )
   }
-  
+
   # B) Add PVI
-  
+
   df <- df %>%
     left_join(
       db$PVI %>%
@@ -115,17 +114,17 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       by = c("geo", "time")
     ) %>%
     group_by(geo)
-  
+
   # If available, let's use the last months of the other variables as well
   list_other_variables <- colnames(df)[
     (7 + nb_months_past_to_use):(length(colnames(df)) - 1)
   ]
-  
+
   for (i in 1:nb_months_past_to_use_others) {
     variable <- paste("PVI", "minus", i, "months", sep = "_")
     df <- df %>%
       mutate(!!variable := lag(PVI, n = i))
-  
+
     for (other_variable in list_other_variables) {
       variable <- paste(other_variable, "minus", i, "months", sep = "_")
       df <- df %>%
@@ -134,9 +133,9 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
   }
   df <- df %>%
     ungroup()
-  
+
   # C) Add Yahoo Finance data
-  
+
   for (table in list_yahoo_finance) {
     df_table <- db[[table]] %>%
       mutate(
@@ -146,7 +145,7 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
         year = year(time)
       ) %>%
       group_by(month, year)
-  
+
     for (i in 1:4) {
       max_day <- if (i < 4) {
         7 * i
@@ -161,7 +160,7 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       mean_volume_string <- paste("mean", volume_string, "week", i, "next_month",
         sep = "_"
       )
-  
+
       df_table_weekly <- df_table %>%
         filter(
           day > 7 * (i - 1),
@@ -175,22 +174,22 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
             na.rm = TRUE
           )
         )
-  
+
       df <- df %>%
         left_join(df_table_weekly)
     }
   }
-  
+
   # D) Add electricity data
-  
-  df_electricity <- db[['electricity_prices']] %>%
+
+  df_electricity <- db[["electricity_prices"]] %>%
     mutate(
       day = day(time),
       month = month(time),
       year = year(time)
     ) %>%
     group_by(geo, month, year)
-  
+
   for (i in 1:4) {
     max_day <- if (i < 4) {
       7 * i
@@ -198,9 +197,9 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       31
     }
     mean_price <- paste("mean_electricity_price_week", i,
-                                  sep = "_"
+      sep = "_"
     )
-  
+
     df_weekly <- df_electricity %>%
       filter(
         day > 7 * (i - 1),
@@ -208,17 +207,18 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       ) %>%
       summarise(
         !!mean_price := mean(electricity_price,
-                             na.rm = TRUE)
+          na.rm = TRUE
+        )
       )
-    
+
     df <- df %>%
       left_join(df_weekly)
   }
-  
+
   # Delete dummy columns (to do by country if models specific to countries)
-  
+
   df <- df[colSums(!is.na(df)) > 0]
-  
+
   df <- df[c(
     rep(TRUE, 3),
     lapply(df[-(1:3)],
@@ -226,12 +226,12 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       na.rm = TRUE
     ) != 0
   )]
-  
+
   df_large <- data.frame(df)
-  
+
   # Now let's go a bit further and delete variables that we don't have for the
   # last month in at least 2/3 of the countries
-  
+
   df_current_date <- df %>%
     filter(time == current_date)
   df_large_for_regression <- df_large[c(
@@ -240,10 +240,12 @@ create_table_large_ppi = function(nb_months_past_to_use = 24,
       !is.na(df_current_date[-(1:3)])
     ) > 2 / 3 * nrow(df_current_date)
   )]
-  
+
   df_large_for_regression <- as.data.table(df_large_for_regression)
 
-  return(list(countries=countries,
-              df_large=df_large,
-              df_large_for_regression=df_large_for_regression))
+  return(list(
+    countries = countries,
+    df_large = df_large,
+    df_large_for_regression = df_large_for_regression
+  ))
 }
