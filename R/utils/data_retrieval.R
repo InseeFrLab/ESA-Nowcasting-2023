@@ -42,10 +42,10 @@ get_data_from_ember <- function(config) {
     data <- readr::read_csv(x$url) |>
       rename(
         time = Date,
-        electricity_price = `Price (EUR/MWhe)`
+        ELEC_PRICES = `Price (EUR/MWhe)`
       ) |>
       inner_join(countries_codes |> select(-geo_code_3)) |>
-      select(geo, time, electricity_price)
+      select(geo, time, ELEC_PRICES)
   })
   return(data)
 }
@@ -54,12 +54,18 @@ get_weekend_days <- function(date_to_pred, config) {
   subset_lists <- Filter(function(x) x$source == "Week-end", config)
 
   data <- lapply(subset_lists, function(x) {
-    dates <- seq(as.Date(x[["init-date"]]), date_to_pred, by = "month")
-    nb_weekend_days <- tibble(month = month(dates), year = year(dates), weekends = numeric(length(dates)))
+    dates <- seq(as.Date(x[["init_date"]]), Sys.Date()+months(1), by = "month")
+    nb_weekend_days <- tibble(month = month(dates), year = year(dates),
+                              weekends = numeric(length(dates)))
     for (i in 1:length(dates)) {
-      month_start <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
-      month_end <- as.Date(paste(nb_weekend_days$year[i], nb_weekend_days$month[i], days_in_month(month_start), sep = "-"))
-      nb_weekend_days$weekends[i] <- sum(wday(seq(month_start, month_end, by = "day")) %in% c(6, 7))
+      month_start <- as.Date(paste(
+        nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
+      month_end <- as.Date(paste(nb_weekend_days$year[i],
+                                 nb_weekend_days$month[i],
+                                 days_in_month(month_start),
+                                 sep = "-"))
+      nb_weekend_days$weekends[i] <- sum(
+        wday(seq(month_start, month_end, by = "day")) %in% c(7, 1))
     }
 
     return(nb_weekend_days)
@@ -73,7 +79,9 @@ get_data <- function(config) {
   ember <- get_data_from_ember(config)
   week_ends <- get_weekend_days(date_to_pred, config)
 
-  list_data <- lapply(c(eurostat, yahoo, ember, week_ends), function(x) list(data = x))
+  list_data <- lapply(
+    c(eurostat, yahoo, ember, week_ends),
+    function(x) list(data = x))
 
   return(Map(c, list_data, config))
 }
