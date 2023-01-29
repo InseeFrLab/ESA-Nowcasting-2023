@@ -300,10 +300,10 @@
     },
     "collapse": {
       "Package": "collapse",
-      "Version": "1.8.9",
+      "Version": "1.9.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "39c0c03bed05073bfdd623d9c8773e1e",
+      "Hash": "8357feffc0fe7bf08b6ba6f7bd252e53",
       "Requirements": [
         "Rcpp"
       ]
@@ -1329,6 +1329,14 @@
       "Requirements": [
         "zoo"
       ]
+    },
+    "yaml": {
+      "Package": "yaml",
+      "Version": "2.3.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "0d0056cc5383fbc240ccd0cb584bf436",
+      "Requirements": []
     },
     "zoo": {
       "Package": "zoo",
