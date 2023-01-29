@@ -1,3 +1,5 @@
+library(lubridate)
+
 get_data_from_eurostat <- function(config) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", config)
 
@@ -7,7 +9,7 @@ get_data_from_eurostat <- function(config) {
       filters = x$filters,
       time_format = "date"
     ) |>
-      select(geo, names(x$filters)[3], time, values) |>
+      dplyr::select(geo, names(x$filters)[3], time, values) |>
       tidyr::drop_na(values)
   })
 
@@ -23,7 +25,7 @@ get_data_from_yahoo <- function(config) {
       tsbox::ts_tbl() |>
       subset(id %in% paste(id_var, c("Volume", "Adjusted"), sep = ".")) |>
       tidyr::spread(id, value) |>
-      rename_at(vars(starts_with(id_var)), list(~ sub(id_var, name, .)))
+      dplyr::rename_at(dplyr::vars(dplyr::starts_with(id_var)), list(~ sub(id_var, name, .)))
   }, subset_lists, names(subset_lists), SIMPLIFY = FALSE)
   return(data)
 }
@@ -33,19 +35,20 @@ get_data_from_ember <- function(config) {
 
   data <- lapply(subset_lists, function(x) {
     countries_codes <- readr::read_csv(x[["url-geo-code"]]) |>
-      rename(
+      dplyr::rename(
         geo = `Alpha-2 code`,
         geo_code_3 = `Alpha-3 code`
       ) |>
-      select(Country, geo, geo_code_3)
+      dplyr::select(Country, geo, geo_code_3)
 
     data <- readr::read_csv(x$url) |>
-      rename(
+      dplyr::rename(
         time = Date,
         ELEC_PRICES = `Price (EUR/MWhe)`
       ) |>
-      inner_join(countries_codes |> select(-geo_code_3)) |>
-      select(geo, time, ELEC_PRICES)
+      dplyr::inner_join(countries_codes |>
+      dplyr::select(-geo_code_3)) |>
+      dplyr::select(geo, time, ELEC_PRICES)
   })
   return(data)
 }
@@ -54,18 +57,24 @@ get_weekend_days <- function(date_to_pred, config) {
   subset_lists <- Filter(function(x) x$source == "Week-end", config)
 
   data <- lapply(subset_lists, function(x) {
-    dates <- seq(as.Date(x[["init_date"]]), Sys.Date()+months(1), by = "month")
-    nb_weekend_days <- tibble(month = month(dates), year = year(dates),
-                              weekends = numeric(length(dates)))
+    dates <- seq(as.Date(x[["init_date"]]), date_to_pred + months(1), by = "month")
+    nb_weekend_days <- dplyr::tibble(
+      month = month(dates), year = year(dates),
+      weekends = numeric(length(dates))
+    )
     for (i in 1:length(dates)) {
       month_start <- as.Date(paste(
-        nb_weekend_days$year[i], nb_weekend_days$month[i], 1, sep = "-"))
+        nb_weekend_days$year[i], nb_weekend_days$month[i], 1,
+        sep = "-"
+      ))
       month_end <- as.Date(paste(nb_weekend_days$year[i],
-                                 nb_weekend_days$month[i],
-                                 days_in_month(month_start),
-                                 sep = "-"))
+        nb_weekend_days$month[i],
+        days_in_month(month_start),
+        sep = "-"
+      ))
       nb_weekend_days$weekends[i] <- sum(
-        wday(seq(month_start, month_end, by = "day")) %in% c(7, 1))
+        lubridate::wday(seq(month_start, month_end, by = "day")) %in% c(7, 1)
+      )
     }
 
     return(nb_weekend_days)
@@ -81,7 +90,8 @@ get_data <- function(config) {
 
   list_data <- lapply(
     c(eurostat, yahoo, ember, week_ends),
-    function(x) list(data = x))
+    function(x) list(data = x)
+  )
 
   return(Map(c, list_data, config))
 }
