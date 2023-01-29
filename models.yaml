@@ -42,7 +42,8 @@ REGARIMA:
     outlier.ls: TRUE
     outlier.usedefcv: FALSE
     outlier.cv: 3.5
-    
+    usrdef.varEnabled: TRUE
+
   TOURISM:
     transform.function: "Auto"
     arima.coefType: "Undefined"
