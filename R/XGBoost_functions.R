@@ -39,7 +39,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(),
   #########################################
   
   df_current_date <- df %>%
-    filter(time == config_env$DATES$current_date)
+    filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
     rep(TRUE, 3),
     colSums(
@@ -91,7 +91,7 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(),
   #########################################
   
   df_current_date <- df %>%
-    filter(time == config_env$DATES$current_date)
+    filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
     rep(TRUE, 3),
     colSums(
@@ -143,11 +143,11 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
   #########################################
   
   df_to_use <- df %>%
-    filter(time < config_env$DATES$current_date) %>%
+    filter(time < ymd(config_env$DATES$current_date)) %>%
     drop_na(!!challenge_to_predict)
   
   df_to_predict <- df %>%
-    filter(time == config_env$DATES$current_date)
+    filter(time == ymd(config_env$DATES$current_date))
   
   df_train <- df_to_use %>%
       sample_frac(4 / 5)
@@ -248,11 +248,11 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   #########################################
   
   df_train <- df %>%
-    filter(time < config_env$DATES$current_date) %>%
+    filter(time < ymd(config_env$DATES$current_date)) %>%
     drop_na(!!challenge_to_predict)
   
   df_to_predict <- df %>%
-    filter(time == config_env$DATES$current_date)
+    filter(time == ymd(config_env$DATES$current_date))
   
   X_train <- as.matrix(df_train %>%
                          select(-c(!!challenge_to_predict, time)))
@@ -298,7 +298,7 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
     unique()
   
   preds_xgboost_europe <- countries %>%
-    mutate(Date = config_env$DATES$date_to_pred) %>%
+    mutate(Date = ymd(config_env$DATES$date_to_pred)) %>%
     bind_cols(round(as.numeric(y_pred), 1)) %>%
     rename(
       Country = geo,
@@ -345,11 +345,11 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   #########################################
   
   df_train <- df %>%
-    filter(time < config_env$DATES$current_date) %>%
+    filter(time < ymd(config_env$DATES$current_date)) %>%
     drop_na(!!challenge_to_predict)
   
   df_to_predict <- df %>%
-    filter(time == config_env$DATES$current_date)
+    filter(time == ymd(config_env$DATES$current_date))
   
   X_train <- as.matrix(df_train %>%
                          select(-c(!!challenge_to_predict, time)))
@@ -428,7 +428,7 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
     select(geo) %>%
     rename(Country = geo) %>%
     mutate(
-      Date = config_env$DATES$date_to_pred,
+      Date = ymd(config_env$DATES$date_to_pred),
       value = 0
     )
   

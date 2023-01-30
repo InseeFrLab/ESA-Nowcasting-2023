@@ -135,7 +135,8 @@ format_electricity_data <- function(data) {
   return(formatted_data)
 }
 
-build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml")),
+build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
+                                          yaml::read_yaml("challenges.yaml")),
                           config_models = yaml::read_yaml("models.yaml"),
                           config_env = yaml::read_yaml("challenges.yaml"),
                           challenge = "PPI",
@@ -159,7 +160,7 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml")),
   # Table of dates
   dates <- selected_data[[challenge]]$data %>%
     select(time) %>%
-    add_row(time = config_env$DATES$current_date) %>%
+    add_row(time = ymd(config_env$DATES$current_date)) %>%
     unique() %>%
     filter(
       year(time) >= config_models[[model]]$init_year,

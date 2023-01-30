@@ -84,7 +84,8 @@ get_weekend_days <- function(data_info, challenges_info) {
   return(data)
 }
 
-get_data <- function(data_info, challenges_info) {
+get_data <- function(data_info = yaml::read_yaml("data.yaml"),
+                     challenges_info = yaml::read_yaml("challenges.yaml")) {
   eurostat <- get_data_from_eurostat(data_info)
   yahoo <- get_data_from_yahoo(data_info)
   ember <- get_data_from_ember(data_info)
