@@ -12,8 +12,7 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-date_to_pred <- ymd("2023-01-01")
-current_date <- date_to_pred %m-% months(1)
+source("R/utils/data_retrieval.R")
 
 #########################################
 # Functions
@@ -138,7 +137,7 @@ format_electricity_data <- function(data) {
 
 build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml")),
                           config_models = yaml::read_yaml("models.yaml"),
-                          config_env = yaml::read_yaml("environment.yaml"),
+                          config_env = yaml::read_yaml("challenges.yaml"),
                           challenge = "PPI",
                           model = "XGBOOST") {
   selected_data <- Filter(
@@ -160,7 +159,7 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml")),
   # Table of dates
   dates <- selected_data[[challenge]]$data %>%
     select(time) %>%
-    add_row(time = current_date) %>%
+    add_row(time = config_env$DATES$current_date) %>%
     unique() %>%
     filter(
       year(time) >= config_models[[model]]$init_year,

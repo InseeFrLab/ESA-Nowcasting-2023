@@ -2,14 +2,50 @@ XGBOOST:
   PPI:
     nb_months_past_to_use : 24
     nb_months_past_to_use_others : 4
+    hyperparameters_europe :
+      best_nround : 50
+      best_eta : 0.15
+      best_max_depth : 8
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+    hyperparameters_per_country :
+      best_nround : 300
+      best_eta : 0.15
+      best_max_depth : 5
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
   PVI:
     nb_months_past_to_use : 24
     nb_months_past_to_use_others : 4
+    hyperparameters_europe :
+      best_nround : 50
+      best_eta : 0.15
+      best_max_depth : 8
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+    hyperparameters_per_country :
+      best_nround : 300
+      best_eta : 0.15
+      best_max_depth : 5
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
   TOURISM:
     nb_months_past_to_use : 10
     nb_months_past_to_use_others : 5
     nb_years_past_to_use : 5
-    init_year: 2007
+    hyperparameters_europe :
+      best_nround : 50
+      best_eta : 0.15
+      best_max_depth : 8
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+    hyperparameters_per_country :
+      best_nround : 300
+      best_eta : 0.15
+      best_max_depth : 5
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+  init_year: 2007
 
 REGARIMA:
   PPI:
@@ -75,3 +111,34 @@ REGARIMA:
     outlier.ls: TRUE
     outlier.usedefcv: FALSE
     outlier.cv: 3.5
+  
+ETS:
+  PPI:
+    initial_year: 2003
+    last_year: 2023
+  PVI:
+    initial_year: 2003
+    last_year: 2023
+  TOURISM:
+    initial_year: 2003
+    last_year: 2020
+  
+DFM:
+  PPI:
+      start_sample: "2005-02-01"
+      SA: FALSE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
+  PVI:
+      start_sample: "2005-02-01"
+      SA: FALSE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
+  TOURISM:
+      start_sample: "2005-02-01"
+      SA: TRUE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999

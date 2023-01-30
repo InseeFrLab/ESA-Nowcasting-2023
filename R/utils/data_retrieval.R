@@ -1,7 +1,7 @@
 library(lubridate)
 
-get_data_from_eurostat <- function(config) {
-  subset_lists <- Filter(function(x) x$source == "Eurostat", config)
+get_data_from_eurostat <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "Eurostat", data_info)
 
   data <- lapply(subset_lists, function(x) {
     eurostat::get_eurostat(x$id,
@@ -16,8 +16,8 @@ get_data_from_eurostat <- function(config) {
   return(data)
 }
 
-get_data_from_yahoo <- function(config) {
-  subset_lists <- Filter(function(x) x$source == "Yahoo", config)
+get_data_from_yahoo <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "Yahoo", data_info)
 
   data <- mapply(function(x, name) {
     id_var <- gsub("^", "", x$id, fixed = TRUE)
@@ -30,8 +30,8 @@ get_data_from_yahoo <- function(config) {
   return(data)
 }
 
-get_data_from_ember <- function(config) {
-  subset_lists <- Filter(function(x) x$source == "ember-climate", config)
+get_data_from_ember <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "ember-climate", data_info)
 
   data <- lapply(subset_lists, function(x) {
     countries_codes <- readr::read_csv(x[["url-geo-code"]]) |>
@@ -53,8 +53,10 @@ get_data_from_ember <- function(config) {
   return(data)
 }
 
-get_weekend_days <- function(date_to_pred, config) {
-  subset_lists <- Filter(function(x) x$source == "Week-end", config)
+get_weekend_days <- function(data_info, challenges_info) {
+  
+  date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
+  subset_lists <- Filter(function(x) x$source == "Week-end", data_info)
 
   data <- lapply(subset_lists, function(x) {
     dates <- seq(as.Date(x[["init_date"]]), date_to_pred + months(1), by = "month")
@@ -82,16 +84,16 @@ get_weekend_days <- function(date_to_pred, config) {
   return(data)
 }
 
-get_data <- function(config) {
-  eurostat <- get_data_from_eurostat(config)
-  yahoo <- get_data_from_yahoo(config)
-  ember <- get_data_from_ember(config)
-  week_ends <- get_weekend_days(date_to_pred, config)
+get_data <- function(data_info, challenges_info) {
+  eurostat <- get_data_from_eurostat(data_info)
+  yahoo <- get_data_from_yahoo(data_info)
+  ember <- get_data_from_ember(data_info)
+  week_ends <- get_weekend_days(data_info, challenges_info)
 
   list_data <- lapply(
     c(eurostat, yahoo, ember, week_ends),
     function(x) list(data = x)
   )
 
-  return(Map(c, list_data, config))
+  return(Map(c, list_data, data_info))
 }
