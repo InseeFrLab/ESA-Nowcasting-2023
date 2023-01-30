@@ -49,16 +49,24 @@ list(
     name = regarima_ppi,
     command =  run_regarima("PPI", challenges, data, models)
   ),
-  # tar_target(
-  #   name = regarima_pvi,
-  #   command =  run_regarima("PVI", challenges, data, models)
-  # ),
+  tar_target(
+    name = regarima_pvi,
+    command =  run_regarima("PVI", challenges, data, models)
+  ),
   tar_target(
     name = regarima_tourism,
     command =  run_regarima("TOURISM", challenges, data, models)
+  ),
+  tar_target(
+    name = dfms_ppi,
+    command =  run_DFMs("PPI", challenges, data, models)
+  ),
+  tar_target(
+    name = dfms_pvi,
+    command =  run_DFMs("PVI", challenges, data, models)
+  ),
+  tar_target(
+    name = dfms_tourism,
+    command =  run_DFMs("TOURISM", challenges, data, models)
   )
 )
-
-# dfms_ppi <- run_DFMs("PPI", challenges, data, models)
-# dfms_pvi <- run_DFMs("PVI", challenges, data, models)
-# dfms_tourism <- run_DFMs("TOURISM", challenges, data, models)
