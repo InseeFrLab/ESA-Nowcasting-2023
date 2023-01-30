@@ -12,6 +12,8 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
+source("R/utils/data_retrieval.R")
+
 date_to_pred <- ymd("2023-01-01")
 current_date <- date_to_pred %m-% months(1)
 
