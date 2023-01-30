@@ -1,6 +1,3 @@
-library(dplyr)
-library(lubridate)
-
 build_data_ets <- function(challenge, env) {
   code_variable_interest <- env[[challenge]]$filters[[names(env[[challenge]]$filters)[3]]][1]
 
@@ -19,6 +16,7 @@ build_data_ets <- function(challenge, env) {
   }
   return(data)
 }
+
 run_ETS <- function(challenge, env, initial_year, last_year = date_to_pred) {
   models <- build_data_ets(challenge, env) %>%
     filter((year(time) >= initial_year) & (year(time) < last_year)) %>%

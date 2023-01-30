@@ -1,10 +1,3 @@
-library(dplyr)
-library(purrr)
-library(dfms)
-library(xts)
-library(lubridate)
-options(dplyr.summarise.inform = FALSE)
-
 build_data_dfms <- function(challenge, env, country) {
   selected_data <- Filter(function(x) (challenge %in% x$challenge) & "DFM" %in% x$model, env)
 
