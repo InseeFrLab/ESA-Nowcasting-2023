@@ -87,3 +87,22 @@ ETS:
     initial_year: 2003
     last_year: 2020
   
+DFM:
+  PPI:
+      start_sample: "2005-02-01"
+      SA: FALSE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
+  PVI:
+      start_sample: "2005-02-01"
+      SA: FALSE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
+  TOURISM:
+      start_sample: "2005-02-01"
+      SA: TRUE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999

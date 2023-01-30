@@ -53,7 +53,7 @@ get_data_from_ember <- function(data_info) {
   return(data)
 }
 
-get_weekend_days <- function(date_to_pred, data_info, challenges_info) {
+get_weekend_days <- function(data_info, challenges_info) {
   
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
   subset_lists <- Filter(function(x) x$source == "Week-end", data_info)
@@ -88,7 +88,7 @@ get_data <- function(data_info, challenges_info) {
   eurostat <- get_data_from_eurostat(data_info)
   yahoo <- get_data_from_yahoo(data_info)
   ember <- get_data_from_ember(data_info)
-  week_ends <- get_weekend_days(date_to_pred, data_info, challenges_info)
+  week_ends <- get_weekend_days(data_info, challenges_info)
 
   list_data <- lapply(
     c(eurostat, yahoo, ember, week_ends),
