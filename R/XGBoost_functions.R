@@ -2,6 +2,12 @@
 #                           XGBoost model                                     #
 ###############################################################################
 
+# Two methods are implemented here:
+# - XGBoost for Europe, ie using a df with the data from all of the countries
+# - XGBoost per country, training a separate model for each country
+
+# For now, we will keep XGBoost per country as our main model
+
 #########################################
 # Import packages and set-up
 #########################################
@@ -292,7 +298,7 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
     unique()
   
   preds_xgboost_europe <- countries %>%
-    mutate(Date = date_to_pred) %>%
+    mutate(Date = config_env$DATES$date_to_pred) %>%
     bind_cols(round(as.numeric(y_pred), 1)) %>%
     rename(
       Country = geo,
@@ -422,7 +428,7 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
     select(geo) %>%
     rename(Country = geo) %>%
     mutate(
-      Date = date_to_pred,
+      Date = config_env$DATES$date_to_pred,
       value = 0
     )
   
