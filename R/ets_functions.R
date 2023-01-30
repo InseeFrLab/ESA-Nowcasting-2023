@@ -28,7 +28,8 @@ estimate_ets <- function(challenge, challenges_info, data_info, initial_year, la
 }
 
 run_ETS <- function(challenge, challenges_info, data_info, models_info) {
-
+  
+  date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
   parameters <- c(list(challenge = challenge, challenges_info = challenges_info, data_info = data_info), models_info$ETS[[challenge]])
   ets <- do.call(estimate_ets, parameters)
 

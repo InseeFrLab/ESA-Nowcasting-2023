@@ -1,5 +1,3 @@
-library(lubridate)
-
 get_data_from_eurostat <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", data_info)
 

@@ -1,12 +1,3 @@
-library(ggplot2)
-library(cowplot)
-library(rjson)
-library(jsonlite)
-library(styler)
-library(data.table)
-# Just a placeholder so that renv detect styler
-# styler::style_dir("R")
-
 get_latest_dates <- function(data, var) {
   # Returns a list with last available value for each variable of the xts dataset
   return(as.character(last(zoo::index(data)[!is.na(data[, var])])))
@@ -177,21 +168,6 @@ save_entries <- function(entries, filename) {
     file <- rjson::toJSON(entries)
     write(jsonlite::prettify(file), filename)
   }
-}
-
-reshape_eurostat_data <- function(data, variable, country, measure) {
-  if (missing(measure)) {
-    reshaped_data <- data %>%
-      dplyr::mutate(var = variable) %>%
-      dplyr::filter(geo %in% country) %>%
-      tidyr::pivot_wider(names_from = c(geo, var), values_from = values)
-  } else {
-    reshaped_data <- data %>%
-      dplyr::mutate(var = variable) %>%
-      dplyr::filter(geo %in% country) %>%
-      tidyr::pivot_wider(names_from = c(geo, var, measure), values_from = values)
-  }
-  return(reshaped_data)
 }
 
 ## Customize palette
