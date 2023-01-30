@@ -1,38 +1,64 @@
-# Created by use_targets().
-# Follow the comments below to fill in this target script.
-# Then follow the manual to check and run the pipeline:
-#   https://books.ropensci.org/targets/walkthrough.html#inspect-the-pipeline # nolint
-
 # Load packages required to define the pipeline:
 library(targets)
-# library(tarchetypes) # Load other packages as needed. # nolint
 
 # Set target options:
 tar_option_set(
-  packages = c("tibble"), # packages that your targets need to run
-  format = "rds" # default storage format
-  # Set other options as needed.
+  packages = c("xts", "lubridate", "dplyr", "dfms", "cowplot", "jsonlite", "data.table"),
+  memory = "transient",
+  garbage_collection = TRUE
 )
+options(dplyr.summarise.inform = FALSE)
 
-# tar_make_clustermq() configuration (okay to leave alone):
-options(clustermq.scheduler = "multicore")
+tar_source("R/data_preprocessing.R")
+tar_source("R/data_retrieval.R")
+tar_source("R/functions.R")
+tar_source("R/regarima_functions.R")
+tar_source("R/ets_functions.R")
+tar_source("R/dfms_functions.R")
 
-# tar_make_future() configuration (okay to leave alone):
-# Install packages {{future}}, {{future.callr}}, and {{future.batchtools}} to allow use_targets() to configure tar_make_future() options.
-
-# Run the R scripts in the R/ folder with your custom functions:
-tar_source()
-# source("other_functions.R") # Source other scripts as needed. # nolint
-
-# Replace the target list below with your own:
 list(
   tar_target(
-    name = data,
-    command = tibble(x = rnorm(100), y = rnorm(100))
-#   format = "feather" # efficient storage of large data frames # nolint
+    name = data_info,
+    command = yaml::read_yaml("data.yaml")
   ),
   tar_target(
-    name = model,
-    command = coefficients(lm(y ~ x, data = data))
+    name = challenges,
+    command = yaml::read_yaml("challenges.yaml")
+  ),
+  tar_target(
+    name = models,
+    command = yaml::read_yaml("models.yaml")
+  ),
+  tar_target(
+    name = data,
+    command = get_data(data_info, challenges)
+  ),
+  tar_target(
+    name = ets_ppi,
+    command = run_ETS("PPI", challenges, data, models)
+  ),
+  tar_target(
+    name = ets_pvi,
+    command = run_ETS("PVI", challenges, data, models)
+  ),
+  tar_target(
+    name = ets_tourism,
+    command = run_ETS("TOURISM", challenges, data, models)
+  ),
+  tar_target(
+    name = regarima_ppi,
+    command =  run_regarima("PPI", challenges, data, models)
+  ),
+  # tar_target(
+  #   name = regarima_pvi,
+  #   command =  run_regarima("PVI", challenges, data, models)
+  # ),
+  tar_target(
+    name = regarima_tourism,
+    command =  run_regarima("TOURISM", challenges, data, models)
   )
 )
+
+# dfms_ppi <- run_DFMs("PPI", challenges, data, models)
+# dfms_pvi <- run_DFMs("PVI", challenges, data, models)
+# dfms_tourism <- run_DFMs("TOURISM", challenges, data, models)

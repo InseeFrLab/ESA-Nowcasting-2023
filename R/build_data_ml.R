@@ -12,8 +12,7 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-date_to_pred <- ymd("2023-01-01")
-current_date <- date_to_pred %m-% months(1)
+source("R/utils/data_retrieval.R")
 
 #########################################
 # Functions
@@ -40,6 +39,10 @@ pivot_eurostat_data <- function(data) {
 
 format_yahoo_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "Yahoo", data)
+  
+  if (length(subset_lists) == 0){
+    return(data.frame(month = integer(), year = integer()))
+  }
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
@@ -94,6 +97,11 @@ format_yahoo_data <- function(data) {
 
 format_electricity_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "ember-climate", data)
+  
+  if (length(subset_lists) == 0){
+    return(data.frame(geo = character(), month = integer(), year = integer()))
+  }
+    
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
@@ -136,9 +144,10 @@ format_electricity_data <- function(data) {
   return(formatted_data)
 }
 
-build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml")),
+build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
+                                          yaml::read_yaml("challenges.yaml")),
                           config_models = yaml::read_yaml("models.yaml"),
-                          config_env = yaml::read_yaml("environment.yaml"),
+                          config_env = yaml::read_yaml("challenges.yaml"),
                           challenge = "PPI",
                           model = "XGBOOST") {
   selected_data <- Filter(
@@ -160,7 +169,7 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml")),
   # Table of dates
   dates <- selected_data[[challenge]]$data %>%
     select(time) %>%
-    add_row(time = current_date) %>%
+    add_row(time = ymd(config_env$DATES$current_date)) %>%
     unique() %>%
     filter(
       year(time) >= config_models[[model]]$init_year,

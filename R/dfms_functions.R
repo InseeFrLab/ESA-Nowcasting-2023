@@ -5,7 +5,6 @@ build_data_dfms <- function(challenge, challenges_info, data_info, models_info, 
   var_to_predict <- paste(country, challenge, code_variable_interest, sep = "_")
   
   selected_data <- Filter(function(x) (challenge %in% x$challenge) & "DFM" %in% x$model, data_info)
-
   DB <- list(reshape_eurostat_data(selected_data, country), reshape_yahoo_data(selected_data)) %>%
     purrr::reduce(full_join, by = "time") %>%
     filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG

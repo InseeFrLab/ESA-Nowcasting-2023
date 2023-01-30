@@ -14,5 +14,7 @@ TOURISM :
   "HU", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
   principal_nace : I551-I553
 
-DATES : 
+DATES :
+  current_date : "2022-12-01"
   date_to_pred : "2023-01-01"
+  month_to_pred : "january"
