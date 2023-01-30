@@ -15,6 +15,7 @@ library(mltools)
 library(xgboost)
 options(dplyr.summarise.inform = FALSE)
 
+source("R/utils/data_retrieval.R")
 source("R/build_data_ml.R")
 
 date_to_pred <- ymd("2023-01-01")
@@ -27,7 +28,7 @@ current_date <- date_to_pred %m-% months(1)
 build_data_xgboost_europe <- function(large_data = build_data_ml(),
                                       categorical_variables = c("geo", "month", "year")) {
   
-  df <- as.data.table(large_data)
+  df <- data.frame(large_data)
   
   #########################################
   # Delete variables absent for the last month in at least 2/3 of the countries
@@ -46,8 +47,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(),
   # "Remove" the country variable for experimentations
   #########################################
   
-  df <- df %>%
-    mutate(geo = "Europe")
+  df <- as.data.table(df %>% mutate(geo = "Europe"))
   
   #########################################
   # One-hot encoding of categorical variables
@@ -71,7 +71,7 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(),
                                            categorical_variables = c("month", "year"),
                                            country = 'FR') {
   
-  df <- as.data.table(large_data)
+  df <- data.frame(large_data)
   
   #########################################
   # Filter the country
@@ -96,6 +96,8 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(),
   #########################################
   # One-hot encoding of categorical variables
   #########################################
+  
+  df <- as.data.table(df)
   
   for (variable in categorical_variables) {
     df[[variable]] <- as.factor(df[[variable]])
@@ -127,8 +129,8 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
   df <- df %>%
     mutate(across(c(where(is.numeric)), scale))
   
-  mean_to_predict <- attr(df_for_regression[[challenge_to_predict]], "scaled:center")
-  scale_to_predict <- attr(df_for_regression[[challenge_to_predict]], "scaled:scale")
+  mean_to_predict <- attr(df[[challenge_to_predict]], "scaled:center")
+  scale_to_predict <- attr(df[[challenge_to_predict]], "scaled:scale")
   
   #########################################
   # Train-test split
@@ -206,7 +208,7 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
     }
   }
     
-  print(paste0("Best parameters:", best_params))
+  print(paste0("Best parameters: ", best_params))
   print(paste0("Best n_rounds: ", best_n_rounds))
   print(paste0("Best score obtained: ", best_score))
 }
@@ -215,12 +217,12 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
 # Model for all of Europe
 #########################################
 
-run_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe(),
-                               large_data = build_data_ml(),
-                               config_models = yaml::read_yaml("models.yaml"),
-                               config_env = yaml::read_yaml("environment.yaml"),
-                               challenge = "PPI"
-                               ) {
+train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe(),
+                                      large_data = build_data_ml(),
+                                      config_models = yaml::read_yaml("models.yaml"),
+                                      config_env = yaml::read_yaml("environment.yaml"),
+                                      challenge = "PPI"
+                                      ) {
   
   df <- as.data.table(data_xgboost)
   challenge_to_predict <- paste(challenge, "to_predict", sep = "_")
@@ -268,9 +270,7 @@ run_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe(),
     eta = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_eta,
     max_depth = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_max_depth,
     subsample = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_subsample,
-    colsample_bytree = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_colsample_bytree,
-    watchlist = watchlist,
-    early_stopping_rounds = 25
+    colsample_bytree = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_colsample_bytree
   )
   
   # Compute features importance in training
@@ -314,11 +314,10 @@ run_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe(),
 # Make one model per country
 #########################################
 
-run_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_country(),
-                                    config_models = yaml::read_yaml("models.yaml"),
-                                    challenge = "PPI",
-                                    country='FR'
-) {
+train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_country(),
+                                           config_models = yaml::read_yaml("models.yaml"),
+                                           challenge = "PPI",
+                                           country = 'FR') {
   
   df <- as.data.table(data_xgboost)
   challenge_to_predict <- paste(challenge, "to_predict", sep = "_")
@@ -363,13 +362,11 @@ run_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_countr
     data = gb_train,
     objective = "reg:squarederror",
     eval_metric = "rmse",
-    nrounds = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_nround,
-    eta = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_eta,
-    max_depth = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_max_depth,
-    subsample = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_subsample,
-    colsample_bytree = config_models$XGBOOST[[challenge]]$hyperparameters_europe$best_colsample_bytree,
-    watchlist = watchlist,
-    early_stopping_rounds = 25
+    nrounds = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_nround,
+    eta = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_eta,
+    max_depth = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_max_depth,
+    subsample = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_subsample,
+    colsample_bytree = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_colsample_bytree
   )
   
   #########################################
@@ -380,15 +377,16 @@ run_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_countr
   y_pred_next_month <- y_pred_next_month * scale_to_predict + mean_to_predict
   
   y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
-  y_pred_residuals <- y_pred_residuals * scale_to_predict_country +
-    mean_to_predict_country
+  y_pred_residuals <- y_pred_residuals * scale_to_predict +
+    mean_to_predict
   
   y_pred_residuals_with_index <- df_train %>%
     select(time) %>%
     mutate(
       geo = country,
       time = time %m+% months(1)
-    )
+    ) %>%
+    relocate(geo, time)
   y_pred_residuals_with_index[[challenge_pred_residuals]] <- round(y_pred_residuals, 1)
   
   #########################################
@@ -402,12 +400,11 @@ run_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_countr
   
 }
 
-run_xgboost_per_country <- function(large_data = build_data_ml(),
+train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
                                     config_models = yaml::read_yaml("models.yaml"),
                                     config_env = yaml::read_yaml("environment.yaml"),
                                     categorical_variables = c("month", "year"),
-                                    challenge = "PPI"
-) {
+                                    challenge = "PPI") {
   
   challenge_to_predict <- paste(challenge, "to_predict", sep = "_")
   challenge_pred_residuals <- paste(challenge, "pred", "residuals", sep = "_")
@@ -428,36 +425,42 @@ run_xgboost_per_country <- function(large_data = build_data_ml(),
       value = 0
     )
   
-  residuals_xgboost_per_country <- data.frame(matrix(ncol = 3, nrow = 0))
+  preds_residuals_xgboost_per_country <- data.frame(matrix(ncol = 3, nrow = 0))
   x <- c("geo", "time", challenge_pred_residuals)
-  colnames(residuals_xgboost_per_country) <- x
+  colnames(preds_residuals_xgboost_per_country) <- x
   
   #########################################
   # Loop models over countries
   #########################################
   
-  for (country in countries){
+  i <- 1
+  
+  for (country in countries %>% pull()){
     
     df_country <- build_data_xgboost_one_country(large_data = large_data,
                                                  categorical_variables = categorical_variables,
                                                  country = country)
     
-    list_results_country <- run_xgboost_per_country(data_xgboost=df_country,
+    list_results_country <- train_pred_xgboost_one_country(data_xgboost=df_country,
                                                     config_models=config_models,
                                                     challenge=challenge,
                                                     country=country)
     
     preds_xgboost_per_country[i, 3] <- round(as.numeric(
-      list_results_country[y_pred_next_month]), 1)
+      list_results_country['pred_next_month']), 1)
     
-    preds_residuals_xgboost_per_country <- residuals_xgboost_per_country %>%
-      rbind(list_results_country[y_pred_residuals_with_index])
+    preds_residuals_xgboost_per_country <- preds_residuals_xgboost_per_country %>%
+      rbind(data.frame(list_results_country['pred_residuals']))
     
+    print(i)
+    i <- i + 1
   }
   
   #########################################
   # Return results
   #########################################
+  
+  colnames(preds_residuals_xgboost_per_country) <- x
   
   residuals_xgboost_per_country <- preds_residuals_xgboost_per_country %>%
     left_join(large_data %>%
@@ -473,16 +476,76 @@ run_xgboost_per_country <- function(large_data = build_data_ml(),
 
 }
 
-  
+#########################################
+# Final run functions
+#########################################
 
+run_grid_search_xgboost <- function(data = get_data(yaml::read_yaml("data.yaml")),
+                                    config_models = yaml::read_yaml("models.yaml"),
+                                    config_env = yaml::read_yaml("environment.yaml"),
+                                    challenge = "PPI",
+                                    per_country = FALSE,
+                                    categorical_variables = c("geo", "month", "year"), # A changer selon per_country
+                                    country = 'FR') {
+  
+  large_data <- build_data_ml(data = data,
+                              config_models = config_models,
+                              config_env = config_env,
+                              challenge = challenge,
+                              model = "XGBOOST")
+  
+  if (per_country){
+    data_xgboost <- build_data_xgboost_one_country(large_data = large_data,
+                                                   categorical_variables = categorical_variables,
+                                                   country = country)
+  } else {
+    data_xgboost = build_data_xgboost_europe(large_data = large_data,
+                                             categorical_variables = categorical_variables)
+  }
   
   
-  # Residuals
   
-  resid_xgboost <- residuals_xgboost_per_country %>%
-    left_join(df_large %>%
-                select(time, geo, PPI)) %>%
-    mutate(value = PPI_pred_residuals - PPI) %>%
-    rename(Country = geo, Date = time) %>%
-    select(Country, Date, value)
+  return(grid_search_xgboost(data_xgboost = data_xgboost,
+                             challenge = challenge))
+}
+
+run_xgboost_europe <- function(data = get_data(yaml::read_yaml("data.yaml")),
+                               config_models = yaml::read_yaml("models.yaml"),
+                               config_env = yaml::read_yaml("environment.yaml"),
+                               categorical_variables = c("geo", "month", "year"),
+                               challenge = "PPI") {
   
+  large_data <- build_data_ml(data = data,
+                              config_models = config_models,
+                              config_env = config_env,
+                              challenge = challenge,
+                              model = "XGBOOST")
+  
+  data_xgboost = build_data_xgboost_europe(large_data = large_data,
+                                           categorical_variables = categorical_variables)
+  
+  return(train_pred_xgboost_europe(large_data = large_data,
+                                   config_models = config_models,
+                                   config_env = config_env,
+                                   categorical_variables = categorical_variables,
+                                   challenge = challenge))
+}
+
+run_xgboost_per_country <- function(data = get_data(yaml::read_yaml("data.yaml")),
+                                    config_models = yaml::read_yaml("models.yaml"),
+                                    config_env = yaml::read_yaml("environment.yaml"),
+                                    categorical_variables = c("month", "year"),
+                                    challenge = "PPI") {
+  
+  large_data <- build_data_ml(data = data,
+                              config_models = config_models,
+                              config_env = config_env,
+                              challenge = challenge,
+                              model = "XGBOOST")
+  
+  return(train_pred_xgboost_per_country(large_data = large_data,
+                                        config_models = config_models,
+                                        config_env = config_env,
+                                        categorical_variables = categorical_variables,
+                                        challenge = challenge))
+}
