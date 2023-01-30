@@ -201,6 +201,7 @@ ELEC_PRICES:
   challenge: 
     - PPI
     - PVI
+    - TOURISM
   model:
     - XGBOOST
   url: "https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv"

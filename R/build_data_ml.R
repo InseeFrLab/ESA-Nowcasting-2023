@@ -39,6 +39,10 @@ pivot_eurostat_data <- function(data) {
 
 format_yahoo_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "Yahoo", data)
+  
+  if (length(subset_lists) == 0){
+    return(data.frame(month = integer(), year = integer()))
+  }
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
@@ -93,6 +97,11 @@ format_yahoo_data <- function(data) {
 
 format_electricity_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "ember-climate", data)
+  
+  if (length(subset_lists) == 0){
+    return(data.frame(geo = character(), month = integer(), year = integer()))
+  }
+    
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
