@@ -87,16 +87,24 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(),
     select(-geo)
   
   #########################################
-  # Delete variables absent for the last month
+  # Delete variables absent for the last month and dummy ones
   #########################################
   
   df_current_date <- df %>%
     filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
-    rep(TRUE, 3),
+    rep(TRUE, 2),
     colSums(
-      !is.na(df_current_date[-(1:3)])
+      !is.na(df_current_date[-(1:2)])
     ) > 0)]
+  
+  df <- df[c(
+    rep(TRUE, 2),
+    lapply(df[-(1:2)],
+           var,
+           na.rm = TRUE
+           ) != 0
+    )]
   
   #########################################
   # One-hot encoding of categorical variables
