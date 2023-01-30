@@ -7,3 +7,4 @@
 *.zip
 *.docx
 point_estimates.json
+_targets/
