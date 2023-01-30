@@ -75,3 +75,15 @@ REGARIMA:
     outlier.ls: TRUE
     outlier.usedefcv: FALSE
     outlier.cv: 3.5
+  
+ETS:
+  PPI:
+    initial_year: 2003
+    last_year: 2023
+  PVI:
+    initial_year: 2003
+    last_year: 2023
+  TOURISM:
+    initial_year: 2003
+    last_year: 2020
+  
