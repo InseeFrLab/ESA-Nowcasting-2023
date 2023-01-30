@@ -18,14 +18,12 @@ options(dplyr.summarise.inform = FALSE)
 source("R/utils/data_retrieval.R")
 source("R/build_data_ml.R")
 
-date_to_pred <- ymd("2023-01-01")
-current_date <- date_to_pred %m-% months(1)
-
 #########################################
 # Build tables
 #########################################
 
 build_data_xgboost_europe <- function(large_data = build_data_ml(),
+                                      config_env = yaml::read_yaml("challenges.yaml"),
                                       categorical_variables = c("geo", "month", "year")) {
   
   df <- data.frame(large_data)
@@ -35,7 +33,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(),
   #########################################
   
   df_current_date <- df %>%
-    filter(time == current_date)
+    filter(time == config_env$DATES$current_date)
   df <- df[c(
     rep(TRUE, 3),
     colSums(
@@ -68,6 +66,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(),
 
 
 build_data_xgboost_one_country <- function(large_data = build_data_ml(),
+                                           config_env = yaml::read_yaml("challenges.yaml"),
                                            categorical_variables = c("month", "year"),
                                            country = 'FR') {
   
@@ -86,7 +85,7 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(),
   #########################################
   
   df_current_date <- df %>%
-    filter(time == current_date)
+    filter(time == config_env$DATES$current_date)
   df <- df[c(
     rep(TRUE, 3),
     colSums(
@@ -117,6 +116,7 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(),
 #########################################
 
 grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Can be filtered on one country
+                                config_env = yaml::read_yaml("challenges.yaml"),
                                 challenge = "PPI") {
   
   df <- as.data.table(data_xgboost)
@@ -137,11 +137,11 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
   #########################################
   
   df_to_use <- df %>%
-    filter(time < current_date) %>%
+    filter(time < config_env$DATES$current_date) %>%
     drop_na(!!challenge_to_predict)
   
   df_to_predict <- df %>%
-    filter(time == current_date)
+    filter(time == config_env$DATES$current_date)
   
   df_train <- df_to_use %>%
       sample_frac(4 / 5)
@@ -220,7 +220,7 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
 train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe(),
                                       large_data = build_data_ml(),
                                       config_models = yaml::read_yaml("models.yaml"),
-                                      config_env = yaml::read_yaml("environment.yaml"),
+                                      config_env = yaml::read_yaml("challenges.yaml"),
                                       challenge = "PPI"
                                       ) {
   
@@ -242,11 +242,11 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   #########################################
   
   df_train <- df %>%
-    filter(time < current_date) %>%
+    filter(time < config_env$DATES$current_date) %>%
     drop_na(!!challenge_to_predict)
   
   df_to_predict <- df %>%
-    filter(time == current_date)
+    filter(time == config_env$DATES$current_date)
   
   X_train <- as.matrix(df_train %>%
                          select(-c(!!challenge_to_predict, time)))
@@ -316,6 +316,7 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
 
 train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_country(),
                                            config_models = yaml::read_yaml("models.yaml"),
+                                           config_env = yaml::read_yaml("challenges.yaml"),
                                            challenge = "PPI",
                                            country = 'FR') {
   
@@ -338,11 +339,11 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   #########################################
   
   df_train <- df %>%
-    filter(time < current_date) %>%
+    filter(time < config_env$DATES$current_date) %>%
     drop_na(!!challenge_to_predict)
   
   df_to_predict <- df %>%
-    filter(time == current_date)
+    filter(time == config_env$DATES$current_date)
   
   X_train <- as.matrix(df_train %>%
                          select(-c(!!challenge_to_predict, time)))
@@ -402,7 +403,7 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
 
 train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
                                     config_models = yaml::read_yaml("models.yaml"),
-                                    config_env = yaml::read_yaml("environment.yaml"),
+                                    config_env = yaml::read_yaml("challenges.yaml"),
                                     categorical_variables = c("month", "year"),
                                     challenge = "PPI") {
   
@@ -438,11 +439,13 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
   for (country in countries %>% pull()){
     
     df_country <- build_data_xgboost_one_country(large_data = large_data,
+                                                 config_env = config_env,
                                                  categorical_variables = categorical_variables,
                                                  country = country)
     
     list_results_country <- train_pred_xgboost_one_country(data_xgboost=df_country,
                                                     config_models=config_models,
+                                                    config_env = config_env,
                                                     challenge=challenge,
                                                     country=country)
     
@@ -482,7 +485,7 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
 
 run_grid_search_xgboost <- function(data = get_data(yaml::read_yaml("data.yaml")),
                                     config_models = yaml::read_yaml("models.yaml"),
-                                    config_env = yaml::read_yaml("environment.yaml"),
+                                    config_env = yaml::read_yaml("challenges.yaml"),
                                     challenge = "PPI",
                                     per_country = FALSE,
                                     categorical_variables = c("geo", "month", "year"), # A changer selon per_country
@@ -496,10 +499,12 @@ run_grid_search_xgboost <- function(data = get_data(yaml::read_yaml("data.yaml")
   
   if (per_country){
     data_xgboost <- build_data_xgboost_one_country(large_data = large_data,
+                                                   config_env = config_env,
                                                    categorical_variables = categorical_variables,
                                                    country = country)
   } else {
     data_xgboost = build_data_xgboost_europe(large_data = large_data,
+                                             config_env = config_env,
                                              categorical_variables = categorical_variables)
   }
   
@@ -511,7 +516,7 @@ run_grid_search_xgboost <- function(data = get_data(yaml::read_yaml("data.yaml")
 
 run_xgboost_europe <- function(data = get_data(yaml::read_yaml("data.yaml")),
                                config_models = yaml::read_yaml("models.yaml"),
-                               config_env = yaml::read_yaml("environment.yaml"),
+                               config_env = yaml::read_yaml("challenges.yaml"),
                                categorical_variables = c("geo", "month", "year"),
                                challenge = "PPI") {
   
@@ -522,6 +527,7 @@ run_xgboost_europe <- function(data = get_data(yaml::read_yaml("data.yaml")),
                               model = "XGBOOST")
   
   data_xgboost = build_data_xgboost_europe(large_data = large_data,
+                                           config_env = config_env,
                                            categorical_variables = categorical_variables)
   
   return(train_pred_xgboost_europe(large_data = large_data,
@@ -533,7 +539,7 @@ run_xgboost_europe <- function(data = get_data(yaml::read_yaml("data.yaml")),
 
 run_xgboost_per_country <- function(data = get_data(yaml::read_yaml("data.yaml")),
                                     config_models = yaml::read_yaml("models.yaml"),
-                                    config_env = yaml::read_yaml("environment.yaml"),
+                                    config_env = yaml::read_yaml("challenges.yaml"),
                                     categorical_variables = c("month", "year"),
                                     challenge = "PPI") {
   
