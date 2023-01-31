@@ -17,14 +17,17 @@ tar_source(files = "R")
 list(
   tar_target(
     name = data_info,
+    cue = tar_cue(mode='always'),
     command = yaml::read_yaml("data.yaml")
   ),
   tar_target(
     name = challenges,
+    cue = tar_cue(mode='always'),
     command = yaml::read_yaml("challenges.yaml")
   ),
   tar_target(
     name = models,
+    cue = tar_cue(mode='always'),
     command = yaml::read_yaml("models.yaml")
   ),
   tar_target(
