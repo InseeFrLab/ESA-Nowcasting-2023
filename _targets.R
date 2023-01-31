@@ -5,7 +5,7 @@ library(targets)
 tar_option_set(
   packages = c(
     "xts", "lubridate", "dplyr", "tidyr", "data.table",
-    "dfms", "cowplot", "jsonlite", "ggplot2"
+    "dfms", "cowplot", "jsonlite", "ggplot2", "styler", "visNetwork"
   ),
   memory = "transient",
   garbage_collection = TRUE
