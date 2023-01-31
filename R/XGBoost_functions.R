@@ -12,17 +12,15 @@
 # Import packages and set-up
 #########################################
 
-library(yaml)
-library(lubridate)
-library(dplyr)
-library(tidyr)
-library(data.table)
-library(mltools)
-library(xgboost)
+# library(lubridate)
+# library(dplyr)
+# library(tidyr)
+# library(data.table)
+
 options(dplyr.summarise.inform = FALSE)
 
-source("R/data_retrieval.R")
-source("R/build_data_ml.R")
+# source("R/data_retrieval.R")
+# source("R/build_data_ml.R")
 
 #########################################
 # Build tables
@@ -171,8 +169,8 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
                          select(-c(!!challenge_to_predict, time)))
   y_valid <- df_valid[[challenge_to_predict]]
   
-  gb_train <- xgb.DMatrix(data = X_train, label = y_train)
-  gb_valid <- xgb.DMatrix(data = X_valid, label = y_valid)
+  gb_train <- xgboost::xgb.DMatrix(data = X_train, label = y_train)
+  gb_valid <- xgboost::xgb.DMatrix(data = X_valid, label = y_valid)
   watchlist <- list(train = gb_train, valid = gb_valid)
   
   #########################################
@@ -192,7 +190,7 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
       for (max_depth in max_depths) {
         for (subsample in subsamples) {
           for (colsample_bytree in colsample_bytrees) {
-            model <- xgb.train(
+            model <- xgboost::xgb.train(
               data = gb_train,
               objective = "reg:squarederror",
               eval_metric = "rmse",
@@ -269,14 +267,14 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   X_pred <- as.matrix(df_to_predict %>%
                          select(-c(!!challenge_to_predict, time)))
   
-  gb_train <- xgb.DMatrix(data = X_train, label = y_train)
-  d_to_pred <- xgb.DMatrix(data = X_pred)
+  gb_train <- xgboost::xgb.DMatrix(data = X_train, label = y_train)
+  d_to_pred <- xgboost::xgb.DMatrix(data = X_pred)
   
   #########################################
   # Train the model
   #########################################
 
-  model <- xgb.train(
+  model <- xgboost::xgb.train(
     data = gb_train,
     objective = "reg:squarederror",
     eval_metric = "rmse",
@@ -288,7 +286,7 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   )
   
   # Compute features importance in training
-  importance_matrix <- xgb.importance(colnames(X_train), model = model)
+  importance_matrix <- xgboost::xgb.importance(colnames(X_train), model = model)
   
   #########################################
   # Predict
@@ -366,14 +364,14 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   X_pred <- as.matrix(df_to_predict %>%
                         select(-c(!!challenge_to_predict, time)))
   
-  gb_train <- xgb.DMatrix(data = X_train, label = y_train)
-  d_to_pred <- xgb.DMatrix(data = X_pred)
+  gb_train <- xgboost::xgb.DMatrix(data = X_train, label = y_train)
+  d_to_pred <- xgboost::xgb.DMatrix(data = X_pred)
   
   #########################################
   # Train the model
   #########################################
   
-  model <- xgb.train(
+  model <- xgboost::xgb.train(
     data = gb_train,
     objective = "reg:squarederror",
     eval_metric = "rmse",
@@ -391,7 +389,7 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   y_pred_next_month <- stats::predict(model, d_to_pred)
   y_pred_next_month <- y_pred_next_month * scale_to_predict + mean_to_predict
   
-  y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
+  y_pred_residuals <- stats::predict(model, xgboost::xgb.DMatrix(data = X_train))
   y_pred_residuals <- y_pred_residuals * scale_to_predict +
     mean_to_predict
   

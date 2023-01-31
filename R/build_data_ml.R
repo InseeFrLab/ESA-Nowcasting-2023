@@ -6,13 +6,13 @@
 # Import packages and set-up
 #########################################
 
-library(yaml)
-library(lubridate)
-library(dplyr)
-library(tidyr)
-library(purrr)
+# library(lubridate)
+# library(dplyr)
+# library(tidyr)
 
-source("R/data_retrieval.R")
+options(dplyr.summarise.inform = FALSE)
+
+# source("R/data_retrieval.R")
 
 #########################################
 # Functions
@@ -255,7 +255,7 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
 
   ### E) Delete dummy columns
 
-  df <- df[colSums(!is.na(df)) > length(df) / length(countries)]
+  df <- df[colSums(!is.na(df)) > length(df) / (length(countries)+1)]
 
   df <- df[c(
     rep(TRUE, 3),

@@ -3,18 +3,22 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("xts", "lubridate", "dplyr", "dfms", "cowplot", "jsonlite", "data.table"),
+  packages = c("xts", "lubridate", "dplyr", "tidyr", "data.table",
+               "dfms", "cowplot", "jsonlite"),
   memory = "transient",
   garbage_collection = TRUE
 )
 options(dplyr.summarise.inform = FALSE)
 
-tar_source("R/data_preprocessing.R")
 tar_source("R/data_retrieval.R")
+tar_source("R/data_preprocessing.R")
+tar_source("R/build_data_ml.R")
 tar_source("R/functions.R")
 tar_source("R/regarima_functions.R")
 tar_source("R/ets_functions.R")
 tar_source("R/dfms_functions.R")
+tar_source("R/XGBoost_functions.R")
+tar_source("R/lstm_functions.R")
 
 list(
   tar_target(
@@ -68,5 +72,47 @@ list(
   tar_target(
     name = dfms_tourism,
     command =  run_DFMs("TOURISM", challenges, data, models)
+  ),
+  tar_target(
+    name = xgboost_ppi,
+    command =  run_xgboost_per_country(data = data,
+                                       config_models = models,
+                                       config_env = challenges,
+                                       challenge = "PPI")
+  ),
+  tar_target(
+    name = xgboost_pvi,
+    command =  run_xgboost_per_country(data = data,
+                                       config_models = models,
+                                       config_env = challenges,
+                                       challenge = "PVI")
+  ),
+  tar_target(
+    name = xgboost_tourism,
+    command =  run_xgboost_per_country(data = data,
+                                       config_models = models,
+                                       config_env = challenges,
+                                       challenge = "TOURISM")
+  ),
+  tar_target(
+    name = lstm_ppi,
+    command =  run_lstm_per_country(data = data,
+                                    config_models = models,
+                                    config_env = challenges,
+                                    challenge = "PPI")
+),
+  tar_target(
+    name = lstm_pvi,
+    command =  run_lstm_per_country(data = data,
+                                    config_models = models,
+                                    config_env = challenges,
+                                    challenge = "PVI")
+  ),
+  tar_target(
+    name = lstm_tourism,
+    command =  run_lstm_per_country(data = data,
+                                    config_models = models,
+                                    config_env = challenges,
+                                    challenge = "TOURISM")
   )
 )

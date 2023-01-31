@@ -6,19 +6,16 @@
 # Import packages and set-up
 #########################################
 
-library(yaml)
-library(lubridate)
-library(dplyr)
-library(tidyr)
-library(data.table)
-library(mltools)
-library(rlang)
-library(nowcastLSTM)
+# library(lubridate)
+# library(dplyr)
+# library(tidyr)
+# library(data.table)
+
 nowcastLSTM::initialize_session(python_path = "/opt/mamba/bin/python")
 options(dplyr.summarise.inform = FALSE)
 
-source("R/data_retrieval.R")
-source("R/build_data_ml.R")
+# source("R/data_retrieval.R")
+# source("R/build_data_ml.R")
 
 #########################################
 # Build tables
@@ -70,7 +67,7 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model='LSTM')
     select(-c(month, year,
               !!challenge_to_predict, !!challenge_minus_1_month))
   if (challenge == 'TOURISM'){
-    df <- df %>% select(!!challenge_minus_1_year)
+    df <- df %>% select(-!!challenge_minus_1_year)
   }
   
   # Actually add one row
@@ -131,7 +128,7 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   # Train the model
   #########################################
   
-  mod <- LSTM(
+  mod <- nowcastLSTM::LSTM(
     data = df_train,
     target_variable = challenge,
     n_timesteps = 12,
@@ -147,7 +144,7 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   # Predict
   #########################################
   
-  predictions <- predict(mod, df_scaled, only_actuals_obs = F)
+  predictions <- nowcastLSTM::predict(mod, df_scaled, only_actuals_obs = F)
   
   df_pred_next_month <- predictions %>%
     filter(date == config_env$DATES$date_to_pred)
