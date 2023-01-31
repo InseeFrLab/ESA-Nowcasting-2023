@@ -12,15 +12,7 @@ tar_option_set(
 )
 options(dplyr.summarise.inform = FALSE)
 
-tar_source("R/data_retrieval.R")
-tar_source("R/data_preprocessing.R")
-tar_source("R/build_data_ml.R")
-tar_source("R/functions.R")
-tar_source("R/regarima_functions.R")
-tar_source("R/ets_functions.R")
-tar_source("R/dfms_functions.R")
-tar_source("R/XGBoost_functions.R")
-tar_source("R/lstm_functions.R")
+tar_source(files = "R")
 
 list(
   tar_target(
