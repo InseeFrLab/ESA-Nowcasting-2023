@@ -56,7 +56,7 @@ LSTM:
     nb_months_past_to_use_others : 4
   TOURISM:
     nb_months_past_to_use : 1
-    nb_months_past_to_use_others : 4
+    nb_months_past_to_use_others : 6
     nb_years_past_to_use : 1
   init_year: 2007
 

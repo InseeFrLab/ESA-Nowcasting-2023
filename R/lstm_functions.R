@@ -17,14 +17,14 @@ library(nowcastLSTM)
 nowcastLSTM::initialize_session(python_path = "/opt/mamba/bin/python")
 options(dplyr.summarise.inform = FALSE)
 
-source("R/utils/data_retrieval.R")
+source("R/data_retrieval.R")
 source("R/build_data_ml.R")
 
 #########################################
 # Build tables
 #########################################
 
-build_data_lstm_one_country <- function(large_data = build_data_ml(),
+build_data_lstm_one_country <- function(large_data = build_data_ml(model='LSTM'),
                                         config_env = yaml::read_yaml("challenges.yaml"),
                                         challenge = 'PPI',
                                         country = 'FR') {
@@ -47,15 +47,15 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(),
   df_current_date <- df %>%
     filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
-    rep(TRUE, 2),
+    rep(TRUE, 3),
     colSums(
-      !is.na(df_current_date[-(1:2)])
+      !is.na(df_current_date[-(1:3)])
     ) > 0)]
   
   # Dummy variables in the country
   df <- df[c(
-    rep(TRUE, 2),
-    lapply(df[-(1:2)],
+    rep(TRUE, 3),
+    lapply(df[-(1:3)],
            var,
            na.rm = TRUE
     ) != 0
@@ -104,7 +104,7 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   
   df_scaled <- df %>% mutate_at(c(2:length(colnames(df))), ~ (scale(.) %>% as.vector()))
   # rag = ragged_preds(mod, pub_lags=c(1,4), lag = -2, df_scaled)
-  df_scaled <- df_scaled[, colSums(is.na(df_scaled)) < nrow(df_scaled)] # Remove rows with NA only
+  # df_scaled <- df_scaled[, colSums(is.na(df_scaled)) < nrow(df_scaled)] # Remove rows with NA only
   
   mean_challenge <- mean(df[[challenge]], na.rm = TRUE)
   std_challenge <- sd(df[[challenge]], na.rm = TRUE)
@@ -175,7 +175,7 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
 }
 
 
-train_pred_lstm_per_country <- function(large_data = build_data_ml(),
+train_pred_lstm_per_country <- function(large_data = build_data_ml(model='LSTM'),
                                         config_models = yaml::read_yaml("models.yaml"),
                                         config_env = yaml::read_yaml("challenges.yaml"),
                                         challenge = "PPI") {
