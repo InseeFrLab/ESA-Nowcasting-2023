@@ -192,7 +192,7 @@ train_pred_lstm_per_country <- function(large_data = build_data_ml(model = "LSTM
     )
 
   residuals_lstm_per_country <- data.frame(matrix(ncol = 3, nrow = 0))
-  x <- c("geo", "time", "value")
+  x <- c("Country", "Date", "value")
   colnames(residuals_lstm_per_country) <- x
 
   #########################################
