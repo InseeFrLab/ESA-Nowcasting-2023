@@ -17,17 +17,14 @@ tar_source(files = "R")
 list(
   tar_target(
     name = data_info,
-    cue = tar_cue(mode='always'),
     command = yaml::read_yaml("data.yaml")
   ),
   tar_target(
     name = challenges,
-    cue = tar_cue(mode='always'),
     command = yaml::read_yaml("challenges.yaml")
   ),
   tar_target(
     name = models,
-    cue = tar_cue(mode='always'),
     command = yaml::read_yaml("models.yaml")
   ),
   tar_target(
@@ -97,41 +94,41 @@ list(
       challenge = "TOURISM"
     )
   ),
-  tar_target(
-    name = lstm_ppi,
-    command = run_lstm_per_country(
-      data = data,
-      config_models = models,
-      config_env = challenges,
-      challenge = "PPI"
-    )
-  ),
-  tar_target(
-    name = lstm_pvi,
-    command = run_lstm_per_country(
-      data = data,
-      config_models = models,
-      config_env = challenges,
-      challenge = "PVI"
-    )
-  ),
-  tar_target(
-    name = lstm_tourism,
-    command = run_lstm_per_country(
-      data = data,
-      config_models = models,
-      config_env = challenges,
-      challenge = "TOURISM"
-    )
-  ),
+  # tar_target(
+  #   name = lstm_ppi,
+  #   command = run_lstm_per_country(
+  #     data = data,
+  #     config_models = models,
+  #     config_env = challenges,
+  #     challenge = "PPI"
+  #   )
+  # ),
+  # tar_target(
+  #   name = lstm_pvi,
+  #   command = run_lstm_per_country(
+  #     data = data,
+  #     config_models = models,
+  #     config_env = challenges,
+  #     challenge = "PVI"
+  #   )
+  # ),
+  # tar_target(
+  #   name = lstm_tourism,
+  #   command = run_lstm_per_country(
+  #     data = data,
+  #     config_models = models,
+  #     config_env = challenges,
+  #     challenge = "TOURISM"
+  #   )
+  # ),
   tar_target(
     name = predictions_ppi,
     command = bind_rows(list(
       "entry_1" = regarima_ppi$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_ppi$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_ppi$preds %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_ppi$preds %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_ppi$preds %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_ppi$preds %>% mutate(Entries = "XGBOOST")
+      # "entry_5" = lstm_ppi$preds %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -140,8 +137,8 @@ list(
       "entry_1" = regarima_pvi$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_pvi$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_pvi$preds %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_pvi$preds %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_pvi$preds %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_pvi$preds %>% mutate(Entries = "XGBOOST")
+      # "entry_5" = lstm_pvi$preds %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -150,8 +147,8 @@ list(
       "entry_1" = regarima_tourism$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_tourism$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_tourism$preds %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_tourism$preds %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_tourism$preds %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_tourism$preds %>% mutate(Entries = "XGBOOST")
+      # "entry_5" = lstm_tourism$preds %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -160,8 +157,8 @@ list(
       "entry_1" = regarima_ppi$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_ppi$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_ppi$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_ppi$resids %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_ppi$resids %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_ppi$resids %>% mutate(Entries = "XGBOOST")
+      # "entry_5" = lstm_ppi$resids %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -170,8 +167,8 @@ list(
       "entry_1" = regarima_pvi$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_pvi$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_pvi$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_pvi$resids %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_pvi$resids %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_pvi$resids %>% mutate(Entries = "XGBOOST")
+      # "entry_5" = lstm_pvi$resids %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -180,8 +177,8 @@ list(
       "entry_1" = regarima_tourism$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_tourism$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_tourism$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_tourism$resids %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_tourism$resids %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_tourism$resids %>% mutate(Entries = "XGBOOST")
+      # "entry_5" = lstm_tourism$resids %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -262,18 +259,15 @@ list(
   ),
   tar_target(
     name = plot_resids_ppi,
-    command = plot_statistics(get_metrics(resids_ppi, challenges$PPI$countries, challenges$DATES$current_date, as.Date("2022-01-01")),
-                              challenges)
+    command = plot_statistics(get_metrics(resids_ppi, challenges$PPI$countries, challenges$DATES$current_date, as.Date("2022-01-01")))
   ),
   tar_target(
     name = plot_resids_pvi,
-    command = plot_statistics(get_metrics(resids_pvi, challenges$PVI$countries, challenges$DATES$current_date, as.Date("2022-01-01")),
-                              challenges)
+    command = plot_statistics(get_metrics(resids_pvi, challenges$PVI$countries, challenges$DATES$current_date, as.Date("2022-01-01")))
   ),
   tar_target(
     name = plot_resids_tourism,
-    command = plot_statistics(get_metrics(resids_tourism, challenges$TOURISM$countries, as.Date("2019-12-31"), as.Date("2010-01-01")),
-                              challenges)
+    command = plot_statistics(get_metrics(resids_tourism, challenges$TOURISM$countries, as.Date("2019-12-31"), as.Date("2010-01-01")))
   ),
   tar_target(
     name = save_ppi,
@@ -282,8 +276,8 @@ list(
         "entry_1" = regarima_ppi,
         "entry_2" = dfms_ppi,
         "entry_3" = ets_ppi,
-        "entry_4" = xgboost_ppi,
-        "entry_5" = lstm_ppi
+        "entry_4" = xgboost_ppi
+        # "entry_5" = lstm_ppi
       ),
       challenges
     )
@@ -295,8 +289,8 @@ list(
         "entry_1" = regarima_pvi,
         "entry_2" = dfms_pvi,
         "entry_3" = ets_pvi,
-        "entry_4" = xgboost_pvi,
-        "entry_5" = lstm_pvi
+        "entry_4" = xgboost_pvi
+        # "entry_5" = lstm_pvi
       ),
       challenges
     )
@@ -308,8 +302,8 @@ list(
         "entry_1" = regarima_tourism,
         "entry_2" = dfms_tourism,
         "entry_3" = ets_tourism,
-        "entry_4" = xgboost_tourism,
-        "entry_5" = lstm_tourism
+        "entry_4" = xgboost_tourism
+        # "entry_5" = lstm_tourism
       ),
       challenges
     )
