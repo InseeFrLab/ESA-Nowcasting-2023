@@ -171,7 +171,3 @@ pal_col <- rbind(
 )
 
 Palette_col <- rgb(pal_col[, 1], pal_col[, 2], pal_col[, 3], maxColorValue = 255)
-
-
-
-

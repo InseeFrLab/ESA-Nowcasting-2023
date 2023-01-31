@@ -10,7 +10,7 @@ save_entries <- function(challenge, entries, challenges_info) {
   })
   month <- challenges_info$DATES$month_to_pred
   filename <- paste0("Submissions/", challenge, "/results_", month, ".json")
-  
+
   if (file.exists(filename)) {
     current_file <- rjson::fromJSON(file = filename)
     current_file[names(entries)] <- entries
@@ -20,7 +20,7 @@ save_entries <- function(challenge, entries, challenges_info) {
     file <- rjson::toJSON(entries)
     write(jsonlite::prettify(file), filename)
   }
-  
+
   ## Save in S3 the json
   system(
     paste(
@@ -28,7 +28,7 @@ save_entries <- function(challenge, entries, challenges_info) {
       paste0("s3/projet-esa-nowcasting/submissions/", challenge, "/results_", month, ".json")
     )
   )
-  
+
   #### Save the data in S3 ####
   save(data, file = paste0("data_", challenge, "_", month, ".RData"))
   system(
