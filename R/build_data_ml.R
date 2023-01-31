@@ -196,6 +196,13 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
     df_challenge <- df_challenge %>%
       mutate(!!variable := lag(!!rlang::sym(challenge), n = i))
   }
+  if (challenge == 'TOURISM'){
+    for (i in 1:(config_models[[model]][[challenge]]$nb_years_past_to_use)) {
+      variable <- paste(challenge, "minus", i, "years", sep = "_")
+      df_challenge <- df_challenge %>%
+        mutate(!!variable := lag(!!rlang::sym(challenge), n = 12 * i - 1))
+    }
+  }
   df_challenge <- df_challenge %>%
     ungroup()
 

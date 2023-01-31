@@ -40,24 +40,6 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model='LSTM')
   # Delete variables we do not need
   #########################################
   
-  # Variables absent for the last month
-  df_current_date <- df %>%
-    filter(time == ymd(config_env$DATES$current_date))
-  df <- df[c(
-    rep(TRUE, 3),
-    colSums(
-      !is.na(df_current_date[-(1:3)])
-    ) > 0)]
-  
-  # Dummy variables in the country
-  df <- df[c(
-    rep(TRUE, 3),
-    lapply(df[-(1:3)],
-           var,
-           na.rm = TRUE
-    ) != 0
-  )]
-  
   # Uninteresting columns for LSTM
   challenge_to_predict <- paste(challenge, "to_predict", sep = "_")
   challenge_minus_1_month <- paste(challenge, "minus_1_months", sep = "_")
@@ -70,8 +52,25 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model='LSTM')
     df <- df %>% select(-!!challenge_minus_1_year)
   }
   
-  # Actually add one row
+  # Variables absent for the last month
+  df_current_date <- df %>%
+    filter(time == ymd(config_env$DATES$current_date))
+  df <- df[c(
+    rep(TRUE, 2),
+    colSums(
+      !is.na(df_current_date[-(1:2)])
+    ) > 0)]
   
+  # Dummy variables in the country
+  df <- df[c(
+    rep(TRUE, 2),
+    lapply(df[-(1:2)],
+           var,
+           na.rm = TRUE
+    ) != 0
+  )]
+  
+  # Actually add one row
   df <- df %>% add_row(time = ymd(config_env$DATES$date_to_pred)) %>%
     rename(date = time)
   
