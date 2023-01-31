@@ -204,26 +204,17 @@ list(
   tar_target(
     name = plot_resids_tourism,
     command = plot_statistics(get_metrics(resids_tourism, challenges$TOURISM$countries, as.Date("2019-12-31"), as.Date("2010-01-01")))
+  ),
+  tar_target(
+    name = save_ppi,
+    command = save_entries("PPI", list("entry_1" = regarima_ppi, "entry_2" = dfms_ppi, "entry_3" = ets_ppi), challenges)
+  ),
+  tar_target(
+    name = save_pvi,
+    command = save_entries("PVI", list("entry_1" = regarima_pvi, "entry_2" = dfms_pvi, "entry_3" = ets_pvi), challenges)
+  ),
+  tar_target(
+    name = save_tourism,
+    command = save_entries("TOURISM", list("entry_1" = regarima_tourism, "entry_2" = dfms_tourism, "entry_3" = ets_tourism), challenges)
   )
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
