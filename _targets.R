@@ -100,7 +100,7 @@ list(
                                     config_models = models,
                                     config_env = challenges,
                                     challenge = "PPI")
-),
+  ),
   tar_target(
     name = lstm_pvi,
     command =  run_lstm_per_country(data = data,
@@ -113,7 +113,8 @@ list(
     command =  run_lstm_per_country(data = data,
                                     config_models = models,
                                     config_env = challenges,
-                                    challenge = "TOURISM"),
+                                    challenge = "TOURISM")
+  ),
   tar_target(
     name = predictions_ppi,
     command =  bind_rows(list(
