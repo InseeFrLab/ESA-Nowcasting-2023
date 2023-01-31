@@ -82,9 +82,10 @@ get_metrics <- function(sample, Countries, up_date, low_date) {
   return(sample)
 }
 
-subplot_statistic <- function(sample, statistic, legend = TRUE, y_labs = TRUE) {
+subplot_statistic <- function(sample, statistic, legend = TRUE, y_labs = TRUE,
+                              challenges = yaml::read_yaml("challenges.yaml")) {
   sample <- sample[, c("Entries", "Statistic") := list(
-    factor(Entries, levels = c("Naive", "SARIMA", "REG-ARIMA", "XGBoost", "XGBoost_diff", "DFM", "ETS")),
+    factor(Entries, levels = challenges$SELECTED_MODELS),
     factor(Statistic, levels = c("N", "ME", "MIN", "MAX", "MAE", "RMSE"))
   )]
 
