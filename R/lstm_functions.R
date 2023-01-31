@@ -15,7 +15,7 @@ nowcastLSTM::initialize_session(python_path = "/opt/mamba/bin/python")
 options(dplyr.summarise.inform = FALSE)
 
 # source("R/data_retrieval.R")
-# source("R/build_data_ml.R")
+# source("R/data_preprocessing.R")
 
 #########################################
 # Build tables
@@ -136,7 +136,7 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
     # fill_ragged_edges_func = "median",
     n_models = 15,
     batch_size = 30,
-    train_episodes = 50,
+    train_episodes = 2,
     python_model_name = "model"
   ) # default parameters with 12 timestep history
 
