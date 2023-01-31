@@ -1,7 +1,7 @@
 build_data_regarima <- function(challenge, challenges_info, data, country) {
   selected_data <- Filter(function(x) (challenge %in% x$challenge) & ("REGARIMA" %in% x$model), data)
 
-  code_variable_interest <-challenges_info[[challenge]]$principal_nace
+  code_variable_interest <- challenges_info[[challenge]]$principal_nace
 
   y <- data[[challenge]]$data %>%
     dplyr::filter((nace_r2 %in% code_variable_interest) & (geo == country)) %>%
@@ -16,7 +16,7 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 
 create_regressors <- function(challenge, challenges_info, data, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
-  
+
   if (challenge == "PPI") {
     brent <- reshape_yahoo_data(data) %>%
       mutate(BRENT = BRENT.Adjusted / EUR_USD.Adjusted) %>%
@@ -33,18 +33,19 @@ create_regressors <- function(challenge, challenges_info, data, country) {
     # Liste de variables exogènes minimum
     X <- ts.union(dlbrent, dlbrent_1, dlbrent_2)
 
-    # Check if IPI is available 
-    
-    dispo <- grep(paste(country, "IPI", "CPA_B-D", sep = "_"), 
+    # Check if IPI is available
+
+    dispo <- grep(paste(country, "IPI", "CPA_B-D", sep = "_"),
       names(reshape_eurostat_data(data, country)),
-      value=TRUE)
-    
+      value = TRUE
+    )
+
     if (!purrr::is_empty(dispo)) {
       ipi <- reshape_eurostat_data(data, country) %>%
         select(time, paste(country, "IPI", "CPA_B-D", sep = "_")) %>%
         tidyr::drop_na() %>%
         tsbox::ts_ts()
-      
+
       dlipi <- log(ipi) - stats::lag(log(ipi), -1)
       dlipi_1 <- stats::lag(dlipi, -1)
       dlipi_2 <- stats::lag(dlipi, -2)
@@ -75,9 +76,9 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       tsbox::ts_ts() / 100
 
     dIPT <- diff(IPT)
-    #dIPT2 <- stats::lag(dIPT, -1)
+    # dIPT2 <- stats::lag(dIPT, -1)
     dIS <- diff(IS)
-    #dIS2 <- stats::lag(dIS, -1)
+    # dIS2 <- stats::lag(dIS, -1)
 
     X <- ts.union(IPT, dIPT)
 
@@ -86,7 +87,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       X <- ts.union(IPT, dIPT, dIS)
     }
     if (country %in% c("IT")) {
-      X <- ts.union(IS, dIPT)#dIPT2 
+      X <- ts.union(IS, dIPT) # dIPT2
     }
     if (country %in% c("ES")) {
       X <- ts.union(IPT, dIS)
@@ -101,7 +102,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       X <- ts.union(
         IPT,
         IS, dIS
-      ) #dIS2
+      ) # dIS2
     }
   } else {
     X <- NULL
@@ -155,9 +156,9 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     Date = as.POSIXct(NA),
     value = numeric()
   )
-  
+
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
-  
+
   for (country in challenges_info[[challenge]]$countries) {
     DB <- build_data_regarima(challenge, challenges_info, data, country)
 

@@ -3,8 +3,10 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("xts", "lubridate", "dplyr", "tidyr", "data.table",
-               "dfms", "cowplot", "jsonlite", "ggplot2"),
+  packages = c(
+    "xts", "lubridate", "dplyr", "tidyr", "data.table",
+    "dfms", "cowplot", "jsonlite", "ggplot2"
+  ),
   memory = "transient",
   garbage_collection = TRUE
 )
@@ -51,73 +53,85 @@ list(
   ),
   tar_target(
     name = regarima_ppi,
-    command =  run_regarima("PPI", challenges, data, models)
+    command = run_regarima("PPI", challenges, data, models)
   ),
   tar_target(
     name = regarima_pvi,
-    command =  run_regarima("PVI", challenges, data, models)
+    command = run_regarima("PVI", challenges, data, models)
   ),
   tar_target(
     name = regarima_tourism,
-    command =  run_regarima("TOURISM", challenges, data, models)
+    command = run_regarima("TOURISM", challenges, data, models)
   ),
   tar_target(
     name = dfms_ppi,
-    command =  run_DFMs("PPI", challenges, data, models)
+    command = run_DFMs("PPI", challenges, data, models)
   ),
   tar_target(
     name = dfms_pvi,
-    command =  run_DFMs("PVI", challenges, data, models)
+    command = run_DFMs("PVI", challenges, data, models)
   ),
   tar_target(
     name = dfms_tourism,
-    command =  run_DFMs("TOURISM", challenges, data, models)
+    command = run_DFMs("TOURISM", challenges, data, models)
   ),
   tar_target(
     name = xgboost_ppi,
-    command =  run_xgboost_per_country(data = data,
-                                       config_models = models,
-                                       config_env = challenges,
-                                       challenge = "PPI")
+    command = run_xgboost_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "PPI"
+    )
   ),
   tar_target(
     name = xgboost_pvi,
-    command =  run_xgboost_per_country(data = data,
-                                       config_models = models,
-                                       config_env = challenges,
-                                       challenge = "PVI")
+    command = run_xgboost_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "PVI"
+    )
   ),
   tar_target(
     name = xgboost_tourism,
-    command =  run_xgboost_per_country(data = data,
-                                       config_models = models,
-                                       config_env = challenges,
-                                       challenge = "TOURISM")
+    command = run_xgboost_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "TOURISM"
+    )
   ),
   tar_target(
     name = lstm_ppi,
-    command =  run_lstm_per_country(data = data,
-                                    config_models = models,
-                                    config_env = challenges,
-                                    challenge = "PPI")
+    command = run_lstm_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "PPI"
+    )
   ),
   tar_target(
     name = lstm_pvi,
-    command =  run_lstm_per_country(data = data,
-                                    config_models = models,
-                                    config_env = challenges,
-                                    challenge = "PVI")
+    command = run_lstm_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "PVI"
+    )
   ),
   tar_target(
     name = lstm_tourism,
-    command =  run_lstm_per_country(data = data,
-                                    config_models = models,
-                                    config_env = challenges,
-                                    challenge = "TOURISM")
+    command = run_lstm_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "TOURISM"
+    )
   ),
   tar_target(
     name = predictions_ppi,
-    command =  bind_rows(list(
+    command = bind_rows(list(
       "entry_1" = regarima_ppi$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_ppi$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_ppi$preds %>% mutate(Entries = "ETS"),
@@ -127,7 +141,7 @@ list(
   ),
   tar_target(
     name = predictions_pvi,
-    command =  bind_rows(list(
+    command = bind_rows(list(
       "entry_1" = regarima_pvi$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_pvi$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_pvi$preds %>% mutate(Entries = "ETS"),
@@ -137,7 +151,7 @@ list(
   ),
   tar_target(
     name = predictions_tourism,
-    command =  bind_rows(list(
+    command = bind_rows(list(
       "entry_1" = regarima_tourism$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_tourism$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_tourism$preds %>% mutate(Entries = "ETS"),
@@ -147,7 +161,7 @@ list(
   ),
   tar_target(
     name = resids_ppi,
-    command =  bind_rows(list(
+    command = bind_rows(list(
       "entry_1" = regarima_ppi$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_ppi$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_ppi$resids %>% mutate(Entries = "ETS"),
@@ -157,7 +171,7 @@ list(
   ),
   tar_target(
     name = resids_pvi,
-    command =  bind_rows(list(
+    command = bind_rows(list(
       "entry_1" = regarima_pvi$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_pvi$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_pvi$resids %>% mutate(Entries = "ETS"),
@@ -167,7 +181,7 @@ list(
   ),
   tar_target(
     name = resids_tourism,
-    command =  bind_rows(list(
+    command = bind_rows(list(
       "entry_1" = regarima_tourism$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_tourism$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_tourism$resids %>% mutate(Entries = "ETS"),
@@ -177,79 +191,79 @@ list(
   ),
   tar_target(
     name = plot_preds_ppi_1,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[1:4])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[1:4])
   ),
   tar_target(
     name = plot_preds_ppi_2,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[5:8])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[5:8])
   ),
   tar_target(
     name = plot_preds_ppi_3,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[9:12])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[9:12])
   ),
   tar_target(
     name = plot_preds_ppi_4,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[13:16])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[13:16])
   ),
   tar_target(
     name = plot_preds_ppi_5,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[17:20])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[17:20])
   ),
   tar_target(
     name = plot_preds_ppi_6,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[21:24])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[21:24])
   ),
   tar_target(
     name = plot_preds_ppi_7,
-    command =  plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[25:26])
+    command = plot_preds("PPI", challenges, data, predictions_ppi, challenges$PPI$countries[25:26])
   ),
   tar_target(
     name = plot_preds_pvi_1,
-    command =  plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[1:4])
+    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[1:4])
   ),
   tar_target(
     name = plot_preds_pvi_2,
-    command =  plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[5:8])
+    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[5:8])
   ),
   tar_target(
     name = plot_preds_pvi_3,
-    command =  plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[9:12])
+    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[9:12])
   ),
   tar_target(
     name = plot_preds_pvi_4,
-    command =  plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[13:16])
+    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[13:16])
   ),
   tar_target(
     name = plot_preds_pvi_5,
-    command =  plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[17:20])
+    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[17:20])
   ),
   tar_target(
     name = plot_preds_pvi_6,
-    command =  plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[21:23])
+    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[21:23])
   ),
   tar_target(
     name = plot_preds_tourism_1,
-    command =  plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[1:4])
+    command = plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[1:4])
   ),
   tar_target(
     name = plot_preds_tourism_2,
-    command =  plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[5:8])
+    command = plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[5:8])
   ),
   tar_target(
     name = plot_preds_tourism_3,
-    command =  plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[9:12])
+    command = plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[9:12])
   ),
   tar_target(
     name = plot_preds_tourism_4,
-    command =  plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[13:16])
+    command = plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[13:16])
   ),
   tar_target(
     name = plot_preds_tourism_5,
-    command =  plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[17:20])
+    command = plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[17:20])
   ),
   tar_target(
     name = plot_preds_tourism_6,
-    command =  plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[21:24])
+    command = plot_preds("TOURISM", challenges, data, predictions_tourism, challenges$TOURISM$countries[21:24])
   ),
   tar_target(
     name = plot_resids_ppi,
@@ -265,29 +279,41 @@ list(
   ),
   tar_target(
     name = save_ppi,
-    command = save_entries("PPI", list("entry_1" = regarima_ppi,
-                                       "entry_2" = dfms_ppi,
-                                       "entry_3" = ets_ppi,
-                                       "entry_4" = xgboost_ppi,
-                                       "entry_5" = lstm_ppi),
-                           challenges)
+    command = save_entries(
+      "PPI", list(
+        "entry_1" = regarima_ppi,
+        "entry_2" = dfms_ppi,
+        "entry_3" = ets_ppi,
+        "entry_4" = xgboost_ppi,
+        "entry_5" = lstm_ppi
+      ),
+      challenges
+    )
   ),
   tar_target(
     name = save_pvi,
-    command = save_entries("PVI", list("entry_1" = regarima_pvi,
-                                       "entry_2" = dfms_pvi,
-                                       "entry_3" = ets_pvi,
-                                       "entry_4" = xgboost_pvi,
-                                       "entry_5" = lstm_pvi),
-                           challenges)
+    command = save_entries(
+      "PVI", list(
+        "entry_1" = regarima_pvi,
+        "entry_2" = dfms_pvi,
+        "entry_3" = ets_pvi,
+        "entry_4" = xgboost_pvi,
+        "entry_5" = lstm_pvi
+      ),
+      challenges
+    )
   ),
   tar_target(
     name = save_tourism,
-    command = save_entries("TOURISM", list("entry_1" = regarima_tourism,
-                                           "entry_2" = dfms_tourism,
-                                           "entry_3" = ets_tourism,
-                                           "entry_4" = xgboost_tourism,
-                                           "entry_5" = lstm_tourism),
-                           challenges)
+    command = save_entries(
+      "TOURISM", list(
+        "entry_1" = regarima_tourism,
+        "entry_2" = dfms_tourism,
+        "entry_3" = ets_tourism,
+        "entry_4" = xgboost_tourism,
+        "entry_5" = lstm_tourism
+      ),
+      challenges
+    )
   )
 )

@@ -45,14 +45,13 @@ get_data_from_ember <- function(data_info) {
         ELEC_PRICES = `Price (EUR/MWhe)`
       ) |>
       dplyr::inner_join(countries_codes |>
-      dplyr::select(-geo_code_3)) |>
+        dplyr::select(-geo_code_3)) |>
       dplyr::select(geo, time, ELEC_PRICES)
   })
   return(data)
 }
 
 get_weekend_days <- function(data_info, challenges_info) {
-  
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
   subset_lists <- Filter(function(x) x$source == "Week-end", data_info)
 

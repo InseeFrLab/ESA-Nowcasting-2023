@@ -1,6 +1,6 @@
 build_data_ets <- function(challenge, challenges_info, data_info) {
-  code_variable_interest <-challenges_info[[challenge]]$principal_nace
-  
+  code_variable_interest <- challenges_info[[challenge]]$principal_nace
+
   data <- data_info[[challenge]]$data %>%
     dplyr::filter(nace_r2 %in% code_variable_interest) %>%
     to_tsibble()
@@ -23,12 +23,11 @@ estimate_ets <- function(challenge, challenges_info, data_info, initial_year, la
     fabletools::model(
       ETS = fable::ETS(values)
     )
-  
+
   return(ets)
 }
 
 run_ETS <- function(challenge, challenges_info, data_info, models_info) {
-
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
   parameters <- c(list(challenge = challenge, challenges_info = challenges_info, data_info = data_info), models_info$ETS[[challenge]])
   ets <- do.call(estimate_ets, parameters)

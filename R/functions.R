@@ -42,28 +42,28 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
         theme(legend.position = "none")
       }
     }
-  
+
   return(plot)
 }
 
 plot_preds <- function(challenge, challenges_info, data_info, predictions, Countries, xlim = "2020-01-01", ncol = 2) {
   code_variable_interest <- challenges_info[[challenge]]$principal_nace
-  
+
   sample <- data_info[[challenge]]$data %>%
     dplyr::filter((nace_r2 %in% code_variable_interest) & (geo %in% Countries))
-  
+
   ListPlots <- sapply(Countries, subplot_pred, sample = sample, xlim = xlim, predictions = predictions, simplify = FALSE)
-  
+
   legend <- get_legend(
     subplot_pred(sample, Countries[1], xlim, predictions, legend = T)
     + theme(legend.box.margin = margin(0, 0, 0, 0))
   )
-  
+
   prow <- plot_grid(plotlist = ListPlots, align = "h", ncol = ncol, vjust = -0.8)
-  
+
   plot <- plot_grid(prow + theme(plot.margin = unit(c(0, 0, 0, 0), "cm")),
-                    legend,
-                    ncol = 1, rel_heights = c(1, 0.1)
+    legend,
+    ncol = 1, rel_heights = c(1, 0.1)
   )
   return(plot)
 }
@@ -155,15 +155,18 @@ plot_statistics <- function(sample) {
 }
 
 save_entries <- function(challenge, entries, challenges_info) {
-  
-  entries <- lapply(entries, function(x){
-    lapply(split(x$preds %>% pull(value, Country), 
-                 names(x$preds %>% pull(value, Country))), 
-           unname)
+  entries <- lapply(entries, function(x) {
+    lapply(
+      split(
+        x$preds %>% pull(value, Country),
+        names(x$preds %>% pull(value, Country))
+      ),
+      unname
+    )
   })
   month <- challenges_info$DATES$month_to_pred
   filename <- paste0("Submissions/", challenge, "/results_", month, ".json")
-  
+
   if (file.exists(filename)) {
     current_file <- rjson::fromJSON(file = filename)
     current_file[names(entries)] <- entries
@@ -173,15 +176,15 @@ save_entries <- function(challenge, entries, challenges_info) {
     file <- rjson::toJSON(entries)
     write(jsonlite::prettify(file), filename)
   }
-  
+
   ## Save in S3 the json
   system(
     paste(
-      paste0("mc cp Submissions/", challenge,"/results_", month, ".json"),
+      paste0("mc cp Submissions/", challenge, "/results_", month, ".json"),
       paste0("s3/projet-esa-nowcasting/submissions/", challenge, "/results_", month, ".json")
     )
   )
-  
+
   #### Save the data in S3 ####
   save(data, file = paste0("data_", challenge, "_", month, ".RData"))
   system(

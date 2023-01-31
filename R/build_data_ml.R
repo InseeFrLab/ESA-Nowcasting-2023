@@ -39,8 +39,8 @@ pivot_eurostat_data <- function(data) {
 
 format_yahoo_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "Yahoo", data)
-  
-  if (length(subset_lists) == 0){
+
+  if (length(subset_lists) == 0) {
     return(data.frame(month = integer(), year = integer()))
   }
 
@@ -97,11 +97,11 @@ format_yahoo_data <- function(data) {
 
 format_electricity_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "ember-climate", data)
-  
-  if (length(subset_lists) == 0){
+
+  if (length(subset_lists) == 0) {
     return(data.frame(geo = character(), month = integer(), year = integer()))
   }
-    
+
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
@@ -144,8 +144,10 @@ format_electricity_data <- function(data) {
   return(formatted_data)
 }
 
-build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
-                                          yaml::read_yaml("challenges.yaml")),
+build_data_ml <- function(data = get_data(
+                            yaml::read_yaml("data.yaml"),
+                            yaml::read_yaml("challenges.yaml")
+                          ),
                           config_models = yaml::read_yaml("models.yaml"),
                           config_env = yaml::read_yaml("challenges.yaml"),
                           challenge = "PPI",
@@ -196,7 +198,7 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
     df_challenge <- df_challenge %>%
       mutate(!!variable := lag(!!rlang::sym(challenge), n = i))
   }
-  if (challenge == 'TOURISM'){
+  if (challenge == "TOURISM") {
     for (i in 1:(config_models[[model]][[challenge]]$nb_years_past_to_use)) {
       variable <- paste(challenge, "minus", i, "years", sep = "_")
       df_challenge <- df_challenge %>%
@@ -262,7 +264,7 @@ build_data_ml <- function(data = get_data(yaml::read_yaml("data.yaml"),
 
   ### E) Delete dummy columns
 
-  df <- df[colSums(!is.na(df)) > length(df) / (length(countries)+1)]
+  df <- df[colSums(!is.na(df)) > length(df) / (length(countries) + 1)]
 
   df <- df[c(
     rep(TRUE, 3),

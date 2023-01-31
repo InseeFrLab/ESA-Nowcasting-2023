@@ -1,6 +1,6 @@
 reshape_eurostat_data <- function(data, country) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
-  
+
   reshaped_data <- mapply(function(x, name) {
     x$data %>%
       dplyr::mutate(var = name) %>%
