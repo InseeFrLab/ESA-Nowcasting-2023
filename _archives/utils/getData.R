@@ -14,7 +14,7 @@ library(quantmod)
 library(lubridate)
 library(readr)
 
-source("R/utils/globalVariables.R")
+# source("R/utils/globalVariables.R")
 
 #########################################
 # Import tables that can be useful for all other data imports
