@@ -1,0 +1,22 @@
+PPI :
+  countries : ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+  "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
+  "SI", "SK"]
+  principal_nace : B-E36
+
+PVI :
+  countries : ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+  "FR", "HR", "HU", "LT", "LV", "MT", "PL", "PT", "RO", "SE", "SI", "SK"]
+  principal_nace : B-D
+
+TOURISM :
+  countries : ["AT", "BE", "CY", "CZ", "DE", "DK", "EL", "ES", "FI", "FR", "HR",
+  "HU", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+  principal_nace : I551-I553
+
+DATES :
+  current_date : "2022-12-01"
+  date_to_pred : "2023-01-01"
+  month_to_pred : "january"
+
+SELECTED_MODELS : ['REG-ARIMA', 'XGBOOST', 'LSTM', 'DFM', 'ETS']

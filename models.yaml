@@ -1,0 +1,157 @@
+XGBOOST:
+  PPI:
+    nb_months_past_to_use : 24
+    nb_months_past_to_use_others : 4
+    hyperparameters_europe :
+      best_nround : 50
+      best_eta : 0.15
+      best_max_depth : 8
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+    hyperparameters_per_country :
+      best_nround : 300
+      best_eta : 0.15
+      best_max_depth : 5
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+  PVI:
+    nb_months_past_to_use : 24
+    nb_months_past_to_use_others : 4
+    hyperparameters_europe :
+      best_nround : 50
+      best_eta : 0.15
+      best_max_depth : 8
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+    hyperparameters_per_country :
+      best_nround : 300
+      best_eta : 0.15
+      best_max_depth : 5
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+  TOURISM:
+    nb_months_past_to_use : 10
+    nb_months_past_to_use_others : 5
+    nb_years_past_to_use : 5
+    hyperparameters_europe :
+      best_nround : 50
+      best_eta : 0.15
+      best_max_depth : 8
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+    hyperparameters_per_country :
+      best_nround : 300
+      best_eta : 0.15
+      best_max_depth : 5
+      best_subsample : 0.5
+      best_colsample_bytree : 0.5
+  init_year: 2007
+  
+LSTM:
+  PPI:
+    nb_months_past_to_use : 1
+    nb_months_past_to_use_others : 4
+  PVI:
+    nb_months_past_to_use : 1
+    nb_months_past_to_use_others : 4
+  TOURISM:
+    nb_months_past_to_use : 1
+    nb_months_past_to_use_others : 6
+    nb_years_past_to_use : 1
+  init_year: 2007
+
+REGARIMA:
+  PPI:
+    transform.function: "None"
+    estimate.from: "2010-01-01"
+    estimate.to: "2021-12-01"
+    outlier.to: "2021-12-01"
+    automdl.enabled: TRUE
+    outlier.enabled: TRUE
+    outlier.ao: TRUE
+    outlier.tc: FALSE
+    outlier.usedefcv: FALSE
+    outlier.cv: 3.5
+    usrdef.varEnabled: TRUE
+    
+  PVI:
+    transform.function: "None"
+    estimate.from: "2010-01-01"
+    automdl.enabled: TRUE
+    usrdef.outliersEnabled: TRUE
+    usrdef.outliersType: ["AO", "AO", "AO", "AO", "AO",
+                          "AO", "AO", "AO", "AO", "AO", "AO",
+                          "AO", "AO", "AO", "AO", "AO"]
+    usrdef.outliersDate: ["2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+                          "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+                          "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01"]
+    outlier.enabled: TRUE
+    outlier.ao: TRUE
+    outlier.tc: FALSE
+    outlier.ls: TRUE
+    outlier.usedefcv: FALSE
+    outlier.cv: 3.5
+    usrdef.varEnabled: TRUE
+
+  TOURISM:
+    transform.function: "Auto"
+    arima.coefType: "Undefined"
+    arima.p: 0
+    arima.q: 1
+    arima.bp: 0
+    arima.bq: 1
+    arima.d: 1
+    arima.bd: 1
+    estimate.from: "2010-01-01"
+    estimate.to: "2019-01-01"
+    automdl.enabled: FALSE
+    usrdef.outliersEnabled: TRUE
+    usrdef.outliersTyp: [
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO"]
+    usrdef.outliersDate: [
+      "2020-01-01", "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+      "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+      "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+      "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+      "2022-01-01", "2022-02-01", "2022-03-01"]
+    outlier.enabled: TRUE
+    outlier.ao: TRUE
+    outlier.tc: FALSE
+    outlier.ls: TRUE
+    outlier.usedefcv: FALSE
+    outlier.cv: 3.5
+  
+ETS:
+  PPI:
+    initial_year: 2003
+    last_year: 2023
+  PVI:
+    initial_year: 2003
+    last_year: 2023
+  TOURISM:
+    initial_year: 2003
+    last_year: 2020
+  
+DFM:
+  PPI:
+      start_sample: "2005-02-01"
+      SA: FALSE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
+  PVI:
+      start_sample: "2005-02-01"
+      SA: FALSE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
+  TOURISM:
+      start_sample: "2005-02-01"
+      SA: TRUE
+      max_lags: 4
+      max_factor: 2
+      collinearity_threshold: 0.9999
