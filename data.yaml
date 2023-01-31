@@ -23,6 +23,7 @@ PPI:
     "E36"]
     s_adj: NSA
     unit: I15
+    freq: M
 
 IPI:
   name: "Industrial Production Index"
@@ -50,7 +51,8 @@ IPI:
     "CPA_MIG_NRG_X_E"]
     s_adj: NSA
     unit: I15
-    
+    freq: M
+
 PSURVEY:
   name: "Production surveys"
   short_name: "PSURVEY"
@@ -72,6 +74,7 @@ PSURVEY:
     indic: ["BS-ICI", "BS-ISPE", "BS-IEME", "BS-IPT", "BS-IOB", "BS-ISFP",
     "BS-IPE"]
     unit: BAL
+    freq: M
     
 HICP:
   name: "Harmonised Index of Consumer Prices"
@@ -93,6 +96,7 @@ HICP:
     unit: I15
     coicop: ["CP00", "CP01", "CP02", "CP03", "CP04", "CP05", "CP06", "CP07",
     "CP08", "CP09", "CP10", "CP11", "CP12", "FOOD", "FUEL", "SERV"]
+    freq: M
     
 PVI:
   name: "Production Volume in Industry"
@@ -115,6 +119,7 @@ PVI:
     nace_r2: "B-D"
     s_adj: SCA
     unit: I15
+    freq: M
     
 TOURISM:
   name: "Number of nights spent at tourist accommodation establishments"
@@ -135,6 +140,7 @@ TOURISM:
     c_resid: TOTAL
     nace_r2: "I551-I553"
     unit: NR
+    freq: M
     
 BRENT:
   name: "Brent Crude Oil Price"
