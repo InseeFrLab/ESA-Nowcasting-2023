@@ -126,13 +126,14 @@ subplot_statistic <- function(sample, statistic, legend = TRUE, y_labs = TRUE,
   return(plot)
 }
 
-plot_statistics <- function(sample) {
-  Plot1 <- subplot_statistic(sample, "ME", FALSE, TRUE)
-  Plot2 <- subplot_statistic(sample, "MAE", FALSE, FALSE)
-  Plot3 <- subplot_statistic(sample, "RMSE", FALSE, FALSE)
+plot_statistics <- function(sample,
+                            challenges = yaml::read_yaml("challenges.yaml")) {
+  Plot1 <- subplot_statistic(sample, "ME", FALSE, TRUE, challenges)
+  Plot2 <- subplot_statistic(sample, "MAE", FALSE, FALSE, challenges)
+  Plot3 <- subplot_statistic(sample, "RMSE", FALSE, FALSE, challenges)
 
   legend <- cowplot::get_legend(
-    subplot_statistic(sample, "ME", TRUE, FALSE)
+    subplot_statistic(sample, "ME", TRUE, FALSE, challenges)
     + theme(legend.box.margin = margin(-15, 0, 0, 0))
   )
 

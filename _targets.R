@@ -259,15 +259,18 @@ list(
   ),
   tar_target(
     name = plot_resids_ppi,
-    command = plot_statistics(get_metrics(resids_ppi, challenges$PPI$countries, challenges$DATES$current_date, as.Date("2022-01-01")))
+    command = plot_statistics(get_metrics(resids_ppi, challenges$PPI$countries, challenges$DATES$current_date, as.Date("2022-01-01")),
+                              challenges)
   ),
   tar_target(
     name = plot_resids_pvi,
-    command = plot_statistics(get_metrics(resids_pvi, challenges$PVI$countries, challenges$DATES$current_date, as.Date("2022-01-01")))
+    command = plot_statistics(get_metrics(resids_pvi, challenges$PVI$countries, challenges$DATES$current_date, as.Date("2022-01-01")),
+                              challenges)
   ),
   tar_target(
     name = plot_resids_tourism,
-    command = plot_statistics(get_metrics(resids_tourism, challenges$TOURISM$countries, as.Date("2019-12-31"), as.Date("2010-01-01")))
+    command = plot_statistics(get_metrics(resids_tourism, challenges$TOURISM$countries, as.Date("2019-12-31"), as.Date("2010-01-01")),
+                              challenges)
   ),
   tar_target(
     name = save_ppi,
