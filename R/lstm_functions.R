@@ -26,6 +26,7 @@ source("R/build_data_ml.R")
 
 build_data_lstm_one_country <- function(large_data = build_data_ml(),
                                         config_env = yaml::read_yaml("challenges.yaml"),
+                                        challenge = 'PPI',
                                         country = 'FR') {
   
   df <- data.frame(large_data)
@@ -74,7 +75,8 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(),
   
   # Actually add one row
   
-  df <- df %>% add_row(time = ymd(config_env$DATES$date_to_pred))
+  df <- df %>% add_row(time = ymd(config_env$DATES$date_to_pred)) %>%
+    rename(date = time)
   
   #########################################
   # Return result
@@ -84,96 +86,82 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(),
   
 }
 
-
-
-
-
-
-
-
-
-
-
-
 #########################################
 # Make one model per country
 #########################################
 
-train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one_country(),
-                                           config_models = yaml::read_yaml("models.yaml"),
-                                           config_env = yaml::read_yaml("challenges.yaml"),
-                                           challenge = "PPI",
-                                           country = 'FR') {
+train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(),
+                                        config_models = yaml::read_yaml("models.yaml"),
+                                        config_env = yaml::read_yaml("challenges.yaml"),
+                                        challenge = "PPI",
+                                        country = 'FR') {
   
-  df <- as.data.table(data_xgboost)
-  challenge_to_predict <- paste(challenge, "to_predict", sep = "_")
-  challenge_pred_residuals <- paste(challenge, "pred", "residuals", sep = "_")
+  df <- as.data.table(data_lstm)
   
   #########################################
   # Scale the variables
   #########################################
   
-  df <- df %>%
-    mutate(across(c(where(is.numeric)), scale))
+  df_scaled <- df %>% mutate_at(c(2:length(colnames(df))), ~ (scale(.) %>% as.vector()))
+  # rag = ragged_preds(mod, pub_lags=c(1,4), lag = -2, df_scaled)
+  df_scaled <- df_scaled[, colSums(is.na(df_scaled)) < nrow(df_scaled)] # Remove rows with NA only
   
-  mean_to_predict <- attr(df[[challenge_to_predict]], "scaled:center")
-  scale_to_predict <- attr(df[[challenge_to_predict]], "scaled:scale")
+  mean_challenge <- mean(df[[challenge]], na.rm = TRUE)
+  std_challenge <- sd(df[[challenge]], na.rm = TRUE)
   
   #########################################
   # Train-pred split
   #########################################
   
-  df_train <- df %>%
-    filter(time < ymd(config_env$DATES$current_date)) %>%
-    drop_na(!!challenge_to_predict)
+  df_train <- df_scaled %>%
+    filter(date < config_env$DATES$current_date)
   
-  df_to_predict <- df %>%
-    filter(time == ymd(config_env$DATES$current_date))
+  df_pred <- df_scaled %>%
+    filter(date == config_env$DATES$current_date)
   
-  X_train <- as.matrix(df_train %>%
-                         select(-c(!!challenge_to_predict, time)))
-  y_train <- df_train[[challenge_to_predict]]
+  #########################################
+  # Hyperparameter selection
+  #########################################
   
-  X_pred <- as.matrix(df_to_predict %>%
-                        select(-c(!!challenge_to_predict, time)))
-  
-  gb_train <- xgb.DMatrix(data = X_train, label = y_train)
-  d_to_pred <- xgb.DMatrix(data = X_pred)
+  # hyperparam = nowcastLSTM::hyperparameter_tuning(data = train_scaled,  target_variable = "PVI", n_timesteps_grid=c(10,24))
+  # best_param = hyperparam$hyper_params
+  # which.min(best_param$performance)
   
   #########################################
   # Train the model
   #########################################
   
-  model <- xgb.train(
-    data = gb_train,
-    objective = "reg:squarederror",
-    eval_metric = "rmse",
-    nrounds = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_nround,
-    eta = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_eta,
-    max_depth = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_max_depth,
-    subsample = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_subsample,
-    colsample_bytree = config_models$XGBOOST[[challenge]]$hyperparameters_per_country$best_colsample_bytree
-  )
+  mod <- LSTM(
+    data = df_train,
+    target_variable = challenge,
+    n_timesteps = 12,
+    fill_na_func = "median",
+    # fill_ragged_edges_func = "median",
+    n_models = 15,
+    batch_size = 30,
+    train_episodes = 50,
+    python_model_name = "model"
+  ) # default parameters with 12 timestep history
   
   #########################################
   # Predict
   #########################################
   
-  y_pred_next_month <- stats::predict(model, d_to_pred)
-  y_pred_next_month <- y_pred_next_month * scale_to_predict + mean_to_predict
+  predictions <- predict(mod, df_scaled, only_actuals_obs = F)
   
-  y_pred_residuals <- stats::predict(model, xgb.DMatrix(data = X_train))
-  y_pred_residuals <- y_pred_residuals * scale_to_predict +
-    mean_to_predict
+  df_pred_next_month <- predictions %>%
+    filter(date == config_env$DATES$date_to_pred)
+  y_pred_next_month <- df_pred_next_month$predictions * std_challenge + mean_challenge
   
-  y_pred_residuals_with_index <- df_train %>%
-    select(time) %>%
-    mutate(
-      geo = country,
-      time = time %m+% months(1)
-    ) %>%
-    relocate(geo, time)
-  y_pred_residuals_with_index[[challenge_pred_residuals]] <- round(y_pred_residuals, 1)
+  # Compute residuals
+  
+  residuals <- predictions %>%
+    mutate(predictions = predictions * std_challenge + mean_challenge) %>%
+    transmute(
+      Country = country,
+      Date = date,
+      value = predictions - actuals
+    )
   
   #########################################
   # Return results
@@ -181,19 +169,16 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   
   return(list(
     "pred_next_month" = y_pred_next_month,
-    "pred_residuals" = y_pred_residuals_with_index
+    "residuals" = residuals
   ))
   
 }
 
-train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
-                                           config_models = yaml::read_yaml("models.yaml"),
-                                           config_env = yaml::read_yaml("challenges.yaml"),
-                                           categorical_variables = c("month", "year"),
-                                           challenge = "PPI") {
-  
-  challenge_to_predict <- paste(challenge, "to_predict", sep = "_")
-  challenge_pred_residuals <- paste(challenge, "pred", "residuals", sep = "_")
+
+train_pred_lstm_per_country <- function(large_data = build_data_ml(),
+                                        config_models = yaml::read_yaml("models.yaml"),
+                                        config_env = yaml::read_yaml("challenges.yaml"),
+                                        challenge = "PPI") {
   
   #########################################
   # Initialize tables
@@ -203,7 +188,7 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
     select(geo) %>%
     unique()
   
-  preds_xgboost_per_country <- countries %>%
+  preds_lstm_per_country <- countries %>%
     select(geo) %>%
     rename(Country = geo) %>%
     mutate(
@@ -211,9 +196,9 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
       value = 0
     )
   
-  preds_residuals_xgboost_per_country <- data.frame(matrix(ncol = 3, nrow = 0))
-  x <- c("geo", "time", challenge_pred_residuals)
-  colnames(preds_residuals_xgboost_per_country) <- x
+  residuals_lstm_per_country <- data.frame(matrix(ncol = 3, nrow = 0))
+  x <- c("geo", "time", "value")
+  colnames(residuals_lstm_per_country) <- x
   
   #########################################
   # Loop models over countries
@@ -223,22 +208,22 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
   
   for (country in countries %>% pull()){
     
-    df_country <- build_data_xgboost_one_country(large_data = large_data,
-                                                 config_env = config_env,
-                                                 categorical_variables = categorical_variables,
-                                                 country = country)
+    df_country <- build_data_lstm_one_country(large_data = large_data,
+                                              config_env = config_env,
+                                              challenge = challenge,
+                                              country = country)
     
-    list_results_country <- train_pred_xgboost_one_country(data_xgboost=df_country,
-                                                           config_models=config_models,
-                                                           config_env = config_env,
-                                                           challenge=challenge,
-                                                           country=country)
+    list_results_country <- train_pred_lstm_one_country(data_lstm=df_country,
+                                                        config_models=config_models,
+                                                        config_env = config_env,
+                                                        challenge=challenge,
+                                                        country=country)
     
-    preds_xgboost_per_country[i, 3] <- round(as.numeric(
+    preds_lstm_per_country[i, 3] <- round(as.numeric(
       list_results_country['pred_next_month']), 1)
     
-    preds_residuals_xgboost_per_country <- preds_residuals_xgboost_per_country %>%
-      rbind(data.frame(list_results_country['pred_residuals']))
+    residuals_lstm_per_country <- residuals_lstm_per_country %>%
+      rbind(data.frame(list_results_country['residuals']))
     
     print(i)
     i <- i + 1
@@ -248,18 +233,11 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
   # Return results
   #########################################
   
-  colnames(preds_residuals_xgboost_per_country) <- x
-  
-  residuals_xgboost_per_country <- preds_residuals_xgboost_per_country %>%
-    left_join(large_data %>%
-                select(time, geo, !!challenge)) %>%
-    mutate(value := !!rlang::sym(challenge_pred_residuals) - !!rlang::sym(challenge)) %>%
-    rename(Country = geo, Date = time) %>%
-    select(Country, Date, value)
+  colnames(residuals_lstm_per_country) <- x
   
   return(list(
-    "preds" = preds_xgboost_per_country,
-    "resids" = residuals_xgboost_per_country
+    "preds" = preds_lstm_per_country,
+    "resids" = residuals_lstm_per_country
   ))
   
 }
@@ -268,21 +246,19 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
 # Final run functions
 #########################################
 
-run_xgboost_per_country <- function(data = get_data(yaml::read_yaml("data.yaml")),
-                                    config_models = yaml::read_yaml("models.yaml"),
-                                    config_env = yaml::read_yaml("challenges.yaml"),
-                                    categorical_variables = c("month", "year"),
-                                    challenge = "PPI") {
+run_lstm_per_country <- function(data = get_data(yaml::read_yaml("data.yaml")),
+                                 config_models = yaml::read_yaml("models.yaml"),
+                                 config_env = yaml::read_yaml("challenges.yaml"),
+                                 challenge = "PPI") {
   
   large_data <- build_data_ml(data = data,
                               config_models = config_models,
                               config_env = config_env,
                               challenge = challenge,
-                              model = "XGBOOST")
+                              model = "LSTM")
   
-  return(train_pred_xgboost_per_country(large_data = large_data,
-                                        config_models = config_models,
-                                        config_env = config_env,
-                                        categorical_variables = categorical_variables,
-                                        challenge = challenge))
+  return(train_pred_lstm_per_country(large_data = large_data,
+                                     config_models = config_models,
+                                     config_env = config_env,
+                                     challenge = challenge))
 }
