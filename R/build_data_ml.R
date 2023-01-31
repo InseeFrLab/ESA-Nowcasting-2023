@@ -12,7 +12,7 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-source("R/utils/data_retrieval.R")
+source("R/data_retrieval.R")
 
 #########################################
 # Functions
@@ -122,7 +122,7 @@ format_electricity_data <- function(data) {
       }
 
       mean_string <- paste("mean", x$short_name,
-        "week", i, "next_month",
+        "week", i,
         sep = "_"
       )
 

@@ -21,14 +21,14 @@ library(mltools)
 library(xgboost)
 options(dplyr.summarise.inform = FALSE)
 
-source("R/utils/data_retrieval.R")
+source("R/data_retrieval.R")
 source("R/build_data_ml.R")
 
 #########################################
 # Build tables
 #########################################
 
-build_data_xgboost_europe <- function(large_data = build_data_ml(),
+build_data_xgboost_europe <- function(large_data = build_data_ml(model='XGBOOST'),
                                       config_env = yaml::read_yaml("challenges.yaml"),
                                       categorical_variables = c("geo", "month", "year")) {
   
@@ -71,7 +71,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(),
 }
 
 
-build_data_xgboost_one_country <- function(large_data = build_data_ml(),
+build_data_xgboost_one_country <- function(large_data = build_data_ml(model='XGBOOST'),
                                            config_env = yaml::read_yaml("challenges.yaml"),
                                            categorical_variables = c("month", "year"),
                                            country = 'FR') {
@@ -232,7 +232,7 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
 #########################################
 
 train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe(),
-                                      large_data = build_data_ml(),
+                                      large_data = build_data_ml(model='XGBOOST'),
                                       config_models = yaml::read_yaml("models.yaml"),
                                       config_env = yaml::read_yaml("challenges.yaml"),
                                       challenge = "PPI"
@@ -415,7 +415,7 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   
 }
 
-train_pred_xgboost_per_country <- function(large_data = build_data_ml(),
+train_pred_xgboost_per_country <- function(large_data = build_data_ml(model='XGBOOST'),
                                     config_models = yaml::read_yaml("models.yaml"),
                                     config_env = yaml::read_yaml("challenges.yaml"),
                                     categorical_variables = c("month", "year"),
