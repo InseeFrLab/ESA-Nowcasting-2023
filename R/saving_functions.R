@@ -52,3 +52,27 @@ reorder_entries <- function(entries, filename) {
   file <- rjson::toJSON(current_file)
   write(jsonlite::prettify(file), filename)
 }
+
+save_data <- function(data, challenges_info) {
+  month <- challenges_info$DATES$month_to_pred
+
+  if (!dir.exists(paste0("data/", month))) {
+    dir.create(paste0("data/", month))
+  }
+
+  mapply(function(x, name) {
+    filename <- paste0("data/", month, "/", name, ".parquet")
+    arrow::write_parquet(
+      x$data,
+      filename
+    )
+    system(
+      paste(
+        paste("mc cp", filename),
+        paste0("s3/projet-esa-nowcasting/", filename)
+      )
+    )
+  }, data, names(data), SIMPLIFY = FALSE)
+
+  paste0("data/", month)
+}

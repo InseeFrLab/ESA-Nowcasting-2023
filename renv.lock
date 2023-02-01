@@ -177,6 +177,24 @@
         "Rcpp"
       ]
     },
+    "arrow": {
+      "Package": "arrow",
+      "Version": "10.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "74b551e105beb7ee0fae1f7861668bac",
+      "Requirements": [
+        "R6",
+        "assertthat",
+        "bit64",
+        "cpp11",
+        "glue",
+        "purrr",
+        "rlang",
+        "tidyselect",
+        "vctrs"
+      ]
+    },
     "askpass": {
       "Package": "askpass",
       "Version": "1.1",
@@ -1170,7 +1188,7 @@
       "Package": "renv",
       "Version": "0.16.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "c9e8442ab69bc21c9697ecf856c1e6c7",
       "Requirements": []
     },

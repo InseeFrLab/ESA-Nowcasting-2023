@@ -8,3 +8,4 @@
 *.docx
 point_estimates.json
 _targets/
+*.parquet
