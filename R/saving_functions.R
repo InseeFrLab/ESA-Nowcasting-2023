@@ -55,11 +55,11 @@ reorder_entries <- function(entries, filename) {
 
 save_data <- function(data, challenges_info) {
   month <- challenges_info$DATES$month_to_pred
-  
-  if (!dir.exists(paste0("data/", month))){
+
+  if (!dir.exists(paste0("data/", month))) {
     dir.create(paste0("data/", month))
   }
-  
+
   mapply(function(x, name) {
     filename <- paste0("data/", month, "/", name, ".parquet")
     arrow::write_parquet(
@@ -73,6 +73,6 @@ save_data <- function(data, challenges_info) {
       )
     )
   }, data, names(data), SIMPLIFY = FALSE)
-  
+
   paste0("data/", month)
 }

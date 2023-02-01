@@ -100,23 +100,22 @@ get_eurostat_json_thomas <- function(id, filters = NULL,
                                      lang = c("en", "fr", "de"),
                                      stringsAsFactors = FALSE,
                                      ...) {
-  
   # get response
   # url <- try(eurostat_json_url(id = id, filters = filters, lang = lang))
   # if (class(url) == "try-error") { stop(paste("The requested data set cannot be found with the following specifications to get_eurostat_json function: ", "id: ", id, "/ filters: ", filters, "/ lang: ", lang))  }
   url <- eurostat_json_url_thomas(id = id, filters = filters, lang = lang)
-  
+
   # resp <- try(httr::GET(url, ...))
   # if (class(resp) == "try-error") { stop(paste("The requested url cannot be found within the get_eurostat_json function:", url))  }
   resp <- httr::RETRY("GET", url, terminate_on = c(404))
   if (httr::http_error(resp)) {
     stop(paste("The requested url cannot be found within the get_eurostat_json function:", url))
   }
-  
+
   status <- httr::status_code(resp)
-  
+
   # check status and get json
-  
+
   msg <- ". Some datasets are not accessible via the eurostat
           interface. You can try to search the data manually from the comext
   	  database at http://epp.eurostat.ec.europa.eu/newxtweb/ or bulk
@@ -124,7 +123,7 @@ get_eurostat_json_thomas <- function(id, filters = NULL,
   	  http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing
   	  or annual Excel files
   	  http://ec.europa.eu/eurostat/web/prodcom/data/excel-files-nace-rev.2"
-  
+
   if (status == 200) {
     jdat <- jsonlite::fromJSON(url)
   } else if (status == 400) {
@@ -143,13 +142,13 @@ get_eurostat_json_thomas <- function(id, filters = NULL,
   } else {
     stop("Failure to get data. Status code: ", status, msg)
   }
-  
+
   # get json data
   # dims <- jdat[[1]]$dimension # Was called like this in API v1.1
   dims <- jdat$dimension # Switched to this with API v2.1
   # ids <- dims$id # v1.1
   ids <- jdat$id # v2.1
-  
+
   dims_list <- lapply(dims[rev(ids)], function(x) {
     y <- x$category$label
     if (type[1] == "label") {
@@ -162,12 +161,12 @@ get_eurostat_json_thomas <- function(id, filters = NULL,
       stop("Invalid type ", type)
     }
   })
-  
+
   variables <- expand.grid(dims_list,
-                           KEEP.OUT.ATTRS = FALSE,
-                           stringsAsFactors = stringsAsFactors
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = stringsAsFactors
   )
-  
+
   # dat <- data.frame(variables[rev(names(variables))], values = jdat[[1]]$value) # v1.1
   dat <- as.data.frame(variables[rev(names(variables))])
   vals <- unlist(jdat$value, use.names = FALSE)
@@ -177,20 +176,19 @@ get_eurostat_json_thomas <- function(id, filters = NULL,
     stop("Complex indexing not implemented.")
   }
   dat$values[inds] <- vals
-  
-  
-  
+
+
+
   data <- tibble::as_tibble(dat) |>
     dplyr::mutate(time = as.Date(paste(time, "01", sep = "-")))
   return(data)
 }
 
 eurostat_json_url_thomas <- function(id, filters, lang) {
-  
   # prepare filters for query
   filters2 <- as.list(unlist(filters))
   names(filters2) <- rep(names(filters), lapply(filters, length))
-  
+
   # prepare url
   url_list <- list(
     scheme = "http",
@@ -201,7 +199,7 @@ eurostat_json_url_thomas <- function(id, filters, lang) {
     ),
     query = filters2
   )
-  
+
   class(url_list) <- "url"
   url <- httr::build_url(url_list)
   url

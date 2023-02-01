@@ -24,7 +24,6 @@ list(
     name = challenges_file,
     command = "challenges.yaml",
     format = "file"
-    
   ),
   tar_target(
     name = models_file,
@@ -38,7 +37,6 @@ list(
   tar_target(
     name = challenges,
     command = yaml::read_yaml(challenges_file),
-
   ),
   tar_target(
     name = models,
