@@ -191,7 +191,7 @@ eurostat_json_url_thomas <- function(id, filters, lang) {
 
   # prepare url
   url_list <- list(
-    scheme = "http",
+    scheme = "https",
     hostname = "ec.europa.eu",
     path = file.path(
       "eurostat/api/dissemination/statistics/1.0/data",
