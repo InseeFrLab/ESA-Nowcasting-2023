@@ -1,0 +1,12 @@
+data:
+  script: run_data.R
+  store: store_data
+ppi:
+  script: run_ppi.R
+  store: store_ppi
+pvi:
+  script: run_pvi.R
+  store: store_pvi
+tourism:
+  script: run_tourism.R
+  store: store_tourism
