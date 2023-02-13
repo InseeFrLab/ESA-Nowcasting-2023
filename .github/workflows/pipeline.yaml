@@ -1,7 +1,7 @@
 on:
   schedule:
     - cron: '33 16 25-31 * *'
-    - cron: '45 18 13 * *'
+    - cron: '48 17 13 * *'
 
 name: Run Pipeline
 
