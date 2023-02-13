@@ -6,7 +6,12 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   y <- data[[challenge]]$data %>%
     dplyr::filter((nace_r2 %in% code_variable_interest) & (geo == country)) %>%
     tsbox::ts_ts()
-
+  
+  if (challenge == "TOURISM") {
+    y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & is.na(y), 1) # replace NA by 1 during covid period
+    y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0 , 1) # replace 0 by 1 during covid period
+  }
+ 
   dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
 
   X <- create_regressors(challenge, challenges_info, selected_data, country)
