@@ -1,8 +1,9 @@
 build_data_ets <- function(challenge, challenges_info, data_info) {
   code_variable_interest <- challenges_info[[challenge]]$principal_nace
+  countries <- challenges_info[[challenge]]$countries
 
   data <- data_info[[challenge]]$data %>%
-    dplyr::filter(nace_r2 %in% code_variable_interest) %>%
+    dplyr::filter((nace_r2 %in% code_variable_interest) & (geo %in% countries)) %>%
     to_tsibble()
 
   if (challenge == "TOURISM") {
