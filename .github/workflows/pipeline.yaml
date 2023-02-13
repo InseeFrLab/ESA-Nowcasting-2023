@@ -8,9 +8,7 @@ name: Run Pipeline
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu:22.04
-    container:
-      image: thomasfaria/esa-nowcasting-2023:v4.0.1
+    runs-on: ubuntu:latest
     permissions:
       contents: write
     steps:
