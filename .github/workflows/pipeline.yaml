@@ -1,7 +1,8 @@
 on:
+  workflow_dispatch:
   schedule:
     - cron: '33 16 25-31 * *'
-    - cron: '55 17 13 * *'
+    - cron: '05 18 13 * *'
 
 name: Run Pipeline
 
