@@ -2,6 +2,8 @@ on:
   schedule:
     - cron: '33 16 25-31 * *'
     - cron: '48 17 13 * *'
+  branches:
+     - '45-add-a-ci-so-that-pipeline-runs-every-day-during-the-last-week-of-the-month'
 
 name: Run Pipeline
 
