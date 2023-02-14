@@ -16,4 +16,4 @@ RUN apt-get update && \
     pip install -r requirement.txt && \
     # fix for version GLIBCXX_3.4.30
     rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6 && \
-    ln -s /opt/mamba/lib/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6 && \
+    ln -s /opt/mamba/lib/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
