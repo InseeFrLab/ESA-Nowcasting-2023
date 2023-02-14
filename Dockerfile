@@ -1,6 +1,6 @@
 FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 
-ADD ./* /app/
+COPY . /app/
 WORKDIR /app/
 
 # Install minimal python
