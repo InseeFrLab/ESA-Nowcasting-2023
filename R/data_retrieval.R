@@ -49,6 +49,24 @@ get_data_from_ember <- function(data_info) {
   return(data)
 }
 
+#Récupération des données Destatis de péages sur le transport routier en DE
+get_data_from_destatis <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "Destatis", data_info)
+  data_temp <- tempfile()
+  download.file(
+    x$url,
+    data_temp)
+  data<-readxl::read_excel(path = data_temp,
+                         sheet = "Daten",
+                         skip=5) %>% 
+    rename(toll = paste0("Kalender- und saisonbereinigt (KSB)")) %>% 
+    mutate(time=ymd(paste0(substr(Datum,1,4),substr(Datum,6,7),substr(Datum,9,10)))) %>% 
+    mutate(geo="DE") %>% 
+    select(time,toll,geo)
+  
+  return(data)
+}
+
 get_weekend_days <- function(data_info, challenges_info) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
   subset_lists <- Filter(function(x) x$source == "Week-end", data_info)
