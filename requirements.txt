@@ -8,7 +8,5 @@ numpy
 pandas
 dill
 pmdarima
-cpuonly
---extra-index-url https://download.pytorch.org/whl/cpu
 torch 
 nowcast-lstm
