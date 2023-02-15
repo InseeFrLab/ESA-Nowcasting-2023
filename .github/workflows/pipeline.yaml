@@ -1,4 +1,4 @@
-name: Test
+name: Run Pipeline
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  NAME:
+  run-pipeline:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +30,12 @@ jobs:
         with:
           r-version: '4.2.1'
 
+        - name: Install R Dependencies
+          uses: r-lib/actions/setup-renv@v2
+          with:
+            cache-version: 1
+  
+        - name: Run Pipeline
+          run: |
+            source("run_all.R")
+          shell: Rscript {0} 
