@@ -33,6 +33,9 @@ jobs:
       - name: Reconfigure Java support 
         run: sudo R CMD javareconf
 
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
