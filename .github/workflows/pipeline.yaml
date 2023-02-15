@@ -2,7 +2,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '33 16 25-31 * *'
-    - cron: '50 20 13 * *'
 
 name: Run Pipeline
 
@@ -16,16 +15,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         
-      - name: Install python from mamba
-        run: |
-          wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh -O mambaforge.sh
-          /bin/bash mambaforge.sh -b -p /opt/mamba
-          mamba install python==3.10.4
-          mamba env update -n base -f conda-env.yml
-          sudo rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6
-          sudo ln -s /opt/mamba/lib/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
-          rm mambaforge.sh conda-env.yml
-          mamba clean --all -f -y
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
     
       - name: Install R
         uses: r-lib/actions/setup-r@v2
