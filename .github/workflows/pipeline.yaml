@@ -30,6 +30,9 @@ jobs:
         with:
           r-version: '4.2.1'
 
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
