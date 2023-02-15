@@ -11,7 +11,7 @@
 # library(tidyr)
 # library(data.table)
 
-nowcastLSTM::initialize_session(python_path = "/opt/mamba/bin/python")
+nowcastLSTM::initialize_session(python_path = Sys.which("python"))
 options(dplyr.summarise.inform = FALSE)
 
 # source("R/data_retrieval.R")
