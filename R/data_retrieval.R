@@ -54,7 +54,7 @@ get_data_from_destatis <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Destatis", data_info)
   data_temp <- tempfile()
   download.file(
-    x$url,
+    subset_lists$TOLL_DE$url,
     data_temp)
   data<-readxl::read_excel(path = data_temp,
                          sheet = "Daten",
@@ -104,10 +104,10 @@ get_data <- function(data_info = yaml::read_yaml("data.yaml"),
   yahoo <- get_data_from_yahoo(data_info)
   ember <- get_data_from_ember(data_info)
   week_ends <- get_weekend_days(data_info, challenges_info)
-  #destatis <- get_data_from_destatis(data_info, challenges_info)
+  destatis <- get_data_from_destatis(data_info)
 
   list_data <- lapply(
-    c(eurostat, yahoo, ember, week_ends),
+    c(eurostat, yahoo, ember, week_ends,destatis),
     function(x) list(data = x)
   )
 
