@@ -1,9 +1,11 @@
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '33 16 25-31 * *'
 
 name: Run Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   run-pipeline:
