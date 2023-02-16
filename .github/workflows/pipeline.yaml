@@ -50,3 +50,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Commit changes
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          # The arguments for the `git add` command
+          add: 'Submissions'
+          author_name: Thomas Faria
+          author_email: 57811152+ThomasFaria@users.noreply.github.com
+          message: 'New submission from Github Actions'
+          new_branch: submissions
+          pull: '--rebase --autostash ...'
+          push: true
