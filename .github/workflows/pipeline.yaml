@@ -43,7 +43,8 @@ jobs:
 
       - name: Run Pipeline
         run: |
-          Rscript -e run_all.R
+          source("run_all.R")
+        shell: Rscript {0} 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
