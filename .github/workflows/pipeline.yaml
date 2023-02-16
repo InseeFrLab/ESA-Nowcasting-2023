@@ -19,7 +19,7 @@ jobs:
       - name: Merge recent changes from main branch
         run: | 
           git fetch origin
-          git merge --allow-unrelated-histories -X theirs main
+          git merge --allow-unrelated-histories -X theirs origin/main
 
       - name: Install python
         uses: actions/setup-python@v4
