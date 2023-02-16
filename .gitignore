@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.bash_history
+*.RData
+*.zip
+*.docx
+point_estimates.json
+_targets/
+store_*/
+*.parquet
