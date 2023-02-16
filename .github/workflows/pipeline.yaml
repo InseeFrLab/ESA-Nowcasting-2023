@@ -2,7 +2,7 @@ name: Run Pipeline
 
 on:
   schedule:
-    - cron: '05 11 * * *'
+    - cron: '40 13 * * *'
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout out repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          ref: gh-submissions
 
       - name: Install python
         uses: actions/setup-python@v4
@@ -58,7 +58,5 @@ jobs:
           add: 'Submissions'
           author_name: Thomas Faria
           author_email: 57811152+ThomasFaria@users.noreply.github.com
-          message: 'New submission from Github Actions'
-          new_branch: submissions
-          pull: '--rebase --autostash ...'
-          push: true
+          message: 'New submission with Github Actions'
+          new_branch: gh-submissions
