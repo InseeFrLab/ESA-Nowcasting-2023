@@ -26,7 +26,10 @@ jobs:
 
       - name: Run Pipeline
         run: |
-          Sys.getenv()
+          install.packages("aws.s3")
+          aws.s3::put_object(file = paste0("R/saving_functions.R"),
+                     bucket = "projet-esa-nowcasting", object = paste0("R/saving_functions.R"),
+                     region = "")
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
