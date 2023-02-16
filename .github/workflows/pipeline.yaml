@@ -16,6 +16,9 @@ jobs:
         with:
           ref: gh-submissions
 
+      - name: Merge recent changes from main branch
+        run: git merge --allow-unrelated-histories -X theirs main
+
       - name: Install python
         uses: actions/setup-python@v4
         with:
