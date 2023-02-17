@@ -10,3 +10,6 @@ pvi:
 tourism:
   script: run_tourism.R
   store: store_tourism
+post_mortem:
+  script: run_post_mortem.R
+  store: store_post_mortem

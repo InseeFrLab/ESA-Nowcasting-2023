@@ -129,7 +129,7 @@ list(
         "entry_1" = regarima_tourism,
         "entry_2" = dfms_tourism,
         "entry_3" = ets_tourism,
-        "entry_4" = xgboost_tourism
+        "entry_4" = xgboost_tourism,
         "entry_5" = lstm_tourism
       ),
       challenges

@@ -29,6 +29,7 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
     ggtitle(country) +
     geom_line(data = subset(sample, geo %in% country), aes(x = as.POSIXct(time, format = "%Y-%m-%d"), y = values)) +
     geom_point(data = subset(predictions, Country %in% country), aes(x = as.POSIXct(Date, format = "%Y-%m-%d"), y = value, color = Entries)) +
+    geom_line(data = subset(predictions, Country %in% country), aes(x = as.POSIXct(Date, format = "%Y-%m-%d"), y = value, color = Entries)) +
     scale_x_datetime(limits = as.POSIXct(c(xlim, NA), format = "%Y-%m-%d")) +
     scale_color_manual("", values = Palette_col) +
     theme_custom() +
@@ -43,8 +44,10 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
 
 plot_preds <- function(challenge, challenges_info, data_info, predictions, Countries, xlim = "2020-01-01", ncol = 2) {
   code_variable_interest <- challenges_info[[challenge]]$principal_nace
+  
+  data <- if (!(is.null(data_info[[challenge]]$data))) data_info[[challenge]]$data else data_info
 
-  sample <- data_info[[challenge]]$data %>%
+  sample <- data %>%
     dplyr::filter((nace_r2 %in% code_variable_interest) & (geo %in% Countries))
 
   ListPlots <- sapply(Countries, subplot_pred, sample = sample, xlim = xlim, predictions = predictions, simplify = FALSE)
