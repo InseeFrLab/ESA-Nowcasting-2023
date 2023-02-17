@@ -2,7 +2,12 @@ name: Run Pipeline
 
 on:
   schedule:
-    - cron: '05 11 * * *'
+    # every first day of the month at 11am
+    - cron: '00 11 1 * *' 
+    # every 16th day of the month at 11am
+    - cron: '00 11 16 * *'
+    # every last week of the month at 1pm
+    - cron: '00 13 25-31 * *'
   workflow_dispatch:
 
 jobs:
@@ -14,7 +19,15 @@ jobs:
       - name: Checkout out repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          ref: gh-submissions
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Merge recent changes from main branch
+        run: | 
+          git config user.name Thomas Faria
+          git config user.email 57811152+ThomasFaria@users.noreply.github.com
+          git fetch origin
+          git merge --allow-unrelated-histories -X theirs origin/main
 
       - name: Install python
         uses: actions/setup-python@v4
@@ -58,7 +71,5 @@ jobs:
           add: 'Submissions'
           author_name: Thomas Faria
           author_email: 57811152+ThomasFaria@users.noreply.github.com
-          message: 'New submission from Github Actions'
-          new_branch: submissions
-          pull: '--rebase --autostash ...'
-          push: true
+          message: 'New submission with Github Actions'
+          new_branch: gh-submissions

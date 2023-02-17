@@ -19,4 +19,4 @@ DATES :
   date_to_pred : "2023-02-01"
   month_to_pred : "february"
 
-SELECTED_MODELS : ["REG-ARIMA", "XGBOOST", "DFM", "ETS"] #"LSTM"
+SELECTED_MODELS : ["REG-ARIMA", "XGBOOST", "DFM", "ETS", "LSTM"]
