@@ -116,7 +116,7 @@ PVI:
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
     "RO", "SE", "SI", "SK"]
     indic_bt: PROD
-    nace_r2: "B-D"
+    nace_r2: ["B-D"]
     s_adj: SCA
     unit: I15
     freq: M
@@ -236,3 +236,15 @@ NB_WE:
     - XGBOOST
     - LSTM
   init_date: "2000-01-01"
+
+TOLL_DE:
+  name: "Truck toll mileage index DE"
+  short_name: "Toll_DE"
+  source : Destatis
+  challenge: 
+    - PVI
+  model:
+    - XGBOOST
+    - REGARIMA
+    - LSTM
+  url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
