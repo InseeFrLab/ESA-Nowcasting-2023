@@ -20,7 +20,7 @@ PPI:
     nace_r2: ["B-E36", "B05", "B06", "B07", "B08", "B09", "C10", "C11", "C12",
     "C13", "C14", "C15", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "C23",
     "C24", "C25", "C26", "C27", "C28", "C29", "C30", "C31", "C32", "C33", "D35",
-    "E36"]
+    "E36","MIG_ING","MIG_NRG","MIG_COG","MIG_CAG"]
     s_adj: NSA
     unit: I15
     freq: M
@@ -48,7 +48,7 @@ IPI:
     "CPA_C19", "CPA_C20", "CPA_C21", "CPA_C22", "CPA_C23", "CPA_C24", "CPA_C25",
     "CPA_C26", "CPA_C27", "CPA_C28", "CPA_C29", "CPA_C30", "CPA_C31", "CPA_C32",
     "CPA_D35", "CPA_B-E36", "CPA_B-D", "CPA_MIG_ING", "CPA_MIG_CAG",
-    "CPA_MIG_NRG_X_E"]
+    "CPA_MIG_NRG_X_E", "CPA_MIG_NRG"]
     s_adj: NSA
     unit: I15
     freq: M
@@ -116,7 +116,7 @@ PVI:
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
     "RO", "SE", "SI", "SK"]
     indic_bt: PROD
-    nace_r2: ["B-D"]
+    nace_r2: ["B-D", "MIG_ING"]
     s_adj: SCA
     unit: I15
     freq: M
@@ -239,7 +239,7 @@ NB_WE:
 
 TOLL_DE:
   name: "Truck toll mileage index DE"
-  short_name: "Toll_DE"
+  short_name: "toll"
   source : Destatis
   challenge: 
     - PVI
