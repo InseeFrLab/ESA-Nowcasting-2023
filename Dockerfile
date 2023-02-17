@@ -11,7 +11,4 @@ RUN apt-get update && \
     # Configure renv to use RSPM to download packages by default
     echo 'options(renv.config.repos.override = getOption("repos"))' >> ${R_HOME}/etc/Rprofile.site && \
     # Install R packages
-    Rscript -e "renv::restore()" && \
-    # fix for version GLIBCXX_3.4.30
-    rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6 && \
-    ln -s /opt/mamba/lib/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+    Rscript -e "renv::restore()"
