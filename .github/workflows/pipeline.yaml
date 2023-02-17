@@ -22,10 +22,13 @@ jobs:
           ref: gh-submissions
           token: ${{ secrets.TOKEN_CI }}
 
-      - name: Merge recent changes from main branch
-        run: | 
+      - name: Configure Git
+        run: |
           git config user.name Thomas Faria
           git config user.email 57811152+ThomasFaria@users.noreply.github.com
+          
+      - name: Merge recent changes from main branch
+        run: | 
           git fetch origin
           git merge --allow-unrelated-histories -X theirs origin/main
 
@@ -55,21 +58,15 @@ jobs:
           cache-version: 1
 
       - name: Run Pipeline
-        run: |
-          source("run_all.R")
-        shell: Rscript {0} 
+        run: Rscript run_all.R
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
 
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
-        with:
-          # The arguments for the `git add` command
-          add: 'Submissions'
-          author_name: Thomas Faria
-          author_email: 57811152+ThomasFaria@users.noreply.github.com
-          message: 'New submission with Github Actions'
-          new_branch: gh-submissions
+      - name: Commit and push submissions
+        run: |
+          git add Submissions/
+          git commit -m "New submission with Github Actions"
+          git push origin gh-submissions --set-upstream
