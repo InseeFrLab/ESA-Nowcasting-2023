@@ -89,7 +89,31 @@ create_regressors <- function(challenge, challenges_info, data, country) {
 
     # Traitements particuliers pays sur les exogènes
     if (country %in% c("DE")) {
-      X <- ts.union(IPT, dIPT, dIS)
+      toll <- data$TOLL_DE$data
+      #On mensualise 
+      # + homogénéise en ne prenant que le nombre de jours dispo le dernier mois
+      last_day <- day((toll %>% dplyr::arrange(desc(time)))$time[1])
+      toll_m <- toll %>% dplyr::filter(day(time)<=last_day) %>%
+        dplyr::mutate(
+          month = month(time),
+          year = year(time)
+        ) %>%
+        dplyr::group_by(year, month) %>%
+        dplyr::summarise(
+          across(-c(time,geo), ~ mean(.x, na.rm = TRUE))
+        ) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
+        dplyr::select(-c(year, month)) %>% 
+        dplyr::mutate(values=toll) %>% 
+        dplyr::select(-toll)
+      
+      tolls <- toll_m %>% 
+        tidyr::drop_na() %>%
+        tsbox::ts_ts() / 100
+      dtolls=diff(tolls)
+      
+      X <- ts.union(dIS, IPT, dIPT, dtolls)
     }
     if (country %in% c("IT")) {
       X <- ts.union(IS, dIPT) # dIPT2
@@ -131,6 +155,13 @@ estimate_regarima <- function(challenge, data, models, country, h) {
       parameters$estimate.from <- "2011-01-01"
     }
     if (country %in% c("LV")) {
+      parameters$estimate.from <- "2015-01-01"
+    }
+  }
+  
+  if (challenge == "PVI") {
+    # Gestion à la main des longueurs d'estimation en fonction de la qualité des variables
+    if (country %in% c("DE")) {
       parameters$estimate.from <- "2015-01-01"
     }
   }
