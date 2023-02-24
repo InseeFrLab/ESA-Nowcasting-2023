@@ -162,9 +162,10 @@ get_data <- function(data_info = yaml::read_yaml("data.yaml"),
   yahoo <- get_data_from_yahoo(data_info)
   ember <- get_data_from_ember(data_info)
   week_ends <- get_weekend_days(data_info, challenges_info)
+  gtrends <- get_data_from_google_trends(data_info)
 
   list_data <- lapply(
-    c(eurostat, yahoo, ember, week_ends),
+    c(eurostat, yahoo, ember, week_ends, gtrends),
     function(x) list(data = x)
   )
 

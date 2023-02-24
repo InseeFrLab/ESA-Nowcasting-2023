@@ -168,6 +168,20 @@ format_electricity_data <- function(data) {
   return(formatted_data)
 }
 
+format_gtrends_data <- function(data) {
+  subset_lists <- Filter(function(x) x$source == "gtrends", data)
+  
+  lagged_data <- mapply(function(x) {
+    variable_name_next_month = paste0(x$short_name, '_next_month')
+    x$data %>% mutate(
+      time = time - months(1)) %>%
+      rename(!!variable_name_next_month := mean((!!rlang::sym(x$short_name))))
+  }, subset_lists, SIMPLIFY = FALSE) |>
+    purrr::reduce(full_join)
+  
+  return(pivoted_data)
+}
+
 build_data_ml <- function(data = get_data(
                             yaml::read_yaml("data.yaml"),
                             yaml::read_yaml("challenges.yaml")
@@ -285,8 +299,15 @@ build_data_ml <- function(data = get_data(
     left_join(format_electricity_data(selected_data),
       by = c("geo", "month", "year")
     )
+  
+  ### E) Add Google Trends data
+  
+  df <- df %>%
+    left_join(format_gtrends_data(selected_data),
+      by = c("geo", "time")
+    )
 
-  ### E) Delete dummy columns
+  ### F) Delete dummy columns
 
   df <- df[colSums(!is.na(df)) > length(df) / (length(countries) + 1)]
 
@@ -298,7 +319,7 @@ build_data_ml <- function(data = get_data(
     ) != 0
   )]
 
-  ### F) Return results
+  ### G) Return results
 
   return(df)
 }
