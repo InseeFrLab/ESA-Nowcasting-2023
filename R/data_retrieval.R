@@ -50,13 +50,13 @@ get_data_from_ember <- function(data_info) {
 }
 
 get_weekend_days <- function(data_info, challenges_info) {
-  date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
+  date_to_pred <- lubridate::ymd(challenges_info$DATES$date_to_pred)
   subset_lists <- Filter(function(x) x$source == "Week-end", data_info)
 
   data <- lapply(subset_lists, function(x) {
     dates <- seq(as.Date(x[["init_date"]]), date_to_pred + months(1), by = "month")
     nb_weekend_days <- dplyr::tibble(
-      month = month(dates), year = year(dates),
+      month = lubridate::month(dates), year = lubridate::year(dates),
       weekends = numeric(length(dates))
     )
     for (i in 1:length(dates)) {
@@ -66,7 +66,7 @@ get_weekend_days <- function(data_info, challenges_info) {
       ))
       month_end <- as.Date(paste(nb_weekend_days$year[i],
         nb_weekend_days$month[i],
-        days_in_month(month_start),
+        lubridate::days_in_month(month_start),
         sep = "-"
       ))
       nb_weekend_days$weekends[i] <- sum(
@@ -79,6 +79,82 @@ get_weekend_days <- function(data_info, challenges_info) {
   return(data)
 }
 
+get_gtrends <- function(country = 'FR', category = 179){
+  gtrends_data <- gtrendsR::gtrends(geo = country,
+                                    time = "all",
+                                    gprop = "web",
+                                    category = category,
+                                    onlyInterest = TRUE)
+  return(tsbox::ts_xts(gtrends_data$interest_over_time[, c("date", "geo", "hits")]))
+}
+
+get_data_from_google_trends <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "gtrends", data_info)
+  data <- lapply(subset_lists, function(x) {
+    
+    gtrends_countries <- list()
+    
+    for (country in x$filters$geo){
+      print(country)
+      Sys.sleep(1)
+      x_gtrends_data <- get_gtrends(country=country,
+                                    category=x$category)
+    
+      all_gtrends_data <- get_gtrends(country=country,
+                                      category=x$list_categories[1]) # Initialization to the first category
+      for (category in x$list_categories[2:length(x$list_categories)]){
+        Sys.sleep(0.1)
+        # List of all the other categories
+        tryCatch({
+          all_gtrends_data <- all_gtrends_data + get_gtrends(country=country,
+                                                             category=category)
+        }, error = function(e){})
+      }
+      
+      # Creation of SVI and svi
+      
+      SV_ct <- x_gtrends_data
+      SVT_t <- all_gtrends_data
+      
+      ratio <- SV_ct / SVT_t
+      C_c <- max(ratio)
+      SVI_ct <- ratio * 100 / C_c
+      
+      svi_ct <- log(SVI_ct)
+      
+      # Extracting the common component
+      
+      hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
+      
+      pca <- prcomp(hp_filtered_svi_ct, retx = TRUE, center = TRUE, scale = TRUE)
+      first_component <- xts::xts(pca$x[,"PC1"], zoo::index(hp_filtered_svi_ct))
+
+      standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
+      rescaled_first_component <- standardised_first_component * sd(svi_ct) + mean(svi_ct)
+      
+      # Correct the time series
+      
+      corrected_svi_ct <- svi_ct - rescaled_first_component
+      corrected_SVI_ct <- exp(corrected_svi_ct)
+      
+      new_C = 100/max(corrected_SVI_ct)
+      final_SVI_ct <- corrected_SVI_ct * new_C
+      
+      gtrends_df <- data.frame(final_SVI_ct)
+      colnames(gtrends_df) <- c(x$short_name)
+      gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
+      gtrends_df['geo'] = country
+      
+      gtrends_countries[[country]] <- gtrends_df
+    }
+    
+    data_x <- bind_rows(gtrends_countries)
+    rownames(data_x) <- NULL
+    return(data_x)
+  })
+
+  return(data)
+}
 
 get_data <- function(data_info = yaml::read_yaml("data.yaml"),
                      challenges_info = yaml::read_yaml("challenges.yaml")) {

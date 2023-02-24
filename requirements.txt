@@ -10,3 +10,5 @@ dill
 pmdarima
 torch 
 nowcast-lstm
+gtrendsR
+tsbox
