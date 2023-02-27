@@ -17,9 +17,9 @@ reshape_eurostat_data <- function(data, country) {
   return(reshaped_data)
 }
 
-reshape_yahoo_data <- function(data) {
-  subset_lists <- Filter(function(x) x$source == "Yahoo", data)
-
+reshape_daily_data <- function(data, source) {
+  subset_lists <- Filter(function(x) x$source == source, data)
+  
   reshaped_data <- lapply(subset_lists, function(x) {
     x$data %>%
       mutate(
@@ -35,10 +35,10 @@ reshape_yahoo_data <- function(data) {
       select(-c(year, month))
   }) |>
     purrr::reduce(full_join, by = "time")
-
+  
   # Removing columns full of zeros
   reshaped_data <- reshaped_data[, colSums(reshaped_data != 0, na.rm = TRUE) > 0]
-
+  
   return(reshaped_data)
 }
 

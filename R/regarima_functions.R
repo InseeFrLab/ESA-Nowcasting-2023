@@ -23,7 +23,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
 
   if (challenge == "PPI") {
-    brent <- reshape_yahoo_data(data) %>%
+    brent <- reshape_daily_data(data, "Yahoo") %>%
       mutate(BRENT = BRENT.Adjusted / EUR_USD.Adjusted) %>%
       select(time, BRENT) %>%
       tsbox::ts_ts()

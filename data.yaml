@@ -247,4 +247,5 @@ TOLL_DE:
     - XGBOOST
     - REGARIMA
     - LSTM
+    - DFM
   url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
