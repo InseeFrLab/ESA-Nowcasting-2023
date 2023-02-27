@@ -96,40 +96,41 @@ get_data_from_google_trends <- function(data_info) {
     
     for (country in x$filters$geo){
       print(country)
-      
       Sys.sleep(1)
-      x_gtrends_data <- get_gtrends(country=country,
-                                    category=x$category)
-      
-      # Creation of SVI and svi
-
-      SVI_ct <- x_gtrends_data
-      svi_ct <- log(SVI_ct)
-      
-      # Extracting the common component
-      
-      hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
-      
-      pca <- prcomp(hp_filtered_svi_ct, retx = TRUE, center = TRUE, scale = TRUE)
-      first_component <- xts::xts(pca$x[,"PC1"], zoo::index(hp_filtered_svi_ct))
-
-      standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
-      rescaled_first_component <- standardised_first_component * sd(svi_ct) + mean(svi_ct)
-      
-      # Correct the time series
-      
-      corrected_svi_ct <- svi_ct - rescaled_first_component
-      corrected_SVI_ct <- exp(corrected_svi_ct)
-      
-      new_C = 100/max(corrected_SVI_ct)
-      final_SVI_ct <- corrected_SVI_ct * new_C
-      
-      gtrends_df <- data.frame(final_SVI_ct)
-      colnames(gtrends_df) <- c(x$short_name)
-      gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
-      gtrends_df['geo'] = country
-      
-      gtrends_countries[[country]] <- gtrends_df
+      tryCatch({
+        x_gtrends_data <- get_gtrends(country=country,
+                                      category=x$category)
+        
+        # Creation of SVI and svi
+  
+        SVI_ct <- x_gtrends_data
+        svi_ct <- log(10**(-10) + SVI_ct)
+        
+        # Extracting the common component
+        
+        hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
+        
+        pca <- prcomp(hp_filtered_svi_ct, retx = TRUE, center = TRUE, scale = TRUE)
+        first_component <- xts::xts(pca$x[,"PC1"], zoo::index(hp_filtered_svi_ct))
+  
+        standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
+        rescaled_first_component <- standardised_first_component * sd(svi_ct) + mean(svi_ct)
+        
+        # Correct the time series
+        
+        corrected_svi_ct <- svi_ct - rescaled_first_component
+        corrected_SVI_ct <- exp(corrected_svi_ct)
+        
+        new_C = 100/max(corrected_SVI_ct)
+        final_SVI_ct <- corrected_SVI_ct * new_C
+        
+        gtrends_df <- data.frame(final_SVI_ct)
+        colnames(gtrends_df) <- c(x$short_name)
+        gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
+        gtrends_df['geo'] = country
+        
+        gtrends_countries[[country]] <- gtrends_df
+      }, error = function(e){print("Echec gtrends")})
     }
     
     data_x <- bind_rows(gtrends_countries)
