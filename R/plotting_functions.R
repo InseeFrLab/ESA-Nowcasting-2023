@@ -44,7 +44,7 @@ subplot_pred <- function(sample, country, xlim, predictions, legend = F) {
 
 plot_preds <- function(challenge, challenges_info, data_info, predictions, Countries, xlim = "2020-01-01", ncol = 2) {
   code_variable_interest <- challenges_info[[challenge]]$principal_nace
-  
+
   data <- if (!(is.null(data_info[[challenge]]$data))) data_info[[challenge]]$data else data_info
 
   sample <- data %>%

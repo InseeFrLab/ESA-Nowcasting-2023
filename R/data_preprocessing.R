@@ -19,7 +19,7 @@ reshape_eurostat_data <- function(data, country) {
 
 reshape_daily_data <- function(data, source) {
   subset_lists <- Filter(function(x) x$source == source, data)
-  
+
   reshaped_data <- lapply(subset_lists, function(x) {
     x$data %>%
       mutate(
@@ -35,10 +35,10 @@ reshape_daily_data <- function(data, source) {
       select(-c(year, month))
   }) |>
     purrr::reduce(full_join, by = "time")
-  
+
   # Removing columns full of zeros
   reshaped_data <- reshaped_data[, colSums(reshaped_data != 0, na.rm = TRUE) > 0]
-  
+
   return(reshaped_data)
 }
 
@@ -121,7 +121,8 @@ format_yahoo_data <- function(data) {
 
 format_other_daily_data <- function(data) {
   subset_lists <- Filter(
-    function(x) x$source %in% c("ember-climate", 'Destatis'), data)
+    function(x) x$source %in% c("ember-climate", "Destatis"), data
+  )
 
   if (length(subset_lists) == 0) {
     return(data.frame(geo = character(), month = integer(), year = integer()))

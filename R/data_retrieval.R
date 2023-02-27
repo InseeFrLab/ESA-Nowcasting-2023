@@ -52,21 +52,24 @@ get_data_from_ember <- function(data_info) {
 # Récupération des données Destatis de péages sur le transport routier en DE
 get_data_from_destatis <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Destatis", data_info)
-  
+
   data <- lapply(subset_lists, function(x) {
     data_temp <- tempfile()
     download.file(
       subset_lists$TOLL_DE$url,
-      data_temp)
-    data <- readxl::read_excel(path = data_temp,
-                               sheet = "Daten",
-                               skip=5) %>% 
-      rename(toll = paste0("Kalender- und saisonbereinigt (KSB)")) %>% 
+      data_temp
+    )
+    data <- readxl::read_excel(
+      path = data_temp,
+      sheet = "Daten",
+      skip = 5
+    ) %>%
+      rename(toll = paste0("Kalender- und saisonbereinigt (KSB)")) %>%
       mutate(time = ymd(
-        paste0(substr(Datum,1,4),substr(Datum,6,7),substr(Datum,9,10)))
-      ) %>% 
-      mutate(geo="DE") %>% 
-      select(time,toll,geo)
+        paste0(substr(Datum, 1, 4), substr(Datum, 6, 7), substr(Datum, 9, 10))
+      )) %>%
+      mutate(geo = "DE") %>%
+      select(time, toll, geo)
   })
   return(data)
 }
