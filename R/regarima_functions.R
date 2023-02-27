@@ -6,12 +6,12 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   y <- data[[challenge]]$data %>%
     dplyr::filter((nace_r2 %in% code_variable_interest) & (geo == country)) %>%
     tsbox::ts_ts()
-  
+
   if (challenge == "TOURISM") {
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & is.na(y), 1) # replace NA by 1 during covid period
-    y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0 , 1) # replace 0 by 1 during covid period
+    y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0, 1) # replace 0 by 1 during covid period
   }
- 
+
   dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
 
   X <- create_regressors(challenge, challenges_info, selected_data, country)
@@ -23,7 +23,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
 
   if (challenge == "PPI") {
-    brent <- reshape_yahoo_data(data) %>%
+    brent <- reshape_daily_data(data, "Yahoo") %>%
       mutate(BRENT = BRENT.Adjusted / EUR_USD.Adjusted) %>%
       select(time, BRENT) %>%
       tsbox::ts_ts()
@@ -89,7 +89,32 @@ create_regressors <- function(challenge, challenges_info, data, country) {
 
     # Traitements particuliers pays sur les exogènes
     if (country %in% c("DE")) {
-      X <- ts.union(IPT, dIPT, dIS)
+      toll <- data$TOLL_DE$data
+      # On mensualise
+      # + homogénéise en ne prenant que le nombre de jours dispo le dernier mois
+      last_day <- day((toll %>% dplyr::arrange(desc(time)))$time[1])
+      toll_m <- toll %>%
+        dplyr::filter(day(time) <= last_day) %>%
+        dplyr::mutate(
+          month = month(time),
+          year = year(time)
+        ) %>%
+        dplyr::group_by(year, month) %>%
+        dplyr::summarise(
+          across(-c(time, geo), ~ mean(.x, na.rm = TRUE))
+        ) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
+        dplyr::select(-c(year, month)) %>%
+        dplyr::mutate(values = toll) %>%
+        dplyr::select(-toll)
+
+      tolls <- toll_m %>%
+        tidyr::drop_na() %>%
+        tsbox::ts_ts() / 100
+      dtolls <- diff(tolls)
+
+      X <- ts.union(dIS, IPT, dIPT, dtolls)
     }
     if (country %in% c("IT")) {
       X <- ts.union(IS, dIPT) # dIPT2
@@ -131,6 +156,13 @@ estimate_regarima <- function(challenge, data, models, country, h) {
       parameters$estimate.from <- "2011-01-01"
     }
     if (country %in% c("LV")) {
+      parameters$estimate.from <- "2015-01-01"
+    }
+  }
+
+  if (challenge == "PVI") {
+    # Gestion à la main des longueurs d'estimation en fonction de la qualité des variables
+    if (country %in% c("DE")) {
       parameters$estimate.from <- "2015-01-01"
     }
   }
