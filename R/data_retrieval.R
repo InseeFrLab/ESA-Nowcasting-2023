@@ -96,19 +96,19 @@ get_data_from_google_trends <- function(data_info) {
     
     for (country in x$filters$geo){
       print(country)
-      Sys.sleep(1)
+      Sys.sleep(60)
       x_gtrends_data <- get_gtrends(country=country,
                                     category=x$category)
     
       all_gtrends_data <- get_gtrends(country=country,
                                       category=x$list_categories[1]) # Initialization to the first category
       for (category in x$list_categories[2:length(x$list_categories)]){
-        Sys.sleep(0.1)
+        Sys.sleep(5)
         # List of all the other categories
         tryCatch({
           all_gtrends_data <- all_gtrends_data + get_gtrends(country=country,
                                                              category=category)
-        }, error = function(e){})
+        }, error = function(e){print(category)})
       }
       
       # Creation of SVI and svi
