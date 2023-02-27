@@ -237,35 +237,35 @@ NB_WE:
     - LSTM
   init_date: "2000-01-01"
 
-GTRENDS_PPI:
-  name: "Google Trends - Fuel Economy & Gas Prices"
-  short_name: "gtrends_ppi"
-  source : gtrends
-  challenge: 
-    - PPI
-  model:
-    - XGBOOST
-    - LSTM
-  category: 1268
-  filters:
-    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
-    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
-    "RO", "SE", "SI", "SK"]
-
-GTRENDS_PVI:
-  name: "Google Trends - Industrial Materials & Equipment"
-  short_name: "gtrends_pvi"
-  source : gtrends
-  challenge: 
-    - PVI
-  model:
-    - XGBOOST
-    - LSTM
-  category: 287
-  filters:
-    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
-    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
-    "RO", "SE", "SI", "SK"]
+# GTRENDS_PPI:
+#   name: "Google Trends - Fuel Economy & Gas Prices"
+#   short_name: "gtrends_ppi"
+#   source : gtrends
+#   challenge: 
+#     - PPI
+#   model:
+#     - XGBOOST
+#     - LSTM
+#   category: 1268
+#   filters:
+#     geo: ["AT", "BE", "BG", "CZ", "DE", "DK", "EE", "ES", "FI",
+#     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
+#     "RO", "SE", "SI", "SK"]
+# 
+# GTRENDS_PVI:
+#   name: "Google Trends - Industrial Materials & Equipment"
+#   short_name: "gtrends_pvi"
+#   source : gtrends
+#   challenge: 
+#     - PVI
+#   model:
+#     - XGBOOST
+#     - LSTM
+#   category: 287
+#   filters:
+#     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+#     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
+#     "RO", "SE", "SI", "SK"]
 
 GTRENDS_TOURISM:
   name: "Google Trends - Hotels & Accommodations"
