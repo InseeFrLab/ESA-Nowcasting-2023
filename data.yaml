@@ -251,6 +251,6 @@ GTRENDS_TOURISM:
     [47, 44, 22, 12, 5, 7, 71, 8, 45, 65, 11, 13, 958, 19, 16, 299, 14, 66,
     29, 533, 174, 18, 20, 67]
   filters:
-    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
     "RO", "SE", "SI", "SK"]

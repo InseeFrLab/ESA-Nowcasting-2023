@@ -96,30 +96,14 @@ get_data_from_google_trends <- function(data_info) {
     
     for (country in x$filters$geo){
       print(country)
-      Sys.sleep(60)
+      
+      Sys.sleep(1)
       x_gtrends_data <- get_gtrends(country=country,
                                     category=x$category)
-    
-      all_gtrends_data <- get_gtrends(country=country,
-                                      category=x$list_categories[1]) # Initialization to the first category
-      for (category in x$list_categories[2:length(x$list_categories)]){
-        Sys.sleep(5)
-        # List of all the other categories
-        tryCatch({
-          all_gtrends_data <- all_gtrends_data + get_gtrends(country=country,
-                                                             category=category)
-        }, error = function(e){print(category)})
-      }
       
       # Creation of SVI and svi
-      
-      SV_ct <- x_gtrends_data
-      SVT_t <- all_gtrends_data
-      
-      ratio <- SV_ct / SVT_t
-      C_c <- max(ratio)
-      SVI_ct <- ratio * 100 / C_c
-      
+
+      SVI_ct <- x_gtrends_data
       svi_ct <- log(SVI_ct)
       
       # Extracting the common component
