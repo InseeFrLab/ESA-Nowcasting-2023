@@ -248,7 +248,7 @@ GTRENDS_PPI:
     - LSTM
   category: 1268
   filters:
-    geo:  ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+    geo:  ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
     "RO", "SE", "SI", "SK"]
 
@@ -263,7 +263,7 @@ GTRENDS_PVI:
     - LSTM
   category: 287
   filters:
-    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
     "RO", "SE", "SI", "SK"]
 
@@ -278,6 +278,6 @@ GTRENDS_TOURISM:
     - LSTM
   category: 179
   filters:
-    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
     "RO", "SE", "SI", "SK"]

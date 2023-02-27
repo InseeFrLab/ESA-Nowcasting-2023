@@ -174,7 +174,7 @@ format_gtrends_data <- function(data) {
   lagged_data <- mapply(function(x) {
     variable_name_next_month = paste0(x$short_name, '_next_month')
     x$data %>% mutate(
-      time = time - months(1)) %>%
+      time = ymd(time) - months(1)) %>%
       rename(!!variable_name_next_month := mean((!!rlang::sym(x$short_name))))
   }, subset_lists, SIMPLIFY = FALSE) |>
     purrr::reduce(full_join)
