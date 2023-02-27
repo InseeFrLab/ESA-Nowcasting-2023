@@ -22,15 +22,19 @@ save_entries <- function(challenge, entries, challenges_info) {
   }
 
   ## Save in S3 the json
-  aws.s3::put_object(file = paste0("Submissions/", challenge, "/results_", month, ".json"),
-                     bucket = "projet-esa-nowcasting", object = paste0("submissions/", challenge, "/results_", month, ".json"),
-                     region = "")
-  
+  aws.s3::put_object(
+    file = paste0("Submissions/", challenge, "/results_", month, ".json"),
+    bucket = "projet-esa-nowcasting", object = paste0("submissions/", challenge, "/results_", month, ".json"),
+    region = ""
+  )
+
   #### Save the data in S3 ####
   save(data, file = paste0("data_", challenge, "_", month, ".RData"))
-  aws.s3::put_object(file = paste0("data_", challenge, "_", month, ".RData"),
-                     bucket = "projet-esa-nowcasting", object = paste0("data/", challenge, "/data_", month, ".RData"),
-                     region = "")
+  aws.s3::put_object(
+    file = paste0("data_", challenge, "_", month, ".RData"),
+    bucket = "projet-esa-nowcasting", object = paste0("data/", challenge, "/data_", month, ".RData"),
+    region = ""
+  )
 }
 
 add_entries <- function(entries, filename) {
@@ -60,11 +64,12 @@ save_data <- function(data, challenges_info) {
       x$data,
       filename
     )
-    
-    aws.s3::put_object(file = filename,
-                       bucket = "projet-esa-nowcasting", object = filename,
-                       region = "")
 
+    aws.s3::put_object(
+      file = filename,
+      bucket = "projet-esa-nowcasting", object = filename,
+      region = ""
+    )
   }, data, names(data), SIMPLIFY = FALSE)
 
   paste0("data/", month)
