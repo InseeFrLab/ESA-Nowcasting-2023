@@ -178,13 +178,14 @@ format_gtrends_data <- function(data) {
     variable_name_next_month = paste0(x$short_name, '_next_month')
     x$data %>%
       group_by(geo) %>%
-      mutate(!!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
+      mutate(time = ymd(time),
+             !!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
              !!variable_name_next_month := lead(!!rlang::sym(x$short_name))
              )
   }, subset_lists, SIMPLIFY = FALSE) |>
     purrr::reduce(full_join)
   
-  return(pivoted_data)
+  return(data_with_lead)
 }
 
 build_data_ml <- function(data = get_data(
