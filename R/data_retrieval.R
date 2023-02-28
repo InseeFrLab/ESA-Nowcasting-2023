@@ -191,7 +191,7 @@ get_data_from_google_trends <- function(data_info) {
         # Check the direction of the PCA
         # trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
         # slope_first_component <- trend_first_component$coefficients[2]
-        # if (slope_first_component < 0){
+        # if (slope_first_component > 0){
         #   rescaled_first_component = - rescaled_first_component
         # }
         
