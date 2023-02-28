@@ -17,8 +17,8 @@ reshape_eurostat_data <- function(data, country) {
   return(reshaped_data)
 }
 
-reshape_yahoo_data <- function(data) {
-  subset_lists <- Filter(function(x) x$source == "Yahoo", data)
+reshape_daily_data <- function(data, source) {
+  subset_lists <- Filter(function(x) x$source == source, data)
 
   reshaped_data <- lapply(subset_lists, function(x) {
     x$data %>%
@@ -119,8 +119,10 @@ format_yahoo_data <- function(data) {
   return(formatted_data)
 }
 
-format_electricity_data <- function(data) {
-  subset_lists <- Filter(function(x) x$source == "ember-climate", data)
+format_other_daily_data <- function(data) {
+  subset_lists <- Filter(
+    function(x) x$source %in% c("ember-climate", "Destatis"), data
+  )
 
   if (length(subset_lists) == 0) {
     return(data.frame(geo = character(), month = integer(), year = integer()))
@@ -279,10 +281,10 @@ build_data_ml <- function(data = get_data(
       by = c("month", "year")
     )
 
-  ### D) Add electricity data
+  ### D) Add electricity data & Germany truck data
 
   df <- df %>%
-    left_join(format_electricity_data(selected_data),
+    left_join(format_other_daily_data(selected_data),
       by = c("geo", "month", "year")
     )
 
