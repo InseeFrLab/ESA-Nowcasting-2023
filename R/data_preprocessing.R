@@ -172,12 +172,15 @@ format_other_daily_data <- function(data) {
 
 format_gtrends_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "gtrends", data)
-  
-  lagged_data <- mapply(function(x) {
+
+  data_with_lead <- mapply(function(x) {
+    variable_name_previous_month = paste0(x$short_name, '_previous_month')
     variable_name_next_month = paste0(x$short_name, '_next_month')
-    x$data %>% mutate(
-      time = ymd(time) - months(1)) %>%
-      rename(!!variable_name_next_month := mean((!!rlang::sym(x$short_name))))
+    x$data %>%
+      group_by(geo) %>%
+      mutate(!!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
+             !!variable_name_next_month := lead(!!rlang::sym(x$short_name))
+             )
   }, subset_lists, SIMPLIFY = FALSE) |>
     purrr::reduce(full_join)
   

@@ -16,27 +16,27 @@
 # 
 # 
 # 
-# Hotels & Accommodations 179 GO
-# Travel Agencies & Services 1010
-# Travel Guides & Travelogues 1011
-# Vacation Offers 1019 GO
-# Mountain & Ski Resorts 1119
+# Hotels & Accommodations 179 : DONE
+# Travel Agencies & Services 1010 : DONE
+# Travel Guides & Travelogues 1011 : TO DO
+# Vacation Offers 1019 : DONE
+# Mountain & Ski Resorts 1119 : DONE
 # 
-# Business & Industrial 12
-# Business News 784
-# Small Business 551
-# Manufacturing 49 GO
-# Financial Markets 1163
-# Fiscal Policy News 1165
-# Housing & Development 1166
-# Company News 1179
-# Industrial Materials & Equipment 287 GO
-# Electricity 658
-# Oil & Gas 659 GO
-# Fuel Economy & Gas Prices 1268 GO
-# Economy News 1164
-# Economics 520
-# Bankruptcy 423
+# Business & Industrial 12 : TO DO
+# Business News 784 : TO DO
+# Small Business 551 : TO DO
+# Manufacturing 49 GO : DONE
+# Financial Markets 1163 : TO DO
+# Fiscal Policy News 1165 : TO DO
+# Housing & Development 1166 : TO DO
+# Company News 1179 : TO DO
+# Industrial Materials & Equipment 287 : DONE
+# Electricity 658 : TO DO
+# Oil & Gas 659 : TO DO
+# Fuel Economy & Gas Prices 1268 : DONE
+# Economy News 1164 : TO DO
+# Economics 520 : TO DO
+# Bankruptcy 423 : TO DO
 # 
 # gtrends_data1 <- gtrendsR::gtrends(gprop = "web",
 #                                   geo = "FR",
