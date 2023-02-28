@@ -1,12 +1,12 @@
 boto3
+dill
 hvac
 ipykernel
 ipywidgets
 nbclient
 nbformat
+nowcast-lstm
 numpy==1.23.5
 pandas==1.5.3
-dill
 pmdarima
 torch 
-nowcast-lstm

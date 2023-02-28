@@ -726,6 +726,19 @@
       "Hash": "36b4265fb818f6a342bed217549cd896",
       "Requirements": []
     },
+    "gtrendsR": {
+      "Package": "gtrendsR",
+      "Version": "1.5.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b8e07a07c86f956e84ec1ce76bc917ce",
+      "Requirements": [
+        "anytime",
+        "curl",
+        "ggplot2",
+        "jsonlite"
+      ]
+    },
     "here": {
       "Package": "here",
       "Version": "1.0.1",
@@ -902,6 +915,14 @@
         "cpp11",
         "generics"
       ]
+    },
+    "mFilter": {
+      "Package": "mFilter",
+      "Version": "0.1-5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c327efe871deb7fa3c66c2630553771e",
+      "Requirements": []
     },
     "magrittr": {
       "Package": "magrittr",
