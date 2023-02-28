@@ -113,10 +113,58 @@ get_gtrends <- function(country = 'FR', category = 179){
   return(tsbox::ts_xts(gtrends_data$interest_over_time[, c("date", "geo", "hits")]))
 }
 
+get_rescaling_gtrends <- function(subset_lists) {
+
+  rescaled_first_component_by_country <- list()
+  for (country in subset_lists[[1]]$filters$geo){
+    print(country)
+    Sys.sleep(1)
+    
+    list_hp_filtered_svi_ct <- list()
+    for (x in subset_lists){
+      Sys.sleep(1)
+      tryCatch({
+        x_gtrends_data <- get_gtrends(country=country,
+                                      category=x$category)
+        # Creation of SVI and svi
+        SVI_ct <- x_gtrends_data
+        svi_ct <- log(10**(-10) + SVI_ct)
+        hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
+        list_hp_filtered_svi_ct[[x$short_name]] <- hp_filtered_svi_ct
+      }, error = function(e){})
+    }
+      
+    # Extracting the common component
+    stacked_series <- do.call(merge, list_hp_filtered_svi_ct)
+    pca <- prcomp(stacked_series, retx = TRUE, center = TRUE, scale = TRUE)
+    first_component <- xts::xts(pca$x[,"PC1"], zoo::index(list_hp_filtered_svi_ct[[1]]))
+    
+    mean_svi = xts::xts(apply(Reduce(merge, list_hp_filtered_svi_ct), 1, mean),
+                        zoo::index(list_hp_filtered_svi_ct[[1]]))
+    standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
+    rescaled_first_component <- standardised_first_component * sd(mean_svi) + mean(mean_svi)
+      
+    # Check the direction of the PCA
+    trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
+    slope_first_component <- trend_first_component$coefficients[2]
+    if (slope_first_component > 0){
+      rescaled_first_component = - rescaled_first_component
+    }
+    
+    rescaled_first_component_by_country[[country]] = rescaled_first_component
+  }
+  return(rescaled_first_component_by_country)
+}
+
 get_data_from_google_trends <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "gtrends", data_info)
+  if (length(subset_lists) > 0){
+    rescaled_first_component_by_country <- get_rescaling_gtrends(subset_lists)
+  }
+  
   data <- lapply(subset_lists, function(x) {
     
+    Sys.sleep(1)
     gtrends_countries <- list()
     
     for (country in x$filters$geo){
@@ -131,15 +179,23 @@ get_data_from_google_trends <- function(data_info) {
         SVI_ct <- x_gtrends_data
         svi_ct <- log(10**(-10) + SVI_ct)
         
-        # Extracting the common component
+        # Extracting the common component --> Now in get_rescaling_gtrends
         
-        hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
+        # hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
         
-        pca <- prcomp(hp_filtered_svi_ct, retx = TRUE, center = TRUE, scale = TRUE)
-        first_component <- xts::xts(pca$x[,"PC1"], zoo::index(hp_filtered_svi_ct))
-  
-        standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
-        rescaled_first_component <- standardised_first_component * sd(svi_ct) + mean(svi_ct)
+        # pca <- prcomp(hp_filtered_svi_ct, retx = TRUE, center = TRUE, scale = TRUE)
+        # first_component <- xts::xts(pca$x[,"PC1"], zoo::index(hp_filtered_svi_ct))
+        # standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
+        # rescaled_first_component <- standardised_first_component * sd(svi_ct) + mean(svi_ct)
+        
+        # Check the direction of the PCA
+        # trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
+        # slope_first_component <- trend_first_component$coefficients[2]
+        # if (slope_first_component < 0){
+        #   rescaled_first_component = - rescaled_first_component
+        # }
+        
+        rescaled_first_component <- rescaled_first_component_by_country[[country]]
         
         # Correct the time series
         

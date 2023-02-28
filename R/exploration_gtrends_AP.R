@@ -80,6 +80,13 @@ mean_svi = (hp_filtered_svi_1t + hp_filtered_svi_2t)/2
 standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
 rescaled_first_component <- standardised_first_component * sd(mean_svi) + mean(mean_svi)
 
+# Check the direction of the PCA
+trend <- lm(rescaled_first_component ~ time(rescaled_first_component))
+slope <- trend$coefficients[2]
+if (slope > 0){
+  rescaled_first_component = - rescaled_first_component
+}
+
 # Correct the time series
 
 corrected_svi_1t <- svi_1t - rescaled_first_component
@@ -95,4 +102,3 @@ plot(final_SVI_1t)
 new_C_2 = 100/max(corrected_SVI_2t)
 final_SVI_2t <- corrected_SVI_2t * new_C_2
 plot(final_SVI_2t)
-
