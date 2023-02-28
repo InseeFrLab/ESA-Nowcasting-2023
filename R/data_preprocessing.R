@@ -174,17 +174,18 @@ format_gtrends_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "gtrends", data)
 
   data_with_lead <- mapply(function(x) {
-    variable_name_previous_month = paste0(x$short_name, '_previous_month')
-    variable_name_next_month = paste0(x$short_name, '_next_month')
+    variable_name_previous_month <- paste0(x$short_name, "_previous_month")
+    variable_name_next_month <- paste0(x$short_name, "_next_month")
     x$data %>%
       group_by(geo) %>%
-      mutate(time = ymd(time),
-             !!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
-             !!variable_name_next_month := lead(!!rlang::sym(x$short_name))
-             )
+      mutate(
+        time = ymd(time),
+        !!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
+        !!variable_name_next_month := lead(!!rlang::sym(x$short_name))
+      )
   }, subset_lists, SIMPLIFY = FALSE) |>
     purrr::reduce(full_join)
-  
+
   return(data_with_lead)
 }
 
@@ -305,9 +306,9 @@ build_data_ml <- function(data = get_data(
     left_join(format_other_daily_data(selected_data),
       by = c("geo", "month", "year")
     )
-  
+
   ### E) Add Google Trends data
-  
+
   df <- df %>%
     left_join(format_gtrends_data(selected_data),
       by = c("geo", "time")
