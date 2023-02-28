@@ -110,6 +110,7 @@ get_gtrends <- function(country = 'FR', category = 179){
                                     gprop = "web",
                                     category = category,
                                     onlyInterest = TRUE)
+  Sys.sleep(1)
   return(tsbox::ts_xts(gtrends_data$interest_over_time[, c("date", "geo", "hits")]))
 }
 
