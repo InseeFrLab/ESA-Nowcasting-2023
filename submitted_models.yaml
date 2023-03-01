@@ -5,7 +5,7 @@ PAST_MONTHS:
   'december',
   'january',
   'february',
-  # 'march',
+  'march'
   # 'april'
   ]
   
@@ -43,6 +43,12 @@ PPI:
     entry_4: XGBOOST
     entry_5:
   february:
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5: LSTM
+  march:
     entry_1: REGARIMA
     entry_2: DFM
     entry_3: ETS
@@ -86,6 +92,12 @@ PVI:
     entry_3: ETS
     entry_4: XGBOOST
     entry_5: LSTM
+  march:
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5: LSTM
 
 TOURISM:
   september:
@@ -124,4 +136,9 @@ TOURISM:
     entry_3: ETS
     entry_4: XGBOOST
     entry_5: LSTM
-
+  march:
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5: LSTM
