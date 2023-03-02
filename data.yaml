@@ -48,7 +48,7 @@ IPI:
     "CPA_C19", "CPA_C20", "CPA_C21", "CPA_C22", "CPA_C23", "CPA_C24", "CPA_C25",
     "CPA_C26", "CPA_C27", "CPA_C28", "CPA_C29", "CPA_C30", "CPA_C31", "CPA_C32",
     "CPA_D35", "CPA_B-E36", "CPA_B-D", "CPA_MIG_ING", "CPA_MIG_CAG",
-    "CPA_MIG_NRG_X_E","CPA_MIG_NRG"]
+    "CPA_MIG_NRG_X_E", "CPA_MIG_NRG"]
     s_adj: NSA
     unit: I15
     freq: M
@@ -116,7 +116,7 @@ PVI:
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
     "RO", "SE", "SI", "SK"]
     indic_bt: PROD
-    nace_r2: ["B-D","MIG_ING"]
+    nace_r2: ["B-D", "MIG_ING"]
     s_adj: SCA
     unit: I15
     freq: M
@@ -236,17 +236,123 @@ NB_WE:
     - XGBOOST
     - LSTM
   init_date: "2000-01-01"
-  
 TOLL_DE:
   name: "Truck toll mileage index DE"
-  short_name: "Toll_DE"
+  short_name: "toll"
   source : Destatis
   challenge: 
     - PVI
   model:
-    - DFM
     - XGBOOST
     - REGARIMA
     - LSTM
+    - DFM
   url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
-  
+
+GTRENDS_MANUFACTURING:
+  name: "Google Trends - Manufacturing"
+  short_name: "gtrends_manufacturing"
+  source : gtrends
+  challenge:
+    - PPI
+    - PVI
+  model:
+    - XGBOOST
+    - LSTM
+  category: 49
+  filters:
+    geo:  ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]
+    
+GTRENDS_MATERIALS:
+  name: "Google Trends - Industrial Materials & Equipment"
+  short_name: "gtrends_materials"
+  source : gtrends
+  challenge:
+    - PPI
+    - PVI
+  model:
+    - XGBOOST
+    - LSTM
+  category: 287
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]
+
+GTRENDS_FUEL_GAS:
+  name: "Google Trends - Fuel Economy & Gas Prices"
+  short_name: "gtrends_fuel_gas"
+  source : gtrends
+  challenge:
+    - PPI
+    - PVI
+  model:
+    - XGBOOST
+    - LSTM
+  category: 1268
+  filters:
+    geo:  ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]
+
+GTRENDS_HOTELS:
+  name: "Google Trends - Hotels & Accommodations"
+  short_name: "gtrends_hotels"
+  source : gtrends
+  challenge: 
+    - TOURISM
+  model:
+    - XGBOOST
+    - LSTM
+  category: 179
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]
+    
+GTRENDS_TRAVEL_AGENCIES:
+  name: "Google Trends - Travel Agencies & Services"
+  short_name: "gtrends_travel_agencies"
+  source : gtrends
+  challenge: 
+    - TOURISM
+  model:
+    - XGBOOST
+    - LSTM
+  category: 1010
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]
+    
+GTRENDS_VACATIONS:
+  name: "Google Trends - Vacation Offers"
+  short_name: "gtrends_vacations"
+  source : gtrends
+  challenge: 
+    - TOURISM
+  model:
+    - XGBOOST
+    - LSTM
+  category: 1019
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]
+    
+GTRENDS_SKI:
+  name: "Google Trends - Mountain & Ski Resorts"
+  short_name: "gtrends_ski"
+  source : gtrends
+  challenge: 
+    - TOURISM
+  model:
+    - XGBOOST
+    - LSTM
+  category: 1119
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
+    "RO", "SE", "SI", "SK"]

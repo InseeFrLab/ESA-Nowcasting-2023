@@ -22,20 +22,18 @@ save_entries <- function(challenge, entries, challenges_info) {
   }
 
   ## Save in S3 the json
-  system(
-    paste(
-      paste0("mc cp Submissions/", challenge, "/results_", month, ".json"),
-      paste0("s3/projet-esa-nowcasting/submissions/", challenge, "/results_", month, ".json")
-    )
+  aws.s3::put_object(
+    file = paste0("Submissions/", challenge, "/results_", month, ".json"),
+    bucket = "projet-esa-nowcasting", object = paste0("submissions/", challenge, "/results_", month, ".json"),
+    region = ""
   )
 
   #### Save the data in S3 ####
   save(data, file = paste0("data_", challenge, "_", month, ".RData"))
-  system(
-    paste(
-      paste0("mc cp data_", challenge, "_", month, ".RData"),
-      paste0("s3/projet-esa-nowcasting/data/", challenge, "/data_", month, ".RData")
-    )
+  aws.s3::put_object(
+    file = paste0("data_", challenge, "_", month, ".RData"),
+    bucket = "projet-esa-nowcasting", object = paste0("data/", challenge, "/data_", month, ".RData"),
+    region = ""
   )
 }
 
@@ -66,11 +64,11 @@ save_data <- function(data, challenges_info) {
       x$data,
       filename
     )
-    system(
-      paste(
-        paste("mc cp", filename),
-        paste0("s3/projet-esa-nowcasting/", filename)
-      )
+
+    aws.s3::put_object(
+      file = filename,
+      bucket = "projet-esa-nowcasting", object = filename,
+      region = ""
     )
   }, data, names(data), SIMPLIFY = FALSE)
 

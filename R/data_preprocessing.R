@@ -17,8 +17,8 @@ reshape_eurostat_data <- function(data, country) {
   return(reshaped_data)
 }
 
-reshape_yahoo_data <- function(data) {
-  subset_lists <- Filter(function(x) x$source == "Yahoo", data)
+reshape_daily_data <- function(data, source) {
+  subset_lists <- Filter(function(x) x$source == source, data)
 
   reshaped_data <- lapply(subset_lists, function(x) {
     x$data %>%
@@ -119,8 +119,10 @@ format_yahoo_data <- function(data) {
   return(formatted_data)
 }
 
-format_electricity_data <- function(data) {
-  subset_lists <- Filter(function(x) x$source == "ember-climate", data)
+format_other_daily_data <- function(data) {
+  subset_lists <- Filter(
+    function(x) x$source %in% c("ember-climate", "Destatis"), data
+  )
 
   if (length(subset_lists) == 0) {
     return(data.frame(geo = character(), month = integer(), year = integer()))
@@ -166,6 +168,25 @@ format_electricity_data <- function(data) {
     purrr::reduce(full_join)
 
   return(formatted_data)
+}
+
+format_gtrends_data <- function(data) {
+  subset_lists <- Filter(function(x) x$source == "gtrends", data)
+
+  data_with_lead <- mapply(function(x) {
+    variable_name_previous_month <- paste0(x$short_name, "_previous_month")
+    variable_name_next_month <- paste0(x$short_name, "_next_month")
+    x$data %>%
+      group_by(geo) %>%
+      mutate(
+        time = ymd(time),
+        !!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
+        !!variable_name_next_month := lead(!!rlang::sym(x$short_name))
+      )
+  }, subset_lists, SIMPLIFY = FALSE) |>
+    purrr::reduce(full_join)
+
+  return(data_with_lead)
 }
 
 build_data_ml <- function(data = get_data(
@@ -258,7 +279,9 @@ build_data_ml <- function(data = get_data(
 
   # If available, let's use the history of these other variables as well
   list_other_variables_eurostat <- colnames(df)[
-    (7 + config_models[[model]][[challenge]]$nb_months_past_to_use):(
+    (
+      7 + config_models[[model]][[challenge]]$nb_months_past_to_use + config_models[[model]][[challenge]]$nb_years_past_to_use
+     ):(
       length(colnames(df)))
   ]
 
@@ -279,14 +302,21 @@ build_data_ml <- function(data = get_data(
       by = c("month", "year")
     )
 
-  ### D) Add electricity data
+  ### D) Add electricity data & Germany truck data
 
   df <- df %>%
-    left_join(format_electricity_data(selected_data),
+    left_join(format_other_daily_data(selected_data),
       by = c("geo", "month", "year")
     )
 
-  ### E) Delete dummy columns
+  ### E) Add Google Trends data
+
+  df <- df %>%
+    left_join(format_gtrends_data(selected_data),
+      by = c("geo", "time")
+    )
+
+  ### F) Delete dummy columns
 
   df <- df[colSums(!is.na(df)) > length(df) / (length(countries) + 1)]
 
@@ -298,7 +328,7 @@ build_data_ml <- function(data = get_data(
     ) != 0
   )]
 
-  ### F) Return results
+  ### G) Return results
 
   return(df)
 }

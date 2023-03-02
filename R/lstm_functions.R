@@ -11,7 +11,7 @@
 # library(tidyr)
 # library(data.table)
 
-nowcastLSTM::initialize_session(python_path = "/opt/mamba/bin/python")
+nowcastLSTM::initialize_session(python_path = Sys.which("python"))
 options(dplyr.summarise.inform = FALSE)
 
 # source("R/data_retrieval.R")
@@ -153,11 +153,10 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   # Compute residuals
 
   residuals <- predictions %>%
-    mutate(predictions = predictions * std_challenge + mean_challenge) %>%
     transmute(
       Country = country,
       Date = date,
-      value = predictions - actuals
+      value = (predictions - actuals) * std_challenge
     )
 
   #########################################

@@ -8,4 +8,5 @@
 *.docx
 point_estimates.json
 _targets/
+store_*/
 *.parquet
