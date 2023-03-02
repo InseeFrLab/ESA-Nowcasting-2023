@@ -19,18 +19,8 @@ jobs:
       - name: Checkout out repository
         uses: actions/checkout@v3
         with:
-          ref: gh-submissions
+          ref: 53-add-store-targets-to-s3-from-github-actions
           token: ${{ secrets.TOKEN_CI }}
-
-      - name: Configure Git
-        run: |
-          git config user.name Thomas Faria
-          git config user.email 57811152+ThomasFaria@users.noreply.github.com
-          
-      - name: Merge recent changes from main branch
-        run: | 
-          git fetch origin
-          git merge --allow-unrelated-histories -X theirs origin/main
 
       - name: Install python
         uses: actions/setup-python@v4
@@ -65,12 +55,6 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
 
-      - name: Commit and push submissions
-        run: |
-          git add Submissions/
-          git commit -m "New submission with Github Actions"
-          git push origin gh-submissions --set-upstream
-          
       - name: Save pipeline data in s3
         run: |
           targets <- yaml::read_yaml("_targets.yaml")
