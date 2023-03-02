@@ -236,6 +236,7 @@ NB_WE:
     - XGBOOST
     - LSTM
   init_date: "2000-01-01"
+
 TOLL_DE:
   name: "Truck toll mileage index DE"
   short_name: "toll"
