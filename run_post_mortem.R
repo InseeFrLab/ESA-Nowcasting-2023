@@ -14,7 +14,7 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
-#data <- tar_read(data, store = "store_data")
+data <- tar_read(data, store = "store_data")
 
 list(
   tar_target(
