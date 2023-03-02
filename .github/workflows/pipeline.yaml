@@ -70,3 +70,20 @@ jobs:
           git add Submissions/
           git commit -m "New submission with Github Actions"
           git push origin gh-submissions --set-upstream
+          
+      - name: Save pipeline data in s3
+        run: |
+          targets::tar_source(files = "R")
+          targets <- yaml::read_yaml("_targets.yaml")
+          lapply(targets, function(x){
+            store <- x$store
+            put_dir_s3(local_dir = paste0(x$store, "/"),
+                       s3_dir = paste0("targets-data/", x$store, "/"),
+                       bucket = "projet-esa-nowcasting")
+          })
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
