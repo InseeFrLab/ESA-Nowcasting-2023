@@ -2,6 +2,7 @@ XGBOOST:
   PPI:
     nb_months_past_to_use : 24
     nb_months_past_to_use_others : 4
+    nb_years_past_to_use : 0
     hyperparameters_europe :
       best_nround : 50
       best_eta : 0.15
@@ -17,6 +18,7 @@ XGBOOST:
   PVI:
     nb_months_past_to_use : 24
     nb_months_past_to_use_others : 4
+    nb_years_past_to_use : 0
     hyperparameters_europe :
       best_nround : 50
       best_eta : 0.15
@@ -51,9 +53,11 @@ LSTM:
   PPI:
     nb_months_past_to_use : 1
     nb_months_past_to_use_others : 4
+    nb_years_past_to_use : 0
   PVI:
     nb_months_past_to_use : 1
     nb_months_past_to_use_others : 4
+    nb_years_past_to_use : 0
   TOURISM:
     nb_months_past_to_use : 1
     nb_months_past_to_use_others : 6
