@@ -57,6 +57,7 @@ jobs:
 
       - name: Save pipeline data in s3
         run: |
+          targets::tar_source(files = "R")
           targets <- yaml::read_yaml("_targets.yaml")
           lapply(targets, function(x){
             store <- x$store
