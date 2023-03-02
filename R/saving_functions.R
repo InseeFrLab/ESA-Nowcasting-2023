@@ -74,3 +74,17 @@ save_data <- function(data, challenges_info) {
 
   paste0("data/", month)
 }
+
+
+put_dir_s3 <- function(local_dir, s3_dir, bucket) {
+  # Get a list of files in the local folder
+  files_to_copy <- list.files(local_dir, all.files = TRUE, recursive = TRUE)
+  # Copy the files to your Minio bucket
+  for (file in files_to_copy) {
+    # Determine the s3_dir key and file path
+    file_path <- paste0(local_dir, file)
+    s3_dir_key <- paste0(s3_dir, file)
+    # Copy the file to your Minio bucket
+    aws.s3::put_object(file = file_path, object = s3_dir_key, bucket = bucket, region = "")
+  }
+}
