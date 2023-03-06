@@ -260,6 +260,7 @@ GTRENDS_MANUFACTURING:
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 49
   filters:
     geo:  ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -276,6 +277,7 @@ GTRENDS_MATERIALS:
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 287
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -289,9 +291,11 @@ GTRENDS_FUEL_GAS:
   challenge:
     - PPI
     - PVI
+    - DFM
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 1268
   filters:
     geo:  ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -307,6 +311,7 @@ GTRENDS_HOTELS:
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 179
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -322,6 +327,7 @@ GTRENDS_TRAVEL_AGENCIES:
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 1010
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -337,6 +343,7 @@ GTRENDS_VACATIONS:
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 1019
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -352,6 +359,7 @@ GTRENDS_SKI:
   model:
     - XGBOOST
     - LSTM
+    - DFM
   category: 1119
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
