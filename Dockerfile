@@ -11,4 +11,6 @@ RUN apt-get update && \
     # Configure renv to use RSPM to download packages by default
     echo 'options(renv.config.repos.override = getOption("repos"))' >> ${R_HOME}/etc/Rprofile.site && \
     # Install R packages
-    Rscript -e "renv::restore()"
+    Rscript -e "renv::restore()" && \
+    # Fix permissions
+    chown -R ${USERNAME}:${GROUPNAME} ${HOME}
