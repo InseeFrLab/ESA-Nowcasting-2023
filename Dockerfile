@@ -1,7 +1,7 @@
 FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 
-COPY . ${WORKSPACE_DIR}/ESA-Nowcasting-2023
-WORKDIR ${WORKSPACE_DIR}/ESA-Nowcasting-2023
+WORKDIR ${HOME}/ESA-Nowcasting-2023
+COPY . .
 
 # Install minimal python
 RUN apt-get update && \
