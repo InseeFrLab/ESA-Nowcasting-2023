@@ -78,7 +78,7 @@ save_data <- function(data, challenges_info) {
 
 put_dir_s3 <- function(local_dir, s3_dir, bucket) {
   # Get a list of files in the local folder
-  files_to_copy <- list.files(local_dir, all.files = TRUE, recursive = TRUE)
+  files_to_copy <- list.files(local_dir, recursive = TRUE)
   # Copy the files to your Minio bucket
   for (file in files_to_copy) {
     # Determine the s3_dir key and file path

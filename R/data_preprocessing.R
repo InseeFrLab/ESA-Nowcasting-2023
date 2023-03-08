@@ -42,6 +42,23 @@ reshape_daily_data <- function(data, source) {
   return(reshaped_data)
 }
 
+reshape_gtrends_data <- function(data, country) {
+  subset_lists <- Filter(function(x) x$source == "gtrends", data)
+
+  reshaped_data <- mapply(function(x, name) {
+    x$data %>%
+      dplyr::mutate(
+        var = name,
+        time = as.Date(time)
+      ) %>%
+      dplyr::filter(geo %in% country) %>%
+      tidyr::pivot_wider(names_from = c(geo, var), values_from = x$short_name)
+  }, subset_lists, names(subset_lists), SIMPLIFY = FALSE) |>
+    purrr::reduce(full_join, by = "time")
+
+  return(reshaped_data)
+}
+
 pivot_eurostat_data <- function(data) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
 
