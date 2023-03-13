@@ -5,6 +5,9 @@ title: "Welcome"
 Topo sur le challenge, sur l'équipe.
 Ajouter logo ESA + Insee 
 
+![](images/logo-INSEE){style="float: right;" fig-align="right" width="250"}
+
+
 
 ## License {.unnumbered}
 

@@ -3,9 +3,10 @@ project:
 
 website:
   page-navigation: true
+  favicon: "images/logo-ESA.png"
   title: "European Statistics Awards for Nowcasting"
   description: "Website of the INSEE team competing for the European Statistics Awards for Nowcasting, results and methods are freely-available and open-source."
-  # site-url: "https://???"
+  site-url: "https://inseefrlab.github.io/ESA-Nowcasting-2023/"
   
   repo-url: "https://github.com/InseeFrLab/ESA-Nowcasting-2023"
   repo-actions: [edit, issue]
@@ -25,7 +26,7 @@ website:
 
   navbar:
     background: "#A7D5E8"
-    logo: "images/logo-ESA.png"
+    logo: "images/logo-INSEE.png"
     align: center
     title: false
     collapse-below: lg
