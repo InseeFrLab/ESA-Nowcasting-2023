@@ -1,7 +1,7 @@
 FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 
-#WORKDIR ${HOME}/ESA-Nowcasting-2023
-#COPY . .
+WORKDIR ${HOME}/ESA-Nowcasting-2023
+COPY . .
 
 # Install minimal python
 RUN apt-get update && \
@@ -10,8 +10,6 @@ RUN apt-get update && \
     pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu && \
     # Configure renv to use RSPM to download packages by default
     echo 'options(renv.config.repos.override = getOption("repos"))' >> ${R_HOME}/etc/Rprofile.site && \
-    git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git && \
-    cd ESA-Nowcasting-2023 && \
     # Install R packages
     Rscript -e "renv::restore()" && \
     # Fix permissions
