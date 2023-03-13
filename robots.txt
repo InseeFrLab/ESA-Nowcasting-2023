@@ -1,1 +1,1 @@
-Sitemap: https://github.com/InseeFrLab/ESA-Nowcasting-2023/sitemap.xml
+Sitemap: https://inseefrlab.github.io/ESA-Nowcasting-2023/sitemap.xml
