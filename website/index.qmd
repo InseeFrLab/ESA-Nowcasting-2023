@@ -1,0 +1,18 @@
+---
+title: "Welcome"
+---
+
+Topo sur le challenge, sur l'équipe.
+Ajouter logo ESA + Insee 
+
+
+## License {.unnumbered}
+
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />This online work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+Visit [here](https://github.com/InseeFrLab/ESA-Nowcasting-2023/blob/main/LICENCE) for more information about the license.
+
+## Acknowledements {.unnumbered}
+
+Huge thanks to the #rstats education community who have made numerous suggestions for this resource, to Lee Suddaby and Zeno Kujawa for converting the homework assignments to learnr tutorials, and to [Müge Çetinkaya](http://muge.fr/) for the hex logo!
+
+This website is built with [Quarto](https://quarto.org), the lovely icons by [icons8](http://icons8.com/), and none of this would be possible without the [tidyverse](https://tidyverse.org).

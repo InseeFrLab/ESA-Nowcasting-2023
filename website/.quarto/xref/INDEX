@@ -1,0 +1,23 @@
+{
+  "index.qmd": {
+    "index.html": "cb3dba4f"
+  },
+  "data.qmd": {
+    "data.html": "d6c1a5ca"
+  },
+  "ppi.qmd": {
+    "ppi.html": "8859bc11"
+  },
+  "tourism.qmd": {
+    "tourism.html": "187e030f"
+  },
+  "methodology.qmd": {
+    "methodology.html": "cc5f2440"
+  },
+  "pvi.qmd": {
+    "pvi.html": "671edaa9"
+  },
+  "LICENCE.md": {
+    "LICENCE.html": "b2a8552e"
+  }
+}
