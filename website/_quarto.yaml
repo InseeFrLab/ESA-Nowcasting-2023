@@ -25,7 +25,7 @@ website:
 
   navbar:
     background: "#A7D5E8"
-    logo: "images/??.svg"
+    logo: "images/logo-ESA.png"
     align: center
     title: false
     collapse-below: lg
