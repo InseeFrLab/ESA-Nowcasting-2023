@@ -39,10 +39,16 @@ jobs:
         run: |
           wget -q https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc
           chmod +x /usr/local/bin/mc
-          export MC_HOST_s3=https://${{ secrets.AWS_ACCESS_KEY_ID }}:${{ secrets.AWS_SECRET_ACCESS_KEY }}@${{ secrets.AWS_S3_ENDPOINT }}
+          export 
        
       - name: Retrieve stores from s3
-        run: mc ls s3
+        run: |
+          export MC_HOST_s3=https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@$AWS_S3_ENDPOINT
+          mc ls s3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
