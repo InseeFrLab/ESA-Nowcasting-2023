@@ -34,19 +34,19 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
-
-      - name: Retrieve stores from s3
-        run: ./setup.sh
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
-
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: gh-pages
-          path: website/
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_CI }}
+# 
+#       - name: Retrieve stores from s3
+#         run: ./setup.sh
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+#           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+# 
+#       - name: Render and Publish
+#         uses: quarto-dev/quarto-actions/publish@v2
+#         with:
+#           target: gh-pages
+#           path: website/
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.TOKEN_CI }}
