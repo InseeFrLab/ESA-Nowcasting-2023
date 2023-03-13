@@ -2,8 +2,6 @@ on:
   workflow_dispatch:
   push:
     branches: "main"
-    paths:
-      - website/
       
 name: Publish website
 
