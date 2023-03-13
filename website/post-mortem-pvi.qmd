@@ -1,0 +1,49 @@
+# Post-Mortem
+
+```{r}
+#| label: fig-post-mortem-pvi1
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_pvi_1, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-pvi2
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_pvi_2, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-pvi3
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_pvi_3, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-pvi4
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_pvi_4, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-pvi5
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_pvi_5, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-pvi6
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_pvi_6, store = "store_post_mortem")
+```

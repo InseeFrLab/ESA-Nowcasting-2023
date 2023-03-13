@@ -1,0 +1,9 @@
+# Residuals
+
+```{r}
+#| label: fig-resid-tourism
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_resids_tourism, store = "store_tourism")
+```

@@ -1,0 +1,49 @@
+# Post-Mortem
+
+```{r}
+#| label: fig-post-mortem-tourism1
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_tourism_1, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-tourism2
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_tourism_2, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-tourism3
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_tourism_3, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-tourism4
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_tourism_4, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-tourism5
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_tourism_5, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-tourism6
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_tourism_6, store = "store_post_mortem")
+```

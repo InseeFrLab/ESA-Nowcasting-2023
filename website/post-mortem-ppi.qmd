@@ -1,0 +1,57 @@
+# Post-Mortem
+
+```{r}
+#| label: fig-post-mortem-ppi1
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_1, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-ppi2
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_2, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-ppi3
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_3, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-ppi4
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_4, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-ppi5
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_5, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-ppi6
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_6, store = "store_post_mortem")
+```
+
+```{r}
+#| label: fig-post-mortem-ppi7
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_errors_ppi_7, store = "store_post_mortem")
+```
