@@ -1,3 +1,5 @@
-# Producer prices in industry challenge
+---
+title: Producer prices in industry challenge
+---
 
-Coucou
+Un petit topo sur le PPI

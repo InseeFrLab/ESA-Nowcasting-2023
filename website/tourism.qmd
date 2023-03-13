@@ -1,4 +1,5 @@
-# Number of nights spent at tourist accommodation establishments challenge
+---
+title: Number of nights spent at tourist accommodation establishments challenge
+---
 
-
-coucou
+Un petit topo sur le tourisme

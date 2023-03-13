@@ -1,7 +1,5 @@
 project:
   type: website
-  resources:
-    - "../"
 
 website:
   page-navigation: true
@@ -51,49 +49,39 @@ website:
       - text: "TOURISM"
         href: tourism.qmd
 
-  # sidebar:
-  #   - id: hello-dsbox
-  #     title: "Hello #dsbox!"
-  #     style: "floating"
-  #     collapse-level: 2
-  #     align: left
-  #     contents:
-  #       - href: hello.qmd
-  #       - href: 01-overview.qmd
-  #       - href: 01-design-principles.qmd
-  #       - href: 01-topics.qmd
-  #       - href: 01-tech-stack.qmd
-  #       - href: 01-community.qmd
-  # 
-  #   - id: content
-  #     title: "Content"
-  #     contents:
-  #       - href: content.qmd
-  #       - href: 02-hello-world.qmd
-  #       - href: 02-exploring-data.qmd
-  #       - href: 02-ethics.qmd
-  #       - href: 02-making-rigorous-conclusions.qmd
-  #       - href: 02-looking-further.qmd
-  #       - href: 02-interactive-tutorials.qmd
-  #       - href: 02-project.qmd
-  #       - href: 02-exams.qmd
-  # 
-  #   - id: infrastructure
-  #     title: "Infrastructure"
-  #     contents:
-  #       - href: infrastructure.qmd
-  #       - href: 03-access-r.qmd
-  #       - href: 03-version-control.qmd
-  #       - href: 03-discussion.qmd
-  #       - href: 03-sharing.qmd
-  #       - href: 03-alternative-setups.qmd
-  # 
-  #   - id: design
-  #     align: left
-  #     contents:
-  #       - href: design.qmd
-  #       - href: 04-pedagogy.qmd
-  #       - href: 04-schedule.qmd
+  sidebar:
+    - id: ppi
+      title: "PPI"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - href: ppi.qmd
+        - href: forecast-ppi.qmd
+        - href: post-mortem-ppi.qmd
+        - href: resid-ppi.qmd
+
+    - id: pvi
+      title: "PV"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - href: pvi.qmd
+        - href: forecast-pvi.qmd
+        - href: post-mortem-pvi.qmd
+        - href: resid-pvi.qmd
+        
+    - id: tourism
+      title: "TOURISM"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - href: tourism.qmd
+        - href: forecast-tourism.qmd
+        - href: post-mortem-tourism.qmd
+        - href: resid-tourism.qmd
 
 format:
   html:
@@ -105,6 +93,15 @@ format:
     mainfont: "Atkinson Hyperlegible"
     include-in-header: "style/fontawesome.html"
 
+knitr:
+  opts_knit:
+    root.dir: "../"
+  opts_chunk:    
+    cache: true
+
+execute:
+  echo: false
+  
 freeze: auto
 
 editor: visual
