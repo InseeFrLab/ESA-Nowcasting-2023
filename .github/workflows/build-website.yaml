@@ -41,6 +41,10 @@ jobs:
           chmod +x /usr/local/bin/mc
           export MC_HOST_s3=https://${{ secrets.AWS_ACCESS_KEY_ID }}:${{ secrets.AWS_SECRET_ACCESS_KEY }}@${{ secrets.AWS_S3_ENDPOINT }}
 
+      -name: Test
+       run: aws.s3::get_bucket("projet-esa-nowcasting", region = "")
+       shell: Rscript {0}
+       
       - name: Retrieve stores from s3
         run: mc cp -r s3/projet-esa-nowcasting/targets-data/store_ppi/ .
 
