@@ -1,6 +1,8 @@
 on:
   workflow_dispatch:
-
+  push:
+    branches: "62-create-website"
+    
 name: Publish website
 
 jobs:
