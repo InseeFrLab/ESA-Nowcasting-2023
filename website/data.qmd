@@ -4,6 +4,12 @@ title: Data
 
 ## Eurostat data
 
+### Producer prices in industry, split by : division level of NACE and MIGs
+
+### Import prices in industry, split by : division level of CPA and MIGs
+
+### Business survey in industry
+
 ## Financial data
 
 ## Electricity prices
