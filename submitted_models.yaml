@@ -15,12 +15,12 @@ PPI:
   september:
     entry_1: NAIVE
     entry_2: NAIVE_2
-    entry_3: ARIMA
+    entry_3: ARIMA  # Top performer
     entry_4:
     entry_5:
   october:
     entry_1: NAIVE
-    entry_2: ARIMA
+    entry_2: ARIMA  # Top performer
     entry_3: XGBOOST
     entry_4: DFM
     entry_5: ETS
@@ -29,16 +29,16 @@ PPI:
     entry_2: REGARIMA
     entry_3: XGBOOST
     entry_4: DFM
-    entry_5: ETS
+    entry_5: ETS  # Top performer
   december:
     entry_1: REGARIMA
-    entry_2: XGBOOST
+    entry_2: XGBOOST  # Top performer
     entry_3: XGBOOST_DIFF
     entry_4: DFM
     entry_5: ETS
   january:
     entry_1: REGARIMA
-    entry_2: DFM
+    entry_2: DFM  # Top performer
     entry_3: ETS
     entry_4: XGBOOST
     entry_5:
@@ -58,7 +58,7 @@ PPI:
 PVI:
   september:
     entry_1: NAIVE
-    entry_2: NAIVE_2
+    entry_2: NAIVE_2  # Top performer
     entry_3: ARIMA
     entry_4:
     entry_5:
@@ -66,26 +66,26 @@ PVI:
     entry_1: NAIVE
     entry_2: ARIMA
     entry_3: XGBOOST
-    entry_4: DFM
+    entry_4: DFM  # Top performer
     entry_5: ETS
   november:
     entry_1: NAIVE
-    entry_2: REGARIMA
+    entry_2: REGARIMA  # Top performer
     entry_3: XGBOOST
     entry_4: DFM
     entry_5: ETS
   december:
     entry_1: REGARIMA
-    entry_2: XGBOOST
+    entry_2: XGBOOST  # Top performer
     entry_3: XGBOOST_DIFF
     entry_4: DFM
     entry_5: ETS
   january:
-    entry_1: REGARIMA
-    entry_2: DFM
-    entry_3: ETS
-    entry_4: XGBOOST
-    entry_5:
+    entry_1: NAIVE
+    entry_2: REGARIMA
+    entry_3: XGBOOST  # Top performer
+    entry_4: DFM
+    entry_5: ETS
   february:
     entry_1: REGARIMA
     entry_2: DFM
@@ -103,19 +103,19 @@ TOURISM:
   september:
     entry_1: NAIVE
     entry_2: NAIVE_2
-    entry_3: ARIMA
+    entry_3: ARIMA  # Top performer
     entry_4:
     entry_5:
   october:
     entry_1: NAIVE
-    entry_2: ARIMA
+    entry_2: ARIMA  # Top performer
     entry_3: XGBOOST
     entry_4: DFM
     entry_5:
   november:
     entry_1: NAIVE
     entry_2: ARIMA
-    entry_3: XGBOOST
+    entry_3: XGBOOST  # Top performer
     entry_4: DFM
     entry_5: ETS
   december:
@@ -123,7 +123,7 @@ TOURISM:
     entry_2: XGBOOST
     entry_3: XGBOOST_DIFF
     entry_4: DFM
-    entry_5: ETS
+    entry_5: ETS  # Top performer
   january:
     entry_1: REGARIMA
     entry_2: DFM
