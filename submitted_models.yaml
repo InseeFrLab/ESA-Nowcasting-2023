@@ -80,12 +80,18 @@ PVI:
     entry_3: XGBOOST_DIFF
     entry_4: DFM
     entry_5: ETS
+  # january:  # Submitted
+  #   entry_1: NAIVE
+  #   entry_2: REGARIMA
+  #   entry_3: XGBOOST  # Top performer
+  #   entry_4: DFM
+  #   entry_5: ETS
   january:
-    entry_1: NAIVE
-    entry_2: REGARIMA
-    entry_3: XGBOOST  # Top performer
-    entry_4: DFM
-    entry_5: ETS
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5:
   february:
     entry_1: REGARIMA
     entry_2: DFM
