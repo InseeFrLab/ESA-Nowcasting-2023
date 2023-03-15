@@ -2,6 +2,8 @@
 title: Data
 ---
 
+We only use open data
+
 ## Eurostat data
 
 We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
@@ -44,6 +46,8 @@ We use classic macroeconomic variables provided to Eurostat by European countrie
 
 ## Electricity prices
 
+European wholesale electricity price data available on [Ember.org](https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/)
+
 ## Number of week-end
 
 ## Tools in Germany
@@ -51,3 +55,6 @@ We use classic macroeconomic variables provided to Eurostat by European countrie
 Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
 
 ## Google Trends
+
+## Other potential interesting data sources (not identified in open data sources)
+Historical Purchasing manager's index by country, london metal exchange indices, daily electricity consumption by industrial firms country by country...
