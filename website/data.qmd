@@ -4,12 +4,50 @@ title: Data
 
 ## Eurostat data
 
+We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
+
+1.  Producer prices in industry:
+
+-   total on domestic market (target variable)
+-   division level of NACE and MIGs
+
+2.  Import prices in industry:
+
+-   total
+-   division level of CPA and MIGs
+
+3.  Production index in industry :
+
+-   total (target variable)
+-   intermediary goods (MIG_ING)
+
+4.  Business survey in industry :
+
+-   Industrial confidence indicator
+-   Production development observed over the past 3 months
+-   Production expectations over the next 3 months
+-   Employment expectations over the next 3 months
+-   Assessment of order-book levels
+-   Assessment of the current level of stocks of finished products
+-   Selling price expectations over the next 3 months
+
+5.  Harmonised Index of Consumer Prices on a few products
+
+6.  Number of nights spent at tourist accommodation establishments (target variable)
+
 ## Financial data
+
+1.  Brent (dollars)
+2.  Euro/dollar exchange rate
+3.  S&P 500 index
+4.  Euro stoxx 50 Index
 
 ## Electricity prices
 
 ## Number of week-end
 
 ## Tools in Germany
+
+Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
 
 ## Google Trends
