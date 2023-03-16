@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/data.html</loc>
-    <lastmod>2023-03-13T18:01:12.034Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/pvi.html</loc>
-    <lastmod>2023-03-13T18:01:12.718Z</lastmod>
-  </url>
-  <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/tourism.html</loc>
-    <lastmod>2023-03-13T18:01:13.090Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/resid-tourism.html</loc>
-    <lastmod>2023-03-13T18:01:15.866Z</lastmod>
+    <lastmod>2023-03-16T12:45:45.110Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-ppi.html</loc>
-    <lastmod>2023-03-13T18:01:25.243Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/forecast-pvi.html</loc>
-    <lastmod>2023-03-13T18:01:32.943Z</lastmod>
+    <lastmod>2023-03-16T12:45:54.643Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-pvi.html</loc>
-    <lastmod>2023-03-13T18:01:41.447Z</lastmod>
+    <lastmod>2023-03-16T12:46:02.803Z</lastmod>
   </url>
   <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/forecast-tourism.html</loc>
-    <lastmod>2023-03-13T18:01:49.403Z</lastmod>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/resid-tourism.html</loc>
+    <lastmod>2023-03-16T12:46:05.311Z</lastmod>
   </url>
   <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/forecast-ppi.html</loc>
-    <lastmod>2023-03-13T18:01:57.884Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/index.html</loc>
-    <lastmod>2023-03-13T18:01:58.208Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/resid-ppi.html</loc>
-    <lastmod>2023-03-13T18:02:00.856Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/LICENCE.html</loc>
-    <lastmod>2023-03-13T18:02:01.340Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-tourism.html</loc>
-    <lastmod>2023-03-13T18:02:09.948Z</lastmod>
-  </url>
-  <url>
-    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/resid-pvi.html</loc>
-    <lastmod>2023-03-13T18:02:12.592Z</lastmod>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/pvi.html</loc>
+    <lastmod>2023-03-16T12:46:05.659Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/methodology.html</loc>
-    <lastmod>2023-03-13T18:02:12.928Z</lastmod>
+    <lastmod>2023-03-16T12:46:06.007Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/ppi.html</loc>
-    <lastmod>2023-03-13T18:02:13.248Z</lastmod>
+    <lastmod>2023-03-16T12:46:06.355Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/forecast-tourism.html</loc>
+    <lastmod>2023-03-16T12:46:14.011Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/resid-ppi.html</loc>
+    <lastmod>2023-03-16T12:46:16.575Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/index.html</loc>
+    <lastmod>2023-03-16T12:46:16.915Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/data.html</loc>
+    <lastmod>2023-03-16T12:46:17.279Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-tourism.html</loc>
+    <lastmod>2023-03-16T12:46:25.623Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/forecast-ppi.html</loc>
+    <lastmod>2023-03-16T12:46:34.043Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/resid-pvi.html</loc>
+    <lastmod>2023-03-16T12:46:36.595Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/LICENCE.html</loc>
+    <lastmod>2023-03-16T12:46:37.107Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/forecast-pvi.html</loc>
+    <lastmod>2023-03-16T12:46:44.591Z</lastmod>
   </url>
 </urlset>

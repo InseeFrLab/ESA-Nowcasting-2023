@@ -160,15 +160,25 @@ ul.task-list li input[type="checkbox"] {
 <p>Describe the methodology here.</p>
 <section id="regarima" class="level2">
 <h2 class="anchored" data-anchor-id="regarima">Regarima</h2>
+<p>Automatic ARIMA modelling with detection of outliers and external regressors (financial series, macroeconomic series…). We use the RJdemetra package that provide an easy way to identify and estimate such models with high flexibility on parameters. RegARIMA models offer some advantages in this exercise:</p>
+<ul>
+<li>they are relatively simple, easy to interpret, and so provide a useful benchmark for more complex models</li>
+<li>we allow for automatic detection of outliers on the estimation period in order to avoid large bias on coefficients. Without adding outliers, “covid” points would for instance totally distort coefficients. Outliers identified through this procedure could in addition be used in other methods</li>
+<li>computation time is really fast (a few seconds for the whole set of countries)</li>
+<li>external regressors can be selected independantly through standard variable selection.</li>
+</ul>
 </section>
 <section id="dynamic-factor-models" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic-factor-models">Dynamic Factor Models</h2>
+<p>Using several sources of data (financial series, macroeconomic series, surveys…) we estimate a dynamic factor model per country. Missing data are filled, collinearity is taken into account, data are scaled and log transformed when necessary. Estimation takes about 20 seconds per country.</p>
 </section>
 <section id="ets" class="level2">
 <h2 class="anchored" data-anchor-id="ets">ETS</h2>
+<p>Exponential smoothing models: forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Estimation takes 1 second by country. No data processing</p>
 </section>
 <section id="xgboost" class="level2">
 <h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
+<p>Using several sources of data (financial series, macroeconomic series, surveys…) we construct a dataset in which each row corresponds to a value per country and per date with many explicative variables. We control for colinearity. On this basis, we train a XGboost model to predict the value of the following month.</p>
 </section>
 <section id="lstm" class="level2">
 <h2 class="anchored" data-anchor-id="lstm">LSTM</h2>

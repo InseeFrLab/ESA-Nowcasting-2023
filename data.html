@@ -63,6 +63,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta property="og:title" content="European Statistics Awards for Nowcasting - Data">
+<meta property="og:description" content="We only use open data">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
 </head>
 
@@ -134,6 +135,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#number-of-week-end" id="toc-number-of-week-end" class="nav-link" data-scroll-target="#number-of-week-end">Number of week-end</a></li>
   <li><a href="#tools-in-germany" id="toc-tools-in-germany" class="nav-link" data-scroll-target="#tools-in-germany">Tools in Germany</a></li>
   <li><a href="#google-trends" id="toc-google-trends" class="nav-link" data-scroll-target="#google-trends">Google Trends</a></li>
+  <li><a href="#other-potential-interesting-data-sources-not-identified-in-open-data-sources" id="toc-other-potential-interesting-data-sources-not-identified-in-open-data-sources" class="nav-link" data-scroll-target="#other-potential-interesting-data-sources-not-identified-in-open-data-sources">Other potential interesting data sources (not identified in open data sources)</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -157,23 +159,75 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>We only use open data</p>
 <section id="eurostat-data" class="level2">
 <h2 class="anchored" data-anchor-id="eurostat-data">Eurostat data</h2>
+<p>We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. Series are automatically retrieved from Eurostat database.</p>
+<ol type="1">
+<li><a href="https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en">Producer prices in industry</a>:</li>
+</ol>
+<ul>
+<li>total on domestic market (target variable)</li>
+<li>division level of NACE and MIGs</li>
+</ul>
+<ol start="2" type="1">
+<li><a href="">Import prices in industry</a>:</li>
+</ol>
+<ul>
+<li>total</li>
+<li>division level of CPA and MIGs</li>
+</ul>
+<ol start="3" type="1">
+<li><a href="https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en">Production index in industry</a> :</li>
+</ol>
+<ul>
+<li>total (target variable)</li>
+<li>intermediary goods (MIG_ING)</li>
+</ul>
+<ol start="4" type="1">
+<li><a href="https://ec.europa.eu/eurostat/databrowser/view/ei_bsin_m_r2/default/table?lang=en">Business survey in industry</a>:</li>
+</ol>
+<ul>
+<li>Industrial confidence indicator</li>
+<li>Production development observed over the past 3 months</li>
+<li>Production expectations over the next 3 months</li>
+<li>Employment expectations over the next 3 months</li>
+<li>Assessment of order-book levels</li>
+<li>Assessment of the current level of stocks of finished products</li>
+<li>Selling price expectations over the next 3 months</li>
+</ul>
+<ol start="5" type="1">
+<li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en">Harmonised Index of Consumer Prices</a> on a few products</p></li>
+<li><p>Number of nights spent at tourist accommodation establishments (target variable)</p></li>
+</ol>
 </section>
 <section id="financial-data" class="level2">
 <h2 class="anchored" data-anchor-id="financial-data">Financial data</h2>
+<ol type="1">
+<li>Brent (dollars)</li>
+<li>Euro/dollar exchange rate</li>
+<li>S&amp;P 500 index</li>
+<li>Euro stoxx 50 Index</li>
+</ol>
 </section>
 <section id="electricity-prices" class="level2">
 <h2 class="anchored" data-anchor-id="electricity-prices">Electricity prices</h2>
+<p>European wholesale electricity price data available on <a href="https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/">Ember.org</a></p>
 </section>
 <section id="number-of-week-end" class="level2">
 <h2 class="anchored" data-anchor-id="number-of-week-end">Number of week-end</h2>
 </section>
 <section id="tools-in-germany" class="level2">
 <h2 class="anchored" data-anchor-id="tools-in-germany">Tools in Germany</h2>
+<p>Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on <a href="https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html">Destatis website</a>.</p>
 </section>
 <section id="google-trends" class="level2">
 <h2 class="anchored" data-anchor-id="google-trends">Google Trends</h2>
+<p>We retrieve google trend series on a few categories, especially for nowcasting on tourism.</p>
+</section>
+<section id="other-potential-interesting-data-sources-not-identified-in-open-data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="other-potential-interesting-data-sources-not-identified-in-open-data-sources">Other potential interesting data sources (not identified in open data sources)</h2>
+<p>Historical Purchasing manager’s index by country, london metal exchange indices, daily electricity consumption by industrial firms country by country…</p>
 
 
 </section>
