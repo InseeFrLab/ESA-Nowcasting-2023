@@ -1,0 +1,20 @@
+---
+title: "Welcome"
+---
+
+Topo sur le challenge, sur l'équipe.
+Ajouter logo ESA + Insee 
+
+![](images/logo-INSEE){style="float: right;" fig-align="right" width="250"}
+
+
+
+## License {.unnumbered}
+
+This work is licenced under the [European Union Public Licence 1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+
+## Acknowledements {.unnumbered}
+
+Huge thanks to ...
+
+This website is built with [Quarto](https://quarto.org).

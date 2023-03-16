@@ -8,7 +8,8 @@ build_data_dfms <- function(challenge, challenges_info, data_info, models_info, 
 
   data_list <- list(
     reshape_eurostat_data(selected_data, country),
-    reshape_daily_data(selected_data, "Yahoo")
+    reshape_daily_data(selected_data, "Yahoo"),
+    reshape_gtrends_data(selected_data, country)
   )
 
   if (country == "DE" &

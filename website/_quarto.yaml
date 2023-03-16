@@ -1,0 +1,108 @@
+project:
+  type: website
+
+website:
+  page-navigation: true
+  favicon: "images/logo-ESA.png"
+  title: "European Statistics Awards for Nowcasting"
+  description: "Website of the INSEE team competing for the European Statistics Awards for Nowcasting, results and methods are freely-available and open-source."
+  site-url: "https://inseefrlab.github.io/ESA-Nowcasting-2023/"
+  
+  repo-url: "https://github.com/InseeFrLab/ESA-Nowcasting-2023"
+  repo-actions: [edit, issue]
+
+  open-graph: true
+  # twitter-card:
+  #   creator: "@minebocek"
+  #   image: "/images/twitter-card.png"
+
+  page-footer:
+    left: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
+    background: "#A7D5E8"
+    right:
+    - text: "License"
+      href: LICENCE.md
+
+
+  navbar:
+    background: "#A7D5E8"
+    logo: "images/logo-INSEE.png"
+    align: center
+    title: false
+    collapse-below: lg
+ 
+    right:
+      - icon: github
+        href: "https://github.com/InseeFrLab/ESA-Nowcasting-2023"
+        aria-label: GitHub
+
+    left:
+      - text: "Overview"
+        href: index.qmd
+      - text: "Methodology"
+        href: methodology.qmd
+      - text: "Data"
+        href: data.qmd
+      - text: "PPI"
+        href: ppi.qmd
+      - text: "PVI"
+        href: pvi.qmd
+      - text: "TOURISM"
+        href: tourism.qmd
+
+  sidebar:
+    - id: ppi
+      title: "PPI"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - href: ppi.qmd
+        - href: forecast-ppi.qmd
+        - href: post-mortem-ppi.qmd
+        - href: resid-ppi.qmd
+
+    - id: pvi
+      title: "PV"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - href: pvi.qmd
+        - href: forecast-pvi.qmd
+        - href: post-mortem-pvi.qmd
+        - href: resid-pvi.qmd
+        
+    - id: tourism
+      title: "TOURISM"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - href: tourism.qmd
+        - href: forecast-tourism.qmd
+        - href: post-mortem-tourism.qmd
+        - href: resid-tourism.qmd
+
+format:
+  html:
+    theme:
+      light: [cosmo, style/styles.scss]
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    mainfont: "Atkinson Hyperlegible"
+    include-in-header: "style/fontawesome.html"
+
+knitr:
+  opts_knit:
+    root.dir: "../"
+  opts_chunk:    
+    cache: true
+
+execute:
+  echo: false
+  
+freeze: auto
+
+editor: visual

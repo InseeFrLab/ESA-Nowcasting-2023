@@ -1,0 +1,15 @@
+---
+title: Methodology
+---
+
+Describe the methodology here.
+
+## Regarima
+
+## Dynamic Factor Models
+
+## ETS
+
+## XGBoost
+
+## LSTM
