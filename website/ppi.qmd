@@ -9,16 +9,17 @@ Un petit topo sur le PPI
 #| cache: false
 
 data <- targets::tar_read(data, store = "store_data")
+targets::tar_load(predictions_ppi, store = "store_ppi")
 
 sample <- data$PPI$data |>
   dplyr::filter((nace_r2 %in% "B-E36"))
 
-ojs_define(data = sample)
+ojs_define(data = sample, pred = predictions_ppi)
 ```
 
 
 ```{ojs}
-viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: "Select a country"})
+viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: "Select a country:"})
 ```
 
 
@@ -35,25 +36,35 @@ Plot.plot({
     },
   marks: [
     Plot.line(sample, {
-    x: "date", 
-    y: "values", 
-    stroke: "black",
-    title: (d) =>
-          `${d.date.toLocaleString("en-UK", {
-            month: "long",
-            year: "numeric"
-          })}\n ${d.values} `,
-    xDomain: range
-    })
-  ]
+        x: "date", 
+        y: "values", 
+        stroke: "black",
+        title: (d) =>
+              `${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })}\n ${d.values} `
+        }),
+    Plot.dot(preds, {
+        x: "date", 
+        y: "values",
+        fill: "model"
+        })
+  ],
+  color: {legend: true}
 })
 )
 ```
 
 ```{ojs}
-dates = sample.map(d => d.date)
+dates = {
+  const data = sample.map(d => d.date)
+  data.push(preds.map(d => d.date)[0])
+  return data  
+}
+
 viewof range = offsetInterval(dates, {
-  value: [ dates[[dates.length-90]], dates[dates.length-1] ],
+  value: [ dates[dates.length-90], dates[dates.length-1] ],
   format: ([a, b]) => htl.html`<span ${{
     style: "display: flex; justify-content: space-between"
   }}>
@@ -63,9 +74,8 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
-```{ojs}
-Inputs.table(sample)
-```
+<!--Inputs.table(sample)-->
+
 
 
 <!-- HELPERS -->
@@ -85,8 +95,21 @@ sample = data_typed.filter(d => d.geo == country)
 ```
 
 ```{ojs}
-<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
+pred_t = transpose(pred)
+pred_typed = pred_t.map( d => (
+    {
+      date: dateParser(d.Date),
+      values: d.value,
+      geo: d.Country,
+      model: d.Entries
+    } 
+   )
+ )
 
+preds = pred_typed.filter(d => d.geo == country)
+```
+
+```{ojs}
 dateParser = (dateString) => {
   const [year, month, day] = dateString.split('-')
   const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
@@ -95,6 +118,8 @@ dateParser = (dateString) => {
   return date
 }
 ```
+
+<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
 
 ```{ojs}
 function unique(data, accessor) {
