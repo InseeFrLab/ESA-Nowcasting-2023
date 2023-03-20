@@ -68,8 +68,13 @@ viewof range = offsetInterval(dates, {
   format: ([a, b]) => htl.html`<span ${{
     style: "display: flex; justify-content: space-between"
   }}>
-    <span>${a.toISOString("en-UK").slice(0, 10)}</span>
-    <span>${b.toISOString("en-UK").slice(0, 10)}</span>
+    ${a.toISOString("en-UK").slice(0, 10)}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    ${b.toISOString("en-UK").slice(0, 10)}
   </span>`
 })
 ```
