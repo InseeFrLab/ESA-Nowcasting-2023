@@ -1,7 +1,8 @@
 #!/bin/sh
-git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git
 
-cd ESA-Nowcasting-2023
+PROJECT_DIR=~/work/ESA-Nowcasting-2023
+git clone https://github.com/InseeFrLab/ESA-Nowcasting-2023.git $PROJECT_DIR
+cd $PROJECT_DIR
 
 git config --global credential.helper store
 
