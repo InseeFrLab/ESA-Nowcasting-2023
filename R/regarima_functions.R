@@ -134,6 +134,30 @@ create_regressors <- function(challenge, challenges_info, data, country) {
         IS, dIS
       ) # dIS2
     }
+  } else if (challenge == "TOURISM") {
+    ICM <- reshape_eurostat_data(data, country) %>%
+      select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
+      tidyr::drop_na() %>%
+      tsbox::ts_ts() / 100
+    gtrendh <- reshape_gtrends_data(data, country) %>%
+      select(time, 
+             paste(country, "GTRENDS", "HOTELS", sep = "_")
+      ) %>%
+      tidyr::drop_na() %>%
+      tsbox::ts_ts() / 100
+    gtrendv <- reshape_gtrends_data(data, country) %>%
+      select(time, 
+             paste(country, "GTRENDS", "VACATIONS", sep = "_")
+      ) %>%
+      tidyr::drop_na() %>%
+      tsbox::ts_ts() / 100
+    gtrenda <- reshape_gtrends_data(data, country) %>%
+      select(time, 
+             paste(country, "GTRENDS", "TRAVEL_AGENCIES", sep = "_")
+      ) %>%
+      tidyr::drop_na() %>%
+      tsbox::ts_ts() / 100
+    X <- ts.union(ICM)
   } else {
     X <- NULL
   }
