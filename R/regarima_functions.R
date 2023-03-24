@@ -157,7 +157,9 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       ) %>%
       tidyr::drop_na() %>%
       tsbox::ts_ts() / 100
-    X <- ts.union(ICM)
+    #ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(IPI)))) %/% months(1)
+    
+    X <- ts.union(ICM,gtrendv,gtrenda,gtrendh)
   } else {
     X <- NULL
   }
