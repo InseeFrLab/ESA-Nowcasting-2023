@@ -7,7 +7,6 @@
 # 
 # targets::tar_load(data)
 # targets::tar_load(challenges)
-# targets::tar_read(models)
 # targets::tar_load(models)
 # 
 # country <- "EL"
@@ -41,7 +40,7 @@
 #   easter.test="None",
 #   usrdef.outliersEnabled = TRUE,
 #   usrdef.outliersType = c(
-#     "AO", "AO", "AO", "AO", 
+#     "AO", "AO", "AO", "AO",
 #     "AO", "AO", "AO", "AO", "AO", "AO",
 #     "AO", "AO", "AO", "AO", "AO", "AO",
 #     "AO", "AO", "AO"

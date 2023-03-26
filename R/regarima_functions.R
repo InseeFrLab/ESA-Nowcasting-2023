@@ -38,7 +38,7 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 desaiso <- function(serie) {
 spec_tourism <- x13_spec(
   transform.function = "Auto",
-  estimate.from = "2015-01-01",
+  estimate.from = "2014-01-01",
   automdl.enabled = TRUE,
   tradingdays.option = "TradingDays",
   tradingdays.test = "None",
@@ -268,8 +268,7 @@ estimate_regarima <- function(challenge, data, models, country, h) {
   }
 
   if (challenge == "TOURISM") {
-      parameters$estimate.from <- "2016-01-01"
-      parameters$estimate.to <- "2022-08-01"
+      parameters$estimate.from <- "2015-01-01"
   }
     
   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)

@@ -98,17 +98,9 @@ REGARIMA:
     usrdef.varEnabled: TRUE
 
   TOURISM:
-    transform.function: "Auto"
-    arima.coefType: "Undefined"
-    arima.p: 0
-    arima.q: 1
-    arima.bp: 0
-    arima.bq: 1
-    arima.d: 1
-    arima.bd: 1
+    transform.function: "None"
     estimate.from: "2010-01-01"
-    estimate.to: "2019-01-01"
-    automdl.enabled: FALSE
+    automdl.enabled: TRUE
     usrdef.outliersEnabled: TRUE
     usrdef.outliersTyp: [
       "AO", "AO", "AO", "AO", "AO", "AO",
