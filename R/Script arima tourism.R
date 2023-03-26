@@ -8,7 +8,7 @@ library(tsbox)
 targets::tar_load(data)
 targets::tar_read(models_file)
 
-country <- "IE"
+country <- "DE"
 challenge <- "TOURISM"
 challenges_info <- challenges
 
@@ -34,6 +34,7 @@ ma_spec <- x13_spec(
   estimate.from = "2016-01-01",
   automdl.enabled = TRUE,
   tradingdays.option = "TradingDays",
+  tradingdays.autoadjust = TRUE,
   easter.enabled=TRUE,
   easter.test="None",
   usrdef.outliersEnabled = TRUE,
@@ -85,7 +86,7 @@ dgtrendv_sa2 = gtrendv_sa-stats::lag(gtrendv_sa,-2)
 dgtrenda_sa2_1 = stats::lag(dgtrenda_sa2,-1)
 
 var <- ts.union(dgtrendv_sa2)
-var <- ts.union(ICM_sa,dICM_sa,dICM_sa_1,dgtrendv_sa2)
+var <- ts.union(dICM_sa,dICM_sa_1,dgtrendv_sa2)
 
 ts.plot(dgtrenda_sa2,dgtrendh_sa2)
 
