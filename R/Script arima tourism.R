@@ -8,7 +8,7 @@ library(tsbox)
 targets::tar_load(data)
 targets::tar_read(models_file)
 
-country <- "BE"
+country <- "IE"
 challenge <- "TOURISM"
 challenges_info <- challenges
 
@@ -84,6 +84,7 @@ dgtrenda_sa2 = gtrenda_sa-stats::lag(gtrenda_sa,-2)
 dgtrendv_sa2 = gtrendv_sa-stats::lag(gtrendv_sa,-2)
 dgtrenda_sa2_1 = stats::lag(dgtrenda_sa2,-1)
 
+var <- ts.union(dgtrendv_sa2)
 var <- ts.union(ICM_sa,dICM_sa,dICM_sa_1,dgtrendv_sa2)
 
 ts.plot(dgtrenda_sa2,dgtrendh_sa2)
@@ -98,12 +99,14 @@ tourism_spec <- regarima_spec_tramoseats(
   usrdef.outliersType = c(
     "AO", "AO", "AO", "AO", "AO",
     "AO", "AO", "AO", "AO", "AO", "AO",
-    "AO", "AO", "AO", "AO", "AO"
+    "AO", "AO", "AO", "AO", "AO", "AO",
+    "AO", "AO"
   ),
   usrdef.outliersDate = c(
     "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
     "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
-    "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01"
+    "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+    "2021-07-01", "2021-08-01"
   ),
   outlier.enabled = TRUE,
   outlier.ao = TRUE,
@@ -117,6 +120,9 @@ tourism_spec <- regarima_spec_tramoseats(
 )
 tourism_regarima <- regarima(dy_sa, tourism_spec)
 tourism_regarima
+
+plot(dy_sa)
+dy_sa
 
 tourism_regarima$forecast[,1]
 
