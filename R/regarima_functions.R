@@ -25,7 +25,9 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 
   X <- create_regressors(challenge, challenges_info, selected_data, country)
 
+  if (challenge == "PPI" | challenge=="PVI") {
   return(list("y" = dy, "X" = X, "Historical" = y))
+  }
   if (challenge == "TOURISM") {
     return(list("y" = dy_sa, "X" = X, "Historical" = y, 
                 "Historical_sa" = y_sa, "coef_sa"=coef_sa))
@@ -36,9 +38,10 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 desaiso <- function(serie) {
 spec_tourism <- x13_spec(
   transform.function = "Auto",
-  estimate.from = "2016-01-01",
+  estimate.from = "2015-01-01",
   automdl.enabled = TRUE,
   tradingdays.option = "TradingDays",
+  tradingdays.test = "None",
   tradingdays.autoadjust = TRUE,
   easter.enabled=TRUE,
   easter.test="None",
@@ -183,18 +186,12 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
       tidyr::drop_na() %>%
       tsbox::ts_ts() / 100
-    gtrendh <- reshape_gtrends_data(data, country) %>%
-      select(time, 
-             paste(country, "GTRENDS", "HOTELS", sep = "_")
-      ) %>%
-      tidyr::drop_na() %>%
-      tsbox::ts_ts() / 100
-    gtrendv <- reshape_gtrends_data(data, country) %>%
-      select(time, 
-             paste(country, "GTRENDS", "VACATIONS", sep = "_")
-      ) %>%
-      tidyr::drop_na() %>%
-      tsbox::ts_ts() / 100
+    # gtrendh <- reshape_gtrends_data(data, country) %>%
+    #   select(time, 
+    #          paste(country, "GTRENDS", "HOTELS", sep = "_")
+    #   ) %>%
+    #   tidyr::drop_na() %>%
+    #   tsbox::ts_ts() / 100
     # gtrenda <- reshape_gtrends_data(data, country) %>%
     #   select(time, 
     #          paste(country, "GTRENDS", "TRAVEL_AGENCIES", sep = "_")
@@ -203,20 +200,38 @@ create_regressors <- function(challenge, challenges_info, data, country) {
     #   tsbox::ts_ts() / 100
     
     ICM_sa <- desaiso(ICM)$final$series[,"sa"]
-    gtrendv_sa <- desaiso(gtrendv)$final$series[,"sa"]
     dICM_sa=ICM_sa-stats::lag(ICM_sa,-1)
     dICM_sa_1=stats::lag(dICM_sa,-1)
-    dgtrendv_sa2 = gtrendv_sa-stats::lag(gtrendv_sa,-2)
     
     ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
     
-    X <- ts.union(dgtrendv_sa2)
+    if (country!="EL") {
+      gtrendv <- reshape_gtrends_data(data, country) %>%
+        select(time, 
+               paste(country, "GTRENDS", "VACATIONS", sep = "_")
+        ) %>%
+        tidyr::drop_na() %>%
+        tsbox::ts_ts() / 100
+      gtrendv_sa <- desaiso(gtrendv)$final$series[,"sa"]
+      dgtrendv_sa2 = gtrendv_sa-stats::lag(gtrendv_sa,-2)
     
-    if (ecart_dernier_mois == -1) {
-      X <- ts.union(dICM_sa_1,dgtrendv_sa2)
+      X <- ts.union(dgtrendv_sa2)
+      
+      if (ecart_dernier_mois == -1) {
+        X <- ts.union(dICM_sa_1,dgtrendv_sa2)
+      }
+      if (ecart_dernier_mois == 0) {
+        X <- ts.union(dICM,dICM_sa_1,dgtrendv_sa2)
+      }
     }
-    if (ecart_dernier_mois == 0) {
-      X <- ts.union(dICM,dICM_sa_1,dgtrendv_sa2)
+    
+    if (country=="EL") {
+      if (ecart_dernier_mois == -1) {
+        X <- ts.union(dICM_sa_1)
+      }
+      if (ecart_dernier_mois == 0) {
+        X <- ts.union(dICM,dICM_sa_1)
+      }
     }
 
   } else {
