@@ -250,14 +250,13 @@ estimate_regarima <- function(challenge, data, models, country, h) {
     if (country %in% c("DE")) {
       parameters$estimate.from <- "2015-01-01"
     }
-    
-    if (challenge == "TOURISM") {
-        parameters$estimate.from <- "2016-01-01"
-        parameters$estimate.to <- "2022-08-01"
-      }
-    
   }
 
+  if (challenge == "TOURISM") {
+      parameters$estimate.from <- "2016-01-01"
+      parameters$estimate.to <- "2022-08-01"
+  }
+    
   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
   regarima <- RJDemetra::regarima(data$y, specification)
 
