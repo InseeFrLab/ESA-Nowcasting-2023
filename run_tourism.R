@@ -66,22 +66,12 @@ list(
     )
   ),
   tar_target(
-    name = lstm_tourism,
-    command = run_lstm_per_country(
-      data = data,
-      config_models = models,
-      config_env = challenges,
-      challenge = "TOURISM"
-    )
-  ),
-  tar_target(
     name = predictions_tourism,
     command = bind_rows(list(
       "entry_1" = regarima_tourism$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_tourism$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_tourism$preds %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_tourism$preds %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_tourism$preds %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_tourism$preds %>% mutate(Entries = "XGBOOST")
     ))
   ),
   tar_target(
@@ -90,8 +80,7 @@ list(
       "entry_1" = regarima_tourism$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_tourism$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_tourism$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_tourism$resids %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_tourism$resids %>% mutate(Entries = "LSTM")
+      "entry_4" = xgboost_tourism$resids %>% mutate(Entries = "XGBOOST")
     ))
   ),
   tar_target(
@@ -129,8 +118,7 @@ list(
         "entry_1" = regarima_tourism,
         "entry_2" = dfms_tourism,
         "entry_3" = ets_tourism,
-        "entry_4" = xgboost_tourism,
-        "entry_5" = lstm_tourism
+        "entry_4" = xgboost_tourism
       ),
       challenges
     )
