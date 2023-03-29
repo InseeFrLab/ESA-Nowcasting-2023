@@ -11,13 +11,18 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   if (challenge == "TOURISM") {
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & is.na(y), 1) # replace NA by 1 during covid period
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0, 1) # replace 0 by 1 during covid period
-    #Use of the seasonal adjusted series for tourism
+    #Use of the seasonal adjusted series for tourism, except IE
+    y_sa <- y
+    coef_sa <- 1
+    if (country != "IE") {
     result_x13 <- desaiso(y)
     y_sa <- result_x13$final$series[,"sa"]
+    #Coefficient saisonnier sur le dernier point
     coef_sa <- window(
       result_x13$final$forecasts[,"sa_f"]/result_x13$final$forecasts[,"y_f"],
       start=c(year(date_to_pred),month(date_to_pred)),
       end=c(year(date_to_pred),month(date_to_pred)))
+        }
     dy_sa <- log(y_sa)-log(stats::lag(y_sa,-1))
       }
 
@@ -37,30 +42,27 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 #function for seasonally adjusting of some series in Tourism challenge
 desaiso <- function(serie) {
 spec_tourism <- x13_spec(
-  transform.function = "Auto",
-  estimate.from = "2014-01-01",
-  automdl.enabled = TRUE,
-  tradingdays.option = "TradingDays",
-  tradingdays.test = "None",
-  tradingdays.autoadjust = TRUE,
-  easter.enabled=TRUE,
-  easter.test="None",
+  preliminary.check=FALSE,
+  estimate.from = "2012-01-01",
+  spec = "RSA5c",
   usrdef.outliersEnabled = TRUE,
   usrdef.outliersType = c(
-    "AO", "AO", "AO", "AO", 
+    "AO", "AO", "AO", "AO", "AO",
     "AO", "AO", "AO", "AO", "AO", "AO",
     "AO", "AO", "AO", "AO", "AO", "AO",
-    "AO", "AO", "AO"
+    "AO", "AO", "AO", "AO", "AO", "AO",
+    "AO", "AO","AO"
   ),
   usrdef.outliersDate = c(
-    "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+    "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
     "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
     "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
-    "2021-07-01", "2021-08-01", "2021-09-01"
+    "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+    "2022-01-01", "2022-02-01", "2022-03-01"
   ),
   outlier.enabled = TRUE,
   outlier.ao = TRUE,
-  outlier.tc = FALSE,
+  outlier.tc = TRUE,
   outlier.ls = TRUE,
 )
 return(x13(window(serie,start=c(2015,1)),spec_tourism))
@@ -92,7 +94,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       value = TRUE
     )
 
-    if (!purrr::is_empty(dispo)) {
+    if (!purrr::is_empty(dispo) & country!="HR") {
       ipi <- reshape_eurostat_data(data, country) %>%
         select(time, paste(country, "IPI", "CPA_B-D", sep = "_")) %>%
         tidyr::drop_na() %>%
@@ -206,22 +208,38 @@ create_regressors <- function(challenge, challenges_info, data, country) {
     ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
     
     if (country!="EL") {
-      gtrendv <- reshape_gtrends_data(data, country) %>%
+      gtrendh <- reshape_gtrends_data(data, country) %>%
         select(time, 
-               paste(country, "GTRENDS", "VACATIONS", sep = "_")
+               paste(country, "GTRENDS", "HOTELS", sep = "_")
         ) %>%
         tidyr::drop_na() %>%
         tsbox::ts_ts() / 100
-      gtrendv_sa <- desaiso(gtrendv)$final$series[,"sa"]
-      dgtrendv_sa2 = gtrendv_sa-stats::lag(gtrendv_sa,-2)
+      gtrendh_sa <- desaiso(gtrendh)$final$series[,"sa"]
+      dgtrendh_sa=gtrendh_sa-stats::lag(gtrendh_sa,-1)
+      dgtrendh_sa_1=stats::lag(dgtrendh_sa,-1)
     
-      X <- ts.union(dgtrendv_sa2)
+      X <- ts.union(dgtrendh_sa2)
       
       if (ecart_dernier_mois == -1) {
-        X <- ts.union(dICM_sa_1,dgtrendv_sa2)
+        X <- ts.union(dICM_sa_1,dgtrendh_sa,dgtrendh_sa_1)
       }
       if (ecart_dernier_mois == 0) {
-        X <- ts.union(dICM,dICM_sa_1,dgtrendv_sa2)
+        X <- ts.union(dICM,dICM_sa_1,dgtrendh_sa,dgtrendh_sa_1)
+        if (country %in% c("IT")) {
+          X <- ts.union(dICM,dgtrendh_sa)
+        }
+        if (country %in% c("BG","CY","FR","HU")) {
+          X <- ts.union(dgtrendh_sa)
+        }
+        if (country %in% c("AT","BE","CZ","HR","IE")) {
+          X <- ts.union()
+        }
+        if (country %in% c("DE","ES")) {
+          X <- ts.union(dICM_sa_1,dgtrendh_sa)
+        }
+        if (country %in% c("EE")) {
+          X <- ts.union(dICM_sa)
+        }
       }
     }
     

@@ -74,6 +74,31 @@ get_data_from_destatis <- function(data_info) {
   return(data)
 }
 
+# Récupération de données de l'institut stat autrichien
+get_data_from_wifo <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "Wifo", data_info)
+  
+  data <- lapply(subset_lists, function(x) {
+    data_temp <- tempfile()
+    download.file(
+      subset_lists$WEEKLY_INDEX_AT$url,
+      data_temp
+    )
+    data <- readxl::read_excel(
+      path = data_temp,
+      sheet = "Contributions_production",
+      skip = 2
+    ) %>%
+      rename(toll = paste0("Kalender- und saisonbereinigt (KSB)")) %>%
+      mutate(time = ymd(
+        paste0(substr(Datum, 1, 4), substr(Datum, 6, 7), substr(Datum, 9, 10))
+      )) %>%
+      mutate(geo = "DE") %>%
+      select(time, toll, geo)
+  })
+  return(data)
+}
+
 get_weekend_days <- function(data_info, challenges_info) {
   date_to_pred <- lubridate::ymd(challenges_info$DATES$date_to_pred)
   subset_lists <- Filter(function(x) x$source == "Week-end", data_info)

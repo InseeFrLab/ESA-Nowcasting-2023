@@ -1,28 +1,20 @@
-library(dplyr)
-library(astsa)
-library(lubridate)
-library(RJDemetra)
-library(xts)
-library(tsbox)
+#LT"
 
-targets::tar_load(data)
-targets::tar_load(challenges)
-targets::tar_load(models)
-
-country <- "BE"
+country <- "DE"
 # challenge <- "TOURISM"
 # challenges <- challenges_info
 
 #create_regressors(challenge, challenges, data, country)
 
 elements <- build_data_regarima(challenge, challenges, data, country)
-y <- elements$Historical_sa
+y <- elements$Historical
 # gtrenda<- elements$X[,"gtrenda"]
 # gtrendv<- elements$X[,"gtrendv"]
 # gtrendh<- elements$X[,"gtrendh"]
 # ICM<- elements$X[,"ICM_"]
 
-
+nb_we <- data$NB_WE %>%
+  tsbox::ts_ts()
 
 ICM <- reshape_eurostat_data(data, country) %>%
   select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
@@ -47,7 +39,6 @@ gtrendh <- reshape_gtrends_data(data, country) %>%
   tidyr::drop_na() %>%
   tsbox::ts_ts() / 100
 
-
 #targets::tar_load(challenges)
 #targets::tar_load(data_info)
 
@@ -57,30 +48,30 @@ gtrendh <- reshape_gtrends_data(data, country) %>%
 
 ma_spec <- x13_spec(
   preliminary.check=FALSE,
- spec = "RSA5c",
-  # transform.function = "Auto",
- estimate.from = "2012-01-01",
-  # automdl.enabled = TRUE,
-  # tradingdays.autoadjust = TRUE,
-  # tradingdays.option = "TradingDays",
-  # tradingdays.test = "None",
-  # easter.enabled=TRUE,
-  # easter.test="None",
-   usrdef.outliersEnabled = TRUE,
-usrdef.outliersType = c(
-  "AO", "AO", "AO", "AO", "AO",
-  "AO", "AO", "AO", "AO", "AO", "AO",
-  "AO", "AO", "AO", "AO", "AO", "AO",
-  "AO", "AO", "AO", "AO", "AO", "AO",
-  "AO", "AO"
-),
-usrdef.outliersDate = c(
-  "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
-  "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
-  "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
-  "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
-  "2022-01-01", "2022-02-01"
-),
+#  spec = "RSA5c",
+ transform.function = "Auto",
+  estimate.from = "2012-01-01",
+  automdl.enabled = TRUE,
+  tradingdays.autoadjust = TRUE,
+  tradingdays.option = "TradingDays",
+  tradingdays.test = "None",
+  easter.enabled=TRUE,
+  easter.test="None",
+  usrdef.outliersEnabled = TRUE,
+  usrdef.outliersType = c(
+    "AO", "AO", "AO", "AO", "AO",
+    "AO", "AO", "AO", "AO", "AO", "AO",
+    "AO", "AO", "AO", "AO", "AO", "AO",
+    "AO", "AO", "AO", "AO", "AO", "AO",
+    "AO", "AO"
+  ),
+  usrdef.outliersDate = c(
+    "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+    "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+    "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+    "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+    "2022-01-01", "2022-02-01"
+  ),
   outlier.enabled = TRUE,
   outlier.ao = TRUE,
   outlier.tc = TRUE,
@@ -90,7 +81,7 @@ usrdef.outliersDate = c(
   # usrdef.var = var,
 )
 
-#result <- x13(window(y,start=c(2012,1)),ma_spec)
+result <- x13(window(y,start=c(2012,1)),ma_spec)
 # ls(result$final)
 # coef <- window(
 #   result$final$forecasts[,"sa_f"]/result$final$forecasts[,"y_f"],
@@ -100,18 +91,19 @@ usrdef.outliersDate = c(
 plot(window(result$final$series[,"sa"],start=c(2022,4)))
 
 #y_sa <- x13(window(y,start=c(2015,1)),ma_spec)$final$series[,"sa"]
-ICM_sa <- x13(window(ICM,start=c(2015,1)),ma_spec)$final$series[,"sa"]
+ICM_sa <- desaiso(ICM)$final$series[,"sa"]
 # ICM_sa <- reshape_eurostat_data(data, country) %>%
 #   select(time, paste(country, "CSURVEY_SA", "BS-CSMCI", sep = "_")) %>%
 #   tidyr::drop_na() %>%
 #   tsbox::ts_ts() / 100
-gtrendh_sa <- x13(window(gtrendh,start=c(2015,1)),ma_spec)$final$series[,"sa"]
+#gtrendh_sa <- x13(window(gtrendh,start=c(2015,1)),ma_spec)$final$series[,"sa"]
 gtrendh_sa <- desaiso(gtrendh)$final$series[,"sa"]
 gtrendv_sa <- x13(window(gtrendv,start=c(2015,1)),ma_spec)$final$series[,"sa"]
 gtrenda_sa <- x13(window(gtrenda,start=c(2015,1)),ma_spec)$final$series[,"sa"]
 dy_sa=log(y_sa)-log(stats::lag(y_sa,-1))
 dICM_sa=ICM_sa-stats::lag(ICM_sa,-1)
 dICM_sa_1=stats::lag(dICM_sa,-1)
+dICM_sa_2=stats::lag(dICM_sa,-2)
 dgtrendh_sa=gtrendh_sa-stats::lag(gtrendh_sa,-1)
 dgtrendv_sa=gtrendv_sa-stats::lag(gtrendv_sa,-1)
 dgtrendv_sa_1=stats::lag(dgtrendv_sa,-1)
@@ -127,22 +119,23 @@ dgtrenda_sa2_1 = stats::lag(dgtrenda_sa2,-1)
 
 var <- ts.union(dgtrendv_sa2)
 var <- ts.union(dICM_sa,dICM_sa_1)
-var <- ts.union()
-var <- ts.union(dICM_sa,dICM_sa_1,dgtrendh_sa,dgtrendh_sa_1)
-
+var <- ts.union(dgtrendh_sa)
+var <- ts.union(ICM,gtrendh)
 
 #ts.plot(dgtrenda_sa2,dgtrendh_sa2)
 
 
 
 tourism_spec <- regarima_spec_tramoseats(
-  transform.function = "None",
+  spec="TRfull",
+  transform.function = "Auto",
   estimate.from = "2016-01-01",
+  estimate.to = "2020-01-01",
   automdl.enabled = TRUE,
   usrdef.outliersEnabled = TRUE,
-  # tradingdays.mauto = "FTest",
-  # tradingdays.test = "None",
-  # tradingdays.option = "WorkingDays",
+  tradingdays.mauto = "FTest",
+  tradingdays.test = "None",
+  tradingdays.option = "None",
   usrdef.outliersType = c(
     "AO", "AO", "AO", "AO", "AO",
     "AO", "AO", "AO", "AO", "AO", "AO",
@@ -167,15 +160,5 @@ tourism_spec <- regarima_spec_tramoseats(
   usrdef.var = var,
   fcst.horizon = 2
 )
-tourism_regarima <- regarima(elements$y, tourism_spec)
+tourism_regarima <- regarima(elements$Historical, tourism_spec)
 tourism_regarima
-
-plot(window(dy_sa,start=c(2022,4)))
-dy_sa
-
-tourism_regarima$forecast[,1]
-
-lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
-
-
-

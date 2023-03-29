@@ -290,6 +290,19 @@ TOLL_DE:
     - DFM
   url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
 
+WEEKLY_INDEX_AT:
+  name: "Weekly WIFO economic index"
+  short_name: "wwei"
+  source : Wifo
+  challenge: 
+    - PVI
+  model:
+    - XGBOOST
+    - REGARIMA
+    - LSTM
+    - DFM
+  url: "https://www.wifo.ac.at/wwadocs/konjunktur/W%C3%B6chentlicherWIFOWirtschaftsindex/WIFO-BusinessCycleAnalysis_WeeklyWIFOEconomicIndex.xlsx"
+
 GTRENDS_MANUFACTURING:
   name: "Google Trends - Manufacturing"
   short_name: "gtrends_manufacturing"
