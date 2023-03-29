@@ -8,6 +8,8 @@ on:
     - cron: '00 11 16 * *'
     # every last week of the month at 1pm
     - cron: '00 13 25-31 * *'
+    # every last week of the month at 1pm
+    - cron: '00 15 52 * *'
   workflow_dispatch:
 
 jobs:
