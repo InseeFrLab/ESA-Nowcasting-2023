@@ -10,6 +10,7 @@ PPI:
     - XGBOOST
     - ETS
     - REGARIMA
+    - LSTM
   id: sts_inppd_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -35,6 +36,7 @@ IPI:
     - DFM
     - XGBOOST
     - REGARIMA
+    - LSTM
   id: sts_inpi_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -62,6 +64,7 @@ PSURVEY:
     - DFM
     - XGBOOST
     - REGARIMA
+    - LSTM
   id: ei_bsin_m_r2
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -84,6 +87,7 @@ HICP:
   model:
     - DFM
     - XGBOOST
+    - LSTM
   id: prc_hicp_midx
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -105,6 +109,7 @@ PVI:
     - DFM
     - XGBOOST
     - ETS
+    - LSTM
   id: sts_inpr_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -126,6 +131,7 @@ TOURISM:
     - DFM
     - XGBOOST
     - ETS
+    - LSTM
   id: tour_occ_nim
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -148,6 +154,7 @@ BRENT:
     - DFM
     - XGBOOST
     - REGARIMA
+    - LSTM
   id: "BZ=F"
 
 EUR_USD:
@@ -162,6 +169,7 @@ EUR_USD:
     - DFM
     - XGBOOST
     - REGARIMA
+    - LSTM
   id: "EURUSD=X"
 
 SP500:
@@ -174,6 +182,7 @@ SP500:
   model:
     - DFM
     - XGBOOST
+    - LSTM
   id: "^GSPC"
 
 EUROSTOXX500:
@@ -186,6 +195,7 @@ EUROSTOXX500:
   model:
     - DFM
     - XGBOOST
+    - LSTM
   id: "^STOXX50E"
 
 CAC40:
@@ -198,6 +208,7 @@ CAC40:
   model:
     - DFM
     - XGBOOST
+    - LSTM
   id: "^FCHI"
 
 ELEC_PRICES:
@@ -210,6 +221,7 @@ ELEC_PRICES:
     - TOURISM
   model:
     - XGBOOST
+    - LSTM
   url: "https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv"
   url-geo-code: "https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv"
   
@@ -222,6 +234,7 @@ NB_WE:
     - TOURISM
   model:
     - XGBOOST
+    - LSTM
   init_date: "2000-01-01"
 
 TOLL_DE:
@@ -233,6 +246,7 @@ TOLL_DE:
   model:
     - XGBOOST
     - REGARIMA
+    - LSTM
     - DFM
   url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
 
@@ -245,6 +259,7 @@ GTRENDS_MANUFACTURING:
     - PVI
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 49
   filters:
@@ -261,6 +276,7 @@ GTRENDS_MATERIALS:
     - PVI
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 287
   filters:
@@ -278,6 +294,7 @@ GTRENDS_FUEL_GAS:
     - DFM
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 1268
   filters:
@@ -293,6 +310,7 @@ GTRENDS_HOTELS:
     - TOURISM
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 179
   filters:
@@ -308,6 +326,7 @@ GTRENDS_TRAVEL_AGENCIES:
     - TOURISM
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 1010
   filters:
@@ -323,6 +342,7 @@ GTRENDS_VACATIONS:
     - TOURISM
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 1019
   filters:
@@ -338,6 +358,7 @@ GTRENDS_SKI:
     - TOURISM
   model:
     - XGBOOST
+    - LSTM
     - DFM
   category: 1119
   filters:

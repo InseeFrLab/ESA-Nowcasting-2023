@@ -66,12 +66,22 @@ list(
     )
   ),
   tar_target(
+    name = lstm_pvi,
+    command = run_lstm_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = "PVI"
+    )
+  ),
+  tar_target(
     name = predictions_pvi,
     command = bind_rows(list(
       "entry_1" = regarima_pvi$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_pvi$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_pvi$preds %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_pvi$preds %>% mutate(Entries = "XGBOOST")
+      "entry_4" = xgboost_pvi$preds %>% mutate(Entries = "XGBOOST"),
+      "entry_5" = lstm_pvi$preds %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -80,7 +90,8 @@ list(
       "entry_1" = regarima_pvi$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_pvi$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_pvi$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_pvi$resids %>% mutate(Entries = "XGBOOST")
+      "entry_4" = xgboost_pvi$resids %>% mutate(Entries = "XGBOOST"),
+      "entry_5" = lstm_pvi$resids %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -118,7 +129,8 @@ list(
         "entry_1" = regarima_pvi,
         "entry_2" = dfms_pvi,
         "entry_3" = ets_pvi,
-        "entry_4" = xgboost_pvi
+        "entry_4" = xgboost_pvi,
+        "entry_5" = lstm_pvi
       ),
       challenges
     )

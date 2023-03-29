@@ -70,12 +70,22 @@ list(
     )
   ),
   tar_target(
+    name = lstm_ppi,
+    command = run_lstm_per_country(
+      data = data,
+      config_models = models,
+      config_env = challenges,
+      challenge = challenge
+    )
+  ),
+  tar_target(
     name = predictions_ppi,
     command = bind_rows(list(
       "entry_1" = regarima_ppi$preds %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_ppi$preds %>% mutate(Entries = "DFM"),
       "entry_3" = ets_ppi$preds %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_ppi$preds %>% mutate(Entries = "XGBOOST")
+      "entry_4" = xgboost_ppi$preds %>% mutate(Entries = "XGBOOST"),
+      "entry_5" = lstm_ppi$preds %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -84,7 +94,8 @@ list(
       "entry_1" = regarima_ppi$resids %>% mutate(Entries = "REG-ARIMA"),
       "entry_2" = dfms_ppi$resids %>% mutate(Entries = "DFM"),
       "entry_3" = ets_ppi$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_ppi$resids %>% mutate(Entries = "XGBOOST")
+      "entry_4" = xgboost_ppi$resids %>% mutate(Entries = "XGBOOST"),
+      "entry_5" = lstm_ppi$resids %>% mutate(Entries = "LSTM")
     ))
   ),
   tar_target(
@@ -126,7 +137,8 @@ list(
         "entry_1" = regarima_ppi,
         "entry_2" = dfms_ppi,
         "entry_3" = ets_ppi,
-        "entry_4" = xgboost_ppi
+        "entry_4" = xgboost_ppi,
+        "entry_5" = lstm_ppi
       ),
       challenges
     )
