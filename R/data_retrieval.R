@@ -87,14 +87,29 @@ get_data_from_wifo <- function(data_info) {
     data <- readxl::read_excel(
       path = data_temp,
       sheet = "Contributions_production",
-      skip = 2
+      skip = 3
     ) %>%
-      rename(toll = paste0("Kalender- und saisonbereinigt (KSB)")) %>%
-      mutate(time = ymd(
-        paste0(substr(Datum, 1, 4), substr(Datum, 6, 7), substr(Datum, 9, 10))
-      )) %>%
-      mutate(geo = "DE") %>%
-      select(time, toll, geo)
+      rename(mois = paste0("...1"),
+             semaine = paste0("...2"),
+             wifo_ind = paste0("...4")) %>%
+      select(mois, semaine, wifo_ind) %>% 
+      mutate(annee=substr(mois,nchar(mois)-3,nchar(mois)))
+    
+    an <- "2020"
+    for (i in 1:nrow(data)) {
+      if (is.na(data[i,4])) {
+        data[i,4] <- an
+      }
+      else {an <- data[i,4]}
+    }
+    
+    data <- data[-1,]
+    data <- (subset(data,!is.na(data$semaine)))
+    
+    data <- data %>% 
+      mutate(time=ymd(paste0(annee,"0101"))+weeks(substr(semaine,3,4)),
+             geo = "AT") %>% 
+      select(time,wifo_ind,geo)
   })
   return(data)
 }
@@ -269,9 +284,10 @@ get_data <- function(data_info = yaml::read_yaml("data.yaml"),
   ember <- get_data_from_ember(data_info)
   week_ends <- get_weekend_days(data_info, challenges_info)
   destatis <- get_data_from_destatis(data_info)
+  wifo <- get_data_from_wifo(data_info)
   gtrends <- get_data_from_google_trends(data_info)
   list_data <- lapply(
-    c(eurostat, yahoo, ember, week_ends, destatis, gtrends),
+    c(eurostat, yahoo, ember, week_ends, destatis, wifo, gtrends),
     function(x) list(data = x)
   )
 
