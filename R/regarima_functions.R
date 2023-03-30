@@ -11,19 +11,6 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   if (challenge == "TOURISM") {
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & is.na(y), 1) # replace NA by 1 during covid period
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0, 1) # replace 0 by 1 during covid period
-    #Use of the seasonal adjusted series for tourism, except IE
-    y_sa <- y
-    coef_sa <- 1
-    if (country != "IE") {
-    result_x13 <- desaiso(y)
-    y_sa <- result_x13$final$series[,"sa"]
-    #Coefficient saisonnier sur le dernier point
-    coef_sa <- window(
-      result_x13$final$forecasts[,"sa_f"]/result_x13$final$forecasts[,"y_f"],
-      start=c(year(date_to_pred),month(date_to_pred)),
-      end=c(year(date_to_pred),month(date_to_pred)))
-        }
-    dy_sa <- log(y_sa)-log(stats::lag(y_sa,-1))
       }
 
   dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
@@ -34,8 +21,7 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   return(list("y" = dy, "X" = X, "Historical" = y))
   }
   if (challenge == "TOURISM") {
-    return(list("y" = dy_sa, "X" = X, "Historical" = y, 
-                "Historical_sa" = y_sa, "coef_sa"=coef_sa))
+    return(list("y" = y, "X" = X, "Historical" = y))
   }
 }
 
@@ -165,6 +151,18 @@ create_regressors <- function(challenge, challenges_info, data, country) {
 
       X <- ts.union(dIS, IPT, dIPT, dtolls)
     }
+    if (country %in% c("AT")) {
+      ind_wifo <- wifo  %>% 
+        tidyr::drop_na() %>% 
+        mutate(time=ymd(paste(year(time),month(time),"01"))) %>% 
+        group_by(time) %>% 
+        summarize(wifo_ind=mean(wifo_ind)) %>% 
+        ungroup() %>% 
+        tsbox::ts_ts() 
+      
+      dind_wifo=ind-stats::lag(ind,-1)
+      X <- ts.union(IPT,dind_wifo)
+    }
     if (country %in% c("IT")) {
       X <- ts.union(IS, dIPT) # dIPT2
     }
@@ -177,7 +175,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
     if (country %in% c("PL")) {
       X <- ts.union()
     }
-    if (country %in% c("AT", "PT")) {
+    if (country %in% c("PT")) {
       X <- ts.union(
         IPT,
         IS, dIS
@@ -201,11 +199,9 @@ create_regressors <- function(challenge, challenges_info, data, country) {
     #   tidyr::drop_na() %>%
     #   tsbox::ts_ts() / 100
     
-    ICM_sa <- desaiso(ICM)$final$series[,"sa"]
-    dICM_sa=ICM_sa-stats::lag(ICM_sa,-1)
-    dICM_sa_1=stats::lag(dICM_sa,-1)
-    
     ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
+    
+    X <- ts.union()
     
     if (country!="EL") {
       gtrendh <- reshape_gtrends_data(data, country) %>%
@@ -214,43 +210,9 @@ create_regressors <- function(challenge, challenges_info, data, country) {
         ) %>%
         tidyr::drop_na() %>%
         tsbox::ts_ts() / 100
-      gtrendh_sa <- desaiso(gtrendh)$final$series[,"sa"]
-      dgtrendh_sa=gtrendh_sa-stats::lag(gtrendh_sa,-1)
-      dgtrendh_sa_1=stats::lag(dgtrendh_sa,-1)
     
-      X <- ts.union(dgtrendh_sa2)
-      
-      if (ecart_dernier_mois == -1) {
-        X <- ts.union(dICM_sa_1,dgtrendh_sa,dgtrendh_sa_1)
+      X <- ts.union(gtrendh)
       }
-      if (ecart_dernier_mois == 0) {
-        X <- ts.union(dICM,dICM_sa_1,dgtrendh_sa,dgtrendh_sa_1)
-        if (country %in% c("IT")) {
-          X <- ts.union(dICM,dgtrendh_sa)
-        }
-        if (country %in% c("BG","CY","FR","HU")) {
-          X <- ts.union(dgtrendh_sa)
-        }
-        if (country %in% c("AT","BE","CZ","HR","IE")) {
-          X <- ts.union()
-        }
-        if (country %in% c("DE","ES")) {
-          X <- ts.union(dICM_sa_1,dgtrendh_sa)
-        }
-        if (country %in% c("EE")) {
-          X <- ts.union(dICM_sa)
-        }
-      }
-    }
-    
-    if (country=="EL") {
-      if (ecart_dernier_mois == -1) {
-        X <- ts.union(dICM_sa_1)
-      }
-      if (ecart_dernier_mois == 0) {
-        X <- ts.union(dICM,dICM_sa_1)
-      }
-    }
 
   } else {
     X <- NULL
@@ -282,6 +244,9 @@ estimate_regarima <- function(challenge, data, models, country, h) {
     # Gestion à la main des longueurs d'estimation en fonction de la qualité des variables
     if (country %in% c("DE")) {
       parameters$estimate.from <- "2015-01-01"
+    }
+    if (country %in% c("AT")) {
+      parameters$estimate.from <- "2021-06-01"
     }
   }
 
@@ -326,7 +291,7 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     regarima <- estimate_regarima(challenge, DB, models, country, h)
     
     if (challenge != "TOURISM") {
-    pred <- last(DB$Historical) * prod(exp(regarima$forecast[, 1]))
+    pred <- last(regarima$forecast[, 1])
     }
     
     if (challenge == "TOURISM") {

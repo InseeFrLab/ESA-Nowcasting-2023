@@ -11,7 +11,8 @@ wifo <- readxl::read_excel(
 ) %>%
   rename(mois = paste0("...1"),
          semaine = paste0("...2"),
-         wifo_ind = paste0("...4")) %>%
+         ind = paste0("...4")) %>%
+  mutate(wifo_ind=as.numeric(ind)) %>% 
   select(mois, semaine, wifo_ind) %>% 
   mutate(annee=substr(mois,nchar(mois)-3,nchar(mois)))
 
@@ -23,8 +24,8 @@ for (i in 1:nrow(wifo)) {
   else {an <- wifo[i,4]}
 }
 
-wifo <- wifo[-1,]
-wifo <- (subset(wifo,!is.na(wifo$semaine)))
+#wifo <- wifo[-1,]
+wifo <- (subset(wifo,!is.na(wifo$semaine) & !is.na(wifo$wifo_ind)))
 
 wifo <- wifo %>% 
   mutate(time=ymd(paste0(annee,"0101"))+weeks(substr(semaine,3,4)),

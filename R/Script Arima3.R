@@ -1,7 +1,7 @@
 #LT"
 
-country <- "DE"
-# challenge <- "TOURISM"
+country <- "AT"
+# challenge <- "PVI"
 # challenges <- challenges_info
 
 #create_regressors(challenge, challenges, data, country)
@@ -13,8 +13,8 @@ y <- elements$Historical
 # gtrendh<- elements$X[,"gtrendh"]
 # ICM<- elements$X[,"ICM_"]
 
-nb_we <- data$NB_WE %>%
-  tsbox::ts_ts()
+# nb_we <- data$NB_WE %>%
+#   tsbox::ts_ts()
 
 ICM <- reshape_eurostat_data(data, country) %>%
   select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
@@ -120,7 +120,7 @@ dgtrenda_sa2_1 = stats::lag(dgtrenda_sa2,-1)
 var <- ts.union(dgtrendv_sa2)
 var <- ts.union(dICM_sa,dICM_sa_1)
 var <- ts.union(dgtrendh_sa)
-var <- ts.union(ICM,gtrendh)
+var <- ts.union(gtrendh)
 
 #ts.plot(dgtrenda_sa2,dgtrendh_sa2)
 
@@ -130,12 +130,10 @@ tourism_spec <- regarima_spec_tramoseats(
   spec="TRfull",
   transform.function = "Auto",
   estimate.from = "2016-01-01",
-  estimate.to = "2020-01-01",
+  estimate.to = "2023-01-01",
   automdl.enabled = TRUE,
   usrdef.outliersEnabled = TRUE,
-  tradingdays.mauto = "FTest",
-  tradingdays.test = "None",
-  tradingdays.option = "None",
+  tradingdays.option = "TradingDays",
   usrdef.outliersType = c(
     "AO", "AO", "AO", "AO", "AO",
     "AO", "AO", "AO", "AO", "AO", "AO",
@@ -162,3 +160,5 @@ tourism_spec <- regarima_spec_tramoseats(
 )
 tourism_regarima <- regarima(elements$Historical, tourism_spec)
 tourism_regarima
+
+#ts.plot(window(gtrendh,start=c(2018,1)),window(log(elements$Historical)/25,start=c(2018,1)))
