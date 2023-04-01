@@ -5,8 +5,8 @@ PAST_MONTHS:
   'december',
   'january',
   'february',
-  'march'
-  # 'april'
+  'march',
+  'april'
   ]
   
 START_DATE: "2022-06-01"
@@ -49,6 +49,12 @@ PPI:
     entry_4: XGBOOST
     entry_5: LSTM
   march:
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5: LSTM
+   april:
     entry_1: REGARIMA
     entry_2: DFM
     entry_3: ETS
@@ -98,6 +104,12 @@ PVI:
     entry_3: ETS
     entry_4: XGBOOST
     entry_5: LSTM
+   april:
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5: LSTM
 
 TOURISM:
   september:
@@ -137,6 +149,12 @@ TOURISM:
     entry_4: XGBOOST
     entry_5: LSTM
   march:
+    entry_1: REGARIMA
+    entry_2: DFM
+    entry_3: ETS
+    entry_4: XGBOOST
+    entry_5: LSTM
+   april:
     entry_1: REGARIMA
     entry_2: DFM
     entry_3: ETS
