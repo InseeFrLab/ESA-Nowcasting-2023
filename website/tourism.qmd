@@ -3,3 +3,140 @@ title: Number of nights spent at tourist accommodation establishments challenge
 ---
 
 Un petit topo sur le tourisme
+
+
+```{r}
+#| cache: false
+
+data <- targets::tar_read(data, store = "store_data")
+targets::tar_load(predictions_tourism, store = "store_tourism")
+
+sample <- data$TOURISM$data |>
+  dplyr::filter((nace_r2 %in% "I551-I553"))
+
+ojs_define(data = sample, pred = predictions_tourism)
+```
+
+
+```{ojs}
+viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: "Select a country:"})
+```
+
+
+```{ojs}
+addTooltips(
+Plot.plot({
+  grid: true,
+  y: {
+    label: "Number of nights spent at tourist accommodation establishments",
+  },  
+  x: {
+      label: "Year",
+      domain: range
+    },
+  marks: [
+    Plot.line(sample, {
+        x: "date", 
+        y: "values", 
+        stroke: "black",
+        title: (d) =>
+              `${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })}\n ${d.values} `
+        }),
+    Plot.dot(preds, {
+        x: "date", 
+        y: "values",
+        fill: "model",
+        title: (d) =>
+              `${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })}\n ${d.values} `
+        })
+  ],
+  color: {legend: true}
+})
+)
+```
+
+```{ojs}
+dates = {
+  const data = sample.map(d => d.date)
+  data.push(preds.map(d => d.date)[0])
+  return data  
+}
+
+viewof range = offsetInterval(dates, {
+  value: [ dates[dates.length-90], dates[dates.length-1] ],
+  format: ([a, b]) => htl.html`<span ${{
+    style: "display: flex; justify-content: space-between"
+  }}>
+    ${a.toISOString("en-UK").slice(0, 10)}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    ${b.toISOString("en-UK").slice(0, 10)}
+  </span>`
+})
+```
+
+
+<!-- HELPERS -->
+
+```{ojs}
+data_t = transpose(data)
+data_typed = data_t.map( d => (
+    {
+      date: dateParser(d.time),
+      values: d.values,
+      geo: d.geo
+    } 
+   )
+ )
+
+sample = data_typed.filter(d => d.geo == country)
+```
+
+```{ojs}
+pred_t = transpose(pred)
+pred_typed = pred_t.map( d => (
+    {
+      date: dateParser(d.Date),
+      values: d.value,
+      geo: d.Country,
+      model: d.Entries
+    } 
+   )
+ )
+
+preds = pred_typed.filter(d => d.geo == country)
+```
+
+```{ojs}
+dateParser = (dateString) => {
+  const [year, month, day] = dateString.split('-')
+  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
+  const timezoneOffset = date.getTimezoneOffset()
+  date.setMinutes(date.getMinutes() - timezoneOffset)
+  return date
+}
+```
+
+<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
+
+```{ojs}
+function unique(data, accessor) {
+return Array.from(new Set(accessor ? data.map(accessor) : data));
+	}
+```
+
+<!-- DEPENDENCIES -->
+
+```{ojs}
+import {addTooltips} from "@mkfreeman/plot-tooltip"
+import {offsetInterval} from '@mootari/offset-slider'
+```

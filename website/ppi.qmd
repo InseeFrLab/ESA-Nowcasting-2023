@@ -48,7 +48,12 @@ Plot.plot({
     Plot.dot(preds, {
         x: "date", 
         y: "values",
-        fill: "model"
+        fill: "model",
+        title: (d) =>
+              `${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })}\n ${d.values} `
         })
   ],
   color: {legend: true}
@@ -78,9 +83,6 @@ viewof range = offsetInterval(dates, {
   </span>`
 })
 ```
-
-<!--Inputs.table(sample)-->
-
 
 
 <!-- HELPERS -->
