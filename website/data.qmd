@@ -2,14 +2,62 @@
 title: Data
 ---
 
+We only use open data
+
 ## Eurostat data
+
+We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. Series are automatically retrieved from Eurostat database.
+
+1.  [Producer prices in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en):
+
+-   total on domestic market (target variable)
+-   division level of NACE and MIGs
+
+2.  [Import prices in industry]():
+
+-   total
+-   division level of CPA and MIGs
+
+3.  [Production index in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en) :
+
+-   total (target variable)
+-   intermediary goods (MIG_ING)
+
+4.  [Business survey in industry](https://ec.europa.eu/eurostat/databrowser/view/ei_bsin_m_r2/default/table?lang=en):
+
+-   Industrial confidence indicator
+-   Production development observed over the past 3 months
+-   Production expectations over the next 3 months
+-   Employment expectations over the next 3 months
+-   Assessment of order-book levels
+-   Assessment of the current level of stocks of finished products
+-   Selling price expectations over the next 3 months
+
+5.  [Harmonised Index of Consumer Prices](https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en) on a few products
+
+6.  Number of nights spent at tourist accommodation establishments (target variable)
 
 ## Financial data
 
+1.  Brent (dollars)
+2.  Euro/dollar exchange rate
+3.  S&P 500 index
+4.  Euro stoxx 50 Index
+
 ## Electricity prices
+
+European wholesale electricity price data available on [Ember.org](https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/)
 
 ## Number of week-end
 
 ## Tools in Germany
 
+Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+
 ## Google Trends
+
+We retrieve google trend series on a few categories, especially for nowcasting on tourism.
+
+## Other potential interesting data sources (not identified in open data sources)
+
+Historical Purchasing manager's index by country, london metal exchange indices, daily electricity consumption by industrial firms country by country...
