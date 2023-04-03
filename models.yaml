@@ -4,13 +4,13 @@ XGBOOST:
     nb_months_past_to_use_others : 4
     nb_years_past_to_use : 0
     hyperparameters_europe :
-      best_nround : 50
+      best_nround : 150
       best_eta : 0.15
-      best_max_depth : 8
+      best_max_depth : 6
       best_subsample : 0.5
       best_colsample_bytree : 0.5
     hyperparameters_per_country :
-      best_nround : 300
+      best_nround : 100
       best_eta : 0.15
       best_max_depth : 5
       best_subsample : 0.5
@@ -20,13 +20,13 @@ XGBOOST:
     nb_months_past_to_use_others : 4
     nb_years_past_to_use : 0
     hyperparameters_europe :
-      best_nround : 50
+      best_nround : 150
       best_eta : 0.15
-      best_max_depth : 8
+      best_max_depth : 6
       best_subsample : 0.5
       best_colsample_bytree : 0.5
     hyperparameters_per_country :
-      best_nround : 300
+      best_nround : 100
       best_eta : 0.15
       best_max_depth : 5
       best_subsample : 0.5
@@ -36,13 +36,13 @@ XGBOOST:
     nb_months_past_to_use_others : 5
     nb_years_past_to_use : 5
     hyperparameters_europe :
-      best_nround : 50
+      best_nround : 150
       best_eta : 0.15
-      best_max_depth : 8
+      best_max_depth : 6
       best_subsample : 0.5
       best_colsample_bytree : 0.5
     hyperparameters_per_country :
-      best_nround : 300
+      best_nround : 100
       best_eta : 0.15
       best_max_depth : 5
       best_subsample : 0.5
