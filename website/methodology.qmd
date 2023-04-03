@@ -50,3 +50,15 @@ To obtain optimal results from the XGBoost algorithm, we used a grid search tech
 To predict our 3 indicators for each country, we trained an XGBoost model for each country independently. We randomly split the data into training and testing sets and trained the model on the training set using the optimal hyperparameters obtained from the grid search. We evaluated the model's performance on the testing set using various metrics such as mean squared error and mean absolute error.
 
 ## LSTM
+
+LSTM, or Long Short-Term Memory, is a type of recurrent neural network that is particularly well-suited for modeling time series data. Unlike traditional feedforward neural networks, which process input data in a single pass, recurrent neural networks can maintain a "memory" of previous inputs and use this information to make better predictions.
+
+LSTM takes this a step further by introducing "gates" that can selectively remember or forget previous inputs based on their importance to the current prediction. These gates allow the model to capture longer-term dependencies in the data, making it especially effective for time series forecasting tasks.
+
+During the training process, the LSTM model is fed a sequence of inputs, with each input representing a timestep in the time series. The model then generates a corresponding output for each timestep, which is compared to the actual value to compute a loss function. The weights of the model are updated through backpropagation, where the gradient of the loss function is propagated backwards through the network.
+
+One of the challenges of using LSTMs for time series forecasting is selecting an appropriate window size, or the number of previous timesteps that the model should consider when making each prediction. A larger window size can capture longer-term trends in the data, but may also introduce more noise and complicate the training process. A smaller window size, on the other hand, may be more sensitive to short-term fluctuations in the data, but may not capture longer-term trends as effectively.
+
+In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.
+
+The LSTM model was trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall, the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.
