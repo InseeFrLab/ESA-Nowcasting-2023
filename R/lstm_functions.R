@@ -64,13 +64,16 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model = "LSTM
   )]
 
   # Dummy variables in the country
-  df <- df[c(
+  cols_with_diversity <- c(
     rep(TRUE, 2),
     lapply(df[-(1:2)],
-      var,
-      na.rm = TRUE
-    ) != 0
-  )]
+           var,
+           na.rm = TRUE
+    ) != 0 
+  ) 
+  
+  # to document
+  df <- df[!is.na(cols_with_diversity) & cols_with_diversity]
 
   # Actually add one row
   df <- df %>%
