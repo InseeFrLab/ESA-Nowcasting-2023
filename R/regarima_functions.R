@@ -203,7 +203,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
     
     X <- ts.union()
     
-    if (country!="EL") {
+    if (country!="EL" & country !="DK") {
       gtrendh <- reshape_gtrends_data(data, country) %>%
         select(time, 
                paste(country, "GTRENDS", "HOTELS", sep = "_")
