@@ -98,11 +98,11 @@ REGARIMA:
     usrdef.varEnabled: TRUE
 
   TOURISM:
-    spec: "TRfull",
+    spec: "TRfull"
     transform.function: "Auto"
     estimate.from: "2016-01-01"
     automdl.enabled: TRUE
-    tradingdays.option: "TradingDays",
+    tradingdays.option: "TradingDays"
     usrdef.outliersEnabled: TRUE
     usrdef.outliersTyp: [
       "AO", "AO", "AO", "AO", "AO",

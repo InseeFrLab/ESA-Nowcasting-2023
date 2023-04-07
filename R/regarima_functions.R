@@ -152,7 +152,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       X <- ts.union(dIS, IPT, dIPT, dtolls)
     }
     if (country %in% c("AT")) {
-      ind_wifo <- wifo  %>% 
+      ind_wifo <- data$WEEKLY_INDEX_AT$data  %>% 
         tidyr::drop_na() %>% 
         mutate(time=ymd(paste(year(time),month(time),"01"))) %>% 
         group_by(time) %>% 
@@ -160,7 +160,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
         ungroup() %>% 
         tsbox::ts_ts() 
       
-      dind_wifo=ind-stats::lag(ind,-1)
+      dind_wifo=ind_wifo-stats::lag(ind_wifo,-1)
       X <- ts.union(IPT,dind_wifo)
     }
     if (country %in% c("IT")) {
