@@ -290,13 +290,13 @@ run_regarima <- function(challenge, challenges_info, data, models) {
 
     regarima <- estimate_regarima(challenge, DB, models, country, h)
     
-    if (challenge != "TOURISM") {
+    if (challenge == "TOURISM") {
     pred <- last(regarima$forecast[, 1])
+    print(pred)
     }
     
-    if (challenge == "TOURISM") {
+    if (challenge != "TOURISM") {
       pred <- last(DB$Historical_sa) * prod(exp(regarima$forecast[, 1]))
-      pred <- pred / DB$coef_sa
     }
 
     preds_regarima <- preds_regarima %>%
