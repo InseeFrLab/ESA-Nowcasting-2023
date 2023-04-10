@@ -293,6 +293,11 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     if (challenge == "TOURISM") {
     pred <- last(regarima$forecast[, 1])
     print(pred)
+    #Traitement du cas où le Regarima générerait une valeur manquante malgré les précautions
+    if (is.na(pred)) {
+      pred <- window(DB$Historical,start=c(year(date_to_pred)-1,month(date_to_pred)),
+                     end=c(year(date_to_pred)-1,month(date_to_pred)))[1]
+    }
     }
     
     if (challenge != "TOURISM") {
