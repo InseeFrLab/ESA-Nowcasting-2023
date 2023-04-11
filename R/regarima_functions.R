@@ -25,34 +25,6 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   }
 }
 
-#function for seasonally adjusting of some series in Tourism challenge
-desaiso <- function(serie) {
-spec_tourism <- x13_spec(
-  preliminary.check=FALSE,
-  estimate.from = "2012-01-01",
-  spec = "RSA5c",
-  usrdef.outliersEnabled = TRUE,
-  usrdef.outliersType = c(
-    "AO", "AO", "AO", "AO", "AO",
-    "AO", "AO", "AO", "AO", "AO", "AO",
-    "AO", "AO", "AO", "AO", "AO", "AO",
-    "AO", "AO", "AO", "AO", "AO", "AO",
-    "AO", "AO","AO"
-  ),
-  usrdef.outliersDate = c(
-    "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
-    "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
-    "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
-    "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
-    "2022-01-01", "2022-02-01", "2022-03-01"
-  ),
-  outlier.enabled = TRUE,
-  outlier.ao = TRUE,
-  outlier.tc = TRUE,
-  outlier.ls = TRUE,
-)
-return(x13(window(serie,start=c(2015,1)),spec_tourism))
-}
 
 create_regressors <- function(challenge, challenges_info, data, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
@@ -186,19 +158,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
       tidyr::drop_na() %>%
       tsbox::ts_ts() / 100
-    # gtrendh <- reshape_gtrends_data(data, country) %>%
-    #   select(time, 
-    #          paste(country, "GTRENDS", "HOTELS", sep = "_")
-    #   ) %>%
-    #   tidyr::drop_na() %>%
-    #   tsbox::ts_ts() / 100
-    # gtrenda <- reshape_gtrends_data(data, country) %>%
-    #   select(time, 
-    #          paste(country, "GTRENDS", "TRAVEL_AGENCIES", sep = "_")
-    #   ) %>%
-    #   tidyr::drop_na() %>%
-    #   tsbox::ts_ts() / 100
-    
+
     ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
     
     X <- ts.union()
@@ -250,10 +210,6 @@ estimate_regarima <- function(challenge, data, models, country, h) {
     }
   }
 
-  if (challenge == "TOURISM") {
-      parameters$estimate.from <- "2015-01-01"
-  }
-    
   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
   regarima <- RJDemetra::regarima(data$y, specification)
 
