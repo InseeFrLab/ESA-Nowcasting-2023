@@ -1,4 +1,4 @@
-build_data_regarima <- function(challenge, challenges_info, data, country) {
+build_data_regarima <- function(challenge, challenges_info, data, models, country) {
   selected_data <- Filter(function(x) (challenge %in% x$challenge) & ("REGARIMA" %in% x$model), data)
 
   code_variable_interest <- challenges_info[[challenge]]$principal_nace
@@ -12,8 +12,9 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & is.na(y), 1) # replace NA by 1 during covid period
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0, 1) # replace 0 by 1 during covid period
     
-    result_x13 <- desaiso(y)
+    result_x13 <- desaiso(y,models)
     y_sa <- result_x13$final$series[,"sa"]
+    #Coef saisonnier du mois à prédire
     coef_sa <- window(
       result_x13$final$forecasts[,"sa_f"]/result_x13$final$forecasts[,"y_f"],
       start=c(year(date_to_pred),month(date_to_pred)),
@@ -23,7 +24,7 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 
   dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
 
-  X <- create_regressors(challenge, challenges_info, selected_data, country)
+  X <- create_regressors(challenge, challenges_info, selected_data, models, country)
 
   if (challenge == "PPI" | challenge=="PVI") {
   return(list("y" = dy, "X" = X, "Historical" = y))
@@ -35,35 +36,37 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
 }
 
 #function for seasonal adjustement of some series in Tourism challenge
-desaiso <- function(serie) {
-  spec_tourism <- x13_spec(
-    preliminary.check=FALSE,
-    estimate.from = "2012-01-01",
-    spec = "RSA5c",
-    usrdef.outliersEnabled = TRUE,
-    usrdef.outliersType = c(
-      "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO","AO"
-    ),
-    usrdef.outliersDate = c(
-      "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
-      "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
-      "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
-      "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
-      "2022-01-01", "2022-02-01", "2022-03-01"
-    ),
-    outlier.enabled = TRUE,
-    outlier.ao = TRUE,
-    outlier.tc = TRUE,
-    outlier.ls = TRUE,
-  )
-  return(x13(window(serie,start=c(2015,1)),spec_tourism))
+desaiso <- function(serie,models) {
+  # spec_tourism <- x13_spec(
+  #   preliminary.check=FALSE,
+  #   estimate.from = "2012-01-01",
+  #   spec = "RSA5c",
+  #   usrdef.outliersEnabled = TRUE,
+  #   usrdef.outliersType = c(
+  #     "AO", "AO", "AO", "AO", "AO",
+  #     "AO", "AO", "AO", "AO", "AO", "AO",
+  #     "AO", "AO", "AO", "AO", "AO", "AO",
+  #     "AO", "AO", "AO", "AO", "AO", "AO",
+  #     "AO", "AO","AO"
+  #   ),
+  #   usrdef.outliersDate = c(
+  #     "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+  #     "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+  #     "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+  #     "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+  #     "2022-01-01", "2022-02-01", "2022-03-01"
+  #   ),
+  #   outlier.enabled = TRUE,
+  #   outlier.ao = TRUE,
+  #   outlier.tc = TRUE,
+  #   outlier.ls = TRUE,
+  # )
+  specification_sa <- do.call(RJDemetra::x13_spec, models$CVS)
+  serie_sa <- RJDemetra::x13(window(serie,start=c(2015,1)), specification_sa)
+  return(serie_sa)
 }
 
-create_regressors <- function(challenge, challenges_info, data, country) {
+create_regressors <- function(challenge, challenges_info, data, models, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
 
   if (challenge == "PPI") {
@@ -212,12 +215,14 @@ create_regressors <- function(challenge, challenges_info, data, country) {
         ) %>%
         tidyr::drop_na() %>%
         tsbox::ts_ts() / 100
-      gtrendh_sa <- desaiso(gtrendh)$final$series[,"sa"]
+      gtrendh_sa <- desaiso(gtrendh,models)$final$series[,"sa"]
       dgtrendh_sa=gtrendh_sa-stats::lag(gtrendh_sa,-1)
       dgtrendh_sa_1=stats::lag(dgtrendh_sa,-1)
+      
+      date_deb <- ymd(models$REGARIMA$TOURISM$estimate.from)
     
       X <- window(ts.union(dgtrendh_sa, dgtrendh_sa_1),
-                  start=c(2015,3),
+                  start=c(year(date_deb),month(date_deb)),
                   end=c(year(date_to_pred),month(date_to_pred)))
       }
 
@@ -260,13 +265,13 @@ estimate_regarima <- function(challenge, data, models, country, h) {
   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
   regarima <- RJDemetra::regarima(data$y, specification)
 
-  # if (any(is.na(regarima$forecast))) {
-  #   parameters$usrdef.var <- NULL
-  #   parameters$usrdef.varEnabled <- NULL
-  # 
-  #   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
-  #   regarima <- RJDemetra::regarima(data$y, specification)
-  # }
+  if (any(is.na(regarima$forecast))) {
+    parameters$usrdef.var <- NULL
+    parameters$usrdef.varEnabled <- NULL
+
+    specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
+    regarima <- RJDemetra::regarima(data$y, specification)
+  }
 
   return(regarima)
 }
@@ -287,7 +292,7 @@ run_regarima <- function(challenge, challenges_info, data, models) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
 
   for (country in challenges_info[[challenge]]$countries) {
-    DB <- build_data_regarima(challenge, challenges_info, data, country)
+    DB <- build_data_regarima(challenge, challenges_info, data, models, country)
 
     h <- lubridate::interval(last(index(tsbox::ts_xts(DB$y))), date_to_pred) %/% months(1)
 
