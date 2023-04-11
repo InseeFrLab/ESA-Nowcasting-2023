@@ -11,6 +11,14 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   if (challenge == "TOURISM") {
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & is.na(y), 1) # replace NA by 1 during covid period
     y <- replace(y, (floor(time(y)) %in% c(2020, 2021)) & y == 0, 1) # replace 0 by 1 during covid period
+    
+    result_x13 <- desaiso(y)
+    y_sa <- result_x13$final$series[,"sa"]
+    coef_sa <- window(
+      result_x13$final$forecasts[,"sa_f"]/result_x13$final$forecasts[,"y_f"],
+      start=c(year(date_to_pred),month(date_to_pred)),
+      end=c(year(date_to_pred),month(date_to_pred)))
+    dy_sa <- log(y_sa)-log(stats::lag(y_sa,-1))
       }
 
   dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
@@ -21,10 +29,39 @@ build_data_regarima <- function(challenge, challenges_info, data, country) {
   return(list("y" = dy, "X" = X, "Historical" = y))
   }
   if (challenge == "TOURISM") {
-    return(list("y" = y, "X" = X, "Historical" = y))
+    dy_sa <- window(log(y_sa) - stats::lag(log(y_sa), -1))
+    return(list("y" = dy_sa, "X" = X, "Historical" = y, "Historical_sa" = y_sa, "coef_sa"=coef_sa))
   }
 }
 
+#function for seasonal adjustement of some series in Tourism challenge
+desaiso <- function(serie) {
+  spec_tourism <- x13_spec(
+    preliminary.check=FALSE,
+    estimate.from = "2012-01-01",
+    spec = "RSA5c",
+    usrdef.outliersEnabled = TRUE,
+    usrdef.outliersType = c(
+      "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO", "AO", "AO", "AO", "AO",
+      "AO", "AO","AO"
+    ),
+    usrdef.outliersDate = c(
+      "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+      "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+      "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+      "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+      "2022-01-01", "2022-02-01", "2022-03-01"
+    ),
+    outlier.enabled = TRUE,
+    outlier.ao = TRUE,
+    outlier.tc = TRUE,
+    outlier.ls = TRUE,
+  )
+  return(x13(window(serie,start=c(2015,1)),spec_tourism))
+}
 
 create_regressors <- function(challenge, challenges_info, data, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
@@ -154,24 +191,34 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       ) # dIS2
     }
   } else if (challenge == "TOURISM") {
-    ICM <- reshape_eurostat_data(data, country) %>%
-      select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
-      tidyr::drop_na() %>%
-      tsbox::ts_ts() / 100
-
-    ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
+    # ICM <- reshape_eurostat_data(data, country) %>%
+    #   select(time, paste(country, "CSURVEY", "BS-CSMCI", sep = "_")) %>%
+    #   tidyr::drop_na() %>%
+    #   tsbox::ts_ts() / 100
+    # 
+    # 
+    # ICM_sa <- desaiso(ICM)$final$series[,"sa"]
+    # dICM_sa=ICM_sa-stats::lag(ICM_sa,-1)
+    # dICM_sa_1=stats::lag(dICM_sa,-1)
+    # 
+    # ecart_dernier_mois <- lubridate::interval(date_to_pred, last(index(tsbox::ts_xts(ICM)))) %/% months(1)
     
     X <- ts.union()
     
-    if (country!="EL" & country !="DK") {
+    if (!(country %in% c("EL","DK","LV"))) {
       gtrendh <- reshape_gtrends_data(data, country) %>%
         select(time, 
                paste(country, "GTRENDS", "HOTELS", sep = "_")
         ) %>%
         tidyr::drop_na() %>%
         tsbox::ts_ts() / 100
+      gtrendh_sa <- desaiso(gtrendh)$final$series[,"sa"]
+      dgtrendh_sa=gtrendh_sa-stats::lag(gtrendh_sa,-1)
+      dgtrendh_sa_1=stats::lag(dgtrendh_sa,-1)
     
-      X <- ts.union(gtrendh)
+      X <- window(ts.union(dgtrendh_sa, dgtrendh_sa_1),
+                  start=c(2015,3),
+                  end=c(year(date_to_pred),month(date_to_pred)))
       }
 
   } else {
@@ -213,13 +260,13 @@ estimate_regarima <- function(challenge, data, models, country, h) {
   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
   regarima <- RJDemetra::regarima(data$y, specification)
 
-  if (any(is.na(regarima$forecast))) {
-    parameters$usrdef.var <- NULL
-    parameters$usrdef.varEnabled <- NULL
-
-    specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
-    regarima <- RJDemetra::regarima(data$y, specification)
-  }
+  # if (any(is.na(regarima$forecast))) {
+  #   parameters$usrdef.var <- NULL
+  #   parameters$usrdef.varEnabled <- NULL
+  # 
+  #   specification <- do.call(RJDemetra::regarima_spec_tramoseats, parameters)
+  #   regarima <- RJDemetra::regarima(data$y, specification)
+  # }
 
   return(regarima)
 }
@@ -247,13 +294,14 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     regarima <- estimate_regarima(challenge, DB, models, country, h)
     
     if (challenge == "TOURISM") {
-    pred <- last(regarima$forecast[, 1])
-    print(pred)
+    pred <- last(DB$Historical_sa) * prod(exp(regarima$forecast[, 1]))
+    pred <- pred / DB$coef_sa
+    
     #Traitement du cas où le Regarima générerait une valeur manquante malgré les précautions
-    if (is.na(pred)) {
-      pred <- window(DB$Historical,start=c(year(date_to_pred)-1,month(date_to_pred)),
-                     end=c(year(date_to_pred)-1,month(date_to_pred)))[1]
-    }
+    # if (is.na(pred)) {
+    #   pred <- window(DB$Historical,start=c(year(date_to_pred)-1,month(date_to_pred)),
+    #                  end=c(year(date_to_pred)-1,month(date_to_pred)))[1]
+    # }
     }
     
     if (challenge != "TOURISM") {
