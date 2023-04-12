@@ -83,10 +83,7 @@ CSURVEY:
   challenge:
     - TOURISM
   model:
-    - DFM
-    - XGBOOST
     - REGARIMA
-    - LSTM
   id: ei_bsco_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
@@ -277,10 +274,7 @@ WEEKLY_INDEX_AT:
   challenge: 
     - PVI
   model:
-    - XGBOOST
     - REGARIMA
-    - LSTM
-    - DFM
   url: "https://www.wifo.ac.at/wwadocs/konjunktur/W%C3%B6chentlicherWIFOWirtschaftsindex/WIFO-BusinessCycleAnalysis_WeeklyWIFOEconomicIndex.xlsx"
 
 GTRENDS_MANUFACTURING:
