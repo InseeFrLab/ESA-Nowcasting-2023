@@ -6,12 +6,28 @@ Describe the methodology here.
 
 ## Regarima
 
-Automatic ARIMA modelling with detection of outliers and external regressors (financial series, macroeconomic series...). We use the RJdemetra package that provide an easy way to identify and estimate such models with high flexibility on parameters. RegARIMA models offer some advantages in this exercise:
+### Introduction
 
--   they are relatively simple, easy to interpret, and so provide a useful benchmark for more complex models
+ARIMA modelling is a classic class of models used to capture internal information of a series (stationnary or non stationnary). They offer some advantages in this exercise: they are relatively simple, easy to interpret, and so provide a useful benchmark for more complex models. But they do not include external information. We use the extended version REGARIMA with additional regressors:
+
+$$ 
+\phi(y_t) = c + \sum_{i=1}^{p}\alpha_i x_{t} + \theta(\varepsilon_t)
+$$
+Additional regressors used in this project are of two types:
+- Economic variables presented in the data section. REGARIMA models must keep parcimonious, so relevant variables are selected through standard selection procedures or a priori
+- Typical outliers variables to control for atypical observations, in particular additive outliers and level-shifts
+
+Models are applied to the interest variable first differenciation.
+
+### Automatic identification
+
+We use the RJdemetra package that provide an easy way to identify and estimate such models with high flexibility on parameters. 
 -   we allow for automatic detection of outliers on the estimation period in order to avoid large bias on coefficients. Without adding outliers, "covid" points would for instance totally distort coefficients. Outliers identified through this procedure could in addition be used in other methods
 -   computation time is really fast (a few seconds for the whole set of countries)
--   external regressors can be selected independantly through standard variable selection.
+-   external regressors are selected independantly a priori or through standard variable selection.
+
+### Seasonal adjustment for tourism
+For tourism, the seasonal component is very strong and not necessary the same as explanatory variables.
 
 ## Dynamic Factor Models
 

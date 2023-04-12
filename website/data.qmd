@@ -50,9 +50,11 @@ European wholesale electricity price data available on [Ember.org](https://ember
 
 ## Number of week-end
 
-## Tools in Germany
+## Leading national indicators
 
-Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+1. Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+
+2. The [Weekly WIFO Economic Index](https://www.wifo.ac.at/en/topics/business_cycle/wifo_leading_indicator/wifo_leading_indicator) is a measure of the real economic activity of the Austrian economy. We use its industrial production component.
 
 ## Google Trends
 
