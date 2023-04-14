@@ -298,7 +298,7 @@ build_data_ml <- function(data = get_data(
   list_other_variables_eurostat <- colnames(df)[
     (
       7 + config_models[[model]][[challenge]]$nb_months_past_to_use + config_models[[model]][[challenge]]$nb_years_past_to_use
-     ):(
+    ):(
       length(colnames(df)))
   ]
 

@@ -45,7 +45,7 @@ create_regressors <- function(challenge, challenges_info, data, country) {
       value = TRUE
     )
 
-    if (!purrr::is_empty(dispo) & country!="HR") {
+    if (!purrr::is_empty(dispo) & country != "HR") {
       ipi <- reshape_eurostat_data(data, country) %>%
         select(time, paste(country, "IPI", "CPA_B-D", sep = "_")) %>%
         tidyr::drop_na() %>%
