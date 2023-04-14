@@ -2,8 +2,12 @@
 title: Production volume in industry challenge
 ---
 
-Un petit topo sur le PVI
+The monthly PVI indicator represents the production index in industry.
+The objective of the index is to measure changes in the volume of output at monthly intervals.
+It provides a measure of the volume trend in value added over a given reference period.
+The production index is calculated in the form of a Laspeyres type index.
 
+## Forecast for a given country, with modular history
 
 ```{r}
 #| cache: false
