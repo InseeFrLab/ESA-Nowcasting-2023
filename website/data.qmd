@@ -2,11 +2,14 @@
 title: Data
 ---
 
-We only use open data
+We take pride in our commitment to utilizing exclusively open data sources in our modeling efforts.
+This approach ensures the transparency and replicability of our methods, which are of paramount importance in the realm of official statistics.
+By leveraging publicly available data, we have been able to derive accurate nowcasts of key economic indicators while promoting the principles of open science and reproducibility.
 
 ## Eurostat data
 
-We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. Series are automatically retrieved from Eurostat database.
+We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
+These series are automatically retrieved from Eurostat database through its API.
 
 1.  [Producer prices in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en):
 
@@ -37,7 +40,7 @@ We use classic macroeconomic variables provided to Eurostat by European countrie
 
 6.  Number of nights spent at tourist accommodation establishments (target variable)
 
-## Financial data
+## Financial data from Yahoo Finance
 
 1.  Brent (dollars)
 2.  Euro/dollar exchange rate
@@ -48,16 +51,21 @@ We use classic macroeconomic variables provided to Eurostat by European countrie
 
 European wholesale electricity price data available on [Ember.org](https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/)
 
-## Number of week-end
+## Calendar data
 
-## Tools in Germany
+We retrieve the number of weekend days per month to include it as a feature to our models.
 
-Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+## Leading national indicators
+
+1. Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+
+2. The [Weekly WIFO Economic Index](https://www.wifo.ac.at/en/topics/business_cycle/wifo_leading_indicator/wifo_leading_indicator) is a measure of the real economic activity of the Austrian economy. We use its industrial production component.
 
 ## Google Trends
 
-We retrieve google trend series on a few categories, especially for nowcasting on tourism.
+We retrieve Google Trends series on a few key categories.
+The impact is particularly important for the tourism indicator.
 
 ## Other potential interesting data sources (not identified in open data sources)
 
-Historical Purchasing manager's index by country, london metal exchange indices, daily electricity consumption by industrial firms country by country...
+Historical Purchasing manager's index by country, London metal exchange indices, daily electricity consumption by industrial firms country by country...

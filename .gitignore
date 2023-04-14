@@ -4,9 +4,10 @@
 .Ruserdata
 .bash_history
 *.RData
-*.zip
+*.csv
 *.docx
+*.parquet
+*.zip
 point_estimates.json
 _targets/
 store_*/
-*.parquet

@@ -43,7 +43,7 @@ PPI:
     entry_4: XGBOOST
     entry_5:
   february:
-    entry_1: REGARIMA
+    entry_1: REGARIMA  # Top performer
     entry_2: DFM
     entry_3: ETS
     entry_4: XGBOOST
@@ -102,7 +102,7 @@ PVI:
     entry_1: REGARIMA
     entry_2: DFM
     entry_3: ETS
-    entry_4: XGBOOST
+    entry_4: XGBOOST  # Top performer
     entry_5: LSTM
   march:
     entry_1: REGARIMA

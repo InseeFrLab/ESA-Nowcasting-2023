@@ -1,4 +1,4 @@
-# Residuals
+# Residuals in the past for models trained until today
 
 ```{r}
 #| label: fig-resid-pvi
