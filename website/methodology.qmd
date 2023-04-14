@@ -2,7 +2,12 @@
 title: Methodology
 ---
 
-We use five different class of models to nowcast the target variables: RegArima, Exponential smoothing, Dynamic factor models, XG boost and Long short-term memory models. Each challenge (production, price, tourism) relies on the same types of models but uses specific datasets and parameters.
+TODO:
+
+- Compléter les descriptions de chaque modèle
+
+Our team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models.
+While the same model classes were utilized for each of the challenges, namely PPI, PVI and Tourism, specific datasets and parameters were tailored to each individual challenge to ensure optimal model performance.
 
 ## Regarima
 
