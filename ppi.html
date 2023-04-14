@@ -132,7 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <meta property="og:title" content="European Statistics Awards for Nowcasting - Producer prices in industry challenge">
-<meta property="og:description" content="Un petit topo sur le PPI">
+<meta property="og:description" content="Producer prices are also known as output prices and the objective of the output price index is to measure the monthly development of transaction prices of economic activities.">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
 </head>
 
@@ -215,12 +215,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./post-mortem-ppi.html" class="sidebar-item-text sidebar-link">Post-Mortem</a>
+  <a href="./post-mortem-ppi.html" class="sidebar-item-text sidebar-link">Post-Mortem analysis of our forecasts</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./resid-ppi.html" class="sidebar-item-text sidebar-link">Residuals</a>
+  <a href="./resid-ppi.html" class="sidebar-item-text sidebar-link">Residuals in the past for models trained until today</a>
   </div>
 </li>
     </ul>
@@ -228,7 +228,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#forecast-for-a-given-country-with-modular-history" id="toc-forecast-for-a-given-country-with-modular-history" class="nav-link active" data-scroll-target="#forecast-for-a-given-country-with-modular-history">Forecast for a given country, with modular history</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/ppi.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -250,12 +256,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Un petit topo sur le PPI</p>
+<p>Producer prices are also known as output prices and the objective of the output price index is to measure the monthly development of transaction prices of economic activities.</p>
+<p>There is a general public interest in knowing the extent to which the prices of goods and services have risen. Also, it has long been customary in many countries to adjust levels of wages, pensions, and payments in long term contracts in proportion to changes in relevant prices.</p>
+<p>The domestic output price index for an economic activity measures the average price development of all goods and related services resulting from that activity and sold on the domestic market between one time period and another.</p>
+<section id="forecast-for-a-given-country-with-modular-history" class="level2">
+<h2 class="anchored" data-anchor-id="forecast-for-a-given-country-with-modular-history">Forecast for a given country, with modular history</h2>
 <div class="cell">
 
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="21" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 20;"><span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>viewof country <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(<span class="fu">unique</span>(data_typed<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span>))<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Select a country:"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="27" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 26;"><span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>viewof country <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(<span class="fu">unique</span>(data_typed<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span>))<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Select a country:"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -263,36 +273,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="26" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">addTooltips</span>(</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Producer prices in industry"</span><span class="op">,</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span>  </span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span><span class="op">,</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> range</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(sample<span class="op">,</span> {</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span> </span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>              <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>              })<span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span><span class="sc">}</span><span class="vs"> `</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        })<span class="op">,</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(preds<span class="op">,</span> {</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"model"</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="32" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 31;"><span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="fu">addTooltips</span>(</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Producer prices in industry"</span><span class="op">,</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span>  </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span><span class="op">,</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> range</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(sample<span class="op">,</span> {</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span> </span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>              <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>              })<span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span><span class="sc">}</span><span class="vs"> `</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        })<span class="op">,</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(preds<span class="op">,</span> {</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"model"</span><span class="op">,</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>              <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>                <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>                <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>              })<span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span><span class="sc">}</span><span class="vs"> `</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-2" data-nodetype="expression">
 
@@ -300,26 +315,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="60" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 59;"><span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> {</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> sample<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  data<span class="op">.</span><span class="fu">push</span>(preds<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)[<span class="dv">0</span>])</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data  </span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>viewof range <span class="op">=</span> <span class="fu">offsetInterval</span>(dates<span class="op">,</span> {</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> [ dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">90</span>]<span class="op">,</span> dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">1</span>] ]<span class="op">,</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> ([a<span class="op">,</span> b]) <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;span </span><span class="sc">${</span>{</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> <span class="st">"display: flex; justify-content: space-between"</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>  }<span class="sc">}</span><span class="vs">&gt;</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>a<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>b<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/span&gt;`</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="71" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 70;"><span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> {</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> sample<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>  data<span class="op">.</span><span class="fu">push</span>(preds<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)[<span class="dv">0</span>])</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data  </span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>viewof range <span class="op">=</span> <span class="fu">offsetInterval</span>(dates<span class="op">,</span> {</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> [ dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">90</span>]<span class="op">,</span> dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">1</span>] ]<span class="op">,</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> ([a<span class="op">,</span> b]) <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;span </span><span class="sc">${</span>{</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> <span class="st">"display: flex; justify-content: space-between"</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>  }<span class="sc">}</span><span class="vs">&gt;</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>a<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>b<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/span&gt;`</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -335,21 +350,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-
-<!--Inputs.table(sample)-->
 <!-- HELPERS -->
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="89" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 88;"><span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>data_t <span class="op">=</span> <span class="fu">transpose</span>(data)</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>data_typed <span class="op">=</span> data_t<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>      <span class="dt">date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">time</span>)<span class="op">,</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>      <span class="dt">values</span><span class="op">:</span> d<span class="op">.</span><span class="at">values</span><span class="op">,</span></span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>      <span class="dt">geo</span><span class="op">:</span> d<span class="op">.</span><span class="at">geo</span></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>    } </span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>   )</span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> data_typed<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="97" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 96;"><span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>data_t <span class="op">=</span> <span class="fu">transpose</span>(data)</span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>data_typed <span class="op">=</span> data_t<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>      <span class="dt">date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">time</span>)<span class="op">,</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>      <span class="dt">values</span><span class="op">:</span> d<span class="op">.</span><span class="at">values</span><span class="op">,</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>      <span class="dt">geo</span><span class="op">:</span> d<span class="op">.</span><span class="at">geo</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>    } </span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> data_typed<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -373,18 +386,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="103" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 102;"><span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>pred_t <span class="op">=</span> <span class="fu">transpose</span>(pred)</span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>pred_typed <span class="op">=</span> pred_t<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>      <span class="dt">date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>      <span class="dt">values</span><span class="op">:</span> d<span class="op">.</span><span class="at">value</span><span class="op">,</span></span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>      <span class="dt">geo</span><span class="op">:</span> d<span class="op">.</span><span class="at">Country</span><span class="op">,</span></span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>      <span class="dt">model</span><span class="op">:</span> d<span class="op">.</span><span class="at">Entries</span></span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>    } </span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>   )</span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> pred_typed<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="111" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 110;"><span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>pred_t <span class="op">=</span> <span class="fu">transpose</span>(pred)</span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>pred_typed <span class="op">=</span> pred_t<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>      <span class="dt">date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>      <span class="dt">values</span><span class="op">:</span> d<span class="op">.</span><span class="at">value</span><span class="op">,</span></span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>      <span class="dt">geo</span><span class="op">:</span> d<span class="op">.</span><span class="at">Country</span><span class="op">,</span></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>      <span class="dt">model</span><span class="op">:</span> d<span class="op">.</span><span class="at">Entries</span></span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>    } </span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> pred_typed<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">
@@ -408,13 +421,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="117" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 116;"><span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>dateParser <span class="op">=</span> (dateString) <span class="kw">=&gt;</span> {</span>
-<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> [year<span class="op">,</span> month<span class="op">,</span> day] <span class="op">=</span> dateString<span class="op">.</span><span class="fu">split</span>(<span class="st">'-'</span>)</span>
-<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> date <span class="op">=</span> <span class="kw">new</span> <span class="bu">Date</span>(<span class="bu">Date</span><span class="op">.</span><span class="fu">UTC</span>(year<span class="op">,</span> month <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> day<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>))</span>
-<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> timezoneOffset <span class="op">=</span> date<span class="op">.</span><span class="fu">getTimezoneOffset</span>()</span>
-<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a>  date<span class="op">.</span><span class="fu">setMinutes</span>(date<span class="op">.</span><span class="fu">getMinutes</span>() <span class="op">-</span> timezoneOffset)</span>
-<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> date</span>
-<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="125" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 124;"><span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>dateParser <span class="op">=</span> (dateString) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> [year<span class="op">,</span> month<span class="op">,</span> day] <span class="op">=</span> dateString<span class="op">.</span><span class="fu">split</span>(<span class="st">'-'</span>)</span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> date <span class="op">=</span> <span class="kw">new</span> <span class="bu">Date</span>(<span class="bu">Date</span><span class="op">.</span><span class="fu">UTC</span>(year<span class="op">,</span> month <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> day<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>))</span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> timezoneOffset <span class="op">=</span> date<span class="op">.</span><span class="fu">getTimezoneOffset</span>()</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>  date<span class="op">.</span><span class="fu">setMinutes</span>(date<span class="op">.</span><span class="fu">getMinutes</span>() <span class="op">-</span> timezoneOffset)</span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> date</span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-6" data-nodetype="declaration">
 
@@ -423,9 +436,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <!-- dateParser = d3.timeParse("%Y-%m-%d") -->
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="129" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 128;"><span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">unique</span>(data<span class="op">,</span> accessor) {</span>
-<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(accessor <span class="op">?</span> data<span class="op">.</span><span class="fu">map</span>(accessor) <span class="op">:</span> data))<span class="op">;</span></span>
-<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="137" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 136;"><span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">unique</span>(data<span class="op">,</span> accessor) {</span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(accessor <span class="op">?</span> data<span class="op">.</span><span class="fu">map</span>(accessor) <span class="op">:</span> data))<span class="op">;</span></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-7" data-nodetype="declaration">
 
@@ -434,8 +447,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <!-- DEPENDENCIES -->
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="138" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 137;"><span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {addTooltips} <span class="im">from</span> <span class="st">"@mkfreeman/plot-tooltip"</span></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {offsetInterval} <span class="im">from</span> <span class="st">'@mootari/offset-slider'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="146" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 145;"><span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {addTooltips} <span class="im">from</span> <span class="st">"@mkfreeman/plot-tooltip"</span></span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {offsetInterval} <span class="im">from</span> <span class="st">'@mootari/offset-slider'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-8-1" data-nodetype="declaration">
@@ -453,10 +466,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: \"Select a country:\"})\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"addTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Producer prices in industry\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(sample, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(preds, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\"\n        })\n  ],\n  color: {legend: true}\n})\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"dates = {\n  const data = sample.map(d => d.date)\n  data.push(preds.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"data_t = transpose(data)\ndata_typed = data_t.map( d => (\n    {\n      date: dateParser(d.time),\n      values: d.values,\n      geo: d.geo\n    } \n   )\n )\n\nsample = data_typed.filter(d => d.geo == country)\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"pred_t = transpose(pred)\npred_typed = pred_t.map( d => (\n    {\n      date: dateParser(d.Date),\n      values: d.value,\n      geo: d.Country,\n      model: d.Entries\n    } \n   )\n )\n\npreds = pred_typed.filter(d => d.geo == country)\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"dateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"function unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"import {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'\n"},{"methodName":"interpretQuiet","source":"shinyInput('country')"},{"methodName":"interpretQuiet","source":"shinyInput('range')"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: \"Select a country:\"})\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"addTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Producer prices in industry\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(sample, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(preds, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        })\n  ],\n  color: {legend: true}\n})\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"dates = {\n  const data = sample.map(d => d.date)\n  data.push(preds.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"data_t = transpose(data)\ndata_typed = data_t.map( d => (\n    {\n      date: dateParser(d.time),\n      values: d.values,\n      geo: d.geo\n    } \n   )\n )\n\nsample = data_typed.filter(d => d.geo == country)\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"pred_t = transpose(pred)\npred_typed = pred_t.map( d => (\n    {\n      date: dateParser(d.Date),\n      values: d.value,\n      geo: d.Country,\n      model: d.Entries\n    } \n   )\n )\n\npreds = pred_typed.filter(d => d.geo == country)\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"dateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"function unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"import {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'\n"},{"methodName":"interpretQuiet","source":"shinyInput('country')"},{"methodName":"interpretQuiet","source":"shinyInput('range')"}]}
 </script>
 <script type="module">
 window._ojs.paths.runtimeToDoc = "../..";

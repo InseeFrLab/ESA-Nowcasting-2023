@@ -61,9 +61,10 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script src="https://kit.fontawesome.com/78ddb093ea.js" crossorigin="anonymous"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta property="og:title" content="European Statistics Awards for Nowcasting - Methodology">
-<meta property="og:description" content="Describe the methodology here.">
+<meta property="og:description" content="TODO:">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
 </head>
 
@@ -129,10 +130,22 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#regarima" id="toc-regarima" class="nav-link active" data-scroll-target="#regarima">Regarima</a></li>
+  <li><a href="#regarima" id="toc-regarima" class="nav-link active" data-scroll-target="#regarima">Regarima</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#automatic-identification-and-nowcasting" id="toc-automatic-identification-and-nowcasting" class="nav-link" data-scroll-target="#automatic-identification-and-nowcasting">Automatic identification and nowcasting</a></li>
+  <li><a href="#seasonal-adjustment-for-tourism" id="toc-seasonal-adjustment-for-tourism" class="nav-link" data-scroll-target="#seasonal-adjustment-for-tourism">Seasonal adjustment for tourism</a></li>
+  </ul></li>
   <li><a href="#dynamic-factor-models" id="toc-dynamic-factor-models" class="nav-link" data-scroll-target="#dynamic-factor-models">Dynamic Factor Models</a></li>
   <li><a href="#ets" id="toc-ets" class="nav-link" data-scroll-target="#ets">ETS</a></li>
-  <li><a href="#xgboost" id="toc-xgboost" class="nav-link" data-scroll-target="#xgboost">XGBoost</a></li>
+  <li><a href="#xgboost" id="toc-xgboost" class="nav-link" data-scroll-target="#xgboost">XGBoost</a>
+  <ul class="collapse">
+  <li><a href="#introduction-1" id="toc-introduction-1" class="nav-link" data-scroll-target="#introduction-1">Introduction</a></li>
+  <li><a href="#xgboost-algorithm" id="toc-xgboost-algorithm" class="nav-link" data-scroll-target="#xgboost-algorithm">XGBoost Algorithm</a></li>
+  <li><a href="#transforming-time-series" id="toc-transforming-time-series" class="nav-link" data-scroll-target="#transforming-time-series">Transforming Time Series</a></li>
+  <li><a href="#grid-search-for-hyperparameters" id="toc-grid-search-for-hyperparameters" class="nav-link" data-scroll-target="#grid-search-for-hyperparameters">Grid Search for Hyperparameters</a></li>
+  <li><a href="#training-xgboost-for-nowcasting" id="toc-training-xgboost-for-nowcasting" class="nav-link" data-scroll-target="#training-xgboost-for-nowcasting">Training XGBoost for Nowcasting</a></li>
+  </ul></li>
   <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">LSTM</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/methodology.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -157,16 +170,43 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Describe the methodology here.</p>
+<p>TODO:</p>
+<ul>
+<li>Compléter les descriptions de chaque modèle</li>
+</ul>
+<p>Our team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models. While the same model classes were utilized for each of the challenges, namely PPI, PVI and Tourism, specific datasets and parameters were tailored to each individual challenge to ensure optimal model performance.</p>
 <section id="regarima" class="level2">
 <h2 class="anchored" data-anchor-id="regarima">Regarima</h2>
-<p>Automatic ARIMA modelling with detection of outliers and external regressors (financial series, macroeconomic series…). We use the RJdemetra package that provide an easy way to identify and estimate such models with high flexibility on parameters. RegARIMA models offer some advantages in this exercise:</p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>ARIMA modelling is a common type of time models used to capture internal information of a series, wether is is stationary or non stationary. ARIMA models offer some advantages in this exercise: they are relatively simple, easy to interpret, and therefore provide a useful benchmark for more complex models. As standard ARIMA models do not include external information, we use the extended version RegARIMA with external regressors (regression model with ARIMA errors):</p>
+<p><span class="math display">\[
+y_t = c + \sum_{i=1}^{p}\alpha_i x^i_{t}+u_t
+\]</span> <span class="math display">\[
+\phi(L)(u_t) = \theta(L)(\varepsilon_t)
+\]</span></p>
+<p>Additional regressors used in this project are of two types:</p>
 <ul>
-<li>they are relatively simple, easy to interpret, and so provide a useful benchmark for more complex models</li>
-<li>we allow for automatic detection of outliers on the estimation period in order to avoid large bias on coefficients. Without adding outliers, “covid” points would for instance totally distort coefficients. Outliers identified through this procedure could in addition be used in other methods</li>
-<li>computation time is really fast (a few seconds for the whole set of countries)</li>
-<li>external regressors can be selected independantly through standard variable selection.</li>
+<li>Economic variables presented in the data section. REGARIMA models must keep parsimonious (contrary to other methods implemented in this project), so relevant variables are selected through standard selection procedures or a priori.</li>
+<li>Outlier variables such as level-shift or additive outilers to control for atypical observations.</li>
 </ul>
+<p>Models are applied to the first differentiation of the variable of interest.</p>
+</section>
+<section id="automatic-identification-and-nowcasting" class="level3">
+<h3 class="anchored" data-anchor-id="automatic-identification-and-nowcasting">Automatic identification and nowcasting</h3>
+<p>We use the RJdemetra package (the TRAMO part) that provide an easy way to identify and estimate RegARIMA models with high flexibility on parameters.</p>
+<ul>
+<li>we allow for automatic detection of outliers on the estimation period in order to avoid large bias on coefficients. Without adding outliers, “covid” points, for instance, would totally distort coefficients. Outliers identified through this procedure could in addition be used in other methods</li>
+<li>computation time is fast (a few seconds for the whole set of countries)</li>
+<li>external regressors are selected independently, a priori or through standard variable selection procedure.</li>
+</ul>
+<p>The final nowcast value is provided by the projection of the model at horizon 1, 2 or 3, depending on the challenge and the position in the month.</p>
+</section>
+<section id="seasonal-adjustment-for-tourism" class="level3">
+<h3 class="anchored" data-anchor-id="seasonal-adjustment-for-tourism">Seasonal adjustment for tourism</h3>
+<p>For tourism, the seasonal component is very strong and may not be the same as the explanatory variables. An X13 pre-treatment is applied to seasonnally adjust and correct for trading days the target variable (Number of nights spent at tourist accommodation establishments) and the potential explanatory variables. This treatment also provides a prediction for the seasonal coefficient of the nowcasted month.</p>
+<p>Next, seasonally adjusted variables are put in the REGARIMA model. The final step involves nowcasting the “raw value” by dividing the SA forecast by the projected seasonal coefficient.</p>
+</section>
 </section>
 <section id="dynamic-factor-models" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic-factor-models">Dynamic Factor Models</h2>
@@ -178,10 +218,38 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="xgboost" class="level2">
 <h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
-<p>Using several sources of data (financial series, macroeconomic series, surveys…) we construct a dataset in which each row corresponds to a value per country and per date with many explicative variables. We control for colinearity. On this basis, we train a XGboost model to predict the value of the following month.</p>
+<section id="introduction-1" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-1">Introduction</h3>
+<p>XGBoost is a powerful algorithm that has gained popularity in the field of machine learning due to its ability to handle complex interactions between variables and its flexibility in handling various types of data. In the context of Eurostat’s nowcasting competition, we utilized the XGBoost algorithm to predict the values of the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments for most European countries. We will delve here into the technicalities of the XGBoost approach, and how we tailored it to our specific nowcasting problem.</p>
+</section>
+<section id="xgboost-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="xgboost-algorithm">XGBoost Algorithm</h3>
+<p>XGBoost is a gradient boosting algorithm that is particularly well suited for regression and classification problems. It works by building a sequence of decision trees, each tree trying to correct the errors of the previous tree. During the training process, the algorithm iteratively adds decision trees to the model, where each new tree is fit on the residuals (i.e., the errors) of the previous trees. The final prediction is made by adding the output of all the trees.</p>
+<p>To control for overfitting, XGBoost uses a combination of L1 and L2 regularization, also known as “lasso” and “ridge” regularization, respectively. These regularization methods add a penalty term to the loss function, which forces the algorithm to find simpler models. L1 regularization shrinks the less important features’ coefficients to zero, while L2 regularization encourages the coefficients to be small, but does not set them to zero. By using both methods, XGBoost is able to produce models that are both accurate and interpretable.</p>
+<p>Another key feature of XGBoost is its ability to handle missing values. Rather than imputing missing values with a fixed value or mean, XGBoost assigns them a default direction in the split, allowing the algorithm to learn how to handle missing values during the training process.</p>
+<p>Overall, the XGBoost algorithm has proven to be a powerful tool in the field of machine learning, and its ability to handle large datasets and complex interactions between variables make it well-suited for nowcasting problems like the Eurostat competition.</p>
+</section>
+<section id="transforming-time-series" class="level3">
+<h3 class="anchored" data-anchor-id="transforming-time-series">Transforming Time Series</h3>
+<p>To apply the XGBoost algorithm to our nowcasting problem, we first transformed the time series data into a larger dataset tailored for the algorithm. We gathered several sources of data, including financial series, macroeconomic series, and surveys, and created a dataset where each row corresponds to a value per country and per date with many explanatory variables. We added lagged versions of the target variable and some of the explanatory variables as additional features. By doing so, we captured the time series properties of the data and made it suitable for the XGBoost algorithm.</p>
+</section>
+<section id="grid-search-for-hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="grid-search-for-hyperparameters">Grid Search for Hyperparameters</h3>
+<p>To obtain optimal results from the XGBoost algorithm, we used a grid search technique to find the best combination of hyperparameters for each model. We experimented with various values of hyperparameters, including learning rate, maximum depth, and subsample ratio, to determine which combination of parameters resulted in the best performance. The grid search enabled us to identify the best hyperparameters for the model, allowing us to obtain the most accurate predictions. We did not differentiate the hyperparameters for each country as it would have likely caused even more overfitting.</p>
+</section>
+<section id="training-xgboost-for-nowcasting" class="level3">
+<h3 class="anchored" data-anchor-id="training-xgboost-for-nowcasting">Training XGBoost for Nowcasting</h3>
+<p>To predict our 3 indicators for each country, we trained an XGBoost model for each country independently. We randomly split the data into training and testing sets and trained the model on the training set using the optimal hyperparameters obtained from the grid search. We evaluated the model’s performance on the testing set using various metrics such as mean squared error and mean absolute error.</p>
+</section>
 </section>
 <section id="lstm" class="level2">
 <h2 class="anchored" data-anchor-id="lstm">LSTM</h2>
+<p>LSTM, or Long Short-Term Memory, is a type of recurrent neural network that is particularly well-suited for modeling time series data. Unlike traditional feedforward neural networks, which process input data in a single pass, recurrent neural networks can maintain a “memory” of previous inputs and use this information to make better predictions.</p>
+<p>LSTM takes this a step further by introducing “gates” that can selectively remember or forget previous inputs based on their importance to the current prediction. These gates allow the model to capture longer-term dependencies in the data, making it especially effective for time series forecasting tasks.</p>
+<p>During the training process, the LSTM model is fed a sequence of inputs, with each input representing a timestep in the time series. The model then generates a corresponding output for each timestep, which is compared to the actual value to compute a loss function. The weights of the model are updated through backpropagation, where the gradient of the loss function is propagated backwards through the network.</p>
+<p>One of the challenges of using LSTMs for time series forecasting is selecting an appropriate window size, or the number of previous timesteps that the model should consider when making each prediction. A larger window size can capture longer-term trends in the data, but may also introduce more noise and complicate the training process. A smaller window size, on the other hand, may be more sensitive to short-term fluctuations in the data, but may not capture longer-term trends as effectively.</p>
+<p>In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.</p>
+<p>The LSTM model was trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall, the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.</p>
 
 
 </section>

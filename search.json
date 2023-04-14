@@ -1,52 +1,171 @@
 [
   {
-    "objectID": "tourism.html",
-    "href": "tourism.html",
-    "title": "Number of nights spent at tourist accommodation establishments challenge",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
     "section": "",
-    "text": "Un petit topo sur le tourisme"
+    "text": "TODO:"
   },
   {
-    "objectID": "post-mortem-ppi.html",
-    "href": "post-mortem-ppi.html",
-    "title": "European Statistics Awards for Nowcasting",
-    "section": "",
-    "text": "Post-Mortem\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test\n\n\n\n\n\n\n\n\n\nFigure 7: test"
+    "objectID": "index.html#the-challenge",
+    "href": "index.html#the-challenge",
+    "title": "Welcome",
+    "section": "The challenge",
+    "text": "The challenge\nIn the area of nowcasting, the European Statistics Awards Programme aims to discover promising methodologies and potential external data sources that could, now or in the future, be used to improve the timeliness of key EU economic indicators. Better timeliness is a recurring demand for official statistics so there are obvious benefits to developing new approaches which obtain more accurate estimates within a shorter interval. Even where a satisfactorily accurate point estimate is already available, alternative methodologies carry significant potential secondary benefits like reduced cost, improved robustness and applicability in cases where a developed statistical system is still not established.\nThe 2022 round of the Nowcasting awards is divided into 3 separate competitions, each focusing on the nowcasting of one economic indicator:\n\nPPI: Producer prices in industry (domestic market)\nPVI: Production volume in industry\nTOURISM: Number of nights spent at tourist accommodation establishments"
+  },
+  {
+    "objectID": "index.html#our-team",
+    "href": "index.html#our-team",
+    "title": "Welcome",
+    "section": "Our team",
+    "text": "Our team\nWe represent INSEE, the French National Institute of Statistics and Economic Studies, for this challenge. Our team is composed of 5 members:\n\nThomas Faria, Data Scientist in the Innovation Lab in Data Science\nPierre Leblanc, Head of Division in the Short-term Statistics Department\nInès Moutachaker, Research Analyst in the Department of Economic Studies\nAntoine Palazzolo, Data Scientist in the Innovation Lab in Data Science\nAlain Quartier-La-Tente, Research analyst in the Department of Economic Studies"
+  },
+  {
+    "objectID": "index.html#licence",
+    "href": "index.html#licence",
+    "title": "Welcome",
+    "section": "Licence",
+    "text": "Licence\nThis work is licensed under the European Union Public Licence 1.2."
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Welcome",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nOn behalf of our team, we would like to express our gratitude to:\n\nINSEE and our hierarchy for providing us with the time and resources to participate in this challenge.\nThe various teams at INSEE whom we reached out to for their invaluable advice and guidance throughout the competition.\nThe organizers of this challenge for creating a stimulating and engaging platform to showcase our skills.\n\nThank you all for your support and contributions to our success in this endeavor.\nThis website is built with Quarto."
   },
   {
     "objectID": "post-mortem-pvi.html",
     "href": "post-mortem-pvi.html",
     "title": "European Statistics Awards for Nowcasting",
     "section": "",
-    "text": "Post-Mortem\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
+    "text": "Post-Mortem analysis of our forecasts\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
+  },
+  {
+    "objectID": "forecast-pvi.html",
+    "href": "forecast-pvi.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "Next forecast\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
+  },
+  {
+    "objectID": "resid-ppi.html",
+    "href": "resid-ppi.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "Residuals in the past for models trained until today\n\n\n\n\n\nFigure 1: test"
+  },
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data",
+    "section": "",
+    "text": "We take pride in our commitment to utilizing exclusively open data sources in our modeling efforts. This approach ensures the transparency and replicability of our methods, which are of paramount importance in the realm of official statistics. By leveraging publicly available data, we have been able to derive accurate nowcasts of key economic indicators while promoting the principles of open science and reproducibility."
+  },
+  {
+    "objectID": "data.html#eurostat-data",
+    "href": "data.html#eurostat-data",
+    "title": "Data",
+    "section": "Eurostat data",
+    "text": "Eurostat data\nWe use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. These series are automatically retrieved from Eurostat database through its API.\n\nProducer prices in industry:\n\n\ntotal on domestic market (target variable)\ndivision level of NACE and MIGs\n\n\nImport prices in industry:\n\n\ntotal\ndivision level of CPA and MIGs\n\n\nProduction index in industry :\n\n\ntotal (target variable)\nintermediary goods (MIG_ING)\n\n\nBusiness survey in industry:\n\n\nIndustrial confidence indicator\nProduction development observed over the past 3 months\nProduction expectations over the next 3 months\nEmployment expectations over the next 3 months\nAssessment of order-book levels\nAssessment of the current level of stocks of finished products\nSelling price expectations over the next 3 months\n\n\nHarmonised Index of Consumer Prices on a few products\nNumber of nights spent at tourist accommodation establishments (target variable)"
+  },
+  {
+    "objectID": "data.html#financial-data-from-yahoo-finance",
+    "href": "data.html#financial-data-from-yahoo-finance",
+    "title": "Data",
+    "section": "Financial data from Yahoo Finance",
+    "text": "Financial data from Yahoo Finance\n\nBrent (dollars)\nEuro/dollar exchange rate\nS&P 500 index\nEuro stoxx 50 Index"
+  },
+  {
+    "objectID": "data.html#electricity-prices",
+    "href": "data.html#electricity-prices",
+    "title": "Data",
+    "section": "Electricity prices",
+    "text": "Electricity prices\nEuropean wholesale electricity price data available on Ember.org"
+  },
+  {
+    "objectID": "data.html#calendar-data",
+    "href": "data.html#calendar-data",
+    "title": "Data",
+    "section": "Calendar data",
+    "text": "Calendar data\nWe retrieve the number of weekend days per month to include it as a feature to our models."
+  },
+  {
+    "objectID": "data.html#leading-national-indicators",
+    "href": "data.html#leading-national-indicators",
+    "title": "Data",
+    "section": "Leading national indicators",
+    "text": "Leading national indicators\n\nGermany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on Destatis website.\nThe Weekly WIFO Economic Index is a measure of the real economic activity of the Austrian economy. We use its industrial production component."
+  },
+  {
+    "objectID": "data.html#google-trends",
+    "href": "data.html#google-trends",
+    "title": "Data",
+    "section": "Google Trends",
+    "text": "Google Trends\nWe retrieve Google Trends series on a few key categories. The impact is particularly important for the tourism indicator."
+  },
+  {
+    "objectID": "data.html#other-potential-interesting-data-sources-not-identified-in-open-data-sources",
+    "href": "data.html#other-potential-interesting-data-sources-not-identified-in-open-data-sources",
+    "title": "Data",
+    "section": "Other potential interesting data sources (not identified in open data sources)",
+    "text": "Other potential interesting data sources (not identified in open data sources)\nHistorical Purchasing manager’s index by country, London metal exchange indices, daily electricity consumption by industrial firms country by country…"
+  },
+  {
+    "objectID": "LICENCE.html",
+    "href": "LICENCE.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "EUROPEAN UNION PUBLIC LICENCE v. 1.2\n                  EUPL © the European Union 2007, 2016\nThis European Union Public Licence (the ‘EUPL’) applies to the Work (as defined below) which is provided under the terms of this Licence. Any use of the Work, other than as authorised under this Licence is prohibited (to the extent such use is covered by a right of the copyright holder of the Work).\nThe Work is provided under the terms of this Licence when the Licensor (as defined below) has placed the following notice immediately following the copyright notice for the Work:\n    Licensed under the EUPL\nor has expressed by any other means his willingness to license under the EUPL.\n\nDefinitions\n\nIn this Licence, the following terms have the following meaning:\n\n‘The Licence’: this Licence.\n‘The Original Work’: the work or software distributed or communicated by the Licensor under this Licence, available as Source Code and also as Executable Code as the case may be.\n‘Derivative Works’: the works or software that could be created by the Licensee, based upon the Original Work or modifications thereof. This Licence does not define the extent of modification or dependence on the Original Work required in order to classify a work as a Derivative Work; this extent is determined by copyright law applicable in the country mentioned in Article 15.\n‘The Work’: the Original Work or its Derivative Works.\n‘The Source Code’: the human-readable form of the Work which is the most convenient for people to study and modify.\n‘The Executable Code’: any code which has generally been compiled and which is meant to be interpreted by a computer as a program.\n‘The Licensor’: the natural or legal person that distributes or communicates the Work under the Licence.\n‘Contributor(s)’: any natural or legal person who modifies the Work under the Licence, or otherwise contributes to the creation of a Derivative Work.\n‘The Licensee’ or ‘You’: any natural or legal person who makes any usage of the Work under the terms of the Licence.\n‘Distribution’ or ‘Communication’: any act of selling, giving, lending, renting, distributing, communicating, transmitting, or otherwise making available, online or offline, copies of the Work or providing access to its essential functionalities at the disposal of any other natural or legal person.\n\n\nScope of the rights granted by the Licence\n\nThe Licensor hereby grants You a worldwide, royalty-free, non-exclusive, sublicensable licence to do the following, for the duration of copyright vested in the Original Work:\n\nuse the Work in any circumstance and for all usage,\nreproduce the Work,\nmodify the Work, and make Derivative Works based upon the Work,\ncommunicate to the public, including the right to make available or display the Work or copies thereof to the public and perform publicly, as the case may be, the Work,\ndistribute the Work or copies thereof,\nlend and rent the Work or copies thereof,\nsublicense rights in the Work or copies thereof.\n\nThose rights can be exercised on any media, supports and formats, whether now known or later invented, as far as the applicable law permits so.\nIn the countries where moral rights apply, the Licensor waives his right to exercise his moral right to the extent allowed by law in order to make effective the licence of the economic rights here above listed.\nThe Licensor grants to the Licensee royalty-free, non-exclusive usage rights to any patents held by the Licensor, to the extent necessary to make use of the rights granted on the Work under this Licence.\n\nCommunication of the Source Code\n\nThe Licensor may provide the Work either in its Source Code form, or as Executable Code. If the Work is provided as Executable Code, the Licensor provides in addition a machine-readable copy of the Source Code of the Work along with each copy of the Work that the Licensor distributes or indicates, in a notice following the copyright notice attached to the Work, a repository where the Source Code is easily and freely accessible for as long as the Licensor continues to distribute or communicate the Work.\n\nLimitations on copyright\n\nNothing in this Licence is intended to deprive the Licensee of the benefits from any exception or limitation to the exclusive rights of the rights owners in the Work, of the exhaustion of those rights or of other applicable limitations thereto.\n\nObligations of the Licensee\n\nThe grant of the rights mentioned above is subject to some restrictions and obligations imposed on the Licensee. Those obligations are the following:\nAttribution right: The Licensee shall keep intact all copyright, patent or trademarks notices and all notices that refer to the Licence and to the disclaimer of warranties. The Licensee must include a copy of such notices and a copy of the Licence with every copy of the Work he/she distributes or communicates. The Licensee must cause any Derivative Work to carry prominent notices stating that the Work has been modified and the date of modification.\nCopyleft clause: If the Licensee distributes or communicates copies of the Original Works or Derivative Works, this Distribution or Communication will be done under the terms of this Licence or of a later version of this Licence unless the Original Work is expressly distributed only under this version of the Licence — for example by communicating ‘EUPL v. 1.2 only’. The Licensee (becoming Licensor) cannot offer or impose any additional terms or conditions on the Work or Derivative Work that alter or restrict the terms of the Licence.\nCompatibility clause: If the Licensee Distributes or Communicates Derivative Works or copies thereof based upon both the Work and another work licensed under a Compatible Licence, this Distribution or Communication can be done under the terms of this Compatible Licence. For the sake of this clause, ‘Compatible Licence’ refers to the licences listed in the appendix attached to this Licence. Should the Licensee’s obligations under the Compatible Licence conflict with his/her obligations under this Licence, the obligations of the Compatible Licence shall prevail.\nProvision of Source Code: When distributing or communicating copies of the Work, the Licensee will provide a machine-readable copy of the Source Code or indicate a repository where this Source will be easily and freely available for as long as the Licensee continues to distribute or communicate the Work.\nLegal Protection: This Licence does not grant permission to use the trade names, trademarks, service marks, or names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the copyright notice.\n\nChain of Authorship\n\nThe original Licensor warrants that the copyright in the Original Work granted hereunder is owned by him/her or licensed to him/her and that he/she has the power and authority to grant the Licence.\nEach Contributor warrants that the copyright in the modifications he/she brings to the Work are owned by him/her or licensed to him/her and that he/she has the power and authority to grant the Licence.\nEach time You accept the Licence, the original Licensor and subsequent Contributors grant You a licence to their contributions to the Work, under the terms of this Licence.\n\nDisclaimer of Warranty\n\nThe Work is a work in progress, which is continuously improved by numerous Contributors. It is not a finished work and may therefore contain defects or ‘bugs’ inherent to this type of development.\nFor the above reason, the Work is provided under the Licence on an ‘as is’ basis and without warranties of any kind concerning the Work, including without limitation merchantability, fitness for a particular purpose, absence of defects or errors, accuracy, non-infringement of intellectual property rights other than copyright as stated in Article 6 of this Licence.\nThis disclaimer of warranty is an essential part of the Licence and a condition for the grant of any rights to the Work.\n\nDisclaimer of Liability\n\nExcept in the cases of wilful misconduct or damages directly caused to natural persons, the Licensor will in no event be liable for any direct or indirect, material or moral, damages of any kind, arising out of the Licence or of the use of the Work, including without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, loss of data or any commercial damage, even if the Licensor has been advised of the possibility of such damage. However, the Licensor will be liable under statutory product liability laws as far such laws apply to the Work.\n\nAdditional agreements\n\nWhile distributing the Work, You may choose to conclude an additional agreement, defining obligations or services consistent with this Licence. However, if accepting obligations, You may act only on your own behalf and on your sole responsibility, not on behalf of the original Licensor or any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against such Contributor by the fact You have accepted any warranty or additional liability.\n\nAcceptance of the Licence\n\nThe provisions of this Licence can be accepted by clicking on an icon ‘I agree’ placed under the bottom of a window displaying the text of this Licence or by affirming consent in any other similar way, in accordance with the rules of applicable law. Clicking on that icon indicates your clear and irrevocable acceptance of this Licence and all of its terms and conditions.\nSimilarly, you irrevocably accept this Licence and all of its terms and conditions by exercising any rights granted to You by Article 2 of this Licence, such as the use of the Work, the creation by You of a Derivative Work or the Distribution or Communication by You of the Work or copies thereof.\n\nInformation to the public\n\nIn case of any Distribution or Communication of the Work by means of electronic communication by You (for example, by offering to download the Work from a remote location) the distribution channel or media (for example, a website) must at least provide to the public the information requested by the applicable law regarding the Licensor, the Licence and the way it may be accessible, concluded, stored and reproduced by the Licensee.\n\nTermination of the Licence\n\nThe Licence and the rights granted hereunder will terminate automatically upon any breach by the Licensee of the terms of the Licence.\nSuch a termination will not terminate the licences of any person who has received the Work from the Licensee under the Licence, provided such persons remain in full compliance with the Licence.\n\nMiscellaneous\n\nWithout prejudice of Article 9 above, the Licence represents the complete agreement between the Parties as to the Work.\nIf any provision of the Licence is invalid or unenforceable under applicable law, this will not affect the validity or enforceability of the Licence as a whole. Such provision will be construed or reformed so as necessary to make it valid and enforceable.\nThe European Commission may publish other linguistic versions or new versions of this Licence or updated versions of the Appendix, so far this is required and reasonable, without reducing the scope of the rights granted by the Licence. New versions of the Licence will be published with a unique version number.\nAll linguistic versions of this Licence, approved by the European Commission, have identical value. Parties can take advantage of the linguistic version of their choice.\n\nJurisdiction\n\nWithout prejudice to specific agreement between parties,\n\nany litigation resulting from the interpretation of this License, arising between the European Union institutions, bodies, offices or agencies, as a Licensor, and any Licensee, will be subject to the jurisdiction of the Court of Justice of the European Union, as laid down in article 272 of the Treaty on the Functioning of the European Union,\nany litigation arising between other parties and resulting from the interpretation of this License, will be subject to the exclusive jurisdiction of the competent court where the Licensor resides or conducts its primary business.\n\n\nApplicable Law\n\nWithout prejudice to specific agreement between parties,\n\nthis Licence shall be governed by the law of the European Union Member State where the Licensor has his seat, resides or has his registered office,\nthis licence shall be governed by Belgian law if the Licensor has no seat, residence or registered office inside a European Union Member State.\n\nAppendix\n‘Compatible Licences’ according to Article 5 EUPL are:\n\nGNU General Public License (GPL) v. 2, v. 3\nGNU Affero General Public License (AGPL) v. 3\nOpen Software License (OSL) v. 2.1, v. 3.0\nEclipse Public License (EPL) v. 1.0\nCeCILL v. 2.0, v. 2.1\nMozilla Public Licence (MPL) v. 2\nGNU Lesser General Public Licence (LGPL) v. 2.1, v. 3\nCreative Commons Attribution-ShareAlike v. 3.0 Unported (CC BY-SA 3.0) for works other than software\nEuropean Union Public Licence (EUPL) v. 1.1, v. 1.2\nQuébec Free and Open-Source Licence — Reciprocity (LiLiQ-R) or Strong Reciprocity (LiLiQ-R+).\n\nThe European Commission may update this Appendix to later versions of the above licences without producing a new version of the EUPL, as long as they provide the rights granted in Article 2 of this Licence and protect the covered Source Code from exclusive appropriation.\nAll other changes or additions to this Appendix require the production of a new EUPL version."
+  },
+  {
+    "objectID": "forecast-tourism.html",
+    "href": "forecast-tourism.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "Next forecast\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
+  },
+  {
+    "objectID": "resid-pvi.html",
+    "href": "resid-pvi.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "Residuals in the past for models trained until today\n\n\n\n\n\nFigure 1: test"
+  },
+  {
+    "objectID": "post-mortem-ppi.html",
+    "href": "post-mortem-ppi.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "Post-Mortem analysis of our forecasts\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test\n\n\n\n\n\n\n\n\n\nFigure 7: test"
+  },
+  {
+    "objectID": "post-mortem-tourism.html",
+    "href": "post-mortem-tourism.html",
+    "title": "European Statistics Awards for Nowcasting",
+    "section": "",
+    "text": "Post-Mortem analysis of our forecasts\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
   },
   {
     "objectID": "resid-tourism.html",
     "href": "resid-tourism.html",
     "title": "European Statistics Awards for Nowcasting",
     "section": "",
-    "text": "Residuals\n\n\n\n\n\nFigure 1: test"
-  },
-  {
-    "objectID": "pvi.html",
-    "href": "pvi.html",
-    "title": "Production volume in industry challenge",
-    "section": "",
-    "text": "Un petit topo sur le PVI"
+    "text": "Residuals in the past for models trained until today\n\n\n\n\n\nFigure 1: test"
   },
   {
     "objectID": "methodology.html",
     "href": "methodology.html",
     "title": "Methodology",
     "section": "",
-    "text": "Describe the methodology here."
+    "text": "TODO:\nOur team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models. While the same model classes were utilized for each of the challenges, namely PPI, PVI and Tourism, specific datasets and parameters were tailored to each individual challenge to ensure optimal model performance."
   },
   {
     "objectID": "methodology.html#regarima",
     "href": "methodology.html#regarima",
     "title": "Methodology",
     "section": "Regarima",
-    "text": "Regarima\nAutomatic ARIMA modelling with detection of outliers and external regressors (financial series, macroeconomic series…). We use the RJdemetra package that provide an easy way to identify and estimate such models with high flexibility on parameters. RegARIMA models offer some advantages in this exercise:\n\nthey are relatively simple, easy to interpret, and so provide a useful benchmark for more complex models\nwe allow for automatic detection of outliers on the estimation period in order to avoid large bias on coefficients. Without adding outliers, “covid” points would for instance totally distort coefficients. Outliers identified through this procedure could in addition be used in other methods\ncomputation time is really fast (a few seconds for the whole set of countries)\nexternal regressors can be selected independantly through standard variable selection."
+    "text": "Regarima\n\nIntroduction\nARIMA modelling is a common type of time models used to capture internal information of a series, wether is is stationary or non stationary. ARIMA models offer some advantages in this exercise: they are relatively simple, easy to interpret, and therefore provide a useful benchmark for more complex models. As standard ARIMA models do not include external information, we use the extended version RegARIMA with external regressors (regression model with ARIMA errors):\n\\[\ny_t = c + \\sum_{i=1}^{p}\\alpha_i x^i_{t}+u_t\n\\] \\[\n\\phi(L)(u_t) = \\theta(L)(\\varepsilon_t)\n\\]\nAdditional regressors used in this project are of two types:\n\nEconomic variables presented in the data section. REGARIMA models must keep parsimonious (contrary to other methods implemented in this project), so relevant variables are selected through standard selection procedures or a priori.\nOutlier variables such as level-shift or additive outilers to control for atypical observations.\n\nModels are applied to the first differentiation of the variable of interest.\n\n\nAutomatic identification and nowcasting\nWe use the RJdemetra package (the TRAMO part) that provide an easy way to identify and estimate RegARIMA models with high flexibility on parameters.\n\nwe allow for automatic detection of outliers on the estimation period in order to avoid large bias on coefficients. Without adding outliers, “covid” points, for instance, would totally distort coefficients. Outliers identified through this procedure could in addition be used in other methods\ncomputation time is fast (a few seconds for the whole set of countries)\nexternal regressors are selected independently, a priori or through standard variable selection procedure.\n\nThe final nowcast value is provided by the projection of the model at horizon 1, 2 or 3, depending on the challenge and the position in the month.\n\n\nSeasonal adjustment for tourism\nFor tourism, the seasonal component is very strong and may not be the same as the explanatory variables. An X13 pre-treatment is applied to seasonnally adjust and correct for trading days the target variable (Number of nights spent at tourist accommodation establishments) and the potential explanatory variables. This treatment also provides a prediction for the seasonal coefficient of the nowcasted month.\nNext, seasonally adjusted variables are put in the REGARIMA model. The final step involves nowcasting the “raw value” by dividing the SA forecast by the projected seasonal coefficient."
   },
   {
     "objectID": "methodology.html#dynamic-factor-models",
@@ -67,119 +186,14 @@
     "href": "methodology.html#xgboost",
     "title": "Methodology",
     "section": "XGBoost",
-    "text": "XGBoost\nUsing several sources of data (financial series, macroeconomic series, surveys…) we construct a dataset in which each row corresponds to a value per country and per date with many explicative variables. We control for colinearity. On this basis, we train a XGboost model to predict the value of the following month."
+    "text": "XGBoost\n\nIntroduction\nXGBoost is a powerful algorithm that has gained popularity in the field of machine learning due to its ability to handle complex interactions between variables and its flexibility in handling various types of data. In the context of Eurostat’s nowcasting competition, we utilized the XGBoost algorithm to predict the values of the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments for most European countries. We will delve here into the technicalities of the XGBoost approach, and how we tailored it to our specific nowcasting problem.\n\n\nXGBoost Algorithm\nXGBoost is a gradient boosting algorithm that is particularly well suited for regression and classification problems. It works by building a sequence of decision trees, each tree trying to correct the errors of the previous tree. During the training process, the algorithm iteratively adds decision trees to the model, where each new tree is fit on the residuals (i.e., the errors) of the previous trees. The final prediction is made by adding the output of all the trees.\nTo control for overfitting, XGBoost uses a combination of L1 and L2 regularization, also known as “lasso” and “ridge” regularization, respectively. These regularization methods add a penalty term to the loss function, which forces the algorithm to find simpler models. L1 regularization shrinks the less important features’ coefficients to zero, while L2 regularization encourages the coefficients to be small, but does not set them to zero. By using both methods, XGBoost is able to produce models that are both accurate and interpretable.\nAnother key feature of XGBoost is its ability to handle missing values. Rather than imputing missing values with a fixed value or mean, XGBoost assigns them a default direction in the split, allowing the algorithm to learn how to handle missing values during the training process.\nOverall, the XGBoost algorithm has proven to be a powerful tool in the field of machine learning, and its ability to handle large datasets and complex interactions between variables make it well-suited for nowcasting problems like the Eurostat competition.\n\n\nTransforming Time Series\nTo apply the XGBoost algorithm to our nowcasting problem, we first transformed the time series data into a larger dataset tailored for the algorithm. We gathered several sources of data, including financial series, macroeconomic series, and surveys, and created a dataset where each row corresponds to a value per country and per date with many explanatory variables. We added lagged versions of the target variable and some of the explanatory variables as additional features. By doing so, we captured the time series properties of the data and made it suitable for the XGBoost algorithm.\n\n\nGrid Search for Hyperparameters\nTo obtain optimal results from the XGBoost algorithm, we used a grid search technique to find the best combination of hyperparameters for each model. We experimented with various values of hyperparameters, including learning rate, maximum depth, and subsample ratio, to determine which combination of parameters resulted in the best performance. The grid search enabled us to identify the best hyperparameters for the model, allowing us to obtain the most accurate predictions. We did not differentiate the hyperparameters for each country as it would have likely caused even more overfitting.\n\n\nTraining XGBoost for Nowcasting\nTo predict our 3 indicators for each country, we trained an XGBoost model for each country independently. We randomly split the data into training and testing sets and trained the model on the training set using the optimal hyperparameters obtained from the grid search. We evaluated the model’s performance on the testing set using various metrics such as mean squared error and mean absolute error."
   },
   {
     "objectID": "methodology.html#lstm",
     "href": "methodology.html#lstm",
     "title": "Methodology",
     "section": "LSTM",
-    "text": "LSTM"
-  },
-  {
-    "objectID": "ppi.html",
-    "href": "ppi.html",
-    "title": "Producer prices in industry challenge",
-    "section": "",
-    "text": "Un petit topo sur le PPI\n\n\n\n\nviewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: \"Select a country:\"})\n\n\n\n\n\n\n\naddTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Producer prices in industry\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(sample, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(preds, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\"\n        })\n  ],\n  color: {legend: true}\n})\n)\n\n\n\n\n\n\n\ndates = {\n  const data = sample.map(d => d.date)\n  data.push(preds.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndata_t = transpose(data)\ndata_typed = data_t.map( d => (\n    {\n      date: dateParser(d.time),\n      values: d.values,\n      geo: d.geo\n    } \n   )\n )\n\nsample = data_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npred_t = transpose(pred)\npred_typed = pred_t.map( d => (\n    {\n      date: dateParser(d.Date),\n      values: d.value,\n      geo: d.Country,\n      model: d.Entries\n    } \n   )\n )\n\npreds = pred_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n\n\n\n\n\n\n\n\nfunction unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n    }\n\n\n\n\n\n\n\n\nimport {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'"
-  },
-  {
-    "objectID": "forecast-tourism.html",
-    "href": "forecast-tourism.html",
-    "title": "European Statistics Awards for Nowcasting",
-    "section": "",
-    "text": "Next forecast\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
-  },
-  {
-    "objectID": "resid-ppi.html",
-    "href": "resid-ppi.html",
-    "title": "European Statistics Awards for Nowcasting",
-    "section": "",
-    "text": "Residuals\n\n\n\n\n\nFigure 1: test"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "Topo sur le challenge, sur l’équipe. Ajouter logo ESA + Insee"
-  },
-  {
-    "objectID": "index.html#license",
-    "href": "index.html#license",
-    "title": "Welcome",
-    "section": "License",
-    "text": "License\nThis work is licenced under the European Union Public Licence 1.2."
-  },
-  {
-    "objectID": "index.html#acknowledements",
-    "href": "index.html#acknowledements",
-    "title": "Welcome",
-    "section": "Acknowledements",
-    "text": "Acknowledements\nHuge thanks to …\nThis website is built with Quarto."
-  },
-  {
-    "objectID": "data.html",
-    "href": "data.html",
-    "title": "Data",
-    "section": "",
-    "text": "We only use open data"
-  },
-  {
-    "objectID": "data.html#eurostat-data",
-    "href": "data.html#eurostat-data",
-    "title": "Data",
-    "section": "Eurostat data",
-    "text": "Eurostat data\nWe use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. Series are automatically retrieved from Eurostat database.\n\nProducer prices in industry:\n\n\ntotal on domestic market (target variable)\ndivision level of NACE and MIGs\n\n\nImport prices in industry:\n\n\ntotal\ndivision level of CPA and MIGs\n\n\nProduction index in industry :\n\n\ntotal (target variable)\nintermediary goods (MIG_ING)\n\n\nBusiness survey in industry:\n\n\nIndustrial confidence indicator\nProduction development observed over the past 3 months\nProduction expectations over the next 3 months\nEmployment expectations over the next 3 months\nAssessment of order-book levels\nAssessment of the current level of stocks of finished products\nSelling price expectations over the next 3 months\n\n\nHarmonised Index of Consumer Prices on a few products\nNumber of nights spent at tourist accommodation establishments (target variable)"
-  },
-  {
-    "objectID": "data.html#financial-data",
-    "href": "data.html#financial-data",
-    "title": "Data",
-    "section": "Financial data",
-    "text": "Financial data\n\nBrent (dollars)\nEuro/dollar exchange rate\nS&P 500 index\nEuro stoxx 50 Index"
-  },
-  {
-    "objectID": "data.html#electricity-prices",
-    "href": "data.html#electricity-prices",
-    "title": "Data",
-    "section": "Electricity prices",
-    "text": "Electricity prices\nEuropean wholesale electricity price data available on Ember.org"
-  },
-  {
-    "objectID": "data.html#number-of-week-end",
-    "href": "data.html#number-of-week-end",
-    "title": "Data",
-    "section": "Number of week-end",
-    "text": "Number of week-end"
-  },
-  {
-    "objectID": "data.html#tools-in-germany",
-    "href": "data.html#tools-in-germany",
-    "title": "Data",
-    "section": "Tools in Germany",
-    "text": "Tools in Germany\nGermany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on Destatis website."
-  },
-  {
-    "objectID": "data.html#google-trends",
-    "href": "data.html#google-trends",
-    "title": "Data",
-    "section": "Google Trends",
-    "text": "Google Trends\nWe retrieve google trend series on a few categories, especially for nowcasting on tourism."
-  },
-  {
-    "objectID": "data.html#other-potential-interesting-data-sources-not-identified-in-open-data-sources",
-    "href": "data.html#other-potential-interesting-data-sources-not-identified-in-open-data-sources",
-    "title": "Data",
-    "section": "Other potential interesting data sources (not identified in open data sources)",
-    "text": "Other potential interesting data sources (not identified in open data sources)\nHistorical Purchasing manager’s index by country, london metal exchange indices, daily electricity consumption by industrial firms country by country…"
-  },
-  {
-    "objectID": "post-mortem-tourism.html",
-    "href": "post-mortem-tourism.html",
-    "title": "European Statistics Awards for Nowcasting",
-    "section": "",
-    "text": "Post-Mortem\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
+    "text": "LSTM\nLSTM, or Long Short-Term Memory, is a type of recurrent neural network that is particularly well-suited for modeling time series data. Unlike traditional feedforward neural networks, which process input data in a single pass, recurrent neural networks can maintain a “memory” of previous inputs and use this information to make better predictions.\nLSTM takes this a step further by introducing “gates” that can selectively remember or forget previous inputs based on their importance to the current prediction. These gates allow the model to capture longer-term dependencies in the data, making it especially effective for time series forecasting tasks.\nDuring the training process, the LSTM model is fed a sequence of inputs, with each input representing a timestep in the time series. The model then generates a corresponding output for each timestep, which is compared to the actual value to compute a loss function. The weights of the model are updated through backpropagation, where the gradient of the loss function is propagated backwards through the network.\nOne of the challenges of using LSTMs for time series forecasting is selecting an appropriate window size, or the number of previous timesteps that the model should consider when making each prediction. A larger window size can capture longer-term trends in the data, but may also introduce more noise and complicate the training process. A smaller window size, on the other hand, may be more sensitive to short-term fluctuations in the data, but may not capture longer-term trends as effectively.\nIn the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.\nThe LSTM model was trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall, the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand."
   },
   {
     "objectID": "forecast-ppi.html",
@@ -189,24 +203,45 @@
     "text": "Next forecast\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test\n\n\n\n\n\n\n\n\n\nFigure 7: test"
   },
   {
-    "objectID": "resid-pvi.html",
-    "href": "resid-pvi.html",
-    "title": "European Statistics Awards for Nowcasting",
+    "objectID": "pvi.html",
+    "href": "pvi.html",
+    "title": "Production volume in industry challenge",
     "section": "",
-    "text": "Residuals\n\n\n\n\n\nFigure 1: test"
+    "text": "The monthly PVI indicator represents the production index in industry. The objective of the index is to measure changes in the volume of output at monthly intervals. It provides a measure of the volume trend in value added over a given reference period. The production index is calculated in the form of a Laspeyres type index."
   },
   {
-    "objectID": "LICENCE.html",
-    "href": "LICENCE.html",
-    "title": "European Statistics Awards for Nowcasting",
-    "section": "",
-    "text": "EUROPEAN UNION PUBLIC LICENCE v. 1.2\n                  EUPL © the European Union 2007, 2016\nThis European Union Public Licence (the ‘EUPL’) applies to the Work (as defined below) which is provided under the terms of this Licence. Any use of the Work, other than as authorised under this Licence is prohibited (to the extent such use is covered by a right of the copyright holder of the Work).\nThe Work is provided under the terms of this Licence when the Licensor (as defined below) has placed the following notice immediately following the copyright notice for the Work:\n    Licensed under the EUPL\nor has expressed by any other means his willingness to license under the EUPL.\n\nDefinitions\n\nIn this Licence, the following terms have the following meaning:\n\n‘The Licence’: this Licence.\n‘The Original Work’: the work or software distributed or communicated by the Licensor under this Licence, available as Source Code and also as Executable Code as the case may be.\n‘Derivative Works’: the works or software that could be created by the Licensee, based upon the Original Work or modifications thereof. This Licence does not define the extent of modification or dependence on the Original Work required in order to classify a work as a Derivative Work; this extent is determined by copyright law applicable in the country mentioned in Article 15.\n‘The Work’: the Original Work or its Derivative Works.\n‘The Source Code’: the human-readable form of the Work which is the most convenient for people to study and modify.\n‘The Executable Code’: any code which has generally been compiled and which is meant to be interpreted by a computer as a program.\n‘The Licensor’: the natural or legal person that distributes or communicates the Work under the Licence.\n‘Contributor(s)’: any natural or legal person who modifies the Work under the Licence, or otherwise contributes to the creation of a Derivative Work.\n‘The Licensee’ or ‘You’: any natural or legal person who makes any usage of the Work under the terms of the Licence.\n‘Distribution’ or ‘Communication’: any act of selling, giving, lending, renting, distributing, communicating, transmitting, or otherwise making available, online or offline, copies of the Work or providing access to its essential functionalities at the disposal of any other natural or legal person.\n\n\nScope of the rights granted by the Licence\n\nThe Licensor hereby grants You a worldwide, royalty-free, non-exclusive, sublicensable licence to do the following, for the duration of copyright vested in the Original Work:\n\nuse the Work in any circumstance and for all usage,\nreproduce the Work,\nmodify the Work, and make Derivative Works based upon the Work,\ncommunicate to the public, including the right to make available or display the Work or copies thereof to the public and perform publicly, as the case may be, the Work,\ndistribute the Work or copies thereof,\nlend and rent the Work or copies thereof,\nsublicense rights in the Work or copies thereof.\n\nThose rights can be exercised on any media, supports and formats, whether now known or later invented, as far as the applicable law permits so.\nIn the countries where moral rights apply, the Licensor waives his right to exercise his moral right to the extent allowed by law in order to make effective the licence of the economic rights here above listed.\nThe Licensor grants to the Licensee royalty-free, non-exclusive usage rights to any patents held by the Licensor, to the extent necessary to make use of the rights granted on the Work under this Licence.\n\nCommunication of the Source Code\n\nThe Licensor may provide the Work either in its Source Code form, or as Executable Code. If the Work is provided as Executable Code, the Licensor provides in addition a machine-readable copy of the Source Code of the Work along with each copy of the Work that the Licensor distributes or indicates, in a notice following the copyright notice attached to the Work, a repository where the Source Code is easily and freely accessible for as long as the Licensor continues to distribute or communicate the Work.\n\nLimitations on copyright\n\nNothing in this Licence is intended to deprive the Licensee of the benefits from any exception or limitation to the exclusive rights of the rights owners in the Work, of the exhaustion of those rights or of other applicable limitations thereto.\n\nObligations of the Licensee\n\nThe grant of the rights mentioned above is subject to some restrictions and obligations imposed on the Licensee. Those obligations are the following:\nAttribution right: The Licensee shall keep intact all copyright, patent or trademarks notices and all notices that refer to the Licence and to the disclaimer of warranties. The Licensee must include a copy of such notices and a copy of the Licence with every copy of the Work he/she distributes or communicates. The Licensee must cause any Derivative Work to carry prominent notices stating that the Work has been modified and the date of modification.\nCopyleft clause: If the Licensee distributes or communicates copies of the Original Works or Derivative Works, this Distribution or Communication will be done under the terms of this Licence or of a later version of this Licence unless the Original Work is expressly distributed only under this version of the Licence — for example by communicating ‘EUPL v. 1.2 only’. The Licensee (becoming Licensor) cannot offer or impose any additional terms or conditions on the Work or Derivative Work that alter or restrict the terms of the Licence.\nCompatibility clause: If the Licensee Distributes or Communicates Derivative Works or copies thereof based upon both the Work and another work licensed under a Compatible Licence, this Distribution or Communication can be done under the terms of this Compatible Licence. For the sake of this clause, ‘Compatible Licence’ refers to the licences listed in the appendix attached to this Licence. Should the Licensee’s obligations under the Compatible Licence conflict with his/her obligations under this Licence, the obligations of the Compatible Licence shall prevail.\nProvision of Source Code: When distributing or communicating copies of the Work, the Licensee will provide a machine-readable copy of the Source Code or indicate a repository where this Source will be easily and freely available for as long as the Licensee continues to distribute or communicate the Work.\nLegal Protection: This Licence does not grant permission to use the trade names, trademarks, service marks, or names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the copyright notice.\n\nChain of Authorship\n\nThe original Licensor warrants that the copyright in the Original Work granted hereunder is owned by him/her or licensed to him/her and that he/she has the power and authority to grant the Licence.\nEach Contributor warrants that the copyright in the modifications he/she brings to the Work are owned by him/her or licensed to him/her and that he/she has the power and authority to grant the Licence.\nEach time You accept the Licence, the original Licensor and subsequent Contributors grant You a licence to their contributions to the Work, under the terms of this Licence.\n\nDisclaimer of Warranty\n\nThe Work is a work in progress, which is continuously improved by numerous Contributors. It is not a finished work and may therefore contain defects or ‘bugs’ inherent to this type of development.\nFor the above reason, the Work is provided under the Licence on an ‘as is’ basis and without warranties of any kind concerning the Work, including without limitation merchantability, fitness for a particular purpose, absence of defects or errors, accuracy, non-infringement of intellectual property rights other than copyright as stated in Article 6 of this Licence.\nThis disclaimer of warranty is an essential part of the Licence and a condition for the grant of any rights to the Work.\n\nDisclaimer of Liability\n\nExcept in the cases of wilful misconduct or damages directly caused to natural persons, the Licensor will in no event be liable for any direct or indirect, material or moral, damages of any kind, arising out of the Licence or of the use of the Work, including without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, loss of data or any commercial damage, even if the Licensor has been advised of the possibility of such damage. However, the Licensor will be liable under statutory product liability laws as far such laws apply to the Work.\n\nAdditional agreements\n\nWhile distributing the Work, You may choose to conclude an additional agreement, defining obligations or services consistent with this Licence. However, if accepting obligations, You may act only on your own behalf and on your sole responsibility, not on behalf of the original Licensor or any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against such Contributor by the fact You have accepted any warranty or additional liability.\n\nAcceptance of the Licence\n\nThe provisions of this Licence can be accepted by clicking on an icon ‘I agree’ placed under the bottom of a window displaying the text of this Licence or by affirming consent in any other similar way, in accordance with the rules of applicable law. Clicking on that icon indicates your clear and irrevocable acceptance of this Licence and all of its terms and conditions.\nSimilarly, you irrevocably accept this Licence and all of its terms and conditions by exercising any rights granted to You by Article 2 of this Licence, such as the use of the Work, the creation by You of a Derivative Work or the Distribution or Communication by You of the Work or copies thereof.\n\nInformation to the public\n\nIn case of any Distribution or Communication of the Work by means of electronic communication by You (for example, by offering to download the Work from a remote location) the distribution channel or media (for example, a website) must at least provide to the public the information requested by the applicable law regarding the Licensor, the Licence and the way it may be accessible, concluded, stored and reproduced by the Licensee.\n\nTermination of the Licence\n\nThe Licence and the rights granted hereunder will terminate automatically upon any breach by the Licensee of the terms of the Licence.\nSuch a termination will not terminate the licences of any person who has received the Work from the Licensee under the Licence, provided such persons remain in full compliance with the Licence.\n\nMiscellaneous\n\nWithout prejudice of Article 9 above, the Licence represents the complete agreement between the Parties as to the Work.\nIf any provision of the Licence is invalid or unenforceable under applicable law, this will not affect the validity or enforceability of the Licence as a whole. Such provision will be construed or reformed so as necessary to make it valid and enforceable.\nThe European Commission may publish other linguistic versions or new versions of this Licence or updated versions of the Appendix, so far this is required and reasonable, without reducing the scope of the rights granted by the Licence. New versions of the Licence will be published with a unique version number.\nAll linguistic versions of this Licence, approved by the European Commission, have identical value. Parties can take advantage of the linguistic version of their choice.\n\nJurisdiction\n\nWithout prejudice to specific agreement between parties,\n\nany litigation resulting from the interpretation of this License, arising between the European Union institutions, bodies, offices or agencies, as a Licensor, and any Licensee, will be subject to the jurisdiction of the Court of Justice of the European Union, as laid down in article 272 of the Treaty on the Functioning of the European Union,\nany litigation arising between other parties and resulting from the interpretation of this License, will be subject to the exclusive jurisdiction of the competent court where the Licensor resides or conducts its primary business.\n\n\nApplicable Law\n\nWithout prejudice to specific agreement between parties,\n\nthis Licence shall be governed by the law of the European Union Member State where the Licensor has his seat, resides or has his registered office,\nthis licence shall be governed by Belgian law if the Licensor has no seat, residence or registered office inside a European Union Member State.\n\nAppendix\n‘Compatible Licences’ according to Article 5 EUPL are:\n\nGNU General Public License (GPL) v. 2, v. 3\nGNU Affero General Public License (AGPL) v. 3\nOpen Software License (OSL) v. 2.1, v. 3.0\nEclipse Public License (EPL) v. 1.0\nCeCILL v. 2.0, v. 2.1\nMozilla Public Licence (MPL) v. 2\nGNU Lesser General Public Licence (LGPL) v. 2.1, v. 3\nCreative Commons Attribution-ShareAlike v. 3.0 Unported (CC BY-SA 3.0) for works other than software\nEuropean Union Public Licence (EUPL) v. 1.1, v. 1.2\nQuébec Free and Open-Source Licence — Reciprocity (LiLiQ-R) or Strong Reciprocity (LiLiQ-R+).\n\nThe European Commission may update this Appendix to later versions of the above licences without producing a new version of the EUPL, as long as they provide the rights granted in Article 2 of this Licence and protect the covered Source Code from exclusive appropriation.\nAll other changes or additions to this Appendix require the production of a new EUPL version."
+    "objectID": "pvi.html#forecast-for-a-given-country-with-modular-history",
+    "href": "pvi.html#forecast-for-a-given-country-with-modular-history",
+    "title": "Production volume in industry challenge",
+    "section": "Forecast for a given country, with modular history",
+    "text": "Forecast for a given country, with modular history\n\n\n\n\nviewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: \"Select a country:\"})\n\n\n\n\n\n\n\naddTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Production volume in industry\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(sample, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(preds, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        })\n  ],\n  color: {legend: true}\n})\n)\n\n\n\n\n\n\n\ndates = {\n  const data = sample.map(d => d.date)\n  data.push(preds.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndata_t = transpose(data)\ndata_typed = data_t.map( d => (\n    {\n      date: dateParser(d.time),\n      values: d.values,\n      geo: d.geo\n    } \n   )\n )\n\nsample = data_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npred_t = transpose(pred)\npred_typed = pred_t.map( d => (\n    {\n      date: dateParser(d.Date),\n      values: d.value,\n      geo: d.Country,\n      model: d.Entries\n    } \n   )\n )\n\npreds = pred_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n\n\n\n\n\n\n\n\nfunction unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n    }\n\n\n\n\n\n\n\n\nimport {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'"
   },
   {
-    "objectID": "forecast-pvi.html",
-    "href": "forecast-pvi.html",
-    "title": "European Statistics Awards for Nowcasting",
+    "objectID": "tourism.html",
+    "href": "tourism.html",
+    "title": "Number of nights spent at tourist accommodation establishments challenge",
     "section": "",
-    "text": "Next forecast\n\n\n\n\n\nFigure 1: test\n\n\n\n\n\n\n\n\n\nFigure 2: test\n\n\n\n\n\n\n\n\n\nFigure 3: test\n\n\n\n\n\n\n\n\n\nFigure 4: test\n\n\n\n\n\n\n\n\n\nFigure 5: test\n\n\n\n\n\n\n\n\n\nFigure 6: test"
+    "text": "Accommodation statistics are a key part of the system of tourism statistics in the EU and have a long history of data collection. For this indicator, the benchmark will be the official figures on nights spent at tourist accommodation establishments by residents and non-residents.\nA night spent is each night a guest/tourist (resident or non-resident) actually spends (sleeps or stays) or is registered (his/her physical presence there being unnecessary) in a tourist accommodation establishment."
+  },
+  {
+    "objectID": "tourism.html#forecast-for-a-given-country-with-modular-history",
+    "href": "tourism.html#forecast-for-a-given-country-with-modular-history",
+    "title": "Number of nights spent at tourist accommodation establishments challenge",
+    "section": "Forecast for a given country, with modular history",
+    "text": "Forecast for a given country, with modular history\n\n\n\n\nviewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: \"Select a country:\"})\n\n\n\n\n\n\n\naddTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Number of nights spent at tourist accommodation establishments\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(sample, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(preds, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        })\n  ],\n  color: {legend: true}\n})\n)\n\n\n\n\n\n\n\ndates = {\n  const data = sample.map(d => d.date)\n  data.push(preds.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndata_t = transpose(data)\ndata_typed = data_t.map( d => (\n    {\n      date: dateParser(d.time),\n      values: d.values,\n      geo: d.geo\n    } \n   )\n )\n\nsample = data_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npred_t = transpose(pred)\npred_typed = pred_t.map( d => (\n    {\n      date: dateParser(d.Date),\n      values: d.value,\n      geo: d.Country,\n      model: d.Entries\n    } \n   )\n )\n\npreds = pred_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n\n\n\n\n\n\n\n\nfunction unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n    }\n\n\n\n\n\n\n\n\nimport {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'"
+  },
+  {
+    "objectID": "ppi.html",
+    "href": "ppi.html",
+    "title": "Producer prices in industry challenge",
+    "section": "",
+    "text": "Producer prices are also known as output prices and the objective of the output price index is to measure the monthly development of transaction prices of economic activities.\nThere is a general public interest in knowing the extent to which the prices of goods and services have risen. Also, it has long been customary in many countries to adjust levels of wages, pensions, and payments in long term contracts in proportion to changes in relevant prices.\nThe domestic output price index for an economic activity measures the average price development of all goods and related services resulting from that activity and sold on the domestic market between one time period and another."
+  },
+  {
+    "objectID": "ppi.html#forecast-for-a-given-country-with-modular-history",
+    "href": "ppi.html#forecast-for-a-given-country-with-modular-history",
+    "title": "Producer prices in industry challenge",
+    "section": "Forecast for a given country, with modular history",
+    "text": "Forecast for a given country, with modular history\n\n\n\n\nviewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: \"Select a country:\"})\n\n\n\n\n\n\n\naddTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Producer prices in industry\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(sample, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(preds, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        })\n  ],\n  color: {legend: true}\n})\n)\n\n\n\n\n\n\n\ndates = {\n  const data = sample.map(d => d.date)\n  data.push(preds.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndata_t = transpose(data)\ndata_typed = data_t.map( d => (\n    {\n      date: dateParser(d.time),\n      values: d.values,\n      geo: d.geo\n    } \n   )\n )\n\nsample = data_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npred_t = transpose(pred)\npred_typed = pred_t.map( d => (\n    {\n      date: dateParser(d.Date),\n      values: d.value,\n      geo: d.Country,\n      model: d.Entries\n    } \n   )\n )\n\npreds = pred_typed.filter(d => d.geo == country)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n\n\n\n\n\n\n\n\nfunction unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n    }\n\n\n\n\n\n\n\n\nimport {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'"
   }
 ]

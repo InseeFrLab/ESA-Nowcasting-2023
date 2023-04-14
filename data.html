@@ -63,7 +63,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta property="og:title" content="European Statistics Awards for Nowcasting - Data">
-<meta property="og:description" content="We only use open data">
+<meta property="og:description" content="We take pride in our commitment to utilizing exclusively open data sources in our modeling efforts.">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
 </head>
 
@@ -130,10 +130,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#eurostat-data" id="toc-eurostat-data" class="nav-link active" data-scroll-target="#eurostat-data">Eurostat data</a></li>
-  <li><a href="#financial-data" id="toc-financial-data" class="nav-link" data-scroll-target="#financial-data">Financial data</a></li>
+  <li><a href="#financial-data-from-yahoo-finance" id="toc-financial-data-from-yahoo-finance" class="nav-link" data-scroll-target="#financial-data-from-yahoo-finance">Financial data from Yahoo Finance</a></li>
   <li><a href="#electricity-prices" id="toc-electricity-prices" class="nav-link" data-scroll-target="#electricity-prices">Electricity prices</a></li>
-  <li><a href="#number-of-week-end" id="toc-number-of-week-end" class="nav-link" data-scroll-target="#number-of-week-end">Number of week-end</a></li>
-  <li><a href="#tools-in-germany" id="toc-tools-in-germany" class="nav-link" data-scroll-target="#tools-in-germany">Tools in Germany</a></li>
+  <li><a href="#calendar-data" id="toc-calendar-data" class="nav-link" data-scroll-target="#calendar-data">Calendar data</a></li>
+  <li><a href="#leading-national-indicators" id="toc-leading-national-indicators" class="nav-link" data-scroll-target="#leading-national-indicators">Leading national indicators</a></li>
   <li><a href="#google-trends" id="toc-google-trends" class="nav-link" data-scroll-target="#google-trends">Google Trends</a></li>
   <li><a href="#other-potential-interesting-data-sources-not-identified-in-open-data-sources" id="toc-other-potential-interesting-data-sources-not-identified-in-open-data-sources" class="nav-link" data-scroll-target="#other-potential-interesting-data-sources-not-identified-in-open-data-sources">Other potential interesting data sources (not identified in open data sources)</a></li>
   </ul>
@@ -159,10 +159,10 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>We only use open data</p>
+<p>We take pride in our commitment to utilizing exclusively open data sources in our modeling efforts. This approach ensures the transparency and replicability of our methods, which are of paramount importance in the realm of official statistics. By leveraging publicly available data, we have been able to derive accurate nowcasts of key economic indicators while promoting the principles of open science and reproducibility.</p>
 <section id="eurostat-data" class="level2">
 <h2 class="anchored" data-anchor-id="eurostat-data">Eurostat data</h2>
-<p>We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. Series are automatically retrieved from Eurostat database.</p>
+<p>We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. These series are automatically retrieved from Eurostat database through its API.</p>
 <ol type="1">
 <li><a href="https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en">Producer prices in industry</a>:</li>
 </ol>
@@ -201,8 +201,8 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Number of nights spent at tourist accommodation establishments (target variable)</p></li>
 </ol>
 </section>
-<section id="financial-data" class="level2">
-<h2 class="anchored" data-anchor-id="financial-data">Financial data</h2>
+<section id="financial-data-from-yahoo-finance" class="level2">
+<h2 class="anchored" data-anchor-id="financial-data-from-yahoo-finance">Financial data from Yahoo Finance</h2>
 <ol type="1">
 <li>Brent (dollars)</li>
 <li>Euro/dollar exchange rate</li>
@@ -214,20 +214,24 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="electricity-prices">Electricity prices</h2>
 <p>European wholesale electricity price data available on <a href="https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/">Ember.org</a></p>
 </section>
-<section id="number-of-week-end" class="level2">
-<h2 class="anchored" data-anchor-id="number-of-week-end">Number of week-end</h2>
+<section id="calendar-data" class="level2">
+<h2 class="anchored" data-anchor-id="calendar-data">Calendar data</h2>
+<p>We retrieve the number of weekend days per month to include it as a feature to our models.</p>
 </section>
-<section id="tools-in-germany" class="level2">
-<h2 class="anchored" data-anchor-id="tools-in-germany">Tools in Germany</h2>
-<p>Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on <a href="https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html">Destatis website</a>.</p>
+<section id="leading-national-indicators" class="level2">
+<h2 class="anchored" data-anchor-id="leading-national-indicators">Leading national indicators</h2>
+<ol type="1">
+<li><p>Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on <a href="https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html">Destatis website</a>.</p></li>
+<li><p>The <a href="https://www.wifo.ac.at/en/topics/business_cycle/wifo_leading_indicator/wifo_leading_indicator">Weekly WIFO Economic Index</a> is a measure of the real economic activity of the Austrian economy. We use its industrial production component.</p></li>
+</ol>
 </section>
 <section id="google-trends" class="level2">
 <h2 class="anchored" data-anchor-id="google-trends">Google Trends</h2>
-<p>We retrieve google trend series on a few categories, especially for nowcasting on tourism.</p>
+<p>We retrieve Google Trends series on a few key categories. The impact is particularly important for the tourism indicator.</p>
 </section>
 <section id="other-potential-interesting-data-sources-not-identified-in-open-data-sources" class="level2">
 <h2 class="anchored" data-anchor-id="other-potential-interesting-data-sources-not-identified-in-open-data-sources">Other potential interesting data sources (not identified in open data sources)</h2>
-<p>Historical Purchasing manager’s index by country, london metal exchange indices, daily electricity consumption by industrial firms country by country…</p>
+<p>Historical Purchasing manager’s index by country, London metal exchange indices, daily electricity consumption by industrial firms country by country…</p>
 
 
 </section>
