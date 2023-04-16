@@ -98,31 +98,54 @@ REGARIMA:
     usrdef.varEnabled: TRUE
 
   TOURISM:
-    spec: "TRfull"
-    transform.function: "Auto"
-    estimate.from: "2016-01-01"
-    automdl.enabled: TRUE
-    tradingdays.option: "TradingDays"
-    usrdef.outliersEnabled: TRUE
-    usrdef.outliersType: [
-      "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO"]
-    usrdef.outliersDate: [
-      "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
-      "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
-      "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
-      "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
-      "2022-01-01", "2022-02-01", "2022-03-01"]
-    outlier.enabled: TRUE
-    outlier.ao: TRUE
-    outlier.tc: FALSE
-    outlier.ls: TRUE
-    outlier.usedefcv: FALSE
-    outlier.cv: 4
-    usrdef.varEnabled: TRUE    
+    NO_CVS:
+      spec: "TRfull"
+      transform.function: "Auto"
+      estimate.from: "2016-01-01"
+      automdl.enabled: TRUE
+      tradingdays.option: "TradingDays"
+      usrdef.outliersEnabled: TRUE
+      usrdef.outliersType: [
+        "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO"]
+      usrdef.outliersDate: [
+        "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+        "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+        "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+        "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+        "2022-01-01", "2022-02-01", "2022-03-01"]
+      outlier.enabled: TRUE
+      outlier.ao: TRUE
+      outlier.tc: FALSE
+      outlier.ls: TRUE
+      outlier.usedefcv: FALSE
+      outlier.cv: 4
+      usrdef.varEnabled: TRUE
+      
+    CVS:
+      preliminary.check: FALSE
+      estimate.from: "2012-01-01"
+      spec: "RSA5c"
+      usrdef.outliersEnabled: TRUE
+      usrdef.outliersType: [
+        "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO", "AO", "AO", "AO", "AO",
+        "AO", "AO","AO"]
+      usrdef.outliersDate: [
+        "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
+        "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
+        "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
+        "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
+        "2022-01-01", "2022-02-01", "2022-03-01"]
+      outlier.enabled: TRUE
+      outlier.ao: TRUE
+      outlier.tc: TRUE
+      outlier.ls: TRUE
   
 ETS:
   PPI:
@@ -154,25 +177,3 @@ DFM:
       max_lags: 4
       max_factor: 2
       collinearity_threshold: 0.9999
-
-CVS:
-    preliminary.check: FALSE
-    estimate.from: "2012-01-01"
-    spec: "RSA5c"
-    usrdef.outliersEnabled: TRUE
-    usrdef.outliersType: [
-      "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO", "AO", "AO", "AO", "AO",
-      "AO", "AO","AO"]
-    usrdef.outliersDate: [
-      "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01",
-      "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01",
-      "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01",
-      "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01",
-      "2022-01-01", "2022-02-01", "2022-03-01"]
-    outlier.enabled: TRUE
-    outlier.ao: TRUE
-    outlier.tc: TRUE
-    outlier.ls: TRUE
