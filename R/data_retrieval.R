@@ -77,7 +77,7 @@ get_data_from_destatis <- function(data_info) {
 # Récupération de données de l'institut stat autrichien
 get_data_from_wifo <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Wifo", data_info)
-  
+
   data <- lapply(subset_lists, function(x) {
     data_temp <- tempfile()
     download.file(
@@ -89,27 +89,32 @@ get_data_from_wifo <- function(data_info) {
       sheet = "Contributions_production",
       skip = 3
     ) |>
-      rename(mois = paste0("...1"),
-             semaine = paste0("...2"),
-             wifo_ind = paste0("...4")) |>
-      select(mois, semaine, wifo_ind) |> 
-      mutate(annee=substr(mois,nchar(mois)-3,nchar(mois)))
-    
+      rename(
+        mois = paste0("...1"),
+        semaine = paste0("...2"),
+        wifo_ind = paste0("...4")
+      ) |>
+      select(mois, semaine, wifo_ind) |>
+      mutate(annee = substr(mois, nchar(mois) - 3, nchar(mois)))
+
     an <- "2020"
     for (i in 1:nrow(data)) {
-      if (is.na(data[i,4])) {
-        data[i,4] <- an
+      if (is.na(data[i, 4])) {
+        data[i, 4] <- an
+      } else {
+        an <- data[i, 4]
       }
-      else {an <- data[i,4]}
     }
-    
-    data <- data[-1,]
-    data <- (subset(data,!is.na(data$semaine)))
-    
-    data <- data |> 
-      mutate(time=ymd(paste0(annee,"0101"))+weeks(substr(semaine,3,4)),
-             geo = "AT") |> 
-      select(time,wifo_ind,geo)
+
+    data <- data[-1, ]
+    data <- (subset(data, !is.na(data$semaine)))
+
+    data <- data |>
+      mutate(
+        time = ymd(paste0(annee, "0101")) + weeks(substr(semaine, 3, 4)),
+        geo = "AT"
+      ) |>
+      select(time, wifo_ind, geo)
   })
   return(data)
 }
