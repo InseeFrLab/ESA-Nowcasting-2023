@@ -83,6 +83,7 @@ CSURVEY:
   challenge:
     - TOURISM
   model:
+    - DFM
     - REGARIMA
   id: ei_bsco_m
   filters:
