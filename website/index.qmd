@@ -2,19 +2,51 @@
 title: "Welcome"
 ---
 
-Topo sur le challenge, sur l'équipe.
-Ajouter logo ESA + Insee 
+TODO:
+
+- Ajouter logo ESA
+- Replacer logo INSEE
 
 ![](images/logo-INSEE){style="float: right;" fig-align="right" width="250"}
 
+## The challenge {.unnumbered}
 
+In the area of nowcasting, the European Statistics Awards Programme aims to discover promising methodologies and potential external data sources that could, now or in the future, be used to improve the timeliness of key EU economic indicators.
+Better timeliness is a recurring demand for official statistics so there are obvious benefits to developing new approaches which obtain more accurate estimates within a shorter interval.
+Even where a satisfactorily accurate point estimate is already available, alternative methodologies carry significant potential secondary benefits like reduced cost, improved robustness and applicability in cases where a developed statistical system is still not established.
 
-## License {.unnumbered}
+The 2022 round of the Nowcasting awards is divided into 3 separate competitions, each focusing on the nowcasting of one economic indicator:
 
-This work is licenced under the [European Union Public Licence 1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+- **PPI**: Producer prices in industry (domestic market)
+- **PVI**: Production volume in industry
+- **TOURISM**: Number of nights spent at tourist accommodation establishments
 
-## Acknowledements {.unnumbered}
+## Our team {.unnumbered}
 
-Huge thanks to ...
+We represent INSEE, the French National Institute of Statistics and Economic Studies, for this challenge.
+Our team is composed of 5 members:
+
+- [Thomas Faria](https://www.linkedin.com/in/thomas-faria-606238150/), Data Scientist in the Innovation Lab in Data Science
+- [Pierre Leblanc](https://www.linkedin.com/in/pierre-leblanc-7a91a931/), Head of Division in the Short-term Statistics Department
+- [Inès Moutachaker](https://github.com/imoutachaker), Research Analyst in the Department of Economic Studies
+- [Antoine Palazzolo](https://www.linkedin.com/in/antoine-palazzolo/), Data Scientist in the Innovation Lab in Data Science
+- [Alain Quartier-La-Tente](https://www.linkedin.com/in/alainqlt/), Research analyst in the Department of Economic Studies
+
+## Licence {.unnumbered}
+
+This work is licensed under the [European Union Public Licence 1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+
+## Acknowledgements {.unnumbered}
+
+On behalf of our team, we would like to express our gratitude to:
+
+- INSEE and our hierarchy for providing us with the time and resources to participate in this challenge.
+- The various teams at INSEE whom we reached out to for their invaluable advice and guidance throughout the competition.
+- The organizers of this challenge for creating a stimulating and engaging platform to showcase our skills.
+
+Thank you all for your support and contributions to our success in this endeavor.
+
+\br
+\br
 
 This website is built with [Quarto](https://quarto.org).

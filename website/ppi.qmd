@@ -2,8 +2,14 @@
 title: Producer prices in industry challenge
 ---
 
-Un petit topo sur le PPI
+Producer prices are also known as output prices and the objective of the output price index is to measure the monthly development of transaction prices of economic activities.
 
+There is a general public interest in knowing the extent to which the prices of goods and services have risen.
+Also, it has long been customary in many countries to adjust levels of wages, pensions, and payments in long term contracts in proportion to changes in relevant prices.
+
+The domestic output price index for an economic activity measures the average price development of all goods and related services resulting from that activity and sold on the domestic market between one time period and another.
+
+## Forecast for a given country, with modular history
 
 ```{r}
 #| cache: false
@@ -48,7 +54,12 @@ Plot.plot({
     Plot.dot(preds, {
         x: "date", 
         y: "values",
-        fill: "model"
+        fill: "model",
+        title: (d) =>
+              `${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })}\n ${d.values} `
         })
   ],
   color: {legend: true}
@@ -78,9 +89,6 @@ viewof range = offsetInterval(dates, {
   </span>`
 })
 ```
-
-<!--Inputs.table(sample)-->
-
 
 
 <!-- HELPERS -->
