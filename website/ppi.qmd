@@ -25,7 +25,7 @@ ojs_define(data = sample, pred = predictions_ppi)
 
 
 ```{ojs}
-viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: "Select a country:"})
+viewof country = Inputs.select(unique(pred_typed.map(d => d.geo)), {label: "Select a country:"})
 ```
 
 

@@ -85,11 +85,13 @@ CSURVEY:
   model:
     - DFM
     - REGARIMA
+    - XGBOOST
+    - LSTM
   id: ei_bsco_m
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
-  "RO", "SE", "SI", "SK"]
+    "RO", "SE", "SI", "SK"]
     s_adj: NSA
     indic: ["BS-CSMCI","BS-SFSH","BS-MP-PR","BS-UE-NY","BS-FS-LY","BS-FS-NY"]
     freq: M
