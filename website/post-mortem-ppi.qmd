@@ -1,57 +1,121 @@
 # Post-Mortem analysis of our forecasts
 
 ```{r}
-#| label: fig-post-mortem-ppi1
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_1, store = "store_post_mortem")
+#| cache: false
+
+targets::tar_load(past_submissions_ppi, store = "store_post_mortem")
+targets::tar_load(recent_data_ppi, store = "store_post_mortem")
+
+past_submissions_ppi <- past_submissions_ppi |>
+  dplyr::filter(Entries %in% c("REGARIMA", "XGBOOST", "DFM", "ETS", "LSTM"))
+
+ojs_define(data = recent_data_ppi, pred = past_submissions_ppi)
 ```
 
-```{r}
-#| label: fig-post-mortem-ppi2
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_2, store = "store_post_mortem")
+```{ojs}
+viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: "Select a country:"})
 ```
 
-```{r}
-#| label: fig-post-mortem-ppi3
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_3, store = "store_post_mortem")
+
+```{ojs}
+addTooltips(
+Plot.plot({
+  grid: true,
+  y: {
+    label: "Producer prices in industry",
+  },  
+  marks: [
+    Plot.line(sample, {
+        x: "date", 
+        y: "values", 
+        stroke: "black",
+        strokeWidth: 2,
+        title: (d) =>
+              `${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })}\n ${d.values} `
+        }),
+    Plot.line(preds, {
+        x: "date", 
+        y: "values",
+        stroke: "model",
+        title: (d) =>
+              `${d.model}\n ${d.date.toLocaleString("en-UK", {
+                month: "long",
+                year: "numeric"
+              })} : ${d.values} `
+        })
+  ],
+  color: {legend: true}
+})
+)
 ```
 
-```{r}
-#| label: fig-post-mortem-ppi4
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_4, store = "store_post_mortem")
+
+
+```{ojs}
+dates = {
+  const data = sample.map(d => d.date)
+  data.push(preds.map(d => d.date)[0])
+  return data  
+}
+
 ```
 
-```{r}
-#| label: fig-post-mortem-ppi5
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_5, store = "store_post_mortem")
+
+<!-- HELPERS -->
+
+```{ojs}
+data_t = transpose(data)
+data_typed = data_t.map( d => (
+    {
+      date: dateParser(d.time),
+      values: d.values,
+      geo: d.geo
+    } 
+   )
+ )
+
+sample = data_typed.filter(d => d.geo == country)
 ```
 
-```{r}
-#| label: fig-post-mortem-ppi6
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_6, store = "store_post_mortem")
+```{ojs}
+pred_t = transpose(pred)
+pred_typed = pred_t.map( d => (
+    {
+      date: dateParser(d.Date),
+      values: d.value,
+      geo: d.Country,
+      model: d.Entries
+    } 
+   )
+ )
+
+preds = pred_typed.filter(d => d.geo == country)
 ```
 
-```{r}
-#| label: fig-post-mortem-ppi7
-#| fig-cap: test
-#| fig-width: 8.5
-#| fig-height: 5
-targets::tar_read(plot_errors_ppi_7, store = "store_post_mortem")
+```{ojs}
+dateParser = (dateString) => {
+  const [year, month, day] = dateString.split('-')
+  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
+  const timezoneOffset = date.getTimezoneOffset()
+  date.setMinutes(date.getMinutes() - timezoneOffset)
+  return date
+}
+```
+
+<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
+
+```{ojs}
+function unique(data, accessor) {
+return Array.from(new Set(accessor ? data.map(accessor) : data));
+	}
+```
+
+<!-- DEPENDENCIES -->
+
+```{ojs}
+import {addTooltips} from "@mkfreeman/plot-tooltip"
+import {offsetInterval} from '@mootari/offset-slider'
 ```

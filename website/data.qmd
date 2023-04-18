@@ -6,7 +6,7 @@ We take pride in our commitment to utilizing exclusively open data sources in ou
 This approach ensures the transparency and replicability of our methods, which are of paramount importance in the realm of official statistics.
 By leveraging publicly available data, we have been able to derive accurate nowcasts of key economic indicators while promoting the principles of open science and reproducibility.
 
-## Eurostat data
+## Eurostat data{#sec-data-eurostat}
 
 We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
 These series are automatically retrieved from Eurostat database through its API.

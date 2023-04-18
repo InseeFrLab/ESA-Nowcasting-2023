@@ -2,9 +2,6 @@
 title: Methodology
 ---
 
-TODO:
-
-- Compléter les descriptions de chaque modèle
 
 Our team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models.
 While the same model classes were utilized for each of the challenges, namely PPI, PVI and Tourism, specific datasets and parameters were tailored to each individual challenge to ensure optimal model performance.
@@ -50,11 +47,61 @@ Next, seasonally adjusted variables are put in the REGARIMA model. The final ste
 
 ## Dynamic Factor Models
 
-Using several sources of data (financial series, macroeconomic series,
-surveys...) we estimate a dynamic factor model per country. Missing data
-are filled, collinearity is taken into account, data are scaled and log
-transformed when necessary. Estimation takes about 20 seconds per
-country.
+### Introduction
+
+Dynamic Factor Models (DFM) are a powerful and versatile approach for nowcasting, which involves extracting latent factors from a large set of observed economic or financial indicators. These latent factors capture the underlying dynamics of the data and are used to generate forecasts or predictions in real-time.
+
+DFM are based on the idea that a small number of unobservable factors drive the behavior of a large number of observed variables. These factors represent the common underlying movements in the data and can be interpreted as representing the state of the economy or the financial system at a given point in time. By estimating these latent factors from historical data, DFM allows us to capture the relevant information embedded in the observed indicators and use it to generate accurate nowcasts.
+
+A standard dynamic factor model involves 2 main equations.
+
+1) **The factor equation (@eq-factor-equation):**
+This equation represents the dynamics of the latent factors, which are unobservable variables that capture the common underlying movements in the observed data. The factor equation is usually specified as a dynamic system allowing the unobserved factors $F_t$ to evolve according to a $VAR(p)$ process, and can be written as:
+$$
+F_t = \sum_{j=1}^pA_{j}F_{t-j} + \eta_t, \qquad \eta_t \sim N(0, \Sigma_{0})
+$$ {#eq-factor-equation}
+where $F_t$ represents the vector of latent factors at time $t$, $A_{j}$ is the (state-) transition matrix capturing the dynamics of the factors at lag $j$, $F_{t-1}$ is the vector of factors at time $t-1$, and $\Sigma_{0}$ is the (state-) covariance matrix.
+
+
+2) **The measurement equation (@eq-measurement-equation):**
+This equation links the latent factors to the observed variables. It specifies how the observed variables are generated from the latent factors and can be written as:
+$$
+X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
+$$ {#eq-measurement-equation}
+where $X_t$ represents the vector of observed variables at time $t$, $\Lambda$ is the factor loading matrix, linking the factors to the observed variables, $\xi_t$ is the vector of measurement errors at time $t$ and $R$ is the (measurement-) covariance matrix.
+
+| Matrices | Sizes | Descriptions |
+|:----:|:-----:|----------------------|
+| $F_t$     | $n \times 1$ | Vector of factors at time t $(f_{1t}, \ldots, f_{nt})'$ |
+| $A_j$     | $r \times r$ | State transition matrix at lag $j$ |
+| $\Sigma_0$| $r \times r$ | State covariance matrix |
+| $X_t$     | $n \times 1$ | Vector of observed series at time t $(x_{1t}, \ldots, x_{nt})'$ |
+| $\Lambda$ | $n \times r$ | Factor loading matrix |
+| $R$       | $n \times n$ | Measurement covariance matrix |
+| $r$       | $1 \times 1$ | Number of factors |
+| $p$       | $1 \times 1$ | Number of lags |
+
+
+### Data used and estimation
+
+For the estimation of our Dynamics Factor Models (DFM), we utilized three main sources of data to capture different aspects of the economic and financial activity. These data sources include Eurostat data for economic activity, financial data obtained using the Yahoo API for financial activity, and Google Trends data for capturing more recent evolutions[^Data]. By incorporating these three main sources of data, we aim to capture different aspects of the economic and financial activity, ranging from long-term trends to short-term fluctuations and recent evolutions. This multi-source data approach allows us to build a more comprehensive and robust DFM model, which can provide more accurate and timely nowcasting predictions for the variables of interest.
+
+[^Data]: You can refer to the [Data](data.qmd#sec-data-eurostat) section for more extensive details on the data that has been used.
+
+For the estimation of our various Dynamics Factor Models (DFM), we relied on the "dfms" package in R, a powerful and user-friendly tool for estimating DFMs from time series data. The "dfms" package provides convenient and efficient methods for DFM estimation, making it an invaluable resource for our nowcasting project. Its user-friendly interface and optimized algorithms make it easy to implement and customize DFM models, while its efficient computational capabilities enable us to handle large datasets with ease. We really want to thanks Sebastian Krantz, the creator of this package.
+
+To ensure the robustness and accuracy of our DFM estimation, we took several steps beforehand the estimation pipeline of the "dfms" package. Since there are no trend or intercept terms in @eq-factor-equation and @eq-measurement-equation, we made $X_t$ stationary by taking a first difference. Note that $X_t$ is also standardized (scaled and centered) automatically by the "dfms" package. 
+
+We also pay attention to the availability of the data to ensure that each observed series have sufficient data for estimation. If any series have inadequate data, it is removed from the estimation process to prevent biased results. We also account for potential collinearities that could occur among several economic variables. Highly correlated series ($\rho \geq 0.9999$) are removed to mitigate multicollinearity issues and improve estimation accuracy.
+
+To determine the optimal values for the number of lags and factors in our DFM models, we use the Bai and Ng (2002) criteria, which provides statistical guidelines for selecting these parameters. We set a maximum limit of 4 lags and 2 factors for computational efficiency reasons.
+
+We initiate the estimation process from February 2005 for all challenges, and for the TOURISM challenge, we performed a seasonal adjustment on the target series prior to estimation in order to account for any seasonal patterns in the data.
+
+### Nowcasting
+
+Once the DFM is estimated ($A_j$, $\Sigma_0$, $\Lambda$, $R$), it can be used for nowcasting by forecasting the latent factors using the factor equation, and then generating nowcasts for the observed variables using the measurement equation. The predictions can be updated in real-time as new data becomes available, allowing for timely and accurate predictions of the variables of interest.
+
 
 ## ETS
 
