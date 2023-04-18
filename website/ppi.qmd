@@ -4,8 +4,7 @@ title: Producer prices in industry challenge
 
 Producer prices are also known as output prices and the objective of the output price index is to measure the monthly development of transaction prices of economic activities.
 
-There is a general public interest in knowing the extent to which the prices of goods and services have risen.
-Also, it has long been customary in many countries to adjust levels of wages, pensions, and payments in long term contracts in proportion to changes in relevant prices.
+There is a general public interest in knowing the extent to which the prices of goods and services have risen. Also, it has long been customary in many countries to adjust levels of wages, pensions, and payments in long term contracts in proportion to changes in relevant prices.
 
 The domestic output price index for an economic activity measures the average price development of all goods and related services resulting from that activity and sold on the domestic market between one time period and another.
 
@@ -23,11 +22,17 @@ sample <- data$PPI$data |>
 ojs_define(data = sample, pred = predictions_ppi)
 ```
 
-
 ```{ojs}
-viewof country = Inputs.select(unique(pred_typed.map(d => d.geo)), {label: "Select a country:"})
+sample = format_historical_data(data, ctr_iso)
 ```
 
+```{ojs}
+preds = format_pred_data(pred, ctr_iso)
+```
+
+```{ojs}
+viewof country = Inputs.select(ctry_challenge, {label: "Select a country:"})
+```
 
 ```{ojs}
 addTooltips(
@@ -90,57 +95,27 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
-
 <!-- HELPERS -->
 
 ```{ojs}
-data_t = transpose(data)
-data_typed = data_t.map( d => (
-    {
-      date: dateParser(d.time),
-      values: d.values,
-      geo: d.geo
-    } 
-   )
- )
-
-sample = data_typed.filter(d => d.geo == country)
+ctry_challenge = unique(transpose(pred).map(d => map_country_name[d.geo])).filter(value => value !== undefined)
 ```
 
 ```{ojs}
-pred_t = transpose(pred)
-pred_typed = pred_t.map( d => (
-    {
-      date: dateParser(d.Date),
-      values: d.value,
-      geo: d.Country,
-      model: d.Entries
-    } 
-   )
- )
-
-preds = pred_typed.filter(d => d.geo == country)
-```
-
-```{ojs}
-dateParser = (dateString) => {
-  const [year, month, day] = dateString.split('-')
-  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
-  const timezoneOffset = date.getTimezoneOffset()
-  date.setMinutes(date.getMinutes() - timezoneOffset)
-  return date
-}
-```
-
-<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
-
-```{ojs}
-function unique(data, accessor) {
-return Array.from(new Set(accessor ? data.map(accessor) : data));
-	}
+ctr_iso = Object.keys(map_country_name).find(key => map_country_name[key] === country);
 ```
 
 <!-- DEPENDENCIES -->
+
+```{ojs}
+import { 
+    map_country_name,
+    unique,
+    format_historical_data,
+    format_pred_data,
+     } from "./utils/utils.qmd"
+
+```
 
 ```{ojs}
 import {addTooltips} from "@mkfreeman/plot-tooltip"
