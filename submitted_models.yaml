@@ -144,7 +144,7 @@ TOURISM:
     entry_5: ETS  # Top performer
   january:
     entry_1: REGARIMA
-    entry_2: DFM
+    entry_2: DFM  # Top performer
     entry_3: ETS
     entry_4: XGBOOST
     entry_5:
