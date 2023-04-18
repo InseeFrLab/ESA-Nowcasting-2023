@@ -64,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta property="og:title" content="European Statistics Awards for Nowcasting - Methodology">
-<meta property="og:description" content="TODO:">
+<meta property="og:description" content="Our team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models.">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
 </head>
 
@@ -136,11 +136,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#automatic-identification-and-nowcasting" id="toc-automatic-identification-and-nowcasting" class="nav-link" data-scroll-target="#automatic-identification-and-nowcasting">Automatic identification and nowcasting</a></li>
   <li><a href="#seasonal-adjustment-for-tourism" id="toc-seasonal-adjustment-for-tourism" class="nav-link" data-scroll-target="#seasonal-adjustment-for-tourism">Seasonal adjustment for tourism</a></li>
   </ul></li>
-  <li><a href="#dynamic-factor-models" id="toc-dynamic-factor-models" class="nav-link" data-scroll-target="#dynamic-factor-models">Dynamic Factor Models</a></li>
+  <li><a href="#dynamic-factor-models" id="toc-dynamic-factor-models" class="nav-link" data-scroll-target="#dynamic-factor-models">Dynamic Factor Models</a>
+  <ul class="collapse">
+  <li><a href="#introduction-1" id="toc-introduction-1" class="nav-link" data-scroll-target="#introduction-1">Introduction</a></li>
+  <li><a href="#data-used-and-estimation" id="toc-data-used-and-estimation" class="nav-link" data-scroll-target="#data-used-and-estimation">Data used and estimation</a></li>
+  <li><a href="#nowcasting" id="toc-nowcasting" class="nav-link" data-scroll-target="#nowcasting">Nowcasting</a></li>
+  </ul></li>
   <li><a href="#ets" id="toc-ets" class="nav-link" data-scroll-target="#ets">ETS</a></li>
   <li><a href="#xgboost" id="toc-xgboost" class="nav-link" data-scroll-target="#xgboost">XGBoost</a>
   <ul class="collapse">
-  <li><a href="#introduction-1" id="toc-introduction-1" class="nav-link" data-scroll-target="#introduction-1">Introduction</a></li>
+  <li><a href="#introduction-2" id="toc-introduction-2" class="nav-link" data-scroll-target="#introduction-2">Introduction</a></li>
   <li><a href="#xgboost-algorithm" id="toc-xgboost-algorithm" class="nav-link" data-scroll-target="#xgboost-algorithm">XGBoost Algorithm</a></li>
   <li><a href="#transforming-time-series" id="toc-transforming-time-series" class="nav-link" data-scroll-target="#transforming-time-series">Transforming Time Series</a></li>
   <li><a href="#grid-search-for-hyperparameters" id="toc-grid-search-for-hyperparameters" class="nav-link" data-scroll-target="#grid-search-for-hyperparameters">Grid Search for Hyperparameters</a></li>
@@ -151,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/methodology.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -170,10 +175,6 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>TODO:</p>
-<ul>
-<li>Compléter les descriptions de chaque modèle</li>
-</ul>
 <p>Our team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models. While the same model classes were utilized for each of the challenges, namely PPI, PVI and Tourism, specific datasets and parameters were tailored to each individual challenge to ensure optimal model performance.</p>
 <section id="regarima" class="level2">
 <h2 class="anchored" data-anchor-id="regarima">Regarima</h2>
@@ -208,9 +209,91 @@ y_t = c + \sum_{i=1}^{p}\alpha_i x^i_{t}+u_t
 <p>Next, seasonally adjusted variables are put in the REGARIMA model. The final step involves nowcasting the “raw value” by dividing the SA forecast by the projected seasonal coefficient.</p>
 </section>
 </section>
-<section id="dynamic-factor-models" class="level2">
+<section id="dynamic-factor-models" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="dynamic-factor-models">Dynamic Factor Models</h2>
-<p>Using several sources of data (financial series, macroeconomic series, surveys…) we estimate a dynamic factor model per country. Missing data are filled, collinearity is taken into account, data are scaled and log transformed when necessary. Estimation takes about 20 seconds per country.</p>
+<section id="introduction-1" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-1">Introduction</h3>
+<p>Dynamic Factor Models (DFM) are a powerful and versatile approach for nowcasting, which involves extracting latent factors from a large set of observed economic or financial indicators. These latent factors capture the underlying dynamics of the data and are used to generate forecasts or predictions in real-time.</p>
+<p>DFM are based on the idea that a small number of unobservable factors drive the behavior of a large number of observed variables. These factors represent the common underlying movements in the data and can be interpreted as representing the state of the economy or the financial system at a given point in time. By estimating these latent factors from historical data, DFM allows us to capture the relevant information embedded in the observed indicators and use it to generate accurate nowcasts.</p>
+<p>A standard dynamic factor model involves 2 main equations.</p>
+<ol type="1">
+<li><p><strong>The factor equation (<a href="#eq-factor-equation">Equation&nbsp;1</a>):</strong> This equation represents the dynamics of the latent factors, which are unobservable variables that capture the common underlying movements in the observed data. The factor equation is usually specified as a dynamic system allowing the unobserved factors <span class="math inline">\(F_t\)</span> to evolve according to a <span class="math inline">\(VAR(p)\)</span> process, and can be written as: <span id="eq-factor-equation"><span class="math display">\[
+F_t = \sum_{j=1}^pA_{j}F_{t-j} + \eta_t, \qquad \eta_t \sim N(0, \Sigma_{0})
+\tag{1}\]</span></span> where <span class="math inline">\(F_t\)</span> represents the vector of latent factors at time <span class="math inline">\(t\)</span>, <span class="math inline">\(A_{j}\)</span> is the (state-) transition matrix capturing the dynamics of the factors at lag <span class="math inline">\(j\)</span>, <span class="math inline">\(F_{t-1}\)</span> is the vector of factors at time <span class="math inline">\(t-1\)</span>, and <span class="math inline">\(\Sigma_{0}\)</span> is the (state-) covariance matrix.</p></li>
+<li><p><strong>The measurement equation (<a href="#eq-measurement-equation">Equation&nbsp;2</a>):</strong> This equation links the latent factors to the observed variables. It specifies how the observed variables are generated from the latent factors and can be written as: <span id="eq-measurement-equation"><span class="math display">\[
+X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
+\tag{2}\]</span></span> where <span class="math inline">\(X_t\)</span> represents the vector of observed variables at time <span class="math inline">\(t\)</span>, <span class="math inline">\(\Lambda\)</span> is the factor loading matrix, linking the factors to the observed variables, <span class="math inline">\(\xi_t\)</span> is the vector of measurement errors at time <span class="math inline">\(t\)</span> and <span class="math inline">\(R\)</span> is the (measurement-) covariance matrix.</p></li>
+</ol>
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Matrices</th>
+<th style="text-align: center;">Sizes</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(F_t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n \times 1\)</span></td>
+<td>Vector of factors at time t <span class="math inline">\((f_{1t}, \ldots, f_{nt})'\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(A_j\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(r \times r\)</span></td>
+<td>State transition matrix at lag <span class="math inline">\(j\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\Sigma_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(r \times r\)</span></td>
+<td>State covariance matrix</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n \times 1\)</span></td>
+<td>Vector of observed series at time t <span class="math inline">\((x_{1t}, \ldots, x_{nt})'\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\Lambda\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n \times r\)</span></td>
+<td>Factor loading matrix</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(R\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n \times n\)</span></td>
+<td>Measurement covariance matrix</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(r\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1 \times 1\)</span></td>
+<td>Number of factors</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(p\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1 \times 1\)</span></td>
+<td>Number of lags</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-used-and-estimation" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="data-used-and-estimation">Data used and estimation</h3>
+<div class="page-columns page-full"><p>For the estimation of our Dynamics Factor Models (DFM), we utilized three main sources of data to capture different aspects of the economic and financial activity. These data sources include Eurostat data for economic activity, financial data obtained using the Yahoo API for financial activity, and Google Trends data for capturing more recent evolutions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. By incorporating these three main sources of data, we aim to capture different aspects of the economic and financial activity, ranging from long-term trends to short-term fluctuations and recent evolutions. This multi-source data approach allows us to build a more comprehensive and robust DFM model, which can provide more accurate and timely nowcasting predictions for the variables of interest.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;You can refer to the <a href="./data.html#sec-data-eurostat">Data</a> section for more extensive details on the data that has been used.</p></li></div></div>
+<p>For the estimation of our various Dynamics Factor Models (DFM), we relied on the “dfms” package in R, a powerful and user-friendly tool for estimating DFMs from time series data. The “dfms” package provides convenient and efficient methods for DFM estimation, making it an invaluable resource for our nowcasting project. Its user-friendly interface and optimized algorithms make it easy to implement and customize DFM models, while its efficient computational capabilities enable us to handle large datasets with ease. We really want to thanks Sebastian Krantz, the creator of this package.</p>
+<p>To ensure the robustness and accuracy of our DFM estimation, we took several steps beforehand the estimation pipeline of the “dfms” package. Since there are no trend or intercept terms in <a href="#eq-factor-equation">Equation&nbsp;1</a> and <a href="#eq-measurement-equation">Equation&nbsp;2</a>, we made <span class="math inline">\(X_t\)</span> stationary by taking a first difference. Note that <span class="math inline">\(X_t\)</span> is also standardized (scaled and centered) automatically by the “dfms” package.</p>
+<p>We also pay attention to the availability of the data to ensure that each observed series have sufficient data for estimation. If any series have inadequate data, it is removed from the estimation process to prevent biased results. We also account for potential collinearities that could occur among several economic variables. Highly correlated series (<span class="math inline">\(\rho \geq 0.9999\)</span>) are removed to mitigate multicollinearity issues and improve estimation accuracy.</p>
+<p>To determine the optimal values for the number of lags and factors in our DFM models, we use the Bai and Ng (2002) criteria, which provides statistical guidelines for selecting these parameters. We set a maximum limit of 4 lags and 2 factors for computational efficiency reasons.</p>
+<p>We initiate the estimation process from February 2005 for all challenges, and for the TOURISM challenge, we performed a seasonal adjustment on the target series prior to estimation in order to account for any seasonal patterns in the data.</p>
+</section>
+<section id="nowcasting" class="level3">
+<h3 class="anchored" data-anchor-id="nowcasting">Nowcasting</h3>
+<p>Once the DFM is estimated (<span class="math inline">\(A_j\)</span>, <span class="math inline">\(\Sigma_0\)</span>, <span class="math inline">\(\Lambda\)</span>, <span class="math inline">\(R\)</span>), it can be used for nowcasting by forecasting the latent factors using the factor equation, and then generating nowcasts for the observed variables using the measurement equation. The predictions can be updated in real-time as new data becomes available, allowing for timely and accurate predictions of the variables of interest.</p>
+</section>
 </section>
 <section id="ets" class="level2">
 <h2 class="anchored" data-anchor-id="ets">ETS</h2>
@@ -218,8 +301,8 @@ y_t = c + \sum_{i=1}^{p}\alpha_i x^i_{t}+u_t
 </section>
 <section id="xgboost" class="level2">
 <h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
-<section id="introduction-1" class="level3">
-<h3 class="anchored" data-anchor-id="introduction-1">Introduction</h3>
+<section id="introduction-2" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-2">Introduction</h3>
 <p>XGBoost is a powerful algorithm that has gained popularity in the field of machine learning due to its ability to handle complex interactions between variables and its flexibility in handling various types of data. In the context of Eurostat’s nowcasting competition, we utilized the XGBoost algorithm to predict the values of the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments for most European countries. We will delve here into the technicalities of the XGBoost approach, and how we tailored it to our specific nowcasting problem.</p>
 </section>
 <section id="xgboost-algorithm" class="level3">
@@ -253,6 +336,7 @@ y_t = c + \sum_{i=1}^{p}\alpha_i x^i_{t}+u_t
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
