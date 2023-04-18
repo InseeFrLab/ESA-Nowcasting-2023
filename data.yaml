@@ -75,7 +75,25 @@ PSURVEY:
     "BS-IPE"]
     unit: BAL
     freq: M
-    
+
+CSURVEY:
+  name: "Consumer surveys"
+  short_name: "CSURVEY"
+  source : Eurostat
+  challenge:
+    - TOURISM
+  model:
+    - DFM
+    - REGARIMA
+  id: ei_bsco_m
+  filters:
+    geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI",
+    "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
+  "RO", "SE", "SI", "SK"]
+    s_adj: NSA
+    indic: ["BS-CSMCI","BS-SFSH","BS-MP-PR","BS-UE-NY","BS-FS-LY","BS-FS-NY"]
+    freq: M
+
 HICP:
   name: "Harmonised Index of Consumer Prices"
   short_name: "HICP"
@@ -250,6 +268,16 @@ TOLL_DE:
     - DFM
   url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
 
+WEEKLY_INDEX_AT:
+  name: "Weekly WIFO economic index"
+  short_name: "wwei"
+  source : Wifo
+  challenge: 
+    - PVI
+  model:
+    - REGARIMA
+  url: "https://www.wifo.ac.at/wwadocs/konjunktur/W%C3%B6chentlicherWIFOWirtschaftsindex/WIFO-BusinessCycleAnalysis_WeeklyWIFOEconomicIndex.xlsx"
+
 GTRENDS_MANUFACTURING:
   name: "Google Trends - Manufacturing"
   short_name: "gtrends_manufacturing"
@@ -312,6 +340,7 @@ GTRENDS_HOTELS:
     - XGBOOST
     - LSTM
     - DFM
+    - REGARIMA
   category: 179
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -328,6 +357,7 @@ GTRENDS_TRAVEL_AGENCIES:
     - XGBOOST
     - LSTM
     - DFM
+    - REGARIMA    
   category: 1010
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -344,6 +374,7 @@ GTRENDS_VACATIONS:
     - XGBOOST
     - LSTM
     - DFM
+    - REGARIMA
   category: 1019
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
@@ -360,6 +391,7 @@ GTRENDS_SKI:
     - XGBOOST
     - LSTM
     - DFM
+    - REGARIMA
   category: 1119
   filters:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
