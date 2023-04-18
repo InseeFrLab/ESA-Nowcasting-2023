@@ -12,7 +12,6 @@ This data can be separated in several categories:
 
 ## Eurostat data{#sec-data-eurostat}
 
-
 We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
 These series are automatically retrieved from Eurostat database through its API.
 
@@ -146,6 +145,14 @@ We used its API to get the latest financial data to improve our short-term predi
 
 Google Trends is a free online tool provided by Google that allows users to explore the popularity of search queries over time and across different regions and languages.
 It provides valuable insights into the behavior of internet users, the topics they are interested in, and the evolution of search trends over time.
+
+Nevertheless, the use of Google Trends data as a tool for economic analysis needs to be done carefully.
+Google Trends provides Search Volume Indices (SVI) based on search ratios, with the initial search volume for a category or topic at a given time divided by the total number of searches at that date. 
+However, changes in the denominator (total searches) can induce biases as internet use has evolved since 2004.
+
+We implemented an approach to address this downward bias by extracting a common component from concurrent time series using Principal Component Analysis (PCA) on the log-SVI series long-term trends filtered out using an HP filter.
+The rescaled first component obtained from the long-term log-SVIs is assumed to capture the common long-term trend, and it is subtracted from the log-SVIs.
+This approach can help to remove the downward bias common to all Google Trends variables and improve their economic predictive power. More information in this [paper](https://www.oecd-ilibrary.org/docserver/6b9c7518-en.pdf?expires=1681837213&id=id&accname=guest&checksum=31B9D9D14F31F4C9DFC38934AD9A4D96).
 
 \br
 
