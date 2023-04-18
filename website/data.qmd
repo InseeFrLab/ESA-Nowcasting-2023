@@ -10,66 +10,178 @@ By leveraging publicly available data, we have been able to derive accurate nowc
 
 This data can be separated in several categories:
 
+
 ## Eurostat data
 
 We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
 These series are automatically retrieved from Eurostat database through its API.
 
+\br
+
 1.  [Producer prices in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en):
 
--   total on domestic market (target variable)
--   division level of NACE and MIGs
+    Producer Price in Industry (PPI) refers to the average price that domestic producers receive for the goods and services they produce.
+    This indicator measures changes in the price of goods and services at the producer level, and it is considered an important leading indicator of inflation.
 
-2.  [Import prices in industry]():
+    Specificities:
+        -   The PPI challenge refers to this indicator for a particular NACE
+        -   Total on domestic market (target variable)
+        -   Division level of NACE and MIGs
 
--   total
--   division level of CPA and MIGs
+2.  [Import prices in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inpi_m/default/table?lang=en):
+
+    Import prices in industry, also known as industrial import price index (IPI), refer to the cost of goods and services imported into a country for use in production.
+    This indicator reflects changes in the prices of imported raw materials, intermediate goods, and capital equipment, and it is influenced by factors such as exchange rates, global commodity prices, and trade policies.
+    
+    Specificities:
+        -   Total
+        -   Division level of CPA and MIGs
 
 3.  [Production index in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en) :
 
--   total (target variable)
--   intermediary goods (MIG_ING)
+    The Production Index in Industry (or Production Volume in Industry - PVI) is a measure of the physical output of the industrial sector of an economy.
+    It tracks changes in the volume of goods produced over time, and it is considered an important indicator of the health and performance of the manufacturing sector.
+    The production index can be used to assess trends in productivity, capacity utilization, and competitiveness.
+    
+    Specificities:
+        -   The PVI challenge refers to this indicator for a particular NACE
+        -   Total
+        -   Intermediary goods (MIG_ING)
 
-4.  [Business survey in industry](https://ec.europa.eu/eurostat/databrowser/view/ei_bsin_m_r2/default/table?lang=en):
+4.  [Harmonised Index of Consumer Prices](https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en) on a few products
 
--   Industrial confidence indicator
--   Production development observed over the past 3 months
--   Production expectations over the next 3 months
--   Employment expectations over the next 3 months
--   Assessment of order-book levels
--   Assessment of the current level of stocks of finished products
--   Selling price expectations over the next 3 months
+    The Harmonised Index of Consumer Prices (HICP) is a measure of inflation that is used to compare price changes across the European Union.
+    It tracks the average change over time in the prices of goods and services that households consume, including food, housing, transportation, and healthcare.
+    The HICP is calculated using a harmonised methodology that ensures comparability across EU member states, and it is published on a monthly basis by Eurostat. It is a key indicator of price stability.
 
-5.  [Harmonised Index of Consumer Prices](https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en) on a few products
+5.  [Business survey in industry](https://ec.europa.eu/eurostat/databrowser/view/ei_bsin_m_r2/default/table?lang=en):
 
-6.  Number of nights spent at tourist accommodation establishments (target variable)
+    The Business Survey in Industry is a survey conducted by Eurostat to gather information on the business conditions and expectations of companies in the manufacturing sector.
+    The survey covers a range of topics, including production, new orders, inventories, employment, prices, and investment, and it is conducted on a monthly basis across the European Union.
+    The data collected from the survey can be used to assess the current and future state of the manufacturing sector, to identify sector-specific challenges and opportunities, and to inform policymaking and business decision-making.
+    
+    Covered by the survey:
+        -   Industrial confidence indicator
+        -   Production development observed over the past 3 months
+        -   Production expectations over the next 3 months
+        -   Employment expectations over the next 3 months
+        -   Assessment of order-book levels
+        -   Assessment of the current level of stocks of finished products
+        -   Selling price expectations over the next 3 months
+
+6.  [Consumer survey in industry](https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en):
+
+    The Consumer Survey in Industry is a survey conducted by Eurostat to gather information on the consumer sentiment and behavior in the European Union.
+    The survey covers a range of topics, including household income, savings, spending intentions, and major purchases, and it is conducted on a monthly basis.
+    The data collected from the survey can be used to assess consumer confidence, to identify trends in consumer spending and saving patterns, and to inform policymaking and business decision-making.
+    The Consumer Survey in Industry is an important indicator of the overall health of the economy, as consumer spending is a major driver of economic activity.
+    
+    Covered by the survey:
+        -   Financial situation over the last 12 months
+        -   Financial situation over the next 12 months
+        -   General economic situation over the last 12 months
+        -   General economic situation over the next 12 months
+        -   Price trends over the last 12 months
+        -   Price trends over the next 12 months
+        -   Unemployment expectations over the next 12 months
+        -   The current economic situation is adequate to make major purchases
+        -   Major purchases over the next 12 months
+        -   The current economic situation is adequate for savings
+        -   Savings over the next 12 months
+        -   Statement on financial situation of household
+        -   Consumer confidence indicator
+
+7.  [Number of nights spent at tourist accommodation establishments](https://ec.europa.eu/eurostat/databrowser/view/tour_occ_nim/default/table?lang=en)
+
+    The number of nights spent at tourist accommodation establishments is a measure of the volume of tourism activity in a country.
+    It refers to the total number of nights that guests spend in all types of tourist accommodation establishments, including hotels, campsites, holiday homes, and other types of accommodation.
+    This indicator is important for assessing the contribution of tourism to the economy, as well as for monitoring the performance and competitiveness of the tourism sector.
+
+    Specificities:
+        -   The TOURISM challenge refers to this indicator
+
 
 ## Financial data from Yahoo Finance
 
-1.  Brent (dollars)
-2.  Euro/dollar exchange rate
-3.  S&P 500 index
-4.  Euro stoxx 50 Index
+Yahoo Finance is a popular online platform for financial information and investment tools.
+It provides a wide range of financial data, including real-time stock prices, historical price charts, news articles, analyst ratings, and financial statements for publicly traded companies.
+We used its API to get the latest financial data to improve our short-term predictions.
 
-## Electricity prices
+\br
 
-European wholesale electricity price data available on [Ember.org](https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/)
+1.  [Euro/Dollar exchange rate](https://finance.yahoo.com/quote/EURUSD=X)
 
-## Calendar data
+    The Euro/Dollar exchange rate represents the value of one euro in terms of US dollars.
+    It is a widely followed currency pair in the foreign exchange market, as it reflects the relative strength of two of the world's largest economies.
+    Movements in the exchange rate can be influenced by a range of factors, such as interest rate differentials, inflation expectations, political developments, and global economic trends.
+    The exchange rate can impact international trade, investment flows, and the competitiveness of exports and imports, making it a key indicator for businesses, investors, and policymakers alike.
 
-We retrieve the number of weekend days per month to include it as a feature to our models.
+2.  [Brent Crude Oil Stock Price](https://finance.yahoo.com/quote/BZ=F/)
 
-## Leading national indicators
+    The Brent Crude Oil Last Day Financial Futures Stock Price is a benchmark for the price of crude oil from the North Sea, which is used as a pricing reference for approximately two-thirds of the world's traded crude oil.
+    As a financial futures contract, it allows investors to trade the price of oil without actually buying or selling the physical commodity.
+    The stock price reflects the market's perception of supply and demand dynamics, geopolitical risks, and other macroeconomic factors that impact the oil market.
 
-1. Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+3.  [S&P 500 Index Stock Price](https://finance.yahoo.com/quote/%5EGSPC)
 
-2. The [Weekly WIFO Economic Index](https://www.wifo.ac.at/en/topics/business_cycle/wifo_leading_indicator/wifo_leading_indicator) is a measure of the real economic activity of the Austrian economy. We use its industrial production component.
+    The S&P 500 Index stock is a market capitalization-weighted index of 500 leading publicly traded companies in the United States.
+    It is widely considered to be a barometer of the US stock market's performance, providing investors with a broad-based measure of the economy's health and direction.
+    The S&P 500 index includes companies from a range of sectors, such as technology, healthcare, finance, and energy, making it a diversified indicator of the US equity market.
+
+4.  [Euro stoxx 50 Index Stock Price](https://finance.yahoo.com/quote/%5ESTOXX50E)
+
+    The Euro Stoxx 50 Index stock is a market capitalization-weighted index of 50 leading blue-chip companies from 12 Eurozone countries.
+    It is designed to reflect the performance of the Eurozone's most liquid and largest companies across a range of industries, including banking, energy, consumer goods, and healthcare.
+    As a widely recognized benchmark of the Eurozone equity market, the Euro Stoxx 50 Index stock is used by investors and analysts to track market trends, benchmark portfolio performance, and identify investment opportunities.
+    Movements in the index are influenced by a range of factors, such as economic growth prospects, monetary policy decisions, geopolitical risks, and corporate earnings announcements.
+
+5.  [CAC40 Index Stock Price](https://finance.yahoo.com/quote/%5EFCHI)
+
+    The CAC 40 Index Stock is a benchmark index of the top 40 companies listed on the Euronext Paris Stock Exchange, representing a broad range of industries such as energy, finance, healthcare, and technology.
+    It is the most widely used indicator of the French equity market's performance and is considered one of the leading indices in Europe.
+    The CAC 40 Index Stock is weighted by market capitalization and is closely monitored by investors and analysts as an indicator of economic health and growth prospects in France.
+    Movements in the index can be influenced by a variety of factors, such as geopolitical risks, macroeconomic indicators, and company-specific news.
 
 ## Google Trends
 
-We retrieve Google Trends series on a few key categories.
-The impact is particularly important for the tourism indicator.
+Google Trends is a free online tool provided by Google that allows users to explore the popularity of search queries over time and across different regions and languages.
+It provides valuable insights into the behavior of internet users, the topics they are interested in, and the evolution of search trends over time.
 
-## Other potential interesting data sources (not identified in open data sources)
+\br
 
-Historical Purchasing manager's index by country, London metal exchange indices, daily electricity consumption by industrial firms country by country...
+Observed categories:
+
+1.  Manufacturing
+2.  Industrial Materials & Equipment
+3.  Fuel Economy & Gas Prices
+4.  Hotels & Accommodations
+5.  Travel Agencies & Services
+6.  Vacation Offers
+7.  Mountain & Ski Resorts
+
+
+## Other data
+
+### [Electricity prices](https://ember-climate.org/data-catalogue/european-wholesale-electricity-price-data/)
+
+[Ember.org](emberg.org) provides European wholesale electricity price data that can be used to analyze electricity market trends, monitor price volatility, and inform investment decisions.
+The data is sourced from various market operators and exchanges across Europe and covers a wide range of countries and regions.
+
+### Calendar data
+
+We retrieve the number of weekend days per month to include it as a feature to our models.
+
+### Leading national indicators
+
+1. Germany developed some experimental indicators on activity. We use the daily Truck toll mileage index accessible on [Destatis website](https://www.destatis.de/EN/Service/EXDAT/Datensaetze/truck-toll-mileage.html).
+
+\br
+
+2. The [Weekly WIFO Economic Index](https://www.wifo.ac.at/en/topics/business_cycle/wifo_leading_indicator/wifo_leading_indicator) is a measure of the real economic activity of the Austrian economy. We use its industrial production component.
+
+### Other potential interesting data sources (not identified in open data sources)
+
+- Historical Purchasing manager's index by country
+- London metal exchange indices
+- Daily electricity consumption by industrial firms country by country
+- ...
