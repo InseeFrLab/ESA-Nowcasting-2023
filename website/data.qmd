@@ -10,8 +10,8 @@ By leveraging publicly available data, we have been able to derive accurate nowc
 
 This data can be separated in several categories:
 
+## Eurostat data{#sec-data-eurostat}
 
-## Eurostat data
 
 We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
 These series are automatically retrieved from Eurostat database through its API.
