@@ -265,18 +265,9 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     regarima <- estimate_regarima(challenge, DB, models, country, h)
 
     if (challenge == "TOURISM") {
-      pred <- last(DB$Historical_sa) * prod(exp(regarima$forecast[, 1]))
-      pred <- pred / DB$coef_sa
-
-      # Traitement du cas où le Regarima générerait une valeur manquante malgré les précautions
-      # if (is.na(pred)) {
-      #   pred <- window(DB$Historical,start=c(year(date_to_pred)-1,month(date_to_pred)),
-      #                  end=c(year(date_to_pred)-1,month(date_to_pred)))[1]
-      # }
-    }
-
-    if (challenge != "TOURISM") {
-      pred <- last(DB$Historical_sa) * prod(exp(regarima$forecast[, 1]))
+      pred <- (last(DB$Historical_sa) * prod(exp(regarima$forecast[, 1]))) / DB$coef_sa
+    } else {
+      pred <- last(DB$Historical) * prod(exp(regarima$forecast[, 1]))
     }
 
     preds_regarima <- preds_regarima %>%
