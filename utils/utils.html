@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>European Statistics Awards for Nowcasting – utils</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/logo-ESA.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://kit.fontawesome.com/78ddb093ea.js" crossorigin="anonymous"></script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/logo-INSEE.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../methodology.html">
+ <span class="menu-text">Methodology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../data.html">
+ <span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../ppi.html">
+ <span class="menu-text">PPI</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../pvi.html">
+ <span class="menu-text">PVI</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tourism.html">
+ <span class="menu-text">TOURISM</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/InseeFrLab/ESA-Nowcasting-2023"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mapping_countries_weights <span class="op">=</span> [</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Austria"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"AT"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.77</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">0.50</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.59</span>}<span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Belgium"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"BE"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.54</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.14</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.79</span>}<span class="op">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Bulgaria"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"BG"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.07</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.71</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="kw">undefined</span>}<span class="op">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Cyprus"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"CY"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.23</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">0.6</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.55</span>}<span class="op">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Czech Republic"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"CZ"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.32</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.71</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.94</span>}<span class="op">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Germany"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"DE"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.29</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.85</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="dv">2</span>}<span class="op">,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Denmark"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"DK"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.63</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.23</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.6</span>}<span class="op">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Estonia"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"EE"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.67</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.26</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="kw">undefined</span>}<span class="op">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Greece"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"EL"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.06</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.35</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.38</span>}<span class="op">,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Spain"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"ES"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.73</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.37</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.85</span>}<span class="op">,</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Finland"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"FI"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.69</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">0.84</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.86</span>}<span class="op">,</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"France"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"FR"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.52</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.16</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.67</span>}<span class="op">,</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Croatia"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"HR"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.88</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.86</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.27</span>}<span class="op">,</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Hungary"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"HU"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.25</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.16</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.87</span>}<span class="op">,</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Ireland"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"IE"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.12</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="kw">undefined</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="kw">undefined</span>}<span class="op">,</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Italy"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"IT"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.17</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.67</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.68</span>}<span class="op">,</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Lithuania"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"LT"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.16</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.08</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.91</span>}<span class="op">,</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Luxembourg"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"LU"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.13</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="kw">undefined</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.81</span>}<span class="op">,</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Latvia"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"LV"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.54</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.12</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.9</span>}<span class="op">,</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Malta"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"MT"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">2.00</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.97</span>}<span class="op">,</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Netherlands"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"NL"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="kw">undefined</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">1.78</span>}<span class="op">,</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Poland"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"PL"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">0.50</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.74</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">0.73</span>}<span class="op">,</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Portugal"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"PT"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.45</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.54</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">0.66</span>}<span class="op">,</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Romania"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"RO"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.17</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">0.67</span>}<span class="op">,</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Sweden"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"SE"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="kw">undefined</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.58</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">0.5</span>}<span class="op">,</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Slovenia"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"SI"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.91</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.24</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">0.63</span>}<span class="op">,</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"Name"</span><span class="op">:</span> <span class="st">"Slovakia"</span><span class="op">,</span> <span class="st">"ISO2"</span><span class="op">:</span> <span class="st">"SK"</span><span class="op">,</span> <span class="st">"PPI"</span><span class="op">:</span> <span class="fl">1.28</span><span class="op">,</span> <span class="st">"PVI"</span><span class="op">:</span> <span class="fl">1.91</span><span class="op">,</span> <span class="st">"TOURISM"</span><span class="op">:</span> <span class="fl">0.79</span>}<span class="op">,</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="33" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 32;"><span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">get_weights_per_challenge</span>(mapping<span class="op">,</span> challenge) {</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mapping<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d[challenge] <span class="op">!=</span> <span class="kw">undefined</span>)<span class="op">.</span><span class="fu">map</span>(({ Name<span class="op">,</span> ISO2<span class="op">,</span> [challenge]<span class="op">:</span> Weight }) <span class="kw">=&gt;</span> ({ Name<span class="op">,</span> ISO2<span class="op">,</span> Weight }))</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="39" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 38;"><span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">get_countries_per_challenge</span>(mapping<span class="op">,</span> challenge) {</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mapping</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d[challenge] <span class="op">!=</span> <span class="kw">undefined</span>)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">reduce</span>((acc<span class="op">,</span> country) <span class="kw">=&gt;</span> { acc[country<span class="op">.</span><span class="at">ISO2</span>] <span class="op">=</span> country<span class="op">.</span><span class="at">Name</span><span class="op">;</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>                                <span class="cf">return</span> acc<span class="op">;</span> }<span class="op">,</span> {}</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>                                )</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="49" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 48;"><span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>map_country_name <span class="op">=</span> mapping_countries_weights<span class="op">.</span><span class="fu">reduce</span>((acc<span class="op">,</span> country) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  acc[country<span class="op">.</span><span class="at">ISO2</span>] <span class="op">=</span> country<span class="op">.</span><span class="at">Name</span><span class="op">;</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> acc<span class="op">;</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span> {})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="56" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 55;"><span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">unique</span>(data<span class="op">,</span> accessor) {</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(accessor <span class="op">?</span> data<span class="op">.</span><span class="fu">map</span>(accessor) <span class="op">:</span> data))<span class="op">;</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="62" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 61;"><span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>dateParser <span class="op">=</span> (dateString) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> [year<span class="op">,</span> month<span class="op">,</span> day] <span class="op">=</span> dateString<span class="op">.</span><span class="fu">split</span>(<span class="st">'-'</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> date <span class="op">=</span> <span class="kw">new</span> <span class="bu">Date</span>(<span class="bu">Date</span><span class="op">.</span><span class="fu">UTC</span>(year<span class="op">,</span> month <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> day<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>))</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> timezoneOffset <span class="op">=</span> date<span class="op">.</span><span class="fu">getTimezoneOffset</span>()</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>  date<span class="op">.</span><span class="fu">setMinutes</span>(date<span class="op">.</span><span class="fu">getMinutes</span>() <span class="op">-</span> timezoneOffset)</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> date</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="73" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">format_historical_data</span>(data<span class="op">,</span> country) {</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> data_typed <span class="op">=</span> <span class="fu">transpose</span>(data)<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>        <span class="dt">date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">time</span>)<span class="op">,</span></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>        <span class="dt">values</span><span class="op">:</span> d<span class="op">.</span><span class="at">values</span><span class="op">,</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>        <span class="dt">geo</span><span class="op">:</span> d<span class="op">.</span><span class="at">geo</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>      } </span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> data_typed<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)<span class="op">;</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="92" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 91;"><span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">format_pred_data</span>(data<span class="op">,</span> country) {</span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> pred_typed <span class="op">=</span> <span class="fu">transpose</span>(data)<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>        <span class="dt">date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>        <span class="dt">values</span><span class="op">:</span> d<span class="op">.</span><span class="at">value</span><span class="op">,</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>        <span class="dt">geo</span><span class="op">:</span> d<span class="op">.</span><span class="at">Country</span><span class="op">,</span></span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>        <span class="dt">model</span><span class="op">:</span> d<span class="op">.</span><span class="at">Entries</span></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>      } </span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> pred_typed<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)<span class="op">;</span></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="111" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 110;"><span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">format_summary_table_data</span>(data<span class="op">,</span> country<span class="op">,</span> model<span class="op">,</span> country_map) {</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> table <span class="op">=</span> <span class="fu">transpose</span>(data)<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">Date</span>)<span class="op">,</span></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Model</span><span class="op">:</span> d<span class="op">.</span><span class="at">Entries</span><span class="op">,</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Country</span><span class="op">:</span> d<span class="op">.</span><span class="at">Country</span><span class="op">,</span></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Forecast</span><span class="op">:</span> d<span class="op">.</span><span class="at">value</span></span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>        } </span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">map</span>(item <span class="kw">=&gt;</span> {</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> dateStr <span class="op">=</span> item<span class="op">.</span><span class="at">Date</span><span class="op">;</span></span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> date <span class="op">=</span> <span class="kw">new</span> <span class="bu">Date</span>(dateStr)<span class="op">;</span></span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> formattedDate <span class="op">=</span> date<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'en-US'</span><span class="op">,</span> { <span class="dt">month</span><span class="op">:</span> <span class="st">'long'</span><span class="op">,</span> <span class="dt">year</span><span class="op">:</span> <span class="st">'numeric'</span> })<span class="op">;</span></span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> { <span class="op">...</span>item<span class="op">,</span> <span class="dt">Date</span><span class="op">:</span> formattedDate }<span class="op">;</span></span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">map</span>(item <span class="kw">=&gt;</span> {</span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> geoCode <span class="op">=</span> item<span class="op">.</span><span class="at">Country</span><span class="op">;</span></span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> countryName <span class="op">=</span> country_map[geoCode]<span class="op">;</span></span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> { <span class="op">...</span>item<span class="op">,</span> <span class="dt">Country</span><span class="op">:</span> countryName }<span class="op">;</span></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> model<span class="op">.</span><span class="fu">includes</span>(d<span class="op">.</span><span class="at">Model</span>) <span class="op">&amp;&amp;</span> (country<span class="op">.</span><span class="fu">includes</span>(<span class="st">"All"</span>) <span class="op">||</span> country<span class="op">.</span><span class="fu">includes</span>(d<span class="op">.</span><span class="at">Country</span>)))<span class="op">;</span></span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> table</span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="139" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 138;"><span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">format_errors_data</span>(data<span class="op">,</span> country) {</span>
+<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> data_formatted <span class="op">=</span> <span class="fu">transpose</span>(data)<span class="op">.</span><span class="fu">map</span>( d <span class="kw">=&gt;</span> (</span>
+<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Date</span><span class="op">:</span> <span class="fu">dateParser</span>(d<span class="op">.</span><span class="at">time</span>)<span class="op">,</span></span>
+<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Model</span><span class="op">:</span> d<span class="op">.</span><span class="at">Entries</span><span class="op">,</span></span>
+<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Country</span><span class="op">:</span> d<span class="op">.</span><span class="at">geo</span><span class="op">,</span></span>
+<span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Errors</span><span class="op">:</span> d<span class="op">.</span><span class="at">error_squared</span></span>
+<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a>        } </span>
+<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Country</span> <span class="op">==</span> country)</span>
+<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data_formatted<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Country</span> <span class="op">==</span> country)<span class="op">;</span></span>
+<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb11" data-startfrom="159" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 158;"><span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">format_ave_errors_data</span>(data<span class="op">,</span> country) {</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">transpose</span>(data)<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">geo</span> <span class="op">==</span> country)<span class="op">;</span></span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+
+<script type="ojs-module-contents">
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"mapping_countries_weights = [\n  {\"Name\": \"Austria\", \"ISO2\": \"AT\", \"PPI\": 0.77, \"PVI\": 0.50, \"TOURISM\": 1.59},\n  {\"Name\": \"Belgium\", \"ISO2\": \"BE\", \"PPI\": 1.54, \"PVI\": 1.14, \"TOURISM\": 1.79},\n  {\"Name\": \"Bulgaria\", \"ISO2\": \"BG\", \"PPI\": 1.07, \"PVI\": 1.71, \"TOURISM\": undefined},\n  {\"Name\": \"Cyprus\", \"ISO2\": \"CY\", \"PPI\": 1.23, \"PVI\": 0.6, \"TOURISM\": 1.55},\n  {\"Name\": \"Czech Republic\", \"ISO2\": \"CZ\", \"PPI\": 1.32, \"PVI\": 1.71, \"TOURISM\": 1.94},\n  {\"Name\": \"Germany\", \"ISO2\": \"DE\", \"PPI\": 1.29, \"PVI\": 1.85, \"TOURISM\": 2},\n  {\"Name\": \"Denmark\", \"ISO2\": \"DK\", \"PPI\": 0.63, \"PVI\": 1.23, \"TOURISM\": 1.6},\n  {\"Name\": \"Estonia\", \"ISO2\": \"EE\", \"PPI\": 0.67, \"PVI\": 1.26, \"TOURISM\": undefined},\n  {\"Name\": \"Greece\", \"ISO2\": \"EL\", \"PPI\": 1.06, \"PVI\": 1.35, \"TOURISM\": 1.38},\n  {\"Name\": \"Spain\", \"ISO2\": \"ES\", \"PPI\": 1.73, \"PVI\": 1.37, \"TOURISM\": 1.85},\n  {\"Name\": \"Finland\", \"ISO2\": \"FI\", \"PPI\": 0.69, \"PVI\": 0.84, \"TOURISM\": 1.86},\n  {\"Name\": \"France\", \"ISO2\": \"FR\", \"PPI\": 1.52, \"PVI\": 1.16, \"TOURISM\": 1.67},\n  {\"Name\": \"Croatia\", \"ISO2\": \"HR\", \"PPI\": 0.88, \"PVI\": 1.86, \"TOURISM\": 1.27},\n  {\"Name\": \"Hungary\", \"ISO2\": \"HU\", \"PPI\": 1.25, \"PVI\": 1.16, \"TOURISM\": 1.87},\n  {\"Name\": \"Ireland\", \"ISO2\": \"IE\", \"PPI\": 1.12, \"PVI\": undefined, \"TOURISM\": undefined},\n  {\"Name\": \"Italy\", \"ISO2\": \"IT\", \"PPI\": 1.17, \"PVI\": 1.67, \"TOURISM\": 1.68},\n  {\"Name\": \"Lithuania\", \"ISO2\": \"LT\", \"PPI\": 1.16, \"PVI\": 1.08, \"TOURISM\": 1.91},\n  {\"Name\": \"Luxembourg\", \"ISO2\": \"LU\", \"PPI\": 1.13, \"PVI\": undefined, \"TOURISM\": 1.81},\n  {\"Name\": \"Latvia\", \"ISO2\": \"LV\", \"PPI\": 1.54, \"PVI\": 1.12, \"TOURISM\": 1.9},\n  {\"Name\": \"Malta\", \"ISO2\": \"MT\", \"PPI\": 2.00, \"PVI\": 1, \"TOURISM\": 1.97},\n  {\"Name\": \"Netherlands\", \"ISO2\": \"NL\", \"PPI\": 0.78, \"PVI\": undefined, \"TOURISM\": 1.78},\n  {\"Name\": \"Poland\", \"ISO2\": \"PL\", \"PPI\": 0.50, \"PVI\": 1.74, \"TOURISM\": 0.73},\n  {\"Name\": \"Portugal\", \"ISO2\": \"PT\", \"PPI\": 1.45, \"PVI\": 1.54, \"TOURISM\": 0.66},\n  {\"Name\": \"Romania\", \"ISO2\": \"RO\", \"PPI\": 1.17, \"PVI\": 2, \"TOURISM\": 0.67},\n  {\"Name\": \"Sweden\", \"ISO2\": \"SE\", \"PPI\": undefined, \"PVI\": 1.58, \"TOURISM\": 0.5},\n  {\"Name\": \"Slovenia\", \"ISO2\": \"SI\", \"PPI\": 1.91, \"PVI\": 1.24, \"TOURISM\": 0.63},\n  {\"Name\": \"Slovakia\", \"ISO2\": \"SK\", \"PPI\": 1.28, \"PVI\": 1.91, \"TOURISM\": 0.79},\n];\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function get_weights_per_challenge(mapping, challenge) {\n  return mapping.filter(d => d[challenge] != undefined).map(({ Name, ISO2, [challenge]: Weight }) => ({ Name, ISO2, Weight }))\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"function get_countries_per_challenge(mapping, challenge) {\n  return mapping\n    .filter(d => d[challenge] != undefined)\n    .reduce((acc, country) => { acc[country.ISO2] = country.Name;\n                                return acc; }, {}\n                                )\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"map_country_name = mapping_countries_weights.reduce((acc, country) => {\n  acc[country.ISO2] = country.Name;\n  return acc;\n}, {})\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"function unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"dateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"\nfunction format_historical_data(data, country) {\n\n  let data_typed = transpose(data).map( d => (\n      {\n        date: dateParser(d.time),\n        values: d.values,\n        geo: d.geo\n      } \n     )\n   )\n  \nreturn data_typed.filter(d => d.geo == country);\n\t}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"\nfunction format_pred_data(data, country) {\n\n  let pred_typed = transpose(data).map( d => (\n      {\n        date: dateParser(d.Date),\n        values: d.value,\n        geo: d.Country,\n        model: d.Entries\n      } \n     )\n   )\n  \n  return pred_typed.filter(d => d.geo == country);\n\t}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"function format_summary_table_data(data, country, model, country_map) {\n  let table = transpose(data).map( d => (\n        {\n          Date: dateParser(d.Date),\n          Model: d.Entries,\n          Country: d.Country,\n          Forecast: d.value\n        } \n       )\n     )\n    .map(item => {\n      const dateStr = item.Date;\n      const date = new Date(dateStr);\n      const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });\n      return { ...item, Date: formattedDate };\n    })\n    .map(item => {\n      const geoCode = item.Country;\n      const countryName = country_map[geoCode];\n      return { ...item, Country: countryName };\n    })\n    .filter(d => model.includes(d.Model) && (country.includes(\"All\") || country.includes(d.Country)));\n\n  return table\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"\nfunction format_errors_data(data, country) {\n\n  let data_formatted = transpose(data).map( d => (\n        {\n          Date: dateParser(d.time),\n          Model: d.Entries,\n          Country: d.geo,\n          Errors: d.error_squared\n        } \n       )\n     )\n    .filter(d => d.Country == country)\n\n  return data_formatted.filter(d => d.Country == country);\n\t}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"function format_ave_errors_data(data, country) {\n  return transpose(data).filter(d => d.geo == country);\n\t}\n\n"}]}
+</script>
+<script type="module">
+window._ojs.paths.runtimeToDoc = "../../utils";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../LICENCE.html">License</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
