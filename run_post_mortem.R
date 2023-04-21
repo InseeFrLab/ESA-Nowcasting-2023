@@ -47,7 +47,11 @@ list(
   
   tar_target(
     name = past_submissions_ppi,
-    command = create_table_past_submissions(submitted_models, "PPI")
+    command = create_table_past_submissions(submitted_models, "PPI", FALSE)
+  ),
+  tar_target(
+    name = past_submissions_ppi_by_entry,
+    command = create_table_past_submissions(submitted_models, "PPI", TRUE)
   ),
   tar_target(
     name = recent_data_ppi,
@@ -57,6 +61,11 @@ list(
     name = past_errors_ppi,
     command = get_residuals_past_months(past_submissions_ppi, recent_data_ppi)
   ),
+  tar_target(
+    name = past_errors_ppi_by_entry,
+    command = get_residuals_past_months(past_submissions_ppi_by_entry, recent_data_ppi)
+  ),
+
   tar_target(
     name = plot_errors_ppi_1,
     command = plot_preds("PPI", challenges,
@@ -109,7 +118,11 @@ list(
   
   tar_target(
     name = past_submissions_pvi,
-    command = create_table_past_submissions(submitted_models, "PVI")
+    command = create_table_past_submissions(submitted_models, "PVI", FALSE)
+  ),
+  tar_target(
+    name = past_submissions_pvi_by_entry,
+    command = create_table_past_submissions(submitted_models, "PVI", TRUE)
   ),
   tar_target(
     name = recent_data_pvi,
@@ -119,6 +132,11 @@ list(
     name = past_errors_pvi,
     command = get_residuals_past_months(past_submissions_pvi, recent_data_pvi)
   ),
+  tar_target(
+    name = past_errors_pvi_by_entry,
+    command = get_residuals_past_months(past_submissions_pvi_by_entry, recent_data_pvi)
+  ),
+
   tar_target(
     name = plot_errors_pvi_1,
     command = plot_preds("PVI", challenges,
@@ -165,7 +183,11 @@ list(
   
   tar_target(
     name = past_submissions_tourism,
-    command = create_table_past_submissions(submitted_models, "TOURISM")
+    command = create_table_past_submissions(submitted_models, "TOURISM", FALSE)
+  ),
+  tar_target(
+    name = past_submissions_tourism_by_entry,
+    command = create_table_past_submissions(submitted_models, "TOURISM", TRUE)
   ),
   tar_target(
     name = recent_data_tourism,
@@ -175,6 +197,11 @@ list(
     name = past_errors_tourism,
     command = get_residuals_past_months(past_submissions_tourism, recent_data_tourism)
   ),
+  tar_target(
+    name = past_errors_tourism_by_entry,
+    command = get_residuals_past_months(past_submissions_tourism_by_entry, recent_data_tourism)
+  ),
+
   tar_target(
     name = plot_errors_tourism_1,
     command = plot_preds("TOURISM", challenges,

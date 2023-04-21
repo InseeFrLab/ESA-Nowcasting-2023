@@ -5,6 +5,8 @@ title: Methodology
 
 Our team employed an array of five distinct model classes to nowcast the target variables, namely RegArima, Exponential Smoothing, Dynamic Factor Models, XGBoost and Long Short-Term Memory models.
 While the same model classes were utilized for each of the challenges, namely PPI, PVI and Tourism, specific datasets and parameters were tailored to each individual challenge to ensure optimal model performance.
+Add that we have 2 ML methods and 3 econometric methods
+
 
 ## Regarima
 

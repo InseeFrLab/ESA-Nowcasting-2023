@@ -60,19 +60,16 @@ website:
         - href: ppi.qmd
         - href: forecast-ppi.qmd
         - href: post-mortem-ppi.qmd
-        - href: resid-ppi.qmd
 
     - id: pvi
-      title: "PV"
+      title: "PVI"
       style: "floating"
       collapse-level: 2
       align: left
       contents:
         - href: pvi.qmd
-        - href: forecast-pvi.qmd
         - href: post-mortem-pvi.qmd
-        - href: resid-pvi.qmd
-        
+
     - id: tourism
       title: "TOURISM"
       style: "floating"
@@ -82,7 +79,6 @@ website:
         - href: tourism.qmd
         - href: forecast-tourism.qmd
         - href: post-mortem-tourism.qmd
-        - href: resid-tourism.qmd
 
 format:
   html:
@@ -103,7 +99,8 @@ knitr:
 
 execute:
   echo: false
-  
+  warning: false
+
 freeze: auto
 
 editor: visual
