@@ -28,7 +28,8 @@ addTooltips(
 Plot.plot({
   grid: true,
   y: {
-    label: "Number of nights spent at tourist accommodation establishments",
+    label: "↑ Number of nights spent at tourist accommodation establishments",
+    transform: d => d / 1e6
   },  
   x: {
       label: "Year",
@@ -40,20 +41,20 @@ Plot.plot({
         y: "values", 
         stroke: "black",
         title: (d) =>
-              `${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })}\n ${d.values} `
+                `${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })}\n ${d.values / 1e6} millions `
         }),
     Plot.dot(predictions, {
         x: "date", 
         y: "values",
         fill: "model",
-        title: (d) =>
-              `${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })}\n ${d.values} `
+        title:  (d) =>
+                `${d.model}\n ${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })} : ${d.values / 1e6} millions `
         })
   ],
   color: {legend: true}
@@ -86,7 +87,7 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
-## Table summary of forecast per model and country
+## Country-specific forecast summary by model
 
 ```{ojs}
 viewof form = Inputs.form({
@@ -142,7 +143,7 @@ country_iso = Object.keys(country_map).find(key => country_map[key] === country)
 ```
 
 ```{ojs}
-models = ["REGARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
+models = ["REG-ARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
 ```
 
 <!-- DEPENDENCIES -->

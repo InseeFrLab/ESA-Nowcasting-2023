@@ -28,7 +28,7 @@ addTooltips(
 Plot.plot({
   grid: true,
   y: {
-    label: "Production volume in industry",
+    label: "↑ Production volume in industry",
   },  
   x: {
       label: "Year",
@@ -49,11 +49,11 @@ Plot.plot({
         x: "date", 
         y: "values",
         fill: "model",
-        title: (d) =>
-              `${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })}\n ${d.values} `
+        title:  (d) =>
+                `${d.model}\n ${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })} : ${d.values} `
         })
   ],
   color: {legend: true}
@@ -86,7 +86,7 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
-## Table summary of forecast per model and country
+## Country-specific forecast summary by model
 
 ```{ojs}
 viewof form = Inputs.form({
@@ -142,7 +142,7 @@ country_iso = Object.keys(country_map).find(key => country_map[key] === country)
 ```
 
 ```{ojs}
-models = ["REGARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
+models = ["REG-ARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
 ```
 
 <!-- DEPENDENCIES -->

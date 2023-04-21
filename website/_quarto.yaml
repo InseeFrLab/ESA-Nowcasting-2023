@@ -58,7 +58,6 @@ website:
       align: left
       contents:
         - href: ppi.qmd
-        - href: forecast-ppi.qmd
         - href: post-mortem-ppi.qmd
 
     - id: pvi
@@ -77,7 +76,6 @@ website:
       align: left
       contents:
         - href: tourism.qmd
-        - href: forecast-tourism.qmd
         - href: post-mortem-tourism.qmd
 
 format:

@@ -41,7 +41,7 @@ addTooltips(
                 `${d.model}\n ${d.date.toLocaleString("en-UK", {
                   month: "long",
                   year: "numeric"
-                })} : ${d.values} `
+                })} : ${d.values / 1e6} millions `
           })
     ],
     color: {legend: true}
