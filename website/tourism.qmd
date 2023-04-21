@@ -2,6 +2,10 @@
 title: Number of nights spent at tourist accommodation establishments challenge
 ---
 
+```{ojs}
+challenge = "TOURISM"
+```
+
 Accommodation statistics are a key part of the system of tourism statistics in the EU and have a long history of data collection.
 For this indicator, the benchmark will be the official figures on nights spent at tourist accommodation establishments by residents and non-residents.
 
@@ -9,33 +13,17 @@ A night spent is each night a guest/tourist (resident or non-resident) actually 
 
 ## Forecast for a given country, with modular history
 
-```{r}
-#| cache: false
-
-data <- targets::tar_read(data, store = "store_data")
-targets::tar_load(predictions_tourism, store = "store_tourism")
-
-sample <- data$TOURISM$data |>
-  dplyr::filter((nace_r2 %in% "I551-I553"))
-
-ojs_define(data = sample, pred = predictions_tourism)
+```{ojs}
+viewof country = Inputs.select(Object.values(country_map), {
+  label: html`<b>Select a country:</b>`,
+  placeholder: "Enter a country name",
+  unique: true
+  })
 ```
 
 ```{ojs}
-sample = format_historical_data(data, ctr_iso)
-```
+//| panel: center
 
-```{ojs}
-preds = format_pred_data(pred, ctr_iso)
-```
-
-
-```{ojs}
-viewof country = Inputs.select(ctry_challenge, {label: "Select a country:"})
-```
-
-
-```{ojs}
 addTooltips(
 Plot.plot({
   grid: true,
@@ -47,7 +35,7 @@ Plot.plot({
       domain: range
     },
   marks: [
-    Plot.line(sample, {
+    Plot.line(historical, {
         x: "date", 
         y: "values", 
         stroke: "black",
@@ -57,7 +45,7 @@ Plot.plot({
                 year: "numeric"
               })}\n ${d.values} `
         }),
-    Plot.dot(preds, {
+    Plot.dot(predictions, {
         x: "date", 
         y: "values",
         fill: "model",
@@ -74,9 +62,11 @@ Plot.plot({
 ```
 
 ```{ojs}
+//| panel: center
+
 dates = {
-  const data = sample.map(d => d.date)
-  data.push(preds.map(d => d.date)[0])
+  const data = historical.map(d => d.date)
+  data.push(predictions.map(d => d.date)[0])
   return data  
 }
 
@@ -96,30 +86,78 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
+## Table summary of forecast per model and country
 
+```{ojs}
+viewof form = Inputs.form({
+  model: Inputs.checkbox(models, {value: models}),
+  countries: Inputs.select(["All", ...Object.values(country_map)], {multiple: true, value: ["All"], width: 50, size: 1})
+})
+
+```
+
+```{ojs}
+viewof rows = Inputs.table(summary_table,{
+  rows: 25,
+  maxWidth: 840,
+  multiple: false,
+  layout: "fixed"
+})
+```
+
+<!-- DATA -->
+
+```{r}
+#| cache: false
+
+data <- targets::tar_read(data, store = "store_data")
+targets::tar_load(predictions_tourism, store = "store_tourism")
+
+sample <- data$TOURISM$data |>
+  dplyr::filter((nace_r2 %in% "I551-I553"))
+
+ojs_define(data = sample, pred = predictions_tourism)
+```
+
+```{ojs}
+historical = format_historical_data(data, country_iso)
+```
+
+```{ojs}
+predictions = format_pred_data(pred, country_iso)
+```
+
+```{ojs}
+summary_table = format_summary_table_data(pred, form.countries, form.model, country_map)
+```
+   
 <!-- HELPERS -->
 
-
 ```{ojs}
-ctry_challenge = unique(transpose(pred).map(d => map_country_name[d.geo])).filter(value => value !== undefined)
+country_map = get_countries_per_challenge(mapping_countries_weights, challenge)
 ```
 
 ```{ojs}
-ctr_iso = Object.keys(map_country_name).find(key => map_country_name[key] === country);
+country_iso = Object.keys(country_map).find(key => country_map[key] === country);
 ```
 
+```{ojs}
+models = ["REGARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
+```
 
 <!-- DEPENDENCIES -->
 
 ```{ojs}
 import { 
-    map_country_name,
-    unique,
     format_historical_data,
     format_pred_data,
+    format_summary_table_data,
+    get_countries_per_challenge,
+    mapping_countries_weights,
      } from "./utils/utils.qmd"
 
 ```
+
 
 ```{ojs}
 import {addTooltips} from "@mkfreeman/plot-tooltip"
