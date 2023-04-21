@@ -85,44 +85,6 @@ list(
     ))
   ),
   tar_target(
-    name = resids_pvi,
-    command = bind_rows(list(
-      "entry_1" = regarima_pvi$resids %>% mutate(Entries = "REG-ARIMA"),
-      "entry_2" = dfms_pvi$resids %>% mutate(Entries = "DFM"),
-      "entry_3" = ets_pvi$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_pvi$resids %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_pvi$resids %>% mutate(Entries = "LSTM")
-    ))
-  ),
-  tar_target(
-    name = plot_preds_pvi_1,
-    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[1:4])
-  ),
-  tar_target(
-    name = plot_preds_pvi_2,
-    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[5:8])
-  ),
-  tar_target(
-    name = plot_preds_pvi_3,
-    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[9:12])
-  ),
-  tar_target(
-    name = plot_preds_pvi_4,
-    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[13:16])
-  ),
-  tar_target(
-    name = plot_preds_pvi_5,
-    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[17:20])
-  ),
-  tar_target(
-    name = plot_preds_pvi_6,
-    command = plot_preds("PVI", challenges, data, predictions_pvi, challenges$PVI$countries[21:23])
-  ),
-  tar_target(
-    name = plot_resids_pvi,
-    command = plot_statistics(get_metrics(resids_pvi, challenges$PVI$countries, challenges$DATES$current_date, as.Date("2022-01-01")))
-  ),
-  tar_target(
     name = save_pvi,
     command = save_entries(
       "PVI", list(

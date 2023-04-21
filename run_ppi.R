@@ -89,48 +89,6 @@ list(
     ))
   ),
   tar_target(
-    name = resids_ppi,
-    command = bind_rows(list(
-      "entry_1" = regarima_ppi$resids %>% mutate(Entries = "REG-ARIMA"),
-      "entry_2" = dfms_ppi$resids %>% mutate(Entries = "DFM"),
-      "entry_3" = ets_ppi$resids %>% mutate(Entries = "ETS"),
-      "entry_4" = xgboost_ppi$resids %>% mutate(Entries = "XGBOOST"),
-      "entry_5" = lstm_ppi$resids %>% mutate(Entries = "LSTM")
-    ))
-  ),
-  tar_target(
-    name = plot_preds_ppi_1,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[1:4])
-  ),
-  tar_target(
-    name = plot_preds_ppi_2,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[5:8])
-  ),
-  tar_target(
-    name = plot_preds_ppi_3,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[9:12])
-  ),
-  tar_target(
-    name = plot_preds_ppi_4,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[13:16])
-  ),
-  tar_target(
-    name = plot_preds_ppi_5,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[17:20])
-  ),
-  tar_target(
-    name = plot_preds_ppi_6,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[21:24])
-  ),
-  tar_target(
-    name = plot_preds_ppi_7,
-    command = plot_preds(challenge, challenges, data, predictions_ppi, challenges$PPI$countries[25:26])
-  ),
-  tar_target(
-    name = plot_resids_ppi,
-    command = plot_statistics(get_metrics(resids_ppi, challenges$PPI$countries, challenges$DATES$current_date, as.Date("2022-01-01")))
-  ),
-  tar_target(
     name = save_ppi,
     command = save_entries(
       challenge, list(
