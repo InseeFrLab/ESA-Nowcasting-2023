@@ -60,7 +60,6 @@ website:
         - href: ppi.qmd
         - href: forecast-ppi.qmd
         - href: post-mortem-ppi.qmd
-        - href: resid-ppi.qmd
 
     - id: pvi
       title: "PVI"
@@ -80,7 +79,6 @@ website:
         - href: tourism.qmd
         - href: forecast-tourism.qmd
         - href: post-mortem-tourism.qmd
-        - href: resid-tourism.qmd
 
 format:
   html:
