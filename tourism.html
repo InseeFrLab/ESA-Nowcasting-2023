@@ -93,7 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./forecast-tourism.qmd" rel="next">
+<link href="./post-mortem-tourism.html" rel="next">
 <link href="./images/logo-ESA.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -223,7 +223,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#forecast-for-a-given-country-with-modular-history" id="toc-forecast-for-a-given-country-with-modular-history" class="nav-link active" data-scroll-target="#forecast-for-a-given-country-with-modular-history">Forecast for a given country, with modular history</a></li>
-  <li><a href="#table-summary-of-forecast-per-model-and-country" id="toc-table-summary-of-forecast-per-model-and-country" class="nav-link" data-scroll-target="#table-summary-of-forecast-per-model-and-country">Table summary of forecast per model and country</a></li>
+  <li><a href="#country-specific-forecast-summary-by-model" id="toc-country-specific-forecast-summary-by-model" class="nav-link" data-scroll-target="#country-specific-forecast-summary-by-model">Country-specific forecast summary by model</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/tourism.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -278,37 +278,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Number of nights spent at tourist accommodation establishments"</span><span class="op">,</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span>  </span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span><span class="op">,</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> range</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(historical<span class="op">,</span> {</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span> </span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>              <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>                <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>                <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>              })<span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span><span class="sc">}</span><span class="vs"> `</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        })<span class="op">,</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(predictions<span class="op">,</span> {</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"model"</span><span class="op">,</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>              <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>                <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>              })<span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span><span class="sc">}</span><span class="vs"> `</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"↑ Number of nights spent at tourist accommodation establishments"</span><span class="op">,</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">transform</span><span class="op">:</span> d <span class="kw">=&gt;</span> d <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span>  </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Year"</span><span class="op">,</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> range</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(historical<span class="op">,</span> {</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span> </span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>                <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>                  <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>                  <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>                })<span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span> <span class="op">/</span> <span class="fl">1e6</span><span class="sc">}</span><span class="vs"> millions `</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        })<span class="op">,</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(predictions<span class="op">,</span> {</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"date"</span><span class="op">,</span> </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"values"</span><span class="op">,</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"model"</span><span class="op">,</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span>  (d) <span class="kw">=&gt;</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">model</span><span class="sc">}\n</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">date</span><span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-UK"</span><span class="op">,</span> {</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>                  <span class="dt">month</span><span class="op">:</span> <span class="st">"long"</span><span class="op">,</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>                  <span class="dt">year</span><span class="op">:</span> <span class="st">"numeric"</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>                })<span class="sc">}</span><span class="vs"> : </span><span class="sc">${</span>d<span class="op">.</span><span class="at">values</span> <span class="op">/</span> <span class="fl">1e6</span><span class="sc">}</span><span class="vs"> millions `</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-3" data-nodetype="expression">
 
@@ -320,26 +321,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="panel-center panel-grid">
 <div class="g-col-24 g-col-lg-20 g-start-lg-2">
 <div class="cell panel-center">
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="67" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 66;"><span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> {</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> historical<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  data<span class="op">.</span><span class="fu">push</span>(predictions<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)[<span class="dv">0</span>])</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data  </span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>viewof range <span class="op">=</span> <span class="fu">offsetInterval</span>(dates<span class="op">,</span> {</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> [ dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">90</span>]<span class="op">,</span> dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">1</span>] ]<span class="op">,</span></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> ([a<span class="op">,</span> b]) <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;span </span><span class="sc">${</span>{</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> <span class="st">"display: flex; justify-content: space-between"</span></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>  }<span class="sc">}</span><span class="vs">&gt;</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>a<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="68" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 67;"><span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> {</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> historical<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  data<span class="op">.</span><span class="fu">push</span>(predictions<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">date</span>)[<span class="dv">0</span>])</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data  </span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>viewof range <span class="op">=</span> <span class="fu">offsetInterval</span>(dates<span class="op">,</span> {</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> [ dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">90</span>]<span class="op">,</span> dates[dates<span class="op">.</span><span class="at">length</span><span class="op">-</span><span class="dv">1</span>] ]<span class="op">,</span></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> ([a<span class="op">,</span> b]) <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;span </span><span class="sc">${</span>{</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> <span class="st">"display: flex; justify-content: space-between"</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  }<span class="sc">}</span><span class="vs">&gt;</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>a<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
 <span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
 <span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
 <span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
 <span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>b<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/span&gt;`</span></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="vs">    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>b<span class="op">.</span><span class="fu">toISOString</span>(<span class="st">"en-UK"</span>)<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)<span class="sc">}</span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/span&gt;`</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -358,13 +359,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="table-summary-of-forecast-per-model-and-country" class="level2">
-<h2 class="anchored" data-anchor-id="table-summary-of-forecast-per-model-and-country">Table summary of forecast per model and country</h2>
+<section id="country-specific-forecast-summary-by-model" class="level2">
+<h2 class="anchored" data-anchor-id="country-specific-forecast-summary-by-model">Country-specific forecast summary by model</h2>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="91" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 90;"><span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>viewof form <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>  <span class="dt">model</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(models<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> models})<span class="op">,</span></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>  <span class="dt">countries</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"All"</span><span class="op">,</span> <span class="op">...</span><span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(country_map)]<span class="op">,</span> {<span class="dt">multiple</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> [<span class="st">"All"</span>]<span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">size</span><span class="op">:</span> <span class="dv">1</span>})</span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="92" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 91;"><span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>viewof form <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>  <span class="dt">model</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(models<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> models})<span class="op">,</span></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>  <span class="dt">countries</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"All"</span><span class="op">,</span> <span class="op">...</span><span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(country_map)]<span class="op">,</span> {<span class="dt">multiple</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> [<span class="st">"All"</span>]<span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">size</span><span class="op">:</span> <span class="dv">1</span>})</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="declaration">
 
@@ -372,12 +373,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="99" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 98;"><span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>viewof rows <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">table</span>(summary_table<span class="op">,</span>{</span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>  <span class="dt">rows</span><span class="op">:</span> <span class="dv">25</span><span class="op">,</span></span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>  <span class="dt">maxWidth</span><span class="op">:</span> <span class="dv">840</span><span class="op">,</span></span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>  <span class="dt">multiple</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>  <span class="dt">layout</span><span class="op">:</span> <span class="st">"fixed"</span></span>
-<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="100" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 99;"><span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>viewof rows <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">table</span>(summary_table<span class="op">,</span>{</span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>  <span class="dt">rows</span><span class="op">:</span> <span class="dv">25</span><span class="op">,</span></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>  <span class="dt">maxWidth</span><span class="op">:</span> <span class="dv">840</span><span class="op">,</span></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>  <span class="dt">multiple</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>  <span class="dt">layout</span><span class="op">:</span> <span class="st">"fixed"</span></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-6" data-nodetype="declaration">
 
@@ -389,7 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="122" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 121;"><span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>historical <span class="op">=</span> <span class="fu">format_historical_data</span>(data<span class="op">,</span> country_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="123" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 122;"><span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>historical <span class="op">=</span> <span class="fu">format_historical_data</span>(data<span class="op">,</span> country_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-7" data-nodetype="declaration">
 
@@ -397,7 +398,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="126" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 125;"><span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> <span class="fu">format_pred_data</span>(pred<span class="op">,</span> country_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="127" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 126;"><span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> <span class="fu">format_pred_data</span>(pred<span class="op">,</span> country_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-8" data-nodetype="declaration">
 
@@ -405,7 +406,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="130" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 129;"><span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a>summary_table <span class="op">=</span> <span class="fu">format_summary_table_data</span>(pred<span class="op">,</span> form<span class="op">.</span><span class="at">countries</span><span class="op">,</span> form<span class="op">.</span><span class="at">model</span><span class="op">,</span> country_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="131" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 130;"><span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>summary_table <span class="op">=</span> <span class="fu">format_summary_table_data</span>(pred<span class="op">,</span> form<span class="op">.</span><span class="at">countries</span><span class="op">,</span> form<span class="op">.</span><span class="at">model</span><span class="op">,</span> country_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-9" data-nodetype="declaration">
 
@@ -414,7 +415,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <!-- HELPERS -->
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="136" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 135;"><span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a>country_map <span class="op">=</span> <span class="fu">get_countries_per_challenge</span>(mapping_countries_weights<span class="op">,</span> challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="137" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 136;"><span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a>country_map <span class="op">=</span> <span class="fu">get_countries_per_challenge</span>(mapping_countries_weights<span class="op">,</span> challenge)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-10" data-nodetype="declaration">
 
@@ -422,7 +423,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb11" data-startfrom="140" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 139;"><span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a>country_iso <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(country_map)<span class="op">.</span><span class="fu">find</span>(key <span class="kw">=&gt;</span> country_map[key] <span class="op">===</span> country)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb11" data-startfrom="141" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 140;"><span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>country_iso <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(country_map)<span class="op">.</span><span class="fu">find</span>(key <span class="kw">=&gt;</span> country_map[key] <span class="op">===</span> country)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-11" data-nodetype="declaration">
 
@@ -430,7 +431,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="144" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 143;"><span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [<span class="st">"REGARIMA"</span><span class="op">,</span> <span class="st">"DFM"</span><span class="op">,</span> <span class="st">"ETS"</span><span class="op">,</span> <span class="st">"XGBOOST"</span><span class="op">,</span> <span class="st">"LSTM"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="145" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 144;"><span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [<span class="st">"REG-ARIMA"</span><span class="op">,</span> <span class="st">"DFM"</span><span class="op">,</span> <span class="st">"ETS"</span><span class="op">,</span> <span class="st">"XGBOOST"</span><span class="op">,</span> <span class="st">"LSTM"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-12" data-nodetype="declaration">
 
@@ -439,13 +440,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <!-- DEPENDENCIES -->
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb13" data-startfrom="150" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 149;"><span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { </span>
-<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a>    format_historical_data<span class="op">,</span></span>
-<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>    format_pred_data<span class="op">,</span></span>
-<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>    format_summary_table_data<span class="op">,</span></span>
-<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>    get_countries_per_challenge<span class="op">,</span></span>
-<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>    mapping_countries_weights<span class="op">,</span></span>
-<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>     } <span class="im">from</span> <span class="st">"./utils/utils.qmd"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb13" data-startfrom="151" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 150;"><span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { </span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>    format_historical_data<span class="op">,</span></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>    format_pred_data<span class="op">,</span></span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>    format_summary_table_data<span class="op">,</span></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>    get_countries_per_challenge<span class="op">,</span></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>    mapping_countries_weights<span class="op">,</span></span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>     } <span class="im">from</span> <span class="st">"./utils/utils.qmd"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-13" data-nodetype="declaration">
 
@@ -453,8 +454,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb14" data-startfrom="163" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 162;"><span id="cb14-163"><a href="#cb14-163" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {addTooltips} <span class="im">from</span> <span class="st">"@mkfreeman/plot-tooltip"</span></span>
-<span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {offsetInterval} <span class="im">from</span> <span class="st">'@mootari/offset-slider'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb14" data-startfrom="164" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 163;"><span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {addTooltips} <span class="im">from</span> <span class="st">"@mkfreeman/plot-tooltip"</span></span>
+<span id="cb14-165"><a href="#cb14-165" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {offsetInterval} <span class="im">from</span> <span class="st">'@mootari/offset-slider'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-14-1" data-nodetype="declaration">
@@ -477,7 +478,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </main> <!-- /main -->
 
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"challenge = \"TOURISM\"\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"viewof country = Inputs.select(Object.values(country_map), {\n  label: html`<b>Select a country:</b>`,\n  placeholder: \"Enter a country name\",\n  unique: true\n  })\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"\naddTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"Number of nights spent at tourist accommodation establishments\",\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(historical, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        }),\n    Plot.dot(predictions, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\",\n        title: (d) =>\n              `${d.date.toLocaleString(\"en-UK\", {\n                month: \"long\",\n                year: \"numeric\"\n              })}\\n ${d.values} `\n        })\n  ],\n  color: {legend: true}\n})\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"\ndates = {\n  const data = historical.map(d => d.date)\n  data.push(predictions.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"viewof form = Inputs.form({\n  model: Inputs.checkbox(models, {value: models}),\n  countries: Inputs.select([\"All\", ...Object.values(country_map)], {multiple: true, value: [\"All\"], width: 50, size: 1})\n})\n\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"viewof rows = Inputs.table(summary_table,{\n  rows: 25,\n  maxWidth: 840,\n  multiple: false,\n  layout: \"fixed\"\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"historical = format_historical_data(data, country_iso)\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"predictions = format_pred_data(pred, country_iso)\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"summary_table = format_summary_table_data(pred, form.countries, form.model, country_map)\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"country_map = get_countries_per_challenge(mapping_countries_weights, challenge)\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"country_iso = Object.keys(country_map).find(key => country_map[key] === country);\n"},{"methodName":"interpret","cellName":"ojs-cell-12","inline":false,"source":"models = [\"REGARIMA\", \"DFM\", \"ETS\", \"XGBOOST\", \"LSTM\"]\n"},{"methodName":"interpret","cellName":"ojs-cell-13","inline":false,"source":"import { \n    format_historical_data,\n    format_pred_data,\n    format_summary_table_data,\n    get_countries_per_challenge,\n    mapping_countries_weights,\n     } from \"./utils/utils.qmd\"\n\n"},{"methodName":"interpret","cellName":"ojs-cell-14","inline":false,"source":"import {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'\n"},{"methodName":"interpretQuiet","source":"shinyInput('country')"},{"methodName":"interpretQuiet","source":"shinyInput('range')"},{"methodName":"interpretQuiet","source":"shinyInput('form')"},{"methodName":"interpretQuiet","source":"shinyInput('rows')"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"challenge = \"TOURISM\"\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"viewof country = Inputs.select(Object.values(country_map), {\n  label: html`<b>Select a country:</b>`,\n  placeholder: \"Enter a country name\",\n  unique: true\n  })\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"\naddTooltips(\nPlot.plot({\n  grid: true,\n  y: {\n    label: \"↑ Number of nights spent at tourist accommodation establishments\",\n    transform: d => d / 1e6\n  },  \n  x: {\n      label: \"Year\",\n      domain: range\n    },\n  marks: [\n    Plot.line(historical, {\n        x: \"date\", \n        y: \"values\", \n        stroke: \"black\",\n        title: (d) =>\n                `${d.date.toLocaleString(\"en-UK\", {\n                  month: \"long\",\n                  year: \"numeric\"\n                })}\\n ${d.values / 1e6} millions `\n        }),\n    Plot.dot(predictions, {\n        x: \"date\", \n        y: \"values\",\n        fill: \"model\",\n        title:  (d) =>\n                `${d.model}\\n ${d.date.toLocaleString(\"en-UK\", {\n                  month: \"long\",\n                  year: \"numeric\"\n                })} : ${d.values / 1e6} millions `\n        })\n  ],\n  color: {legend: true}\n})\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"\ndates = {\n  const data = historical.map(d => d.date)\n  data.push(predictions.map(d => d.date)[0])\n  return data  \n}\n\nviewof range = offsetInterval(dates, {\n  value: [ dates[dates.length-90], dates[dates.length-1] ],\n  format: ([a, b]) => htl.html`<span ${{\n    style: \"display: flex; justify-content: space-between\"\n  }}>\n    ${a.toISOString(\"en-UK\").slice(0, 10)}\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n    ${b.toISOString(\"en-UK\").slice(0, 10)}\n  </span>`\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"viewof form = Inputs.form({\n  model: Inputs.checkbox(models, {value: models}),\n  countries: Inputs.select([\"All\", ...Object.values(country_map)], {multiple: true, value: [\"All\"], width: 50, size: 1})\n})\n\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"viewof rows = Inputs.table(summary_table,{\n  rows: 25,\n  maxWidth: 840,\n  multiple: false,\n  layout: \"fixed\"\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"historical = format_historical_data(data, country_iso)\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"predictions = format_pred_data(pred, country_iso)\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"summary_table = format_summary_table_data(pred, form.countries, form.model, country_map)\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"country_map = get_countries_per_challenge(mapping_countries_weights, challenge)\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"country_iso = Object.keys(country_map).find(key => country_map[key] === country);\n"},{"methodName":"interpret","cellName":"ojs-cell-12","inline":false,"source":"models = [\"REG-ARIMA\", \"DFM\", \"ETS\", \"XGBOOST\", \"LSTM\"]\n"},{"methodName":"interpret","cellName":"ojs-cell-13","inline":false,"source":"import { \n    format_historical_data,\n    format_pred_data,\n    format_summary_table_data,\n    get_countries_per_challenge,\n    mapping_countries_weights,\n     } from \"./utils/utils.qmd\"\n\n"},{"methodName":"interpret","cellName":"ojs-cell-14","inline":false,"source":"import {addTooltips} from \"@mkfreeman/plot-tooltip\"\nimport {offsetInterval} from '@mootari/offset-slider'\n"},{"methodName":"interpretQuiet","source":"shinyInput('country')"},{"methodName":"interpretQuiet","source":"shinyInput('range')"},{"methodName":"interpretQuiet","source":"shinyInput('form')"},{"methodName":"interpretQuiet","source":"shinyInput('rows')"}]}
 </script>
 <script type="module">
 window._ojs.paths.runtimeToDoc = "../..";
@@ -623,8 +624,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./forecast-tourism.qmd" class="pagination-link">
-        <span class="nav-page-text"></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./post-mortem-tourism.html" class="pagination-link">
+        <span class="nav-page-text">Post-mortem analysis of our forecasts per country</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
