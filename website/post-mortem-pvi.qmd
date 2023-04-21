@@ -18,7 +18,7 @@ addTooltips(
   Plot.plot({
     grid: true,
     y: {
-      label: "Producer volume in industry",
+      label: "↑ Producer volume in industry",
     },  
     marks: [
       Plot.line(historical, {

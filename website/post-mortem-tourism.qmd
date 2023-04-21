@@ -18,7 +18,8 @@ addTooltips(
   Plot.plot({
     grid: true,
     y: {
-      label: "Number of nights spent at tourist accommodation establishments",
+      label: "↑ Number of nights spent at tourist accommodation establishments (millions)",
+      transform: d => d / 1e6
     },  
     marks: [
       Plot.line(historical, {
@@ -30,7 +31,7 @@ addTooltips(
                 `${d.date.toLocaleString("en-UK", {
                   month: "long",
                   year: "numeric"
-                })}\n ${d.values} `
+                })}\n ${d.values / 1e6} millions `
           }),
       Plot.line(predictions, {
           x: "date", 
@@ -62,7 +63,9 @@ addTooltips(
     },
     y: {
       grid: true,
-      label: "↑ SRE"
+      label: "↑ SRE",
+      transform: d => d / 1e6
+
     },
     color: {
       legend: true
@@ -82,7 +85,7 @@ addTooltips(
             x: {value: "y", reverse: true}
           },
           title: (d) =>
-              `${d.Model}: \n ${d.Errors} `
+              `${d.Model}: \n ${d.Errors / 1e6} millions`
         }),
       Plot.ruleY([0])
     ]
@@ -108,7 +111,8 @@ addTooltips(
     },
     y: {
       grid: true,
-      transform: doweighted ? d => d * weight : null
+      transform: doweighted ? d => d / 1e6 * weight : d => d / 1e6
+
     },
     color: {
       legend: true
@@ -122,7 +126,7 @@ addTooltips(
                         x: {value: "y", reverse: true}
                       },
                 title: (d) =>
-                    `${d.Entries}: \n ${doweighted ? d.MSRE * weight : d.MSRE} (n = ${d.N}) `
+                    `${d.Entries}: \n ${doweighted ? d.MSRE / 1e6 * weight : d.MSRE / 1e6} millions (n = ${d.N}) `
                 }),
       Plot.ruleY([0])
     ]
