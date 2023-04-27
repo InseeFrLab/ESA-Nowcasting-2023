@@ -267,7 +267,6 @@ get_data_from_google_trends <- function(data_info) {
       gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
       gtrends_df["geo"] <- country
       gtrends_countries[[country]] <- gtrends_df
-      return(gtrends_countries)
     }
     data_x <- bind_rows(gtrends_countries)
     rownames(data_x) <- NULL
@@ -372,3 +371,26 @@ get_eurostat_data <- function(id, filters = NULL,
     dplyr::mutate(time = as.Date(paste(time, "01", sep = "-")))
   return(data)
 }
+
+read_date_from_s3 <- function(challenges_info, data_info) {
+  month <- challenges_info$DATES$month_to_pred
+  list_files <- aws.s3::get_bucket("projet-esa-nowcasting", region = "", prefix = paste0("data/", month, "/"))
+  names <- unname(sapply(list_files, function(x) {
+    sub("\\.[^.]+$", "", basename(x$Key))
+  }, simplify=TRUE))
+  
+  data<-lapply(list_files, function(x) {
+    aws.s3::s3read_using(
+      FUN = arrow::read_parquet,
+      object = x$Key,
+      bucket = "projet-esa-nowcasting",
+      opts = list("region" = "")
+    )
+  })
+  
+  data <- setNames(data, names)
+  return(
+    get_data(data_info[order(names(data_info))], 
+             data[order(names(data))]))
+}
+

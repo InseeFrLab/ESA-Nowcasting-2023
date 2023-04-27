@@ -14,8 +14,6 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
-data <- tar_read(data, store = "store_data")
-
 list(
   tar_target(
     name = data_info_file,
@@ -39,6 +37,10 @@ list(
   tar_target(
     name = challenges,
     command = yaml::read_yaml(challenges_file),
+  ),
+  tar_target(
+    name = data,
+    command = read_date_from_s3(challenges, data_info),
   ),
   tar_target(
     name = submitted_models,
