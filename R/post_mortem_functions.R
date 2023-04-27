@@ -1,6 +1,7 @@
 create_table_past_submissions <- function(submitted_models = yaml::read_yaml("submitted_models.yaml"),
                                           challenge = "PPI",
-                                          submissions_folder = "Submissions") {
+                                          submissions_folder = "Submissions",
+                                          by_entry = FALSE) {
   past_months <- submitted_models$PAST_MONTHS
   date <- as.Date(submitted_models$START_DATE)
   df_submissions <- data.frame(matrix(ncol = 4, nrow = 0))
@@ -25,7 +26,11 @@ create_table_past_submissions <- function(submitted_models = yaml::read_yaml("su
           mutate(
             Date = date,
             value = as.numeric(value),
-            Entries = submitted_models[[challenge]][[month]][[entry]]
+            Entries = ifelse(
+              by_entry,
+              entry,
+              submitted_models[[challenge]][[month]][[entry]]
+            )
           ) %>%
           relocate(Country, Date, value, Entries)
 
@@ -55,6 +60,7 @@ get_recent_data <- function(data = get_data(
 
   return(recent_data)
 }
+
 
 get_residuals_past_months <- function(df_submissions = create_table_past_submissions(),
                                       recent_data = get_recent_data()) {

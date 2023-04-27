@@ -1,0 +1,165 @@
+```{ojs}
+mapping_countries_weights = [
+  {"Name": "Austria", "ISO2": "AT", "PPI": 0.77, "PVI": 0.50, "TOURISM": 1.59},
+  {"Name": "Belgium", "ISO2": "BE", "PPI": 1.54, "PVI": 1.14, "TOURISM": 1.79},
+  {"Name": "Bulgaria", "ISO2": "BG", "PPI": 1.07, "PVI": 1.71, "TOURISM": undefined},
+  {"Name": "Cyprus", "ISO2": "CY", "PPI": 1.23, "PVI": 0.6, "TOURISM": 1.55},
+  {"Name": "Czech Republic", "ISO2": "CZ", "PPI": 1.32, "PVI": 1.71, "TOURISM": 1.94},
+  {"Name": "Germany", "ISO2": "DE", "PPI": 1.29, "PVI": 1.85, "TOURISM": 2},
+  {"Name": "Denmark", "ISO2": "DK", "PPI": 0.63, "PVI": 1.23, "TOURISM": 1.6},
+  {"Name": "Estonia", "ISO2": "EE", "PPI": 0.67, "PVI": 1.26, "TOURISM": undefined},
+  {"Name": "Greece", "ISO2": "EL", "PPI": 1.06, "PVI": 1.35, "TOURISM": 1.38},
+  {"Name": "Spain", "ISO2": "ES", "PPI": 1.73, "PVI": 1.37, "TOURISM": 1.85},
+  {"Name": "Finland", "ISO2": "FI", "PPI": 0.69, "PVI": 0.84, "TOURISM": 1.86},
+  {"Name": "France", "ISO2": "FR", "PPI": 1.52, "PVI": 1.16, "TOURISM": 1.67},
+  {"Name": "Croatia", "ISO2": "HR", "PPI": 0.88, "PVI": 1.86, "TOURISM": 1.27},
+  {"Name": "Hungary", "ISO2": "HU", "PPI": 1.25, "PVI": 1.16, "TOURISM": 1.87},
+  {"Name": "Ireland", "ISO2": "IE", "PPI": 1.12, "PVI": undefined, "TOURISM": undefined},
+  {"Name": "Italy", "ISO2": "IT", "PPI": 1.17, "PVI": 1.67, "TOURISM": 1.68},
+  {"Name": "Lithuania", "ISO2": "LT", "PPI": 1.16, "PVI": 1.08, "TOURISM": 1.91},
+  {"Name": "Luxembourg", "ISO2": "LU", "PPI": 1.13, "PVI": undefined, "TOURISM": 1.81},
+  {"Name": "Latvia", "ISO2": "LV", "PPI": 1.54, "PVI": 1.12, "TOURISM": 1.9},
+  {"Name": "Malta", "ISO2": "MT", "PPI": 2.00, "PVI": 1, "TOURISM": 1.97},
+  {"Name": "Netherlands", "ISO2": "NL", "PPI": 0.78, "PVI": undefined, "TOURISM": 1.78},
+  {"Name": "Poland", "ISO2": "PL", "PPI": 0.50, "PVI": 1.74, "TOURISM": 0.73},
+  {"Name": "Portugal", "ISO2": "PT", "PPI": 1.45, "PVI": 1.54, "TOURISM": 0.66},
+  {"Name": "Romania", "ISO2": "RO", "PPI": 1.17, "PVI": 2, "TOURISM": 0.67},
+  {"Name": "Sweden", "ISO2": "SE", "PPI": undefined, "PVI": 1.58, "TOURISM": 0.5},
+  {"Name": "Slovenia", "ISO2": "SI", "PPI": 1.91, "PVI": 1.24, "TOURISM": 0.63},
+  {"Name": "Slovakia", "ISO2": "SK", "PPI": 1.28, "PVI": 1.91, "TOURISM": 0.79},
+];
+```
+
+```{ojs}
+function get_weights_per_challenge(mapping, challenge) {
+  return mapping.filter(d => d[challenge] != undefined).map(({ Name, ISO2, [challenge]: Weight }) => ({ Name, ISO2, Weight }))
+	}
+```
+
+```{ojs}
+function get_countries_per_challenge(mapping, challenge) {
+  return mapping
+    .filter(d => d[challenge] != undefined)
+    .reduce((acc, country) => { acc[country.ISO2] = country.Name;
+                                return acc; }, {}
+                                )
+	}
+```
+
+```{ojs}
+map_country_name = mapping_countries_weights.reduce((acc, country) => {
+  acc[country.ISO2] = country.Name;
+  return acc;
+}, {})
+```
+
+```{ojs}
+function unique(data, accessor) {
+return Array.from(new Set(accessor ? data.map(accessor) : data));
+	}
+```
+
+```{ojs}
+dateParser = (dateString) => {
+  const [year, month, day] = dateString.split('-')
+  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
+  const timezoneOffset = date.getTimezoneOffset()
+  date.setMinutes(date.getMinutes() - timezoneOffset)
+  return date
+}
+```
+
+
+```{ojs}
+
+function format_historical_data(data, country) {
+
+  let data_typed = transpose(data).map( d => (
+      {
+        date: dateParser(d.time),
+        values: d.values,
+        geo: d.geo
+      } 
+     )
+   )
+  
+return data_typed.filter(d => d.geo == country);
+	}
+
+```
+
+
+```{ojs}
+
+function format_pred_data(data, country) {
+
+  let pred_typed = transpose(data).map( d => (
+      {
+        date: dateParser(d.Date),
+        values: d.value,
+        geo: d.Country,
+        model: d.Entries
+      } 
+     )
+   )
+  
+  return pred_typed.filter(d => d.geo == country);
+	}
+
+```
+
+```{ojs}
+function format_summary_table_data(data, country, model, country_map) {
+  let table = transpose(data).map( d => (
+        {
+          Date: dateParser(d.Date),
+          Model: d.Entries,
+          Country: d.Country,
+          Forecast: d.value
+        } 
+       )
+     )
+    .map(item => {
+      const dateStr = item.Date;
+      const date = new Date(dateStr);
+      const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+      return { ...item, Date: formattedDate };
+    })
+    .map(item => {
+      const geoCode = item.Country;
+      const countryName = country_map[geoCode];
+      return { ...item, Country: countryName };
+    })
+    .filter(d => model.includes(d.Model) && (country.includes("All") || country.includes(d.Country)));
+
+  return table
+	}
+```
+
+```{ojs}
+
+function format_errors_data(data, country) {
+
+  let data_formatted = transpose(data).map( d => (
+        {
+          Date: dateParser(d.time),
+          Model: d.Entries,
+          Country: d.geo,
+          Errors: d.error_squared
+        } 
+       )
+     )
+    .filter(d => d.Country == country)
+
+  return data_formatted.filter(d => d.Country == country);
+	}
+
+```
+
+```{ojs}
+function format_ave_errors_data(data, country) {
+  return transpose(data).filter(d => d.geo == country);
+	}
+
+```
+

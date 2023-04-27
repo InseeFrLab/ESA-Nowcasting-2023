@@ -1,4 +1,136 @@
-# Post-Mortem analysis of our forecasts
+```{ojs}
+challenge = "PPI"
+```
+
+# Post-mortem analysis of our forecasts per country
+
+Blabla sur la page. Dire qu'il faut selectionner un pays pour analyser les predictions.
+
+```{ojs}
+viewof country = Inputs.select(Object.values(country_map), {label: "Select a country:", unique: true})
+```
+
+## Past predictions 
+
+Expliquer le graphique et mettre un titre au chunk
+```{ojs}
+addTooltips(
+  Plot.plot({
+    grid: true,
+    y: {
+      label: "↑ Producer prices in industry",
+    },  
+    marks: [
+      Plot.line(historical, {
+          x: "date", 
+          y: "values", 
+          stroke: "black",
+          strokeWidth: 2,
+          title: (d) =>
+                `${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })}\n ${d.values} `
+          }),
+      Plot.line(predictions, {
+          x: "date", 
+          y: "values",
+          stroke: "model",
+          title: (d) =>
+                `${d.model}\n ${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })} : ${d.values} `
+          })
+    ],
+    color: {legend: true}
+  })
+)
+```
+
+## Square relative error per month
+
+Expliquer le graphique et mettre un titre au chunk. Blabla sur l'erreur, qu'est ce que ca mesure...
+SRE = $\left(\frac{Y - R}{R}\right)^2$
+
+```{ojs}
+addTooltips(
+  Plot.plot({
+    x: {
+      domain: d3.sort(ave_errors, d => -d.MSRE).map(d => d.Entries),
+      axis: null
+    },
+    y: {
+      grid: true,
+      label: "↑ SRE"
+    },
+    color: {
+      legend: true
+    },
+    fx: {
+      label: null,
+      tickFormat: (d) => d.toLocaleString('en-US', { month: 'long', year: 'numeric' }),    
+      reverse: false
+    },
+    facet: {data: errors, x: "Date"},
+    marks: [
+      Plot.barY(errors, {
+          x: "Model", 
+          y: "Errors", 
+          fill: "Model",
+          sort: {
+            x: {value: "y", reverse: true}
+          },
+          title: (d) =>
+              `${d.Model}: \n ${d.Errors} `
+        }),
+      Plot.ruleY([0])
+    ]
+  })
+)
+```
+
+## Mean square relative error
+
+Expliquer le graphique et mettre un titre au chunk. Blabla sur l'erreur, qu'est ce que ca mesure...
+MSRE = $\frac{1}{n}\sum_\limits{i=1}^n\left(\frac{Y_i - R_i}{R_i}\right)^2$
+
+```{ojs}
+viewof doweighted = Inputs.toggle({label: "Weighted mean", value: false})
+```
+
+```{ojs}
+addTooltips(
+  Plot.plot({
+    x: {
+      domain: d3.sort(ave_errors, d => -d.MSRE).map(d => d.Entries),
+      label: null
+    },
+    y: {
+      grid: true,
+      transform: doweighted ? d => d * weight : null
+    },
+    color: {
+      legend: true
+    },
+    marks: [
+      Plot.barY(ave_errors, {
+                x: "Entries", 
+                y: "MSRE",
+                fill: "Entries",
+                sort: {
+                        x: {value: "y", reverse: true}
+                      },
+                title: (d) =>
+                    `${d.Entries}: \n ${doweighted ? d.MSRE * weight : d.MSRE} (n = ${d.N}) `
+                }),
+      Plot.ruleY([0])
+    ]
+  })
+)
+```
+
+<!-- DATA -->
 
 ```{r}
 #| cache: false
@@ -9,113 +141,73 @@ targets::tar_load(recent_data_ppi, store = "store_post_mortem")
 past_submissions_ppi <- past_submissions_ppi |>
   dplyr::filter(Entries %in% c("REGARIMA", "XGBOOST", "DFM", "ETS", "LSTM"))
 
-ojs_define(data = recent_data_ppi, pred = past_submissions_ppi)
+error_country_model<-past_submissions_ppi |>
+  tibble::tibble() |> 
+  dplyr::rename(geo = Country, time = Date, forecast = value)|>
+  dplyr::inner_join(recent_data_ppi, by= c("geo", "time")) |>
+  dplyr::mutate(error_squared = (forecast - values)^2/values)|>
+  dplyr::select(geo, time, Entries, error_squared)
+
+average_error <- error_country_model|>
+  dplyr::group_by(geo, Entries) |>
+  dplyr::summarize(
+    N = dplyr::n(),
+    MSRE = mean(error_squared)
+  )
+
+ojs_define(data = recent_data_ppi, pred = past_submissions_ppi, errors_data = error_country_model, ave_errors_data = average_error)
 ```
 
 ```{ojs}
-viewof country = Inputs.select(unique(data_typed.map(d => d.geo)), {label: "Select a country:"})
+historical = format_historical_data(data, country_iso)
 ```
-
 
 ```{ojs}
-addTooltips(
-Plot.plot({
-  grid: true,
-  y: {
-    label: "Producer prices in industry",
-  },  
-  marks: [
-    Plot.line(sample, {
-        x: "date", 
-        y: "values", 
-        stroke: "black",
-        strokeWidth: 2,
-        title: (d) =>
-              `${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })}\n ${d.values} `
-        }),
-    Plot.line(preds, {
-        x: "date", 
-        y: "values",
-        stroke: "model",
-        title: (d) =>
-              `${d.model}\n ${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })} : ${d.values} `
-        })
-  ],
-  color: {legend: true}
-})
-)
+predictions = format_pred_data(pred, country_iso)
 ```
-
-
 
 ```{ojs}
-dates = {
-  const data = sample.map(d => d.date)
-  data.push(preds.map(d => d.date)[0])
-  return data  
-}
-
+errors = format_errors_data(errors_data, country_iso)
 ```
 
+```{ojs}
+ave_errors = format_ave_errors_data(ave_errors_data, country_iso)
+```
 
 <!-- HELPERS -->
 
 ```{ojs}
-data_t = transpose(data)
-data_typed = data_t.map( d => (
-    {
-      date: dateParser(d.time),
-      values: d.values,
-      geo: d.geo
-    } 
-   )
- )
-
-sample = data_typed.filter(d => d.geo == country)
+weight = get_weights_per_challenge(mapping_countries_weights, challenge).filter(d => d.Name == country)[0].Weight
 ```
 
 ```{ojs}
-pred_t = transpose(pred)
-pred_typed = pred_t.map( d => (
-    {
-      date: dateParser(d.Date),
-      values: d.value,
-      geo: d.Country,
-      model: d.Entries
-    } 
-   )
- )
-
-preds = pred_typed.filter(d => d.geo == country)
+country_map = get_countries_per_challenge(mapping_countries_weights, challenge)
 ```
 
 ```{ojs}
-dateParser = (dateString) => {
-  const [year, month, day] = dateString.split('-')
-  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
-  const timezoneOffset = date.getTimezoneOffset()
-  date.setMinutes(date.getMinutes() - timezoneOffset)
-  return date
-}
+country_iso = Object.keys(country_map).find(key => country_map[key] === country);
 ```
 
-<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
-
 ```{ojs}
-function unique(data, accessor) {
-return Array.from(new Set(accessor ? data.map(accessor) : data));
-	}
+models = ["REGARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
 ```
 
 <!-- DEPENDENCIES -->
 
 ```{ojs}
+import { 
+    format_historical_data,
+    format_pred_data,
+    format_errors_data,
+    format_ave_errors_data,
+    mapping_countries_weights,
+    get_countries_per_challenge,
+    get_weights_per_challenge,
+     } from "./utils/utils.qmd"
+
+```
+
+
+```{ojs}
 import {addTooltips} from "@mkfreeman/plot-tooltip"
-import {offsetInterval} from '@mootari/offset-slider'
 ```
