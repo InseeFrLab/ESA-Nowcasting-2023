@@ -74,8 +74,8 @@ jobs:
         run: |
           git add Submissions/
           git commit -m "New submission TOURISM with Github Actions"
-          git restore .
-          git pull --rebase
+          git fetch origin
+          git rebase origin/gh-submissions
           git push origin gh-submissions --set-upstream
           
       - name: Save pipeline data in s3
