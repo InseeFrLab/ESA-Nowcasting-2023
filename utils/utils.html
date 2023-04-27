@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -140,44 +111,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <img src="../images/logo-INSEE.png" alt="" class="navbar-logo">
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html">
+    <a class="nav-link" href="../index.html" rel="" target="">
  <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../methodology.html">
+    <a class="nav-link" href="../methodology.html" rel="" target="">
  <span class="menu-text">Methodology</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../data.html">
+    <a class="nav-link" href="../data.html" rel="" target="">
  <span class="menu-text">Data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../ppi.html">
+    <a class="nav-link" href="../ppi.html" rel="" target="">
  <span class="menu-text">PPI</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pvi.html">
+    <a class="nav-link" href="../pvi.html" rel="" target="">
  <span class="menu-text">PVI</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../tourism.html">
+    <a class="nav-link" href="../tourism.html" rel="" target="">
  <span class="menu-text">TOURISM</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/InseeFrLab/ESA-Nowcasting-2023"><i class="bi bi-github" role="img" aria-label="GitHub">
+    <a class="nav-link" href="https://github.com/InseeFrLab/ESA-Nowcasting-2023" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -403,6 +376,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 {"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"mapping_countries_weights = [\n  {\"Name\": \"Austria\", \"ISO2\": \"AT\", \"PPI\": 0.77, \"PVI\": 0.50, \"TOURISM\": 1.59},\n  {\"Name\": \"Belgium\", \"ISO2\": \"BE\", \"PPI\": 1.54, \"PVI\": 1.14, \"TOURISM\": 1.79},\n  {\"Name\": \"Bulgaria\", \"ISO2\": \"BG\", \"PPI\": 1.07, \"PVI\": 1.71, \"TOURISM\": undefined},\n  {\"Name\": \"Cyprus\", \"ISO2\": \"CY\", \"PPI\": 1.23, \"PVI\": 0.6, \"TOURISM\": 1.55},\n  {\"Name\": \"Czech Republic\", \"ISO2\": \"CZ\", \"PPI\": 1.32, \"PVI\": 1.71, \"TOURISM\": 1.94},\n  {\"Name\": \"Germany\", \"ISO2\": \"DE\", \"PPI\": 1.29, \"PVI\": 1.85, \"TOURISM\": 2},\n  {\"Name\": \"Denmark\", \"ISO2\": \"DK\", \"PPI\": 0.63, \"PVI\": 1.23, \"TOURISM\": 1.6},\n  {\"Name\": \"Estonia\", \"ISO2\": \"EE\", \"PPI\": 0.67, \"PVI\": 1.26, \"TOURISM\": undefined},\n  {\"Name\": \"Greece\", \"ISO2\": \"EL\", \"PPI\": 1.06, \"PVI\": 1.35, \"TOURISM\": 1.38},\n  {\"Name\": \"Spain\", \"ISO2\": \"ES\", \"PPI\": 1.73, \"PVI\": 1.37, \"TOURISM\": 1.85},\n  {\"Name\": \"Finland\", \"ISO2\": \"FI\", \"PPI\": 0.69, \"PVI\": 0.84, \"TOURISM\": 1.86},\n  {\"Name\": \"France\", \"ISO2\": \"FR\", \"PPI\": 1.52, \"PVI\": 1.16, \"TOURISM\": 1.67},\n  {\"Name\": \"Croatia\", \"ISO2\": \"HR\", \"PPI\": 0.88, \"PVI\": 1.86, \"TOURISM\": 1.27},\n  {\"Name\": \"Hungary\", \"ISO2\": \"HU\", \"PPI\": 1.25, \"PVI\": 1.16, \"TOURISM\": 1.87},\n  {\"Name\": \"Ireland\", \"ISO2\": \"IE\", \"PPI\": 1.12, \"PVI\": undefined, \"TOURISM\": undefined},\n  {\"Name\": \"Italy\", \"ISO2\": \"IT\", \"PPI\": 1.17, \"PVI\": 1.67, \"TOURISM\": 1.68},\n  {\"Name\": \"Lithuania\", \"ISO2\": \"LT\", \"PPI\": 1.16, \"PVI\": 1.08, \"TOURISM\": 1.91},\n  {\"Name\": \"Luxembourg\", \"ISO2\": \"LU\", \"PPI\": 1.13, \"PVI\": undefined, \"TOURISM\": 1.81},\n  {\"Name\": \"Latvia\", \"ISO2\": \"LV\", \"PPI\": 1.54, \"PVI\": 1.12, \"TOURISM\": 1.9},\n  {\"Name\": \"Malta\", \"ISO2\": \"MT\", \"PPI\": 2.00, \"PVI\": 1, \"TOURISM\": 1.97},\n  {\"Name\": \"Netherlands\", \"ISO2\": \"NL\", \"PPI\": 0.78, \"PVI\": undefined, \"TOURISM\": 1.78},\n  {\"Name\": \"Poland\", \"ISO2\": \"PL\", \"PPI\": 0.50, \"PVI\": 1.74, \"TOURISM\": 0.73},\n  {\"Name\": \"Portugal\", \"ISO2\": \"PT\", \"PPI\": 1.45, \"PVI\": 1.54, \"TOURISM\": 0.66},\n  {\"Name\": \"Romania\", \"ISO2\": \"RO\", \"PPI\": 1.17, \"PVI\": 2, \"TOURISM\": 0.67},\n  {\"Name\": \"Sweden\", \"ISO2\": \"SE\", \"PPI\": undefined, \"PVI\": 1.58, \"TOURISM\": 0.5},\n  {\"Name\": \"Slovenia\", \"ISO2\": \"SI\", \"PPI\": 1.91, \"PVI\": 1.24, \"TOURISM\": 0.63},\n  {\"Name\": \"Slovakia\", \"ISO2\": \"SK\", \"PPI\": 1.28, \"PVI\": 1.91, \"TOURISM\": 0.79},\n];\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function get_weights_per_challenge(mapping, challenge) {\n  return mapping.filter(d => d[challenge] != undefined).map(({ Name, ISO2, [challenge]: Weight }) => ({ Name, ISO2, Weight }))\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"function get_countries_per_challenge(mapping, challenge) {\n  return mapping\n    .filter(d => d[challenge] != undefined)\n    .reduce((acc, country) => { acc[country.ISO2] = country.Name;\n                                return acc; }, {}\n                                )\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"map_country_name = mapping_countries_weights.reduce((acc, country) => {\n  acc[country.ISO2] = country.Name;\n  return acc;\n}, {})\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"function unique(data, accessor) {\nreturn Array.from(new Set(accessor ? data.map(accessor) : data));\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"dateParser = (dateString) => {\n  const [year, month, day] = dateString.split('-')\n  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))\n  const timezoneOffset = date.getTimezoneOffset()\n  date.setMinutes(date.getMinutes() - timezoneOffset)\n  return date\n}\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"\nfunction format_historical_data(data, country) {\n\n  let data_typed = transpose(data).map( d => (\n      {\n        date: dateParser(d.time),\n        values: d.values,\n        geo: d.geo\n      } \n     )\n   )\n  \nreturn data_typed.filter(d => d.geo == country);\n\t}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"\nfunction format_pred_data(data, country) {\n\n  let pred_typed = transpose(data).map( d => (\n      {\n        date: dateParser(d.Date),\n        values: d.value,\n        geo: d.Country,\n        model: d.Entries\n      } \n     )\n   )\n  \n  return pred_typed.filter(d => d.geo == country);\n\t}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"function format_summary_table_data(data, country, model, country_map) {\n  let table = transpose(data).map( d => (\n        {\n          Date: dateParser(d.Date),\n          Model: d.Entries,\n          Country: d.Country,\n          Forecast: d.value\n        } \n       )\n     )\n    .map(item => {\n      const dateStr = item.Date;\n      const date = new Date(dateStr);\n      const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });\n      return { ...item, Date: formattedDate };\n    })\n    .map(item => {\n      const geoCode = item.Country;\n      const countryName = country_map[geoCode];\n      return { ...item, Country: countryName };\n    })\n    .filter(d => model.includes(d.Model) && (country.includes(\"All\") || country.includes(d.Country)));\n\n  return table\n\t}\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"\nfunction format_errors_data(data, country) {\n\n  let data_formatted = transpose(data).map( d => (\n        {\n          Date: dateParser(d.time),\n          Model: d.Entries,\n          Country: d.geo,\n          Errors: d.error_squared\n        } \n       )\n     )\n    .filter(d => d.Country == country)\n\n  return data_formatted.filter(d => d.Country == country);\n\t}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-11","inline":false,"source":"function format_ave_errors_data(data, country) {\n  return transpose(data).filter(d => d.geo == country);\n\t}\n\n"}]}
 </script>
 <script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
 window._ojs.paths.runtimeToDoc = "../../utils";
 window._ojs.paths.runtimeToRoot = "../..";
 window._ojs.paths.docToRoot = "..";
@@ -436,9 +410,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -503,6 +491,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -546,6 +620,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/utils/utils.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
