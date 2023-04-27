@@ -193,7 +193,7 @@ EUR_USD:
   id: "EURUSD=X"
 
 SP500:
-  name: "S&P 500 Index stock"
+  name: "S&P 500 Index Stock Price"
   short_name: "SP500"
   source : Yahoo
   challenge: 
@@ -206,7 +206,7 @@ SP500:
   id: "^GSPC"
 
 EUROSTOXX500:
-  name: "Euro stoxx 50 Index stock"
+  name: "Euro stoxx 50 Index Stock Price"
   short_name: "EUROSTOXX500"
   source : Yahoo
   challenge: 
@@ -219,7 +219,7 @@ EUROSTOXX500:
   id: "^STOXX50E"
 
 CAC40:
-  name: "CAC 40 Index"
+  name: "CAC 40 Index Stock Price"
   short_name: "CAC40"
   source : Yahoo
   challenge: 

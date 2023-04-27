@@ -39,8 +39,36 @@ list(
     command = yaml::read_yaml(challenges_file),
   ),
   tar_target(
+    name = eurostat,
+    command = get_data_from_eurostat(data_info),
+  ),
+  tar_target(
+    name = yahoo,
+    command = get_data_from_yahoo(data_info),
+  ),
+  tar_target(
+    name = ember,
+    command = get_data_from_ember(data_info),
+  ),
+  tar_target(
+    name = week_ends,
+    command = get_weekend_days(data_info, challenges),
+  ),
+  tar_target(
+    name = destatis,
+    command = get_data_from_destatis(data_info),
+  ),
+  tar_target(
+    name = wifo,
+    command = get_data_from_wifo(data_info),
+  ),
+  tar_target(
+    name = gtrends,
+    command = get_data_from_google_trends(data_info),
+  ),
+  tar_target(
     name = data,
-    command = get_data(data_info, challenges)
+    command = get_data(data_info, c(eurostat, yahoo, ember, week_ends, destatis, wifo, gtrends))
   ),
   tar_target(
     name = data_saved,
