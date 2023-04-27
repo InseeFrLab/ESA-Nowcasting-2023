@@ -2,6 +2,10 @@
 title: Production volume in industry challenge
 ---
 
+```{ojs}
+challenge = "PVI"
+```
+
 The monthly PVI indicator represents the production index in industry.
 The objective of the index is to measure changes in the volume of output at monthly intervals.
 It provides a measure of the volume trend in value added over a given reference period.
@@ -9,37 +13,29 @@ The production index is calculated in the form of a Laspeyres type index.
 
 ## Forecast for a given country, with modular history
 
-```{r}
-#| cache: false
-
-data <- targets::tar_read(data, store = "store_data")
-targets::tar_load(predictions_pvi, store = "store_pvi")
-
-sample <- data$PVI$data |>
-  dplyr::filter((nace_r2 %in% "B-D"))
-
-ojs_define(data = sample, pred = predictions_pvi)
+```{ojs}
+viewof country = Inputs.select(Object.values(country_map), {
+  label: html`<b>Select a country:</b>`,
+  placeholder: "Enter a country name",
+  unique: true
+  })
 ```
 
-
 ```{ojs}
-viewof country = Inputs.select(unique(pred_typed.map(d => d.geo)), {label: "Select a country:"})
-```
+//| panel: center
 
-
-```{ojs}
 addTooltips(
 Plot.plot({
   grid: true,
   y: {
-    label: "Production volume in industry",
+    label: "↑ Production volume in industry",
   },  
   x: {
       label: "Year",
       domain: range
     },
   marks: [
-    Plot.line(sample, {
+    Plot.line(historical, {
         x: "date", 
         y: "values", 
         stroke: "black",
@@ -49,15 +45,15 @@ Plot.plot({
                 year: "numeric"
               })}\n ${d.values} `
         }),
-    Plot.dot(preds, {
+    Plot.dot(predictions, {
         x: "date", 
         y: "values",
         fill: "model",
-        title: (d) =>
-              `${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })}\n ${d.values} `
+        title:  (d) =>
+                `${d.model}\n ${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })} : ${d.values} `
         })
   ],
   color: {legend: true}
@@ -66,9 +62,11 @@ Plot.plot({
 ```
 
 ```{ojs}
+//| panel: center
+
 dates = {
-  const data = sample.map(d => d.date)
-  data.push(preds.map(d => d.date)[0])
+  const data = historical.map(d => d.date)
+  data.push(predictions.map(d => d.date)[0])
   return data  
 }
 
@@ -88,57 +86,78 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
+## Country-specific forecast summary by model
 
+```{ojs}
+viewof form = Inputs.form({
+  model: Inputs.checkbox(models, {value: models}),
+  countries: Inputs.select(["All", ...Object.values(country_map)], {multiple: true, value: ["All"], width: 50, size: 1})
+})
+
+```
+
+```{ojs}
+viewof rows = Inputs.table(summary_table,{
+  rows: 25,
+  maxWidth: 840,
+  multiple: false,
+  layout: "fixed"
+})
+```
+
+<!-- DATA -->
+
+```{r}
+#| cache: false
+
+data <- targets::tar_read(data, store = "store_data")
+targets::tar_load(predictions_pvi, store = "store_pvi")
+
+sample <- data$PVI$data |>
+  dplyr::filter((nace_r2 %in% "B-D"))
+
+ojs_define(data = sample, pred = predictions_pvi)
+```
+
+```{ojs}
+historical = format_historical_data(data, country_iso)
+```
+
+```{ojs}
+predictions = format_pred_data(pred, country_iso)
+```
+
+```{ojs}
+summary_table = format_summary_table_data(pred, form.countries, form.model, country_map)
+```
+   
 <!-- HELPERS -->
 
 ```{ojs}
-data_t = transpose(data)
-data_typed = data_t.map( d => (
-    {
-      date: dateParser(d.time),
-      values: d.values,
-      geo: d.geo
-    } 
-   )
- )
-
-sample = data_typed.filter(d => d.geo == country)
+country_map = get_countries_per_challenge(mapping_countries_weights, challenge)
 ```
 
 ```{ojs}
-pred_t = transpose(pred)
-pred_typed = pred_t.map( d => (
-    {
-      date: dateParser(d.Date),
-      values: d.value,
-      geo: d.Country,
-      model: d.Entries
-    } 
-   )
- )
-
-preds = pred_typed.filter(d => d.geo == country)
+country_iso = Object.keys(country_map).find(key => country_map[key] === country);
 ```
 
 ```{ojs}
-dateParser = (dateString) => {
-  const [year, month, day] = dateString.split('-')
-  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
-  const timezoneOffset = date.getTimezoneOffset()
-  date.setMinutes(date.getMinutes() - timezoneOffset)
-  return date
-}
-```
-
-<!-- dateParser = d3.timeParse("%Y-%m-%d") -->
-
-```{ojs}
-function unique(data, accessor) {
-return Array.from(new Set(accessor ? data.map(accessor) : data));
-	}
+models = ["REG-ARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
 ```
 
 <!-- DEPENDENCIES -->
+
+```{ojs}
+import { 
+    format_historical_data,
+    format_pred_data,
+    format_summary_table_data,
+    get_countries_per_challenge,
+    mapping_countries_weights,
+     } from "./utils/utils.qmd"
+
+```
+
 
 ```{ojs}
 import {addTooltips} from "@mkfreeman/plot-tooltip"

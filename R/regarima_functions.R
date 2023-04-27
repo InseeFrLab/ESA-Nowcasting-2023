@@ -20,20 +20,18 @@ build_data_regarima <- function(challenge, challenges_info, data, models, countr
       start = c(year(date_to_pred), month(date_to_pred)),
       end = c(year(date_to_pred), month(date_to_pred))
     )
-    dy_sa <- log(y_sa) - log(stats::lag(y_sa, -1))
   }
-
-  dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
 
   X <- create_regressors(challenge, challenges_info, selected_data, models, country)
 
-  if (challenge == "PPI" | challenge == "PVI") {
-    return(list("y" = dy, "X" = X, "Historical" = y))
-  }
-  if (challenge == "TOURISM") {
+  if ((challenge == "PPI") | (challenge == "PVI")) {
+    dy <- window(log(y) - stats::lag(log(y), -1), start = c(2010, 1))
+    DB <- list("y" = dy, "X" = X, "Historical" = y)
+  } else {
     dy_sa <- window(log(y_sa) - stats::lag(log(y_sa), -1))
-    return(list("y" = dy_sa, "X" = X, "Historical" = y, "Historical_sa" = y_sa, "coef_sa" = coef_sa))
+    DB <- list("y" = dy_sa, "X" = X, "Historical" = y, "Historical_sa" = y_sa, "coef_sa" = coef_sa)
   }
+  return(DB)
 }
 
 # function for seasonal adjustement of some series in Tourism challenge
@@ -173,12 +171,11 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
   } else if (challenge == "TOURISM") {
     X <- ts.union()
 
-    if (!(country %in% c("EL", "DK", "LV"))) {
-      gtrendh <- reshape_gtrends_data(data, country) %>%
-        select(
-          time,
-          paste(country, "GTRENDS", "HOTELS", sep = "_")
-        ) %>%
+    gtrendh <- reshape_gtrends_data(data, country)
+
+    if (paste(country, "GTRENDS", "HOTELS", sep = "_") %in% names(gtrendh)) {
+      gtrendh <- gtrendh %>%
+        select(time, paste(country, "GTRENDS", "HOTELS", sep = "_")) %>%
         tidyr::drop_na() %>%
         tsbox::ts_ts() / 100
       gtrendh_sa <- desaiso(gtrendh, challenge, models)$final$series[, "sa"]

@@ -30,6 +30,8 @@ Our team is composed of 5 members:
 
 This work is licensed under the [European Union Public Licence 1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
 
+See the code on [Github](https://github.com/InseeFrLab/ESA-Nowcasting-2023/).
+
 ## Acknowledgements {.unnumbered}
 
 On behalf of our team, we would like to express our gratitude to:
@@ -39,5 +41,6 @@ On behalf of our team, we would like to express our gratitude to:
 - The organizers of this challenge for creating a stimulating and engaging platform to showcase our skills.
 - The creators of the [RJDemetra](https://github.com/jdemetra/rjdemetra) package, which provided us with powerful tools for seasonal adjustment of time series data, enhancing the accuracy of our models.
 - Sebastian Krantz, the creator of the [dfms](https://github.com/SebKrantz/dfms) package, for openly sharing this valuable resource and providing a user-friendly and efficient tool for estimating Dynamics Factor Models (DFM) in R, which significantly facilitated our nowcasting analysis.
+- Onyxia SSPCloud
 
 Thank you all for your support and contributions to our success in this endeavor.
