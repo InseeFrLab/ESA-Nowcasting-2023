@@ -72,9 +72,9 @@ jobs:
 
       - name: Commit and push submissions
         run: |
-          git pull --rebase
           git add Submissions/
-          git commit -m "New submission with Github Actions"
+          git commit -m "New submission PVI with Github Actions"
+          git pull --rebase
           git push origin gh-submissions --set-upstream
           
       - name: Save pipeline data in s3
