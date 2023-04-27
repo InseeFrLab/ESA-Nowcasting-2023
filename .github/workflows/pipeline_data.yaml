@@ -1,0 +1,67 @@
+name: Run Pipeline
+
+on:
+  schedule:
+    # every day at 11am
+    - cron: '00 11 * * *' 
+  workflow_dispatch:
+
+jobs:
+  run-data-retrieval:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: data
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Save pipeline data in s3
+        run: |
+          targets::tar_source(files = "R")
+          put_dir_s3(local_dir = "store_data/",
+                     s3_dir = "targets-data/store_data/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}

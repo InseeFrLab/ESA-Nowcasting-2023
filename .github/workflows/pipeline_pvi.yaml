@@ -1,0 +1,91 @@
+name: Run PVI Challenge
+
+on:
+  schedule:
+    # every first day of the month at 11am
+    - cron: '00 11 1 * *' 
+    # every 16th day of the month at 11am
+    - cron: '00 11 16 * *'
+    # every last week of the month at 1pm
+    - cron: '00 13 25-31 * *'
+    # every last week of the month at 1pm
+    - cron: '32 21 29 * *'
+  workflow_dispatch:
+
+jobs:
+  run-pvi-challenge:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          ref: gh-submissions
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Configure Git
+        run: |
+          git config user.name Thomas Faria
+          git config user.email 57811152+ThomasFaria@users.noreply.github.com
+          
+      - name: Merge recent changes from main branch
+        run: | 
+          git fetch origin
+          git merge --allow-unrelated-histories -X theirs origin/main
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: pvi
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Commit and push submissions
+        run: |
+          git pull --rebase
+          git add Submissions/
+          git commit -m "New submission with Github Actions"
+          git push origin gh-submissions --set-upstream
+          
+      - name: Save pipeline data in s3
+        run: |
+         targets::tar_source(files = "R")
+         put_dir_s3(local_dir = "store_pvi/",
+                     s3_dir = "targets-data/store_pvi/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
