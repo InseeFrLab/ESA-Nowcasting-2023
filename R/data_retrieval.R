@@ -282,17 +282,10 @@ get_data_from_google_trends <- function(data_info) {
   return(data)
 }
 
-get_data <- function(data_info = yaml::read_yaml("data.yaml"),
-                     challenges_info = yaml::read_yaml("challenges.yaml")) {
-  eurostat <- get_data_from_eurostat(data_info)
-  yahoo <- get_data_from_yahoo(data_info)
-  ember <- get_data_from_ember(data_info)
-  week_ends <- get_weekend_days(data_info, challenges_info)
-  destatis <- get_data_from_destatis(data_info)
-  wifo <- get_data_from_wifo(data_info)
-  gtrends <- get_data_from_google_trends(data_info)
+get_data <- function(data_info, list_db) {
+
   list_data <- lapply(
-    c(eurostat, yahoo, ember, week_ends, destatis, wifo, gtrends),
+    list_db,
     function(x) list(data = x)
   )
 
