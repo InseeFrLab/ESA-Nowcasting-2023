@@ -75,7 +75,7 @@ jobs:
           git add Submissions/
           git commit -m "New submission PPI with Github Actions"
           git fetch origin
-          git rebase origin/gh-submissions
+          git merge origin/gh-submissions
           git push origin gh-submissions --set-upstream
           
       - name: Save pipeline data in s3
