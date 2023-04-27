@@ -17,8 +17,20 @@ get_data_from_yahoo <- function(data_info) {
 
   data <- mapply(function(x, name) {
     id_var <- gsub("^", "", x$id, fixed = TRUE)
-    quantmod::getSymbols(x$id, src = "yahoo", auto.assign = FALSE) |>
-      tsbox::ts_tbl() |>
+    df <- quantmod::getSymbols(x$id, src = "yahoo", auto.assign = FALSE)
+    
+    df <- tryCatch(
+      {
+        df <- df |>
+          tsbox::ts_tbl()
+      },
+      error = function(e) {
+        cat("Bug with the Yahoo API, removing the last value...\n")
+        df <- df[-nrow(df), ]|>
+          tsbox::ts_tbl()
+      }
+    )
+    df |>
       subset(id %in% paste(id_var, c("Volume", "Adjusted"), sep = ".")) |>
       tidyr::spread(id, value) |>
       dplyr::rename_at(dplyr::vars(dplyr::starts_with(id_var)), list(~ sub(id_var, name, .)))
