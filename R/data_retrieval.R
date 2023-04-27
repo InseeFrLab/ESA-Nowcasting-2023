@@ -166,24 +166,34 @@ get_rescaling_gtrends <- function(subset_lists) {
   for (country in subset_lists[[1]]$filters$geo) {
     print(country)
     Sys.sleep(1)
-
     list_hp_filtered_svi_ct <- list()
+
     for (x in subset_lists) {
-      Sys.sleep(1)
-      tryCatch(
-        {
-          x_gtrends_data <- get_gtrends(
-            country = country,
-            category = x$category
-          )
-          # Creation of SVI and svi
-          SVI_ct <- x_gtrends_data
-          svi_ct <- log(10**(-10) + SVI_ct)
-          hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct, freq = 12, "frequency")[["trend"]], zoo::index(svi_ct))
-          list_hp_filtered_svi_ct[[x$short_name]] <- hp_filtered_svi_ct
-        },
-        error = function(e) {}
-      )
+      success <- FALSE
+      while (!success) {
+        Sys.sleep(1)
+        tryCatch(
+          {
+            x_gtrends_data <- get_gtrends(
+              country = country,
+              category = x$category
+            )
+            success <- TRUE
+          },
+          error = function(e) {
+            cat("Got a 429 error, pausing and retrying...\n")
+            Sys.sleep(30)
+          }
+        )
+      }
+
+      # Creation of SVI and svi
+      SVI_ct <- x_gtrends_data
+
+      svi_ct <- log(10**(-10) + SVI_ct)
+      hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct, freq = 12, "frequency")[["trend"]], zoo::index(svi_ct))
+
+      list_hp_filtered_svi_ct[[x$short_name]] <- hp_filtered_svi_ct
     }
 
     # Extracting the common component
@@ -217,63 +227,48 @@ get_data_from_google_trends <- function(data_info) {
   }
 
   data <- lapply(subset_lists, function(x) {
-    Sys.sleep(1)
     gtrends_countries <- list()
-
     for (country in x$filters$geo) {
       print(country)
-      Sys.sleep(1)
-      tryCatch(
-        {
-          x_gtrends_data <- get_gtrends(
-            country = country,
-            category = x$category
-          )
+      success <- FALSE
+      while (!success) {
+        Sys.sleep(1)
+        tryCatch(
+          {
+            x_gtrends_data <- get_gtrends(
+              country = country,
+              category = x$category
+            )
+            success <- TRUE
+          },
+          error = function(e) {
+            cat("Got a 429 error, pausing and retrying...\n")
+            Sys.sleep(30)
+          }
+        )
+      }
+      # Creation of SVI and svi
 
-          # Creation of SVI and svi
+      SVI_ct <- x_gtrends_data
+      svi_ct <- log(10**(-10) + SVI_ct)
 
-          SVI_ct <- x_gtrends_data
-          svi_ct <- log(10**(-10) + SVI_ct)
+      rescaled_first_component <- rescaled_first_component_by_country[[country]]
 
-          # Extracting the common component --> Now in get_rescaling_gtrends
+      # Correct the time series
 
-          # hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct,freq=12,"frequency")[["trend"]], zoo::index(svi_ct))
+      corrected_svi_ct <- svi_ct - rescaled_first_component
+      corrected_SVI_ct <- exp(corrected_svi_ct)
 
-          # pca <- prcomp(hp_filtered_svi_ct, retx = TRUE, center = TRUE, scale = TRUE)
-          # first_component <- xts::xts(pca$x[,"PC1"], zoo::index(hp_filtered_svi_ct))
-          # standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
-          # rescaled_first_component <- standardised_first_component * sd(svi_ct) + mean(svi_ct)
+      new_C <- 100 / max(corrected_SVI_ct)
+      final_SVI_ct <- corrected_SVI_ct * new_C
 
-          # Check the direction of the PCA
-          # trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
-          # slope_first_component <- trend_first_component$coefficients[2]
-          # if (slope_first_component > 0){
-          #   rescaled_first_component = - rescaled_first_component
-          # }
-
-          rescaled_first_component <- rescaled_first_component_by_country[[country]]
-
-          # Correct the time series
-
-          corrected_svi_ct <- svi_ct - rescaled_first_component
-          corrected_SVI_ct <- exp(corrected_svi_ct)
-
-          new_C <- 100 / max(corrected_SVI_ct)
-          final_SVI_ct <- corrected_SVI_ct * new_C
-
-          gtrends_df <- data.frame(final_SVI_ct)
-          colnames(gtrends_df) <- c(x$short_name)
-          gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
-          gtrends_df["geo"] <- country
-
-          gtrends_countries[[country]] <- gtrends_df
-        },
-        error = function(e) {
-          print("Echec gtrends")
-        }
-      )
+      gtrends_df <- data.frame(final_SVI_ct)
+      colnames(gtrends_df) <- c(x$short_name)
+      gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
+      gtrends_df["geo"] <- country
+      gtrends_countries[[country]] <- gtrends_df
+      return(gtrends_countries)
     }
-
     data_x <- bind_rows(gtrends_countries)
     rownames(data_x) <- NULL
     return(data_x)
@@ -283,7 +278,6 @@ get_data_from_google_trends <- function(data_info) {
 }
 
 get_data <- function(data_info, list_db) {
-
   list_data <- lapply(
     list_db,
     function(x) list(data = x)
