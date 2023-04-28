@@ -107,9 +107,35 @@ Once the DFM is estimated ($A_j$, $\Sigma_0$, $\Lambda$, $R$), it can be used fo
 
 ## ETS
 
-Exponential smoothing models: forecasts are linear combinations of past
-values, with the weights decaying exponentially as the observations get
-older. Estimation takes 1 second by country. No data processing
+Exponential smoothing models are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older.
+Therefore, the more recent the observation is, the higher the associated weight is.
+Moreover, exponential smoothing models do not require any external data.
+
+The exponential smoothing models used are a combination of three components:
+
+1. An error: additive ($A$) or multiplicative ($M$).
+
+2. A trend: additive ($A$), multiplicative ($M$), damped ($A_d$ or $M_d$) or absent ($N$).
+
+3. A seasonality: additive ($A$), multiplicative $M$ or absent ($N$).
+The seasonal component is only used with tourism data.
+
+See @fig-ets for the description of the model.
+
+::: {#fig-ets layout-ncol=1}
+
+![Additive error](images/ets_add.png){#fig-ets-add}
+
+![Multiplicative error](images/ets_multi.png){#fig-ets-multi}
+
+*Source: Hyndman, R.J., & Athanasopoulos, G. (2018).*
+
+Exponential smoothing models.
+:::
+
+
+For each series, the model is selected minimising the Akaike’s Information Criterion (AIC) and parameters are estimated maximising the likelihood.
+
 
 ## XGBoost
 
