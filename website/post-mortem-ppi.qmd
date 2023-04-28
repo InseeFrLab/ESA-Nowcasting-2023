@@ -146,6 +146,7 @@ error_country_model<-past_submissions_ppi |>
   dplyr::rename(geo = Country, time = Date, forecast = value)|>
   dplyr::inner_join(recent_data_ppi, by= c("geo", "time")) |>
   dplyr::mutate(error_squared = (forecast - values)^2/values)|>
+  tidyr::drop_na(error_squared) |>
   dplyr::select(geo, time, Entries, error_squared)
 
 average_error <- error_country_model|>
