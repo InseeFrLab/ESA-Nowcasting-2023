@@ -46,14 +46,13 @@ list(
     name = submitted_models,
     command = yaml::read_yaml(submitted_models_file),
   ),
-  
   tar_target(
     name = past_submissions_ppi,
-    command = create_table_past_submissions(submitted_models, "PPI", FALSE)
+    command = create_table_past_submissions(submitted_models, "PPI", submissions_folder = "Submissions", by_entry = FALSE)
   ),
   tar_target(
     name = past_submissions_ppi_by_entry,
-    command = create_table_past_submissions(submitted_models, "PPI", TRUE)
+    command = create_table_past_submissions(submitted_models, "PPI", submissions_folder = "Submissions", by_entry = TRUE)
   ),
   tar_target(
     name = recent_data_ppi,
@@ -69,11 +68,11 @@ list(
   ),
   tar_target(
     name = past_submissions_pvi,
-    command = create_table_past_submissions(submitted_models, "PVI", FALSE)
+    command = create_table_past_submissions(submitted_models, "PVI", submissions_folder = "Submissions", by_entry = FALSE)
   ),
   tar_target(
     name = past_submissions_pvi_by_entry,
-    command = create_table_past_submissions(submitted_models, "PVI", TRUE)
+    command = create_table_past_submissions(submitted_models, "PVI", submissions_folder = "Submissions", by_entry = TRUE)
   ),
   tar_target(
     name = recent_data_pvi,
@@ -89,11 +88,11 @@ list(
   ),
   tar_target(
     name = past_submissions_tourism,
-    command = create_table_past_submissions(submitted_models, "TOURISM", FALSE)
+    command = create_table_past_submissions(submitted_models, "TOURISM", submissions_folder = "Submissions", by_entry = FALSE)
   ),
   tar_target(
     name = past_submissions_tourism_by_entry,
-    command = create_table_past_submissions(submitted_models, "TOURISM", TRUE)
+    command = create_table_past_submissions(submitted_models, "TOURISM", submissions_folder = "Submissions", by_entry = TRUE)
   ),
   tar_target(
     name = recent_data_tourism,

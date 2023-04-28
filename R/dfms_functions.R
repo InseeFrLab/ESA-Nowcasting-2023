@@ -69,8 +69,8 @@ build_data_dfms <- function(challenge, challenges_info, data_info, models_info, 
 
   # If necessary, remove collinear columns
   if (dim(positions)[1] > 0) {
-    var_to_remove <- sapply(positions, function(x) names(DB_diff[range_square_mat])[x])["col"]
-    DB_diff <- DB_diff[, -as.double(positions["col"])]
+    var_to_remove <- unique(sapply(positions, function(x) names(DB_diff[range_square_mat])[x], simplify = FALSE)$col)
+    DB_diff <- subset(DB_diff, select = setdiff(names(DB_diff), var_to_remove))
     cat("Removing", var_to_remove, "due to collinearity.\n")
   }
 
