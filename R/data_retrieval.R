@@ -18,7 +18,7 @@ get_data_from_yahoo <- function(data_info) {
   data <- mapply(function(x, name) {
     id_var <- gsub("^", "", x$id, fixed = TRUE)
     df <- quantmod::getSymbols(x$id, src = "yahoo", auto.assign = FALSE)
-    
+
     df <- tryCatch(
       {
         df <- df |>
@@ -26,7 +26,7 @@ get_data_from_yahoo <- function(data_info) {
       },
       error = function(e) {
         cat("Bug with the Yahoo API, removing the last value...\n")
-        df <- df[-nrow(df), ]|>
+        df <- df[-nrow(df), ] |>
           tsbox::ts_tbl()
       }
     )
@@ -389,9 +389,9 @@ read_date_from_s3 <- function(challenges_info, data_info) {
   list_files <- aws.s3::get_bucket("projet-esa-nowcasting", region = "", prefix = paste0("data/", month, "/"))
   names <- unname(sapply(list_files, function(x) {
     sub("\\.[^.]+$", "", basename(x$Key))
-  }, simplify=TRUE))
-  
-  data<-lapply(list_files, function(x) {
+  }, simplify = TRUE))
+
+  data <- lapply(list_files, function(x) {
     aws.s3::s3read_using(
       FUN = arrow::read_parquet,
       object = x$Key,
@@ -399,10 +399,12 @@ read_date_from_s3 <- function(challenges_info, data_info) {
       opts = list("region" = "")
     )
   })
-  
+
   data <- setNames(data, names)
   return(
-    get_data(data_info[order(names(data_info))], 
-             data[order(names(data))]))
+    get_data(
+      data_info[order(names(data_info))],
+      data[order(names(data))]
+    )
+  )
 }
-
