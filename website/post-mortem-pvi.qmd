@@ -141,14 +141,14 @@ targets::tar_load(recent_data_pvi, store = "store_post_mortem")
 past_submissions_pvi <- past_submissions_pvi |>
   dplyr::filter(Entries %in% c("REGARIMA", "XGBOOST", "DFM", "ETS", "LSTM"))
 
-error_country_model<-past_submissions_pvi |>
-  tibble::tibble() |> 
-  dplyr::rename(geo = Country, time = Date, forecast = value)|>
-  dplyr::inner_join(recent_data_pvi, by= c("geo", "time")) |>
-  dplyr::mutate(error_squared = (forecast - values)^2/values)|>
+error_country_model <- past_submissions_pvi |>
+  tibble::tibble() |>
+  dplyr::rename(geo = Country, time = Date, forecast = value) |>
+  dplyr::inner_join(recent_data_pvi, by = c("geo", "time")) |>
+  dplyr::mutate(error_squared = (forecast - values)^2 / values) |>
   dplyr::select(geo, time, Entries, error_squared)
 
-average_error <- error_country_model|>
+average_error <- error_country_model |>
   dplyr::group_by(geo, Entries) |>
   dplyr::summarize(
     N = dplyr::n(),
