@@ -200,7 +200,7 @@
     "href": "methodology.html#ets",
     "title": "Methodology",
     "section": "ETS",
-    "text": "ETS\nExponential smoothing models: forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Estimation takes 1 second by country. No data processing"
+    "text": "ETS\nExponential smoothing models are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Therefore, the more recent the observation is, the higher the associated weight is. Moreover, exponential smoothing models do not require any external data.\nThe exponential smoothing models used are a combination of three components:\n\nAn error: additive (\\(A\\)) or multiplicative (\\(M\\)).\nA trend: additive (\\(A\\)), multiplicative (\\(M\\)), damped (\\(A_d\\) or \\(M_d\\)) or absent (\\(N\\)).\nA seasonality: additive (\\(A\\)), multiplicative \\(M\\) or absent (\\(N\\)). The seasonal component is only used with tourism data.\n\nSee Figure 1 for the description of the model.\n\n\n\n\n\n\n\n(a) Additive error\n\n\n\n\n\n\n\n\n\n(b) Multiplicative error\n\n\n\n\n\n\nSource: Hyndman, R.J., & Athanasopoulos, G. (2018).\n\n\nFigure 1: Exponential smoothing models.\n\n\nFor each series, the model is selected minimising the Akaike’s Information Criterion (AIC) and parameters are estimated maximising the likelihood."
   },
   {
     "objectID": "methodology.html#xgboost",

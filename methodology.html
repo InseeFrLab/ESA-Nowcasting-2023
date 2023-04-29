@@ -66,7 +66,10 @@ ul.task-list li input[type="checkbox"] {
 
 <meta property="og:title" content="European Statistics Awards for Nowcasting - Methodology">
 <meta property="og:description" content="">
+<meta property="og:image" content="https://inseefrlab.github.io/ESA-Nowcasting-2023/images/ets_add.png">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
+<meta property="og:image:height" content="588">
+<meta property="og:image:width" content="958">
 </head>
 
 <body class="nav-fixed">
@@ -300,7 +303,45 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 </section>
 <section id="ets" class="level2">
 <h2 class="anchored" data-anchor-id="ets">ETS</h2>
-<p>Exponential smoothing models: forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Estimation takes 1 second by country. No data processing</p>
+<p>Exponential smoothing models are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Therefore, the more recent the observation is, the higher the associated weight is. Moreover, exponential smoothing models do not require any external data.</p>
+<p>The exponential smoothing models used are a combination of three components:</p>
+<ol type="1">
+<li><p>An error: additive (<span class="math inline">\(A\)</span>) or multiplicative (<span class="math inline">\(M\)</span>).</p></li>
+<li><p>A trend: additive (<span class="math inline">\(A\)</span>), multiplicative (<span class="math inline">\(M\)</span>), damped (<span class="math inline">\(A_d\)</span> or <span class="math inline">\(M_d\)</span>) or absent (<span class="math inline">\(N\)</span>).</p></li>
+<li><p>A seasonality: additive (<span class="math inline">\(A\)</span>), multiplicative <span class="math inline">\(M\)</span> or absent (<span class="math inline">\(N\)</span>). The seasonal component is only used with tourism data.</p></li>
+</ol>
+<p>See <a href="#fig-ets">Figure&nbsp;1</a> for the description of the model.</p>
+<div id="fig-ets" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-ets-add" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/ets_add.png" class="img-fluid figure-img" data-ref-parent="fig-ets"></p>
+<figcaption class="figure-caption">(a) Additive error</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-ets-multi" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/ets_multi.png" class="img-fluid figure-img" data-ref-parent="fig-ets"></p>
+<figcaption class="figure-caption">(b) Multiplicative error</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><em>Source: Hyndman, R.J., &amp; Athanasopoulos, G. (2018).</em></p>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Exponential smoothing models.</figcaption><p></p>
+</figure>
+</div>
+<p>For each series, the model is selected minimising the Akaike’s Information Criterion (AIC) and parameters are estimated maximising the likelihood.</p>
 </section>
 <section id="xgboost" class="level2">
 <h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
