@@ -308,6 +308,7 @@ jobs:
       - name: Checkout out repository
         uses: actions/checkout@v3
         with:
+          ref: gh-submissions
           token: ${{ secrets.TOKEN_CI }}
 
       - name: Install python
