@@ -1,0 +1,9 @@
+# Residuals in the past for models trained until today
+
+```{r}
+#| label: fig-resid-pvi
+#| fig-cap: test
+#| fig-width: 8.5
+#| fig-height: 5
+targets::tar_read(plot_resids_pvi, store = "store_pvi")
+```

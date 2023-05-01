@@ -1,0 +1,39 @@
+name: Run Pipeline
+
+on:
+  push:
+    branches: 'test'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          ref: submissions
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Run Pipeline
+        run: |
+          fileConn<-file("run_all.R")
+          writeLines(c("Hello","World", "World", "World"), fileConn)
+          close(fileConn)
+        shell: Rscript {0} 
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          # The arguments for the `git add` command
+          add: 'run_all.R'
+          author_name: Thomas Faria
+          author_email: 57811152+ThomasFaria@users.noreply.github.com
+          message: 'New submission from Github Actions'
+          new_branch: submissions
