@@ -131,7 +131,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sec-data-eurostat" id="toc-sec-data-eurostat" class="nav-link active" data-scroll-target="#sec-data-eurostat">Eurostat data</a></li>
+  <li><a href="#sec-data-eurostat" id="toc-sec-data-eurostat" class="nav-link active" data-scroll-target="#sec-data-eurostat">Economic data from Eurostat database</a></li>
   <li><a href="#financial-data-from-yahoo-finance" id="toc-financial-data-from-yahoo-finance" class="nav-link" data-scroll-target="#financial-data-from-yahoo-finance">Financial data from Yahoo Finance</a></li>
   <li><a href="#google-trends" id="toc-google-trends" class="nav-link" data-scroll-target="#google-trends">Google Trends</a></li>
   <li><a href="#other-data" id="toc-other-data" class="nav-link" data-scroll-target="#other-data">Other data</a>
@@ -164,32 +164,61 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>We take pride in our commitment to utilizing exclusively open data sources in our modeling efforts. This approach ensures the transparency and replicability of our methods, which are of paramount importance in the realm of official statistics. By leveraging publicly available data, we have been able to derive accurate nowcasts of key economic indicators while promoting the principles of open science and reproducibility.</p>
-<p>This data can be separated in several categories:</p>
+<p>We take great pride in our dedication to using exclusively open data sources in our modeling efforts, which was a fundamental aspect of our approach during the challenge. While some proprietary data sources may have had greater predictive power, we firmly believed that utilizing open data sources was crucial to promoting the principles of transparency and reproducibility in our modeling efforts. By leveraging publicly available data, we were able to derive nowcasts of key economic indicators while ensuring that our work can be easily replicated and validated by others in the official statistics community. This approach not only provided us with a robust foundation for our models but also served to promote the values of open science, data transparency, and reproducibility.</p>
+<p>During the challenge, we utilized three primary sources of data to inform our modeling efforts. The first source was <strong>economic data</strong> from the Eurostat database, which provided us with a comprehensive overview of the economic situation in the European Union. The second source of data was <strong>financial data</strong>, which provided us with valuable insights into the financial context surrounding each of the challenges. This data included stock prices, exchange rates, and other financial indicators that were useful in predicting economic trends and identifying potential risks. Finally, we also used <strong>Google Trends</strong> data to capture the most recent trends and shifts in consumer behavior. This data enabled us to monitor changes in search volume for specific keywords, which served as an early warning system for sudden changes in consumer sentiment and preferences. Overall, our use of these three distinct sources of data allowed us to develop a comprehensive understanding of the economic landscape and to generate nowcasts of the 3 target variables.</p>
 <section id="sec-data-eurostat" class="level2">
-<h2 class="anchored" data-anchor-id="sec-data-eurostat">Eurostat data</h2>
+<h2 class="anchored" data-anchor-id="sec-data-eurostat">Economic data from Eurostat database</h2>
 <p>We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website. These series are automatically retrieved from Eurostat database through its API.</p>
 <ol type="1">
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en">Producer prices in industry</a>:</p>
 <p>Producer Price in Industry (PPI) refers to the average price that domestic producers receive for the goods and services they produce. This indicator measures changes in the price of goods and services at the producer level, and it is considered an important leading indicator of inflation.</p>
-<p>Specificities: - The PPI challenge refers to this indicator for a particular NACE - Total on domestic market (target variable) - Division level of NACE and MIGs</p></li>
+<p>Specificities:</p>
+<pre><code>-   The PPI challenge refers to this indicator for a particular NACE
+-   Total on domestic market (target variable)
+-   Division level of NACE and MIGs</code></pre></li>
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/sts_inpi_m/default/table?lang=en">Import prices in industry</a>:</p>
 <p>Import prices in industry, also known as industrial import price index (IPI), refer to the cost of goods and services imported into a country for use in production. This indicator reflects changes in the prices of imported raw materials, intermediate goods, and capital equipment, and it is influenced by factors such as exchange rates, global commodity prices, and trade policies.</p>
-<p>Specificities: - Total - Division level of CPA and MIGs</p></li>
+<p>Specificities:</p>
+<pre><code>-   Total
+-   Division level of CPA and MIGs</code></pre></li>
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en">Production index in industry</a> :</p>
 <p>The Production Index in Industry (or Production Volume in Industry - PVI) is a measure of the physical output of the industrial sector of an economy. It tracks changes in the volume of goods produced over time, and it is considered an important indicator of the health and performance of the manufacturing sector. The production index can be used to assess trends in productivity, capacity utilization, and competitiveness.</p>
-<p>Specificities: - The PVI challenge refers to this indicator for a particular NACE - Total - Intermediary goods (MIG_ING)</p></li>
+<p>Specificities:</p>
+<pre><code>-   The PVI challenge refers to this indicator for a particular NACE
+-   Total
+-   Intermediary goods (MIG_ING)</code></pre></li>
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en">Harmonised Index of Consumer Prices</a> on a few products</p>
 <p>The Harmonised Index of Consumer Prices (HICP) is a measure of inflation that is used to compare price changes across the European Union. It tracks the average change over time in the prices of goods and services that households consume, including food, housing, transportation, and healthcare. The HICP is calculated using a harmonised methodology that ensures comparability across EU member states, and it is published on a monthly basis by Eurostat. It is a key indicator of price stability.</p></li>
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/ei_bsin_m_r2/default/table?lang=en">Business survey in industry</a>:</p>
 <p>The Business Survey in Industry is a survey conducted by Eurostat to gather information on the business conditions and expectations of companies in the manufacturing sector. The survey covers a range of topics, including production, new orders, inventories, employment, prices, and investment, and it is conducted on a monthly basis across the European Union. The data collected from the survey can be used to assess the current and future state of the manufacturing sector, to identify sector-specific challenges and opportunities, and to inform policymaking and business decision-making.</p>
-<p>Covered by the survey: - Industrial confidence indicator - Production development observed over the past 3 months - Production expectations over the next 3 months - Employment expectations over the next 3 months - Assessment of order-book levels - Assessment of the current level of stocks of finished products - Selling price expectations over the next 3 months</p></li>
+<p>Covered by the survey:</p>
+<pre><code>-   Industrial confidence indicator
+-   Production development observed over the past 3 months
+-   Production expectations over the next 3 months
+-   Employment expectations over the next 3 months
+-   Assessment of order-book levels
+-   Assessment of the current level of stocks of finished products
+-   Selling price expectations over the next 3 months</code></pre></li>
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en">Consumer survey in industry</a>:</p>
 <p>The Consumer Survey in Industry is a survey conducted by Eurostat to gather information on the consumer sentiment and behavior in the European Union. The survey covers a range of topics, including household income, savings, spending intentions, and major purchases, and it is conducted on a monthly basis. The data collected from the survey can be used to assess consumer confidence, to identify trends in consumer spending and saving patterns, and to inform policymaking and business decision-making. The Consumer Survey in Industry is an important indicator of the overall health of the economy, as consumer spending is a major driver of economic activity.</p>
-<p>Covered by the survey: - Financial situation over the last 12 months - Financial situation over the next 12 months - General economic situation over the last 12 months - General economic situation over the next 12 months - Price trends over the last 12 months - Price trends over the next 12 months - Unemployment expectations over the next 12 months - The current economic situation is adequate to make major purchases - Major purchases over the next 12 months - The current economic situation is adequate for savings - Savings over the next 12 months - Statement on financial situation of household - Consumer confidence indicator</p></li>
+<p>Covered by the survey:</p>
+<pre><code>-   Financial situation over the last 12 months
+-   Financial situation over the next 12 months
+-   General economic situation over the last 12 months
+-   General economic situation over the next 12 months
+-   Price trends over the last 12 months
+-   Price trends over the next 12 months
+-   Unemployment expectations over the next 12 months
+-   The current economic situation is adequate to make major purchases
+-   Major purchases over the next 12 months
+-   The current economic situation is adequate for savings
+-   Savings over the next 12 months
+-   Statement on financial situation of household
+-   Consumer confidence indicator</code></pre></li>
 <li><p><a href="https://ec.europa.eu/eurostat/databrowser/view/tour_occ_nim/default/table?lang=en">Number of nights spent at tourist accommodation establishments</a></p>
 <p>The number of nights spent at tourist accommodation establishments is a measure of the volume of tourism activity in a country. It refers to the total number of nights that guests spend in all types of tourist accommodation establishments, including hotels, campsites, holiday homes, and other types of accommodation. This indicator is important for assessing the contribution of tourism to the economy, as well as for monitoring the performance and competitiveness of the tourism sector.</p>
-<p>Specificities: - The TOURISM challenge refers to this indicator</p></li>
+<p>Specificities:</p>
+<pre><code>-   The TOURISM challenge refers to this indicator</code></pre></li>
 </ol>
 </section>
 <section id="financial-data-from-yahoo-finance" class="level2">
