@@ -18,5 +18,3 @@ DATES :
   current_date : "2023-04-01"
   date_to_pred : "2023-05-01"
   month_to_pred : "may"
-
-SELECTED_MODELS : ["REG-ARIMA", "XGBOOST", "DFM", "ETS", "LSTM"]
