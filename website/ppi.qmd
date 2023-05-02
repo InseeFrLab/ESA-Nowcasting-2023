@@ -12,7 +12,7 @@ There is a general public interest in knowing the extent to which the prices of 
 
 The domestic output price index for an economic activity measures the average price development of all goods and related services resulting from that activity and sold on the domestic market between one time period and another.
 
-## Forecast for a given country, with modular history
+## Next forecast for a given country
 
 ```{ojs}
 viewof country = Inputs.select(Object.values(country_map), {
@@ -29,7 +29,7 @@ addTooltips(
 Plot.plot({
   grid: true,
   y: {
-    label: "Production price in industry",
+    label: "↑ Production price in industry",
   },  
   x: {
       label: "Year",
@@ -50,11 +50,11 @@ Plot.plot({
         x: "date", 
         y: "values",
         fill: "model",
-        title: (d) =>
-              `${d.date.toLocaleString("en-UK", {
-                month: "long",
-                year: "numeric"
-              })}\n ${d.values} `
+        title:  (d) =>
+                `${d.model}\n ${d.date.toLocaleString("en-UK", {
+                  month: "long",
+                  year: "numeric"
+                })} : ${d.values} `
         })
   ],
   color: {legend: true}
@@ -87,7 +87,7 @@ viewof range = offsetInterval(dates, {
 })
 ```
 
-## Table summary of forecast per model and country
+## Country-specific forecast summary by model
 
 ```{ojs}
 viewof form = Inputs.form({
@@ -143,7 +143,7 @@ country_iso = Object.keys(country_map).find(key => country_map[key] === country)
 ```
 
 ```{ojs}
-models = ["REGARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
+models = ["REG-ARIMA", "DFM", "ETS", "XGBOOST", "LSTM"]
 ```
 
 <!-- DEPENDENCIES -->

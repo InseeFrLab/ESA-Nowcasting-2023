@@ -37,9 +37,10 @@ See the code on [Github](https://github.com/InseeFrLab/ESA-Nowcasting-2023/).
 On behalf of our team, we would like to express our gratitude to:
 
 - INSEE and our hierarchy for providing us with the time and resources to participate in this challenge and supporting our research efforts.
+- The IT innovation team at INSEE for providing us with the [SSPCloud](https://datalab.sspcloud.fr/home) platform, which not only enabled us to perform our data science analysis with ease but also provided us with an efficient computing environment.
 - The various teams at INSEE whom we reached out to for their invaluable advice and guidance throughout the competition.
 - The organizers of this challenge for creating a stimulating and engaging platform to showcase our skills.
 - The creators of the [RJDemetra](https://github.com/jdemetra/rjdemetra) package, which provided us with powerful tools for seasonal adjustment of time series data, enhancing the accuracy of our models.
 - Sebastian Krantz, the creator of the [dfms](https://github.com/SebKrantz/dfms) package, for openly sharing this valuable resource and providing a user-friendly and efficient tool for estimating Dynamics Factor Models (DFM) in R, which significantly facilitated our nowcasting analysis.
-- Onyxia SSPCloud
+
 Thank you all for your support and contributions to our success in this endeavor.
