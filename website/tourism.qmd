@@ -11,7 +11,7 @@ For this indicator, the benchmark will be the official figures on nights spent a
 
 A night spent is each night a guest/tourist (resident or non-resident) actually spends (sleeps or stays) or is registered (his/her physical presence there being unnecessary) in a tourist accommodation establishment.
 
-## Forecast for a given country, with modular history
+## Next forecast for a given country
 
 ```{ojs}
 viewof country = Inputs.select(Object.values(country_map), {

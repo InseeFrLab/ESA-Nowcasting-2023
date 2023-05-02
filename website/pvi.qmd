@@ -11,7 +11,7 @@ The objective of the index is to measure changes in the volume of output at mont
 It provides a measure of the volume trend in value added over a given reference period.
 The production index is calculated in the form of a Laspeyres type index.
 
-## Forecast for a given country, with modular history
+## Next forecast for a given country
 
 ```{ojs}
 viewof country = Inputs.select(Object.values(country_map), {
