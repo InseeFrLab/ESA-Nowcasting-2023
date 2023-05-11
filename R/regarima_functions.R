@@ -266,7 +266,7 @@ estimate_regarima <- function(challenge, data, models, country, h) {
 }
 
 #########################################
-# Calculation of the final preduction
+# Calculation of the final prediction
 #########################################
 run_regarima <- function(challenge, challenges_info, data, models) {
   preds_regarima <- tibble(
