@@ -1,0 +1,416 @@
+name: Run ESA Challenge
+
+on:
+  schedule:
+    # every 16th day of the month at 11am
+    - cron: '00 11 16 * *'
+    # every last week of the month at 1pm
+    - cron: '00 13 25-31 * *'
+  workflow_dispatch:
+
+jobs:
+  run-data-retrieval:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: data
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Save pipeline data in s3
+        run: |
+          targets::tar_source(files = "R")
+          put_dir_s3(local_dir = "store_data/",
+                     s3_dir = "targets-data/store_data/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+  run-ppi-challenge:
+    needs: [run-data-retrieval]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          ref: gh-submissions
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Configure Git
+        run: |
+          git config user.name Thomas Faria
+          git config user.email 57811152+ThomasFaria@users.noreply.github.com
+          
+      - name: Merge recent changes from main branch
+        run: | 
+          git fetch origin
+          git merge --allow-unrelated-histories -X theirs origin/main
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: ppi
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Commit and push submissions
+        run: |
+          git add Submissions/
+          git commit -m "New submission PPI with Github Actions"
+          git fetch origin
+          git merge origin/gh-submissions
+          git push origin gh-submissions --set-upstream
+          
+      - name: Save pipeline data in s3
+        run: |
+         targets::tar_source(files = "R")
+         put_dir_s3(local_dir = "store_ppi/",
+                     s3_dir = "targets-data/store_ppi/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+  run-pvi-challenge:
+    needs: [run-data-retrieval]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          ref: gh-submissions
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Configure Git
+        run: |
+          git config user.name Thomas Faria
+          git config user.email 57811152+ThomasFaria@users.noreply.github.com
+          
+      - name: Merge recent changes from main branch
+        run: | 
+          git fetch origin
+          git merge --allow-unrelated-histories -X theirs origin/main
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: pvi
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Commit and push submissions
+        run: |
+          git add Submissions/
+          git commit -m "New submission PVI with Github Actions"
+          git fetch origin
+          git merge origin/gh-submissions
+          git push origin gh-submissions --set-upstream
+          
+      - name: Save pipeline data in s3
+        run: |
+         targets::tar_source(files = "R")
+         put_dir_s3(local_dir = "store_pvi/",
+                     s3_dir = "targets-data/store_pvi/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+  run-tourism-challenge:
+    needs: [run-data-retrieval]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          ref: gh-submissions
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Configure Git
+        run: |
+          git config user.name Thomas Faria
+          git config user.email 57811152+ThomasFaria@users.noreply.github.com
+          
+      - name: Merge recent changes from main branch
+        run: | 
+          git fetch origin
+          git merge --allow-unrelated-histories -X theirs origin/main
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: tourism
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Commit and push submissions
+        run: |
+          git add Submissions/
+          git commit -m "New submission TOURISM with Github Actions"
+          git fetch origin
+          git merge origin/gh-submissions
+          git push origin gh-submissions --set-upstream
+          
+      - name: Save pipeline data in s3
+        run: |
+         targets::tar_source(files = "R")
+         put_dir_s3(local_dir = "store_tourism/",
+                     s3_dir = "targets-data/store_tourism/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+  run-post-mortem:
+    needs: [run-ppi-challenge, run-pvi-challenge, run-tourism-challenge]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout out repository
+        uses: actions/checkout@v3
+        with:
+          ref: gh-submissions
+          token: ${{ secrets.TOKEN_CI }}
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+        
+      - name: Install python Dependencies
+        run: pip install -r requirements.txt
+    
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          targets::tar_make()
+        shell: Rscript {0} 
+        env:
+          TAR_PROJECT: post_mortem
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Save pipeline data in s3
+        run: |
+         targets::tar_source(files = "R")
+         put_dir_s3(local_dir = "store_post_mortem/",
+                     s3_dir = "targets-data/store_post_mortem/",
+                     bucket = "projet-esa-nowcasting")
+        shell: Rscript {0} 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+  publish-website:
+    needs: [run-post-mortem]
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+
+      - name: Reconfigure Java support 
+        run: sudo R CMD javareconf
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+        
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+          
+      - name: Install Minio Client
+        run: |
+          wget -q https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc
+          chmod +x /usr/local/bin/mc
+          export 
+       
+      - name: Retrieve stores from s3
+        run: |
+          export MC_HOST_s3=https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@$AWS_S3_ENDPOINT
+          mc cp -r s3/projet-esa-nowcasting/targets-data/ .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+          path: website/
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_CI }}

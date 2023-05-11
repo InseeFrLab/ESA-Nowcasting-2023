@@ -2,20 +2,15 @@
 title: Data
 ---
 
-We take pride in our commitment to utilizing exclusively open data sources in our modeling efforts.
-This approach ensures the transparency and replicability of our methods, which are of paramount importance in the realm of official statistics.
-By leveraging publicly available data, we have been able to derive accurate nowcasts of key economic indicators while promoting the principles of open science and reproducibility.
+We take great pride in our dedication to using exclusively open data sources in our modeling efforts, which was a fundamental aspect of our approach during the challenge. While some proprietary data sources may have had greater predictive power, we firmly believed that utilizing open data sources was crucial to promoting the principles of transparency and reproducibility in our modeling efforts. By leveraging publicly available data, we were able to derive nowcasts of key economic indicators while ensuring that our work can be easily replicated and validated by others in the official statistics community. This approach not only provided us with a robust foundation for our models but also served to promote the values of open science, data transparency, and reproducibility.
 
-\br
+During the challenge, we utilized three primary sources of data to inform our modeling efforts. The first source was **economic data** from the Eurostat database, which provided us with a comprehensive overview of the economic situation in the European Union. The second source of data was **financial data**, which provided us with valuable insights into the financial context surrounding each of the challenges. This data included stock prices, exchange rates, and other financial indicators that were useful in predicting economic trends and identifying potential risks. Finally, we also used **Google Trends** data to capture the most recent trends and shifts in consumer behavior. This data enabled us to monitor changes in search volume for specific keywords, which served as an early warning system for sudden changes in consumer sentiment and preferences. Overall, our use of these three distinct sources of data allowed us to develop a comprehensive understanding of the economic landscape and to generate nowcasts of the 3 target variables.
 
-This data can be separated in several categories:
-
-## Eurostat data{#sec-data-eurostat}
+## Economic data from Eurostat database{#sec-data-eurostat}
 
 We use classic macroeconomic variables provided to Eurostat by European countries and available on Eurostat website.
 These series are automatically retrieved from Eurostat database through its API.
 
-\br
 
 1.  [Producer prices in industry](https://ec.europa.eu/eurostat/databrowser/view/sts_inppd_m/default/table?lang=en):
 
@@ -23,6 +18,7 @@ These series are automatically retrieved from Eurostat database through its API.
     This indicator measures changes in the price of goods and services at the producer level, and it is considered an important leading indicator of inflation.
 
     Specificities:
+
         -   The PPI challenge refers to this indicator for a particular NACE
         -   Total on domestic market (target variable)
         -   Division level of NACE and MIGs
@@ -33,6 +29,7 @@ These series are automatically retrieved from Eurostat database through its API.
     This indicator reflects changes in the prices of imported raw materials, intermediate goods, and capital equipment, and it is influenced by factors such as exchange rates, global commodity prices, and trade policies.
     
     Specificities:
+    
         -   Total
         -   Division level of CPA and MIGs
 
@@ -43,6 +40,7 @@ These series are automatically retrieved from Eurostat database through its API.
     The production index can be used to assess trends in productivity, capacity utilization, and competitiveness.
     
     Specificities:
+    
         -   The PVI challenge refers to this indicator for a particular NACE
         -   Total
         -   Intermediary goods (MIG_ING)
@@ -60,6 +58,7 @@ These series are automatically retrieved from Eurostat database through its API.
     The data collected from the survey can be used to assess the current and future state of the manufacturing sector, to identify sector-specific challenges and opportunities, and to inform policymaking and business decision-making.
     
     Covered by the survey:
+    
         -   Industrial confidence indicator
         -   Production development observed over the past 3 months
         -   Production expectations over the next 3 months
@@ -76,6 +75,7 @@ These series are automatically retrieved from Eurostat database through its API.
     The Consumer Survey in Industry is an important indicator of the overall health of the economy, as consumer spending is a major driver of economic activity.
     
     Covered by the survey:
+    
         -   Financial situation over the last 12 months
         -   Financial situation over the next 12 months
         -   General economic situation over the last 12 months
@@ -97,6 +97,7 @@ These series are automatically retrieved from Eurostat database through its API.
     This indicator is important for assessing the contribution of tourism to the economy, as well as for monitoring the performance and competitiveness of the tourism sector.
 
     Specificities:
+    
         -   The TOURISM challenge refers to this indicator
 
 

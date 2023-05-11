@@ -12,7 +12,7 @@ There is a general public interest in knowing the extent to which the prices of 
 
 The domestic output price index for an economic activity measures the average price development of all goods and related services resulting from that activity and sold on the domestic market between one time period and another.
 
-## Forecast for a given country, with modular history
+## Next forecast for a given country
 
 ```{ojs}
 viewof country = Inputs.select(Object.values(country_map), {

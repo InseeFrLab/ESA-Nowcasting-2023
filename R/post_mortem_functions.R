@@ -1,9 +1,7 @@
-create_table_past_submissions <- function(
-    submitted_models = yaml::read_yaml("submitted_models.yaml"),
-    challenge = "PPI",
-    submissions_folder = "Submissions",
-    by_entry = FALSE) {
-
+create_table_past_submissions <- function(submitted_models = yaml::read_yaml("submitted_models.yaml"),
+                                          challenge = "PPI",
+                                          submissions_folder = "Submissions",
+                                          by_entry = FALSE) {
   past_months <- submitted_models$PAST_MONTHS
   date <- as.Date(submitted_models$START_DATE)
   df_submissions <- data.frame(matrix(ncol = 4, nrow = 0))
