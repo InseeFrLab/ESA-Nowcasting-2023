@@ -1,3 +1,5 @@
+# Eurostat
+
 get_data_from_eurostat <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Eurostat", data_info)
 
@@ -11,6 +13,76 @@ get_data_from_eurostat <- function(data_info) {
 
   return(data)
 }
+
+get_eurostat_data <- function(id, filters = NULL,
+                              stringsAsFactors = FALSE,
+                              ...) {
+  # get response
+  url <- prepare_url(id = id, filters = filters)
+  
+  # get response
+  resp <- httr::RETRY("GET", url, terminate_on = c(404), times = 20)
+  
+  if (httr::http_error(resp)) {
+    stop(paste("The requested url cannot be found:", url))
+  }
+  
+  status <- httr::status_code(resp)
+  
+  # check status and get json
+  
+  msg <- ". Some datasets are not accessible via the eurostat
+          interface."
+  
+  if (status == 200) {
+    jdat <- jsonlite::fromJSON(url)
+  } else if (status == 400) {
+    stop(
+      "Failure to get data. Probably invalid dataset id. Status code: ",
+      status, msg
+    )
+  } else if ((status == 500) | (status == 413)) {
+    stop("Failure to get data. Probably filters did not return any data
+         or data exceeded query size limitation. Status code: ", status, msg)
+  } else if (status == 416) {
+    stop(
+      "Too many categories have been requested. Maximum is 50.",
+      status, msg
+    )
+  } else {
+    stop("Failure to get data. Status code: ", status, msg)
+  }
+  
+  # get json data
+  dims <- jdat$dimension
+  ids <- jdat$id
+  
+  dims_list <- lapply(dims[rev(ids)], function(x) {
+    y <- x$category$label
+    y <- names(unlist(y))
+  })
+  
+  variables <- expand.grid(dims_list,
+                           KEEP.OUT.ATTRS = FALSE,
+                           stringsAsFactors = stringsAsFactors
+  )
+  
+  dat <- as.data.frame(variables[rev(names(variables))])
+  vals <- unlist(jdat$value, use.names = FALSE)
+  dat$values <- rep(NA, nrow(dat))
+  inds <- 1 + as.numeric(names(jdat$value)) # 0-indexed
+  if (!length(vals) == length(inds)) {
+    stop("Complex indexing not implemented.")
+  }
+  dat$values[inds] <- vals
+  
+  data <- tibble::as_tibble(dat) |>
+    dplyr::mutate(time = as.Date(paste(time, "01", sep = "-")))
+  return(data)
+}
+
+
+# Yahoo Finance
 
 get_data_from_yahoo <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Yahoo", data_info)
@@ -38,6 +110,140 @@ get_data_from_yahoo <- function(data_info) {
   return(data)
 }
 
+
+# Google Trends
+# See https://www.oecd-ilibrary.org/docserver/6b9c7518-en.pdf?expires=1681837213&id=id&accname=guest&checksum=31B9D9D14F31F4C9DFC38934AD9A4D96
+
+get_gtrends <- function(country = "FR", category = 179) {
+  gtrends_data <- gtrendsR::gtrends(
+    geo = country,
+    time = "all",
+    gprop = "web",
+    category = category,
+    onlyInterest = TRUE
+  )
+  Sys.sleep(1)
+  return(tsbox::ts_xts(gtrends_data$interest_over_time[, c("date", "geo", "hits")]))
+}
+
+get_rescaling_gtrends <- function(subset_lists) {
+  rescaled_first_component_by_country <- list()
+  for (country in subset_lists[[1]]$filters$geo) {
+    print(country)
+    Sys.sleep(1)
+    list_hp_filtered_svi_ct <- list()
+    
+    for (x in subset_lists) {
+      success <- FALSE
+      while (!success) {
+        Sys.sleep(1)
+        tryCatch(
+          {
+            x_gtrends_data <- get_gtrends(
+              country = country,
+              category = x$category
+            )
+            success <- TRUE
+          },
+          error = function(e) {
+            cat("Got a 429 error, pausing and retrying...\n")
+            Sys.sleep(30)
+          }
+        )
+      }
+      
+      # Creation of SVI and svi
+      SVI_ct <- x_gtrends_data
+      
+      svi_ct <- log(10**(-10) + SVI_ct)
+      hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct, freq = 12, "frequency")[["trend"]], zoo::index(svi_ct))
+      
+      list_hp_filtered_svi_ct[[x$short_name]] <- hp_filtered_svi_ct
+    }
+    
+    # Extracting the common component
+    stacked_series <- do.call(merge, list_hp_filtered_svi_ct)
+    pca <- prcomp(stacked_series, retx = TRUE, center = TRUE, scale = TRUE)
+    first_component <- xts::xts(pca$x[, "PC1"], zoo::index(list_hp_filtered_svi_ct[[1]]))
+    
+    mean_svi <- xts::xts(
+      apply(Reduce(merge, list_hp_filtered_svi_ct), 1, mean),
+      zoo::index(list_hp_filtered_svi_ct[[1]])
+    )
+    standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
+    rescaled_first_component <- standardised_first_component * sd(mean_svi) + mean(mean_svi)
+    
+    # Check the direction of the PCA
+    trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
+    slope_first_component <- trend_first_component$coefficients[2]
+    if (slope_first_component > 0) {
+      rescaled_first_component <- -rescaled_first_component
+    }
+    
+    rescaled_first_component_by_country[[country]] <- rescaled_first_component
+  }
+  return(rescaled_first_component_by_country)
+}
+
+get_data_from_google_trends <- function(data_info) {
+  subset_lists <- Filter(function(x) x$source == "gtrends", data_info)
+  if (length(subset_lists) > 0) {
+    rescaled_first_component_by_country <- get_rescaling_gtrends(subset_lists)
+  }
+  
+  data <- lapply(subset_lists, function(x) {
+    gtrends_countries <- list()
+    for (country in x$filters$geo) {
+      print(country)
+      success <- FALSE
+      while (!success) {
+        Sys.sleep(1)
+        tryCatch(
+          {
+            x_gtrends_data <- get_gtrends(
+              country = country,
+              category = x$category
+            )
+            success <- TRUE
+          },
+          error = function(e) {
+            cat("Got a 429 error, pausing and retrying...\n")
+            Sys.sleep(30)
+          }
+        )
+      }
+      # Creation of SVI and svi
+      
+      SVI_ct <- x_gtrends_data
+      svi_ct <- log(10**(-10) + SVI_ct)
+      
+      rescaled_first_component <- rescaled_first_component_by_country[[country]]
+      
+      # Correct the time series
+      
+      corrected_svi_ct <- svi_ct - rescaled_first_component
+      corrected_SVI_ct <- exp(corrected_svi_ct)
+      
+      new_C <- 100 / max(corrected_SVI_ct)
+      final_SVI_ct <- corrected_SVI_ct * new_C
+      
+      gtrends_df <- data.frame(final_SVI_ct)
+      colnames(gtrends_df) <- c(x$short_name)
+      gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
+      gtrends_df["geo"] <- country
+      gtrends_countries[[country]] <- gtrends_df
+    }
+    data_x <- bind_rows(gtrends_countries)
+    rownames(data_x) <- NULL
+    return(data_x)
+  })
+  
+  return(data)
+}
+
+
+# Smaller sources of data
+
 get_data_from_ember <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "ember-climate", data_info)
 
@@ -61,7 +267,10 @@ get_data_from_ember <- function(data_info) {
   return(data)
 }
 
-# Récupération des données Destatis de péages sur le transport routier en DE
+
+# Data for specific countries
+
+# Retrieval of Destatis data on tolls for road transport in Germany
 get_data_from_destatis <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Destatis", data_info)
 
@@ -86,7 +295,7 @@ get_data_from_destatis <- function(data_info) {
   return(data)
 }
 
-# Récupération de données de l'institut stat autrichien
+# Retrieval of data from the Austrian statistical institute
 get_data_from_wifo <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Wifo", data_info)
 
@@ -131,6 +340,9 @@ get_data_from_wifo <- function(data_info) {
   return(data)
 }
 
+
+# Utils
+
 get_weekend_days <- function(data_info, challenges_info) {
   date_to_pred <- lubridate::ymd(challenges_info$DATES$date_to_pred)
   subset_lists <- Filter(function(x) x$source == "Week-end", data_info)
@@ -161,133 +373,6 @@ get_weekend_days <- function(data_info, challenges_info) {
   return(data)
 }
 
-get_gtrends <- function(country = "FR", category = 179) {
-  gtrends_data <- gtrendsR::gtrends(
-    geo = country,
-    time = "all",
-    gprop = "web",
-    category = category,
-    onlyInterest = TRUE
-  )
-  Sys.sleep(1)
-  return(tsbox::ts_xts(gtrends_data$interest_over_time[, c("date", "geo", "hits")]))
-}
-
-get_rescaling_gtrends <- function(subset_lists) {
-  rescaled_first_component_by_country <- list()
-  for (country in subset_lists[[1]]$filters$geo) {
-    print(country)
-    Sys.sleep(1)
-    list_hp_filtered_svi_ct <- list()
-
-    for (x in subset_lists) {
-      success <- FALSE
-      while (!success) {
-        Sys.sleep(1)
-        tryCatch(
-          {
-            x_gtrends_data <- get_gtrends(
-              country = country,
-              category = x$category
-            )
-            success <- TRUE
-          },
-          error = function(e) {
-            cat("Got a 429 error, pausing and retrying...\n")
-            Sys.sleep(30)
-          }
-        )
-      }
-
-      # Creation of SVI and svi
-      SVI_ct <- x_gtrends_data
-
-      svi_ct <- log(10**(-10) + SVI_ct)
-      hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct, freq = 12, "frequency")[["trend"]], zoo::index(svi_ct))
-
-      list_hp_filtered_svi_ct[[x$short_name]] <- hp_filtered_svi_ct
-    }
-
-    # Extracting the common component
-    stacked_series <- do.call(merge, list_hp_filtered_svi_ct)
-    pca <- prcomp(stacked_series, retx = TRUE, center = TRUE, scale = TRUE)
-    first_component <- xts::xts(pca$x[, "PC1"], zoo::index(list_hp_filtered_svi_ct[[1]]))
-
-    mean_svi <- xts::xts(
-      apply(Reduce(merge, list_hp_filtered_svi_ct), 1, mean),
-      zoo::index(list_hp_filtered_svi_ct[[1]])
-    )
-    standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
-    rescaled_first_component <- standardised_first_component * sd(mean_svi) + mean(mean_svi)
-
-    # Check the direction of the PCA
-    trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
-    slope_first_component <- trend_first_component$coefficients[2]
-    if (slope_first_component > 0) {
-      rescaled_first_component <- -rescaled_first_component
-    }
-
-    rescaled_first_component_by_country[[country]] <- rescaled_first_component
-  }
-  return(rescaled_first_component_by_country)
-}
-
-get_data_from_google_trends <- function(data_info) {
-  subset_lists <- Filter(function(x) x$source == "gtrends", data_info)
-  if (length(subset_lists) > 0) {
-    rescaled_first_component_by_country <- get_rescaling_gtrends(subset_lists)
-  }
-
-  data <- lapply(subset_lists, function(x) {
-    gtrends_countries <- list()
-    for (country in x$filters$geo) {
-      print(country)
-      success <- FALSE
-      while (!success) {
-        Sys.sleep(1)
-        tryCatch(
-          {
-            x_gtrends_data <- get_gtrends(
-              country = country,
-              category = x$category
-            )
-            success <- TRUE
-          },
-          error = function(e) {
-            cat("Got a 429 error, pausing and retrying...\n")
-            Sys.sleep(30)
-          }
-        )
-      }
-      # Creation of SVI and svi
-
-      SVI_ct <- x_gtrends_data
-      svi_ct <- log(10**(-10) + SVI_ct)
-
-      rescaled_first_component <- rescaled_first_component_by_country[[country]]
-
-      # Correct the time series
-
-      corrected_svi_ct <- svi_ct - rescaled_first_component
-      corrected_SVI_ct <- exp(corrected_svi_ct)
-
-      new_C <- 100 / max(corrected_SVI_ct)
-      final_SVI_ct <- corrected_SVI_ct * new_C
-
-      gtrends_df <- data.frame(final_SVI_ct)
-      colnames(gtrends_df) <- c(x$short_name)
-      gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
-      gtrends_df["geo"] <- country
-      gtrends_countries[[country]] <- gtrends_df
-    }
-    data_x <- bind_rows(gtrends_countries)
-    rownames(data_x) <- NULL
-    return(data_x)
-  })
-
-  return(data)
-}
-
 get_data <- function(data_info, list_db) {
   list_data <- lapply(
     list_db,
@@ -315,73 +400,6 @@ prepare_url <- function(id, filters) {
 
   class(url_list) <- "url"
   return(httr::build_url(url_list))
-}
-
-get_eurostat_data <- function(id, filters = NULL,
-                              stringsAsFactors = FALSE,
-                              ...) {
-  # get response
-  url <- prepare_url(id = id, filters = filters)
-
-  # get response
-  resp <- httr::RETRY("GET", url, terminate_on = c(404), times = 20)
-
-  if (httr::http_error(resp)) {
-    stop(paste("The requested url cannot be found:", url))
-  }
-
-  status <- httr::status_code(resp)
-
-  # check status and get json
-
-  msg <- ". Some datasets are not accessible via the eurostat
-          interface."
-
-  if (status == 200) {
-    jdat <- jsonlite::fromJSON(url)
-  } else if (status == 400) {
-    stop(
-      "Failure to get data. Probably invalid dataset id. Status code: ",
-      status, msg
-    )
-  } else if ((status == 500) | (status == 413)) {
-    stop("Failure to get data. Probably filters did not return any data
-         or data exceeded query size limitation. Status code: ", status, msg)
-  } else if (status == 416) {
-    stop(
-      "Too many categories have been requested. Maximum is 50.",
-      status, msg
-    )
-  } else {
-    stop("Failure to get data. Status code: ", status, msg)
-  }
-
-  # get json data
-  dims <- jdat$dimension
-  ids <- jdat$id
-
-  dims_list <- lapply(dims[rev(ids)], function(x) {
-    y <- x$category$label
-    y <- names(unlist(y))
-  })
-
-  variables <- expand.grid(dims_list,
-    KEEP.OUT.ATTRS = FALSE,
-    stringsAsFactors = stringsAsFactors
-  )
-
-  dat <- as.data.frame(variables[rev(names(variables))])
-  vals <- unlist(jdat$value, use.names = FALSE)
-  dat$values <- rep(NA, nrow(dat))
-  inds <- 1 + as.numeric(names(jdat$value)) # 0-indexed
-  if (!length(vals) == length(inds)) {
-    stop("Complex indexing not implemented.")
-  }
-  dat$values[inds] <- vals
-
-  data <- tibble::as_tibble(dat) |>
-    dplyr::mutate(time = as.Date(paste(time, "01", sep = "-")))
-  return(data)
 }
 
 read_date_from_s3 <- function(challenges_info, data_info) {
