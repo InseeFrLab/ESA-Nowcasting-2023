@@ -6,21 +6,13 @@
 # - XGBoost for Europe, ie using a df with the data from all of the countries
 # - XGBoost per country, training a separate model for each country
 
-# For now, we will keep XGBoost per country as our main model
+# Until now, we chose to keep XGBoost per country as our main model
 
 #########################################
-# Import packages and set-up
+# Set-up
 #########################################
-
-# library(lubridate)
-# library(dplyr)
-# library(tidyr)
-# library(data.table)
 
 options(dplyr.summarise.inform = FALSE)
-
-# source("R/data_retrieval.R")
-# source("R/data_preprocessing.R")
 
 #########################################
 # Build tables
