@@ -1,3 +1,5 @@
+# Economic data from Eurostat base
+
 PPI:
   name: "Producer Price in Industry"
   short_name: "PPI"
@@ -161,7 +163,10 @@ TOURISM:
     nace_r2: "I551-I553"
     unit: NR
     freq: M
-    
+
+
+# Financial data from Yahoo Finance
+
 BRENT:
   name: "Brent Crude Oil Price"
   short_name: "BRENT"
@@ -231,54 +236,8 @@ CAC40:
     - LSTM
   id: "^FCHI"
 
-ELEC_PRICES:
-  name: "Electricity prices"
-  short_name: "ELEC_PRICES"
-  source: ember-climate
-  challenge: 
-    - PPI
-    - PVI
-    - TOURISM
-  model:
-    - XGBOOST
-    - LSTM
-  url: "https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv"
-  url-geo-code: "https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv"
-  
-NB_WE:
-  name: "Number of week-end days"
-  short_name: "NB_WE"
-  source: Week-end
-  challenge: 
-    - PVI
-    - TOURISM
-  model:
-    - XGBOOST
-    - LSTM
-  init_date: "2000-01-01"
 
-TOLL_DE:
-  name: "Truck toll mileage index DE"
-  short_name: "toll"
-  source : Destatis
-  challenge: 
-    - PVI
-  model:
-    - XGBOOST
-    - REGARIMA
-    - LSTM
-    - DFM
-  url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
-
-WEEKLY_INDEX_AT:
-  name: "Weekly WIFO economic index"
-  short_name: "wwei"
-  source : Wifo
-  challenge: 
-    - PVI
-  model:
-    - REGARIMA
-  url: "https://www.wifo.ac.at/wwadocs/konjunktur/W%C3%B6chentlicherWIFOWirtschaftsindex/WIFO-BusinessCycleAnalysis_WeeklyWIFOEconomicIndex.xlsx"
+# Google Trends
 
 GTRENDS_MANUFACTURING:
   name: "Google Trends - Manufacturing"
@@ -399,3 +358,55 @@ GTRENDS_SKI:
     geo: ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
     "FR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", 
     "RO", "SE", "SI", "SK"]
+
+
+# Other data
+
+ELEC_PRICES:
+  name: "Electricity prices"
+  short_name: "ELEC_PRICES"
+  source: ember-climate
+  challenge: 
+    - PPI
+    - PVI
+    - TOURISM
+  model:
+    - XGBOOST
+    - LSTM
+  url: "https://ember-climate.org/app/uploads/2022/09/european_wholesale_electricity_price_data_daily-5.csv"
+  url-geo-code: "https://gist.githubusercontent.com/tadast/8827699/raw/f5cac3d42d16b78348610fc4ec301e9234f82821/countries_codes_and_coordinates.csv"
+  
+NB_WE:
+  name: "Number of week-end days"
+  short_name: "NB_WE"
+  source: Week-end
+  challenge: 
+    - PVI
+    - TOURISM
+  model:
+    - XGBOOST
+    - LSTM
+  init_date: "2000-01-01"
+
+TOLL_DE:
+  name: "Truck toll mileage index DE"
+  short_name: "toll"
+  source : Destatis
+  challenge: 
+    - PVI
+  model:
+    - XGBOOST
+    - REGARIMA
+    - LSTM
+    - DFM
+  url: "https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Tabellen/Lkw-Maut-Fahrleistungsindex-Daten.xlsx?__blob=publicationFile"
+
+WEEKLY_INDEX_AT:
+  name: "Weekly WIFO economic index"
+  short_name: "wwei"
+  source : Wifo
+  challenge: 
+    - PVI
+  model:
+    - REGARIMA
+  url: "https://www.wifo.ac.at/wwadocs/konjunktur/W%C3%B6chentlicherWIFOWirtschaftsindex/WIFO-BusinessCycleAnalysis_WeeklyWIFOEconomicIndex.xlsx"

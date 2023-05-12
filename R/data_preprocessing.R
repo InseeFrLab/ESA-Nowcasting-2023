@@ -1,11 +1,25 @@
+# Utils
+
 get_latest_dates <- function(data, var) {
   # Returns a list with last available value for each variable of the xts dataset
   return(as.character(last(zoo::index(data)[!is.na(data[, var])])))
 }
 
+to_tsibble <- function(x) {
+  x %>%
+    mutate(time = tsibble::yearmonth(time)) %>%
+    tidyr::drop_na() %>%
+    tsibble::as_tsibble(key = c(geo), index = time)
+}
+
+
+# Reshaping functions
+
 reshape_eurostat_data <- function(data, country) {
+  # Filter the list of data frames to only keep those from Eurostat
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
 
+  # Reshape each data frame using pivot_wider and join the results together
   reshaped_data <- mapply(function(x, name) {
     x$data %>%
       dplyr::mutate(var = name) %>%
@@ -18,8 +32,10 @@ reshape_eurostat_data <- function(data, country) {
 }
 
 reshape_daily_data <- function(data, source) {
+  # Filter the list of data frames to only keep those from the desired source
   subset_lists <- Filter(function(x) x$source == source, data)
 
+  # Reshape the daily data by taking monthly means
   reshaped_data <- lapply(subset_lists, function(x) {
     x$data %>%
       mutate(
@@ -43,8 +59,10 @@ reshape_daily_data <- function(data, source) {
 }
 
 reshape_gtrends_data <- function(data, country) {
+  # Filter the list of data frames to only keep those from Google Trends
   subset_lists <- Filter(function(x) x$source == "gtrends", data)
 
+  # Reshape each data frame using pivot_wider and join the results together
   reshaped_data <- mapply(function(x, name) {
     x$data %>%
       dplyr::mutate(
@@ -59,9 +77,14 @@ reshape_gtrends_data <- function(data, country) {
   return(reshaped_data)
 }
 
+
+# Reformatting functions for ML methods
+
 pivot_eurostat_data <- function(data) {
+  # Filter the list of data frames to only keep those from Eurostat
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
 
+  # Reshape each data frame using pivot_wider and join the results together
   pivoted_data <- mapply(function(x) {
     x$data %>% pivot_wider(
       id_cols = c(geo, time),
@@ -79,6 +102,7 @@ pivot_eurostat_data <- function(data) {
 }
 
 format_yahoo_data <- function(data) {
+  # Filter the list of data frames to only keep those from Yahoo Finance
   subset_lists <- Filter(function(x) x$source == "Yahoo", data)
 
   if (length(subset_lists) == 0) {
@@ -137,6 +161,7 @@ format_yahoo_data <- function(data) {
 }
 
 format_other_daily_data <- function(data) {
+  # Filter the list of data frames to only keep those from the desired sources
   subset_lists <- Filter(
     function(x) x$source %in% c("ember-climate", "Destatis"), data
   )
@@ -188,8 +213,10 @@ format_other_daily_data <- function(data) {
 }
 
 format_gtrends_data <- function(data) {
+  # Filter the list of data frames to only keep those from Google Trends
   subset_lists <- Filter(function(x) x$source == "gtrends", data)
 
+  # Add columns for the previous and following months
   data_with_lead <- mapply(function(x) {
     variable_name_previous_month <- paste0(x$short_name, "_previous_month")
     variable_name_next_month <- paste0(x$short_name, "_next_month")
@@ -214,6 +241,13 @@ build_data_ml <- function(data = get_data(
                           config_env = yaml::read_yaml("challenges.yaml"),
                           challenge = "PPI",
                           model = "XGBOOST") {
+  # Format the data so that it can be used as input by ML algorithms, namely XGBoost and LSTM
+  # It consists mainly in:
+  # - Combining the data from all the available sources into one big dataset
+  # - "Widening" the data to create lagged columns / variables, as the methods
+  #   interpretate each row independently, without using the time series.
+  # - Deleting the "dummy" columns that may have been created
+
   selected_data <- Filter(
     function(x) (challenge %in% x$challenge) & (model %in% x$model),
     data
@@ -348,11 +382,4 @@ build_data_ml <- function(data = get_data(
   ### G) Return results
 
   return(df)
-}
-
-to_tsibble <- function(x) {
-  x %>%
-    mutate(time = tsibble::yearmonth(time)) %>%
-    tidyr::drop_na() %>%
-    tsibble::as_tsibble(key = c(geo), index = time)
 }

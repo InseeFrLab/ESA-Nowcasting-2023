@@ -5,13 +5,8 @@
 # This code implements a LSTM for nowcasting 
 
 #########################################
-# Import packages and set-up
+# Set-up
 #########################################
-
-# library(lubridate)
-# library(dplyr)
-# library(tidyr)
-# library(data.table)
 
 nowcastLSTM::initialize_session(python_path = Sys.which("python"))
 options(dplyr.summarise.inform = FALSE)
