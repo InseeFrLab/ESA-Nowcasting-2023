@@ -10,8 +10,10 @@ build_data_ets <- function(challenge, challenges_info, data_info) {
     data <- data %>%
       tsibble::fill_gaps() %>%
       group_by(geo) %>%
+      # when missing values they are replaced by the last value
       mutate(values = zoo::na.locf(values)) %>%
       ungroup() %>%
+      # we start the model in 2003 for all the series, except MT and FR where a different pattern is seen from 2010
       filter((year(time) >= 2003 & !geo %in% c("MT", "FR")) |
         (year(time) >= 2010 & geo %in% c("MT", "FR")))
   }
@@ -20,6 +22,7 @@ build_data_ets <- function(challenge, challenges_info, data_info) {
 
 estimate_ets <- function(challenge, challenges_info, data_info, initial_year, last_year) {
   ets <- build_data_ets(challenge, challenges_info, data_info) %>%
+    # For TOURISM, not all the data is used to identify the model
     filter((year(time) >= initial_year) & (year(time) < last_year)) %>%
     fabletools::model(
       ETS = fable::ETS(values)
@@ -41,6 +44,7 @@ run_ETS <- function(challenge, challenges_info, data_info, models_info) {
   }
 
   preds_ets <- ets %>%
+    # forecast over 12 months and then filter to the expected forecast date
     fabletools::forecast(h = "12 months") %>%
     filter(as.Date(time) == date_to_pred) %>%
     mutate(
