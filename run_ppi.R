@@ -14,7 +14,7 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
-SAVE_TO_S3 <- True
+SAVE_TO_S3 <- TRUE
 
 list(
   tar_target(
