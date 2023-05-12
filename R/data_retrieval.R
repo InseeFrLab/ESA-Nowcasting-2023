@@ -19,21 +19,21 @@ get_eurostat_data <- function(id, filters = NULL,
                               ...) {
   # get response
   url <- prepare_url(id = id, filters = filters)
-  
+
   # get response
   resp <- httr::RETRY("GET", url, terminate_on = c(404), times = 20)
-  
+
   if (httr::http_error(resp)) {
     stop(paste("The requested url cannot be found:", url))
   }
-  
+
   status <- httr::status_code(resp)
-  
+
   # check status and get json
-  
+
   msg <- ". Some datasets are not accessible via the eurostat
           interface."
-  
+
   if (status == 200) {
     jdat <- jsonlite::fromJSON(url)
   } else if (status == 400) {
@@ -52,21 +52,21 @@ get_eurostat_data <- function(id, filters = NULL,
   } else {
     stop("Failure to get data. Status code: ", status, msg)
   }
-  
+
   # get json data
   dims <- jdat$dimension
   ids <- jdat$id
-  
+
   dims_list <- lapply(dims[rev(ids)], function(x) {
     y <- x$category$label
     y <- names(unlist(y))
   })
-  
+
   variables <- expand.grid(dims_list,
-                           KEEP.OUT.ATTRS = FALSE,
-                           stringsAsFactors = stringsAsFactors
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = stringsAsFactors
   )
-  
+
   dat <- as.data.frame(variables[rev(names(variables))])
   vals <- unlist(jdat$value, use.names = FALSE)
   dat$values <- rep(NA, nrow(dat))
@@ -75,7 +75,7 @@ get_eurostat_data <- function(id, filters = NULL,
     stop("Complex indexing not implemented.")
   }
   dat$values[inds] <- vals
-  
+
   data <- tibble::as_tibble(dat) |>
     dplyr::mutate(time = as.Date(paste(time, "01", sep = "-")))
   return(data)
@@ -132,7 +132,7 @@ get_rescaling_gtrends <- function(subset_lists) {
     print(country)
     Sys.sleep(1)
     list_hp_filtered_svi_ct <- list()
-    
+
     for (x in subset_lists) {
       success <- FALSE
       while (!success) {
@@ -151,35 +151,35 @@ get_rescaling_gtrends <- function(subset_lists) {
           }
         )
       }
-      
+
       # Creation of SVI and svi
       SVI_ct <- x_gtrends_data
-      
+
       svi_ct <- log(10**(-10) + SVI_ct)
       hp_filtered_svi_ct <- xts::xts(mFilter::hpfilter(svi_ct, freq = 12, "frequency")[["trend"]], zoo::index(svi_ct))
-      
+
       list_hp_filtered_svi_ct[[x$short_name]] <- hp_filtered_svi_ct
     }
-    
+
     # Extracting the common component
     stacked_series <- do.call(merge, list_hp_filtered_svi_ct)
     pca <- prcomp(stacked_series, retx = TRUE, center = TRUE, scale = TRUE)
     first_component <- xts::xts(pca$x[, "PC1"], zoo::index(list_hp_filtered_svi_ct[[1]]))
-    
+
     mean_svi <- xts::xts(
       apply(Reduce(merge, list_hp_filtered_svi_ct), 1, mean),
       zoo::index(list_hp_filtered_svi_ct[[1]])
     )
     standardised_first_component <- (first_component - mean(first_component)) / sd(first_component)
     rescaled_first_component <- standardised_first_component * sd(mean_svi) + mean(mean_svi)
-    
+
     # Check the direction of the PCA
     trend_first_component <- lm(rescaled_first_component ~ time(rescaled_first_component))
     slope_first_component <- trend_first_component$coefficients[2]
     if (slope_first_component > 0) {
       rescaled_first_component <- -rescaled_first_component
     }
-    
+
     rescaled_first_component_by_country[[country]] <- rescaled_first_component
   }
   return(rescaled_first_component_by_country)
@@ -190,7 +190,7 @@ get_data_from_google_trends <- function(data_info) {
   if (length(subset_lists) > 0) {
     rescaled_first_component_by_country <- get_rescaling_gtrends(subset_lists)
   }
-  
+
   data <- lapply(subset_lists, function(x) {
     gtrends_countries <- list()
     for (country in x$filters$geo) {
@@ -213,20 +213,20 @@ get_data_from_google_trends <- function(data_info) {
         )
       }
       # Creation of SVI and svi
-      
+
       SVI_ct <- x_gtrends_data
       svi_ct <- log(10**(-10) + SVI_ct)
-      
+
       rescaled_first_component <- rescaled_first_component_by_country[[country]]
-      
+
       # Correct the time series
-      
+
       corrected_svi_ct <- svi_ct - rescaled_first_component
       corrected_SVI_ct <- exp(corrected_svi_ct)
-      
+
       new_C <- 100 / max(corrected_SVI_ct)
       final_SVI_ct <- corrected_SVI_ct * new_C
-      
+
       gtrends_df <- data.frame(final_SVI_ct)
       colnames(gtrends_df) <- c(x$short_name)
       gtrends_df <- cbind(time = rownames(gtrends_df), gtrends_df)
@@ -237,7 +237,7 @@ get_data_from_google_trends <- function(data_info) {
     rownames(data_x) <- NULL
     return(data_x)
   })
-  
+
   return(data)
 }
 
@@ -270,7 +270,7 @@ get_data_from_ember <- function(data_info) {
 
 # Data for specific countries
 
-# Retrieval of Destatis data on tolls for road transport in Germany
+# Retrieval of Destatis data on tolls mileage for road transport in Germany
 get_data_from_destatis <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Destatis", data_info)
 
@@ -296,6 +296,7 @@ get_data_from_destatis <- function(data_info) {
 }
 
 # Retrieval of data from the Austrian statistical institute
+# Early indicator on industry form Wifo
 get_data_from_wifo <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Wifo", data_info)
 

@@ -16,7 +16,6 @@ to_tsibble <- function(x) {
 # Reshaping functions
 
 reshape_eurostat_data <- function(data, country) {
-
   # Filter the list of data frames to only keep those from Eurostat
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
 
@@ -33,7 +32,6 @@ reshape_eurostat_data <- function(data, country) {
 }
 
 reshape_daily_data <- function(data, source) {
-  
   # Filter the list of data frames to only keep those from the desired source
   subset_lists <- Filter(function(x) x$source == source, data)
 
@@ -61,7 +59,6 @@ reshape_daily_data <- function(data, source) {
 }
 
 reshape_gtrends_data <- function(data, country) {
-  
   # Filter the list of data frames to only keep those from Google Trends
   subset_lists <- Filter(function(x) x$source == "gtrends", data)
 
@@ -84,7 +81,6 @@ reshape_gtrends_data <- function(data, country) {
 # Reformatting functions for ML methods
 
 pivot_eurostat_data <- function(data) {
-  
   # Filter the list of data frames to only keep those from Eurostat
   subset_lists <- Filter(function(x) x$source == "Eurostat", data)
 
@@ -106,7 +102,6 @@ pivot_eurostat_data <- function(data) {
 }
 
 format_yahoo_data <- function(data) {
-  
   # Filter the list of data frames to only keep those from Yahoo Finance
   subset_lists <- Filter(function(x) x$source == "Yahoo", data)
 
@@ -166,7 +161,6 @@ format_yahoo_data <- function(data) {
 }
 
 format_other_daily_data <- function(data) {
-  
   # Filter the list of data frames to only keep those from the desired sources
   subset_lists <- Filter(
     function(x) x$source %in% c("ember-climate", "Destatis"), data
@@ -219,7 +213,6 @@ format_other_daily_data <- function(data) {
 }
 
 format_gtrends_data <- function(data) {
-  
   # Filter the list of data frames to only keep those from Google Trends
   subset_lists <- Filter(function(x) x$source == "gtrends", data)
 
@@ -248,14 +241,13 @@ build_data_ml <- function(data = get_data(
                           config_env = yaml::read_yaml("challenges.yaml"),
                           challenge = "PPI",
                           model = "XGBOOST") {
-  
   # Format the data so that it can be used as input by ML algorithms, namely XGBoost and LSTM
   # It consists mainly in:
   # - Combining the data from all the available sources into one big dataset
   # - "Widening" the data to create lagged columns / variables, as the methods
   #   interpretate each row independently, without using the time series.
   # - Deleting the "dummy" columns that may have been created
-  
+
   selected_data <- Filter(
     function(x) (challenge %in% x$challenge) & (model %in% x$model),
     data
