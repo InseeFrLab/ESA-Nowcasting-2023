@@ -61,7 +61,7 @@ get_data_from_ember <- function(data_info) {
   return(data)
 }
 
-# Récupération des données Destatis de péages sur le transport routier en DE
+# Retrieving the toll mileage index of Destatis
 get_data_from_destatis <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Destatis", data_info)
 
@@ -86,7 +86,7 @@ get_data_from_destatis <- function(data_info) {
   return(data)
 }
 
-# Récupération de données de l'institut stat autrichien
+# Retrieving the early indicator on industri form Wifo
 get_data_from_wifo <- function(data_info) {
   subset_lists <- Filter(function(x) x$source == "Wifo", data_info)
 
