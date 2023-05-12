@@ -65,7 +65,7 @@ The project is decomposed into four different pipelines specified in the targets
 
 The first pipeline retrieves all the data necessary for the different challenges, while the other three run the five models for each challenge independently. Each pipeline can be run using the following command: `targets::tar_make(script = "run_***.R")`.
 
-Note that the data used for the challenges is stored in a private bucket, and writing permissions are required to run the pipeline as is. Otherwise, adjustments to the saving procedure are necessary.
+Note that the data used for the challenges is stored in a private bucket, and writing permissions are required to run the pipeline as is. Hence, if you don't have access to our private bucket you have to run all 4 pipelines with the parameter `SAVE_TO_S3` equals to `False`. 
 
 ![Summary of the pipeline.](workflow-example.png)
 
