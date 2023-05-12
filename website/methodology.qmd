@@ -213,17 +213,11 @@ metrics such as mean squared error and mean absolute error.
 
 ## LSTM
 
-LSTM, or Long Short-Term Memory, is a type of recurrent neural network
-that is particularly well-suited for modeling time series data. Unlike
-traditional feedforward neural networks, which process input data in a
-single pass, recurrent neural networks can maintain a "memory" of
-previous inputs and use this information to make better predictions.
+### Introduction 
 
-LSTM takes this a step further by introducing "gates" that can
-selectively remember or forget previous inputs based on their importance
-to the current prediction. These gates allow the model to capture
-longer-term dependencies in the data, making it especially effective for
-time series forecasting tasks.
+Long Short Term Memory (LTSM) networks are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure \ref{fig:StructureLTSM}).
+
+### LTSM model 
 
 During the training process, the LSTM model is fed a sequence of inputs,
 with each input representing a timestep in the time series. The model
@@ -249,9 +243,8 @@ each country was transformed into a format that was suitable for LSTM
 training, with each row representing a single timestep in the time
 series and the columns representing the various input features.
 
-The LSTM model was trained independently for each country, with a grid
-search used to find the optimal hyperparameters for each model. Overall,
-the LSTM approach proved to be a powerful tool for time series
-forecasting, and its ability to capture long-term dependencies in the
-data made it particularly well-suited for the nowcasting problem at
-hand.
+### Data and estimation
+
+We gathered indicators of the macroeconomic environement from different sources. These data include hard : macro variables, financial indicators, economic surveys, prices and soft indicators. The data is transformed into a large dataset, we included macroeconomic series and their lags. The series are all scaled. 
+The LSTM model is trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall,
+the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.
