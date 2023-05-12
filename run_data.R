@@ -14,6 +14,8 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
+SAVE_TO_S3 <- True
+
 list(
   tar_target(
     name = data_info_file,
@@ -72,7 +74,7 @@ list(
   ),
   tar_target(
     name = data_saved,
-    command = save_data(data, challenges),
+    command = save_data(data, challenges, SAVE_TO_S3),
     format = "file"
   )
 )

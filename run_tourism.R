@@ -14,6 +14,8 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
+SAVE_TO_S3 <- True
+
 list(
   tar_target(
     name = data_info_file,
@@ -96,7 +98,8 @@ list(
         "entry_4" = xgboost_tourism,
         "entry_5" = lstm_tourism
       ),
-      challenges
+      challenges,
+      SAVE_TO_S3
     )
   )
 )

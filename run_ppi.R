@@ -14,6 +14,8 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
+SAVE_TO_S3 <- True
+
 list(
   tar_target(
     name = challenge,
@@ -100,7 +102,8 @@ list(
         "entry_4" = xgboost_ppi,
         "entry_5" = lstm_ppi
       ),
-      challenges
+      challenges,
+      SAVE_TO_S3
     )
   )
 )
