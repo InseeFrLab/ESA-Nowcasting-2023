@@ -53,7 +53,7 @@ reorder_entries <- function(entries, filename) {
   write(jsonlite::prettify(file), filename)
 }
 
-save_data <- function(data, challenges_info, put_dir_s3) {
+save_data <- function(data, challenges_info, save_s3) {
   month <- challenges_info$DATES$month_to_pred
 
   if (!dir.exists(paste0("data/", month))) {
