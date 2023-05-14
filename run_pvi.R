@@ -14,7 +14,7 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
-SAVE_TO_S3 <- TRUE
+SAVE_TO_S3 <- FALSE
 
 list(
   tar_target(
@@ -46,7 +46,7 @@ list(
   ),
   tar_target(
     name = data,
-    command = read_date_from_s3(challenges, data_info),
+    command = read_data_from_s3(challenges, data_info),
   ),
   tar_target(
     name = ets_pvi,

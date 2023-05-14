@@ -403,23 +403,20 @@ prepare_url <- function(id, filters) {
   return(httr::build_url(url_list))
 }
 
-read_date_from_s3 <- function(challenges_info, data_info) {
+read_data_from_s3 <- function(challenges_info, data_info) {
   month <- challenges_info$DATES$month_to_pred
-  list_files <- aws.s3::get_bucket("projet-esa-nowcasting", region = "", prefix = paste0("data/", month, "/"))
-  names <- unname(sapply(list_files, function(x) {
-    sub("\\.[^.]+$", "", basename(x$Key))
-  }, simplify = TRUE))
-
-  data <- lapply(list_files, function(x) {
-    aws.s3::s3read_using(
-      FUN = arrow::read_parquet,
-      object = x$Key,
-      bucket = "projet-esa-nowcasting",
-      opts = list("region" = "")
-    )
-  })
-
-  data <- setNames(data, names)
+  
+  if (!dir.exists(paste0("data/", month))) {
+    dir.create(paste0("data/", month))
+  }
+  
+  data <- mapply(function(x, source) {
+    url <- paste0("https://minio.lab.sspcloud.fr/projet-esa-nowcasting/data/", month, "/", source, ".parquet")
+    destfile <- paste0("data/", month, "/", source, ".parquet")
+    download.file(url, destfile)
+    return(arrow::read_parquet(destfile))
+  }, data_info, names(data_info), SIMPLIFY = FALSE)
+  
   return(
     get_data(
       data_info[order(names(data_info))],

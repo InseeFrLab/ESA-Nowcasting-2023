@@ -50,7 +50,7 @@ list(
   ),
   tar_target(
     name = data,
-    command = read_date_from_s3(challenges, data_info),
+    command = read_data_from_s3(challenges, data_info),
   ),
   tar_target(
     name = ets_ppi,
