@@ -413,7 +413,9 @@ read_data_from_s3 <- function(challenges_info, data_info) {
   data <- mapply(function(x, source) {
     url <- paste0("https://minio.lab.sspcloud.fr/projet-esa-nowcasting/data/", month, "/", source, ".parquet")
     destfile <- paste0("data/", month, "/", source, ".parquet")
-    download.file(url, destfile)
+    if (!file.exists(destfile)) {
+      download.file(url, destfile)
+    }
     return(arrow::read_parquet(destfile))
   }, data_info, names(data_info), SIMPLIFY = FALSE)
   
