@@ -1,3 +1,11 @@
+#' Data Retrieval functions
+#'
+#' This module provides a collection of functions for retrieving data from 
+#' different data sources. It includes functions specifically designed for 
+#' fetching data from various sources such as databases, APIs, files... 
+#' These functions facilitate the retrieval of data for further analysis.
+
+
 # Eurostat
 
 get_data_from_eurostat <- function(data_info) {
@@ -17,7 +25,7 @@ get_data_from_eurostat <- function(data_info) {
 get_eurostat_data <- function(id, filters = NULL,
                               stringsAsFactors = FALSE,
                               ...) {
-  # get response
+  # get url
   url <- prepare_url(id = id, filters = filters)
 
   # get response
@@ -30,7 +38,7 @@ get_eurostat_data <- function(id, filters = NULL,
   status <- httr::status_code(resp)
 
   # check status and get json
-
+donc
   msg <- ". Some datasets are not accessible via the eurostat
           interface."
 
@@ -79,6 +87,26 @@ get_eurostat_data <- function(id, filters = NULL,
   data <- tibble::as_tibble(dat) |>
     dplyr::mutate(time = as.Date(paste(time, "01", sep = "-")))
   return(data)
+}
+
+prepare_url <- function(id, filters) {
+  # prepare filters for query
+  filters2 <- as.list(unlist(filters))
+  names(filters2) <- rep(names(filters), lapply(filters, length))
+  
+  # prepare url
+  url_list <- list(
+    scheme = "https",
+    hostname = "ec.europa.eu",
+    path = file.path(
+      "eurostat/api/dissemination/statistics/1.0/data",
+      id
+    ),
+    query = filters2
+  )
+  
+  class(url_list) <- "url"
+  return(httr::build_url(url_list))
 }
 
 
@@ -381,26 +409,6 @@ get_data <- function(data_info, list_db) {
   )
 
   return(Map(c, list_data, data_info))
-}
-
-prepare_url <- function(id, filters) {
-  # prepare filters for query
-  filters2 <- as.list(unlist(filters))
-  names(filters2) <- rep(names(filters), lapply(filters, length))
-
-  # prepare url
-  url_list <- list(
-    scheme = "https",
-    hostname = "ec.europa.eu",
-    path = file.path(
-      "eurostat/api/dissemination/statistics/1.0/data",
-      id
-    ),
-    query = filters2
-  )
-
-  class(url_list) <- "url"
-  return(httr::build_url(url_list))
 }
 
 read_data_from_s3 <- function(challenges_info, data_info) {

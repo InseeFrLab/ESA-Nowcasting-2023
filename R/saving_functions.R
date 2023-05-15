@@ -1,3 +1,11 @@
+#' Data Saving functions
+#'
+#' This module provides a collection of functions for saving data and 
+#' submissions to different destinations. It includes functions specifically 
+#' designed for saving data to various file formats, databases, cloud storage. 
+#' These functions facilitate the saving of data after processing or analysis, 
+#' ensuring data persistence and accessibility for future use.
+
 save_entries <- function(challenge, entries, challenges_info, save_s3) {
   entries <- lapply(entries, function(x) {
     lapply(

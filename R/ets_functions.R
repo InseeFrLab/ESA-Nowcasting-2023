@@ -1,3 +1,11 @@
+#' ETS Modeling functions
+#'
+#' This module provides a collection of functions for performing predictions 
+#' using ETS (Error-Trend-Seasonality) models. ETS models are time series models 
+#' that capture the underlying components of a time series, including error, 
+#' trend, and seasonality. The functions in this module facilitate the 
+#' implementation and evaluation of ETS models for predictive modeling tasks.
+
 build_data_ets <- function(challenge, challenges_info, data_info) {
   code_variable_interest <- challenges_info[[challenge]]$principal_nace
   countries <- challenges_info[[challenge]]$countries

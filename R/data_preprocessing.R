@@ -1,5 +1,10 @@
-# Utils
+#' Data Preprocessing functions
+#'
+#' This module provides a collection of functions for performing data 
+#' preprocessing tasks on different types of data or utils functions.
 
+
+# Utils
 get_latest_dates <- function(data, var) {
   # Returns a list with last available value for each variable of the xts dataset
   return(as.character(last(zoo::index(data)[!is.na(data[, var])])))
@@ -233,14 +238,7 @@ format_gtrends_data <- function(data) {
   return(data_with_lead)
 }
 
-build_data_ml <- function(data = get_data(
-                            yaml::read_yaml("data.yaml"),
-                            yaml::read_yaml("challenges.yaml")
-                          ),
-                          config_models = yaml::read_yaml("models.yaml"),
-                          config_env = yaml::read_yaml("challenges.yaml"),
-                          challenge = "PPI",
-                          model = "XGBOOST") {
+build_data_ml <- function(data, config_models, config_env, challenge, model) {
   # Format the data so that it can be used as input by ML algorithms, namely XGBoost and LSTM
   # It consists mainly in:
   # - Combining the data from all the available sources into one big dataset

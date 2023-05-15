@@ -2,6 +2,7 @@
 # Building database for Regarima for each country
 # (using parameters of the configuration files data.yaml and models.yaml)
 #########################################
+
 build_data_regarima <- function(challenge, challenges_info, data, models, country) {
   selected_data <- Filter(function(x) (challenge %in% x$challenge) & ("REGARIMA" %in% x$model), data)
 
@@ -46,6 +47,7 @@ build_data_regarima <- function(challenge, challenges_info, data, models, countr
 # function for seasonal adjustement of some series in Tourism challenge
 # Using X13 in the RJdemetra package
 #########################################
+
 desaiso <- function(serie, challenge, models) {
   specification_sa <- do.call(RJDemetra::x13_spec, models$REGARIMA[[challenge]]$CVS)
   serie_sa <- RJDemetra::x13(window(serie, start = c(2015, 1)), specification_sa)
@@ -56,6 +58,7 @@ desaiso <- function(serie, challenge, models) {
 # Creation of the regressors list for a given challenge x country occurrence
 # Some exceptions (fine-tuning) are authorized to adapt the regressors to countries specificities
 #########################################
+
 create_regressors <- function(challenge, challenges_info, data, models, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
 
@@ -220,6 +223,7 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
 #########################################
 # Estimation of parameters
 #########################################
+
 estimate_regarima <- function(challenge, data, models, country, h) {
   parameters <- c(models$REGARIMA[[challenge]]$NO_CVS, list(fcst.horizon = h))
 
@@ -266,6 +270,7 @@ estimate_regarima <- function(challenge, data, models, country, h) {
 #########################################
 # Calculation of the final prediction
 #########################################
+
 run_regarima <- function(challenge, challenges_info, data, models) {
   preds_regarima <- tibble(
     Country = character(),

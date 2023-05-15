@@ -1,3 +1,11 @@
+#' Dynamic Factor Modeling functions
+#'
+#' This module provides a collection of functions for performing predictions 
+#' using Dynamic Factor Models (DFMs). Dynamic Factor Models are statistical 
+#' models that incorporate latent factors to forecast variables of interest. The
+#' functions in this module facilitate the implementation and evaluation of 
+#' DFMs for predictive modeling tasks.
+
 build_data_dfms <- function(challenge, challenges_info, data_info, models_info, country) {
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
   start_sample <- ymd(models_info$DFM[[challenge]]$start_sample)
@@ -94,9 +102,6 @@ estimate_dfm <- function(data, country, max_factor, max_lags) {
       e
     }
   )
-
-  # if (inherits(ic, "error")) next
-
 
   # Take the most optimal number of factor following Bain and NG (2002)
   r <- as.double(names(sort(table(ic$r.star), decreasing = TRUE)[1]))
@@ -257,14 +262,14 @@ run_DFMs <- function(challenge, challenges_info, data_info, models_info) {
     )
 
     #########################################
-    # Storing the predictions
+    # Store the predictions
     #########################################
     preds_dfm <- preds_dfm |>
       add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
 
 
     #########################################
-    # Storing the residuals
+    # Store the residuals
     #########################################
     if (models_info$DFM[[challenge]]$SA) {
       var_to_predict <- paste(var_to_predict, "SA", sep = "_")
@@ -289,13 +294,8 @@ run_DFMs <- function(challenge, challenges_info, data_info, models_info) {
   }
 
   #########################################
-  # Add missing countries in the list
+  # Arrange countries in the list
   #########################################
-  missing_countries <- setdiff(countries, preds_dfm$Country)
-  for (country in missing_countries) {
-    preds_dfm <- preds_dfm |>
-      add_row(Country = country, Date = date_to_pred)
-  }
 
   # Re-arranging countries
   preds_dfm <- preds_dfm |>
