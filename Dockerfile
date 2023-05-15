@@ -33,5 +33,5 @@ RUN R CMD javareconf
     
 RUN install2.r --error renv && \
     # Configure renv to use RSPM to download packages by default
-    echo "options(repos = c(CRAN = '${CRAN}'))" >>"${R_HOME}/etc/Rprofile.site" && \
+    echo "options(repos = c(renv.config.repos.override = '${CRAN}'))" >>"${R_HOME}/etc/Rprofile.site" && \
     Rscript -e "renv::restore()"
