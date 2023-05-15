@@ -19,19 +19,19 @@ RUN git clone --branch R4.2.2 --depth 1 https://github.com/rocker-org/rocker-ver
     chmod -R +x /rocker_scripts/
 
 # Install Python
-RUN /rocker_scripts/install_python.sh
+# RUN /rocker_scripts/install_python.sh
 
 COPY . .
 
 # Install python dependencies
-RUN pip install -r requirements.txt
+# RUN pip install -r requirements.txt
 
 # Reconfigure Java support 
 RUN R CMD javareconf
 
 # Install R dependencies
-    
+ENV RENV_CONFIG_REPOS_OVERRIDE=${CRAN}
 RUN install2.r --error renv && \
     # Configure renv to use RSPM to download packages by default
-    echo "options(repos = c(renv.config.repos.override = '${CRAN}'))" >>"${R_HOME}/etc/Rprofile.site" && \
+    echo $RENV_CONFIG_REPOS_OVERRIDE && \
     Rscript -e "renv::restore()"
