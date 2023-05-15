@@ -7,6 +7,7 @@ RUN apt-get update && \
     apt-get install -y \
             git \
             libcurl4-openssl-dev \
+            libglpk-dev \
             openjdk-8-jdk \
             wget
             
