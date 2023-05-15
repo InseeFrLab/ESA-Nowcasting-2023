@@ -1,7 +1,6 @@
 FROM rocker/rstudio:4.2.2
 
 WORKDIR ${HOME}/ESA-Nowcasting-2023
-COPY . .
 
 # System libs
 RUN apt-get update && \
@@ -27,6 +26,8 @@ RUN pip install -r requirements.txt
 
 # Reconfigure Java support 
 RUN sudo R CMD javareconf
+
+COPY . .
 
 # Install R dependencies
 RUN install2.r --error renv && \
