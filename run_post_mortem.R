@@ -1,19 +1,28 @@
-# Load packages required to define the pipeline:
+#' Pipeline for Post-Mortem
+#'
+#' This pipeline is designed to conduct a comprehensive post-mortem analysis of 
+#' our previous forecast by performing a series of computations and data 
+#' manipulations. Its purpose is to thoroughly evaluate the accuracy and 
+#' performance of the forecasted results and provide valuable insights for 
+#' retrospective examination.
+
 library(targets)
 
 # Set target options:
 tar_option_set(
   packages = c(
     "xts", "lubridate", "dplyr", "tidyr", "data.table", "tibble",
-    "dfms", "cowplot", "jsonlite", "ggplot2", "styler", "visNetwork"
+    "jsonlite", "styler", "visNetwork"
   ),
   memory = "transient",
   garbage_collection = TRUE
 )
 options(dplyr.summarise.inform = FALSE)
 
+# Execute files stored in R/
 tar_source(files = "R")
 
+# Pipeline
 list(
   tar_target(
     name = data_info_file,

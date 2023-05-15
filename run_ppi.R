@@ -1,21 +1,31 @@
-# Load packages required to define the pipeline:
+#' Pipeline for PPI challenge
+#'
+#' This pipeline executes five different models (Reg-Arima, DFM, XGBoost, ETS, 
+#' LSTM) that were utilized in the ESA Nowcasting Challenge. The purpose is to 
+#' perform nowcasting of the Producer Price Industry based on these models. 
+#' If the `SAVE_TO_S3` variable is set to TRUE, the submission can be saved in 
+#' a S3 bucket.
+
 library(targets)
 
 # Set target options:
 tar_option_set(
   packages = c(
     "xts", "lubridate", "dplyr", "tidyr", "data.table",
-    "dfms", "cowplot", "jsonlite", "ggplot2", "styler", "visNetwork"
+    "dfms", "jsonlite", "styler", "visNetwork"
   ),
   memory = "transient",
   garbage_collection = TRUE
 )
 options(dplyr.summarise.inform = FALSE)
 
+# Execute files stored in R/
 tar_source(files = "R")
 
+# Saving flag to S3 (TOKEN NEEDED)
 SAVE_TO_S3 <- TRUE
 
+# Pipeline
 list(
   tar_target(
     name = challenge,

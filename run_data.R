@@ -9,13 +9,14 @@ library(targets)
 tar_option_set(
   packages = c(
     "xts", "lubridate", "dplyr", "tidyr", "data.table",
-    "dfms", "cowplot", "jsonlite", "ggplot2", "styler", "visNetwork"
+    "jsonlite", "styler", "visNetwork"
   ),
   memory = "transient",
   garbage_collection = TRUE
 )
 options(dplyr.summarise.inform = FALSE)
 
+# Execute files stored in R/
 tar_source(files = "R")
 
 # Saving flag to S3 (TOKEN NEEDED)
