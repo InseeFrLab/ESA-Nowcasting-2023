@@ -38,7 +38,7 @@ get_eurostat_data <- function(id, filters = NULL,
   status <- httr::status_code(resp)
 
   # check status and get json
-donc
+
   msg <- ". Some datasets are not accessible via the eurostat
           interface."
 
