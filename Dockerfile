@@ -6,8 +6,13 @@ COPY . .
 # System libs
 RUN apt-get update && \
     apt-get install -y \
+            git \
             libcurl4-openssl-dev \
-            openjdk-8-jdk
+            openjdk-8-jdk \
+            wget
+            
+# Fetch Onyxia's init script
+RUN wget https://raw.githubusercontent.com/InseeFrLab/images-datascience/main/scripts/onyxia-init.sh -O /opt/onyxia-init.sh
 
 # Fetch rocker's install scripts
 RUN git clone --branch R4.2.2 --depth 1 https://github.com/rocker-org/rocker-versioned2.git /tmp/rocker-versioned2 && \
