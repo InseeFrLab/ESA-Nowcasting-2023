@@ -20,7 +20,7 @@ options(dplyr.summarise.inform = FALSE)
 tar_source(files = "R")
 
 # Saving flag to S3 (TOKEN NEEDED)
-SAVE_TO_S3 <- TRUE
+SAVE_TO_S3 <- FALSE
 
 # Pipeline
 list(
