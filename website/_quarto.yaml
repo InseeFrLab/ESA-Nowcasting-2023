@@ -46,7 +46,11 @@ website:
         href: pvi.qmd
       - text: "TOURISM"
         href: tourism.qmd
-
+      - text: "Lessons Learned"
+        href: lessons-learned.qmd
+      - text: "Reproductibility"
+        href: reproductibility.qmd
+        
   sidebar:
     - id: ppi
       title: "PPI"

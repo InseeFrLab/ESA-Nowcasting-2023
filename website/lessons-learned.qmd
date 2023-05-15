@@ -1,0 +1,17 @@
+---
+title: Lessons Learned
+---
+
+**Retrieving data** is a costly task, as we exclusively use open data sources and avoid non-free data aggregators. In addition to classic macroeconomic indicators that are common to most European countries, identifying interesting indicators specific to certain countries can be expensive. Unfortunately, the short duration of the competition limited our ability to acquire new data sources, such as payment card data, which could have been useful for the tourism challenge. Moreover, for a goal of reproducibility, we decided to exclude non open source data from our scope.
+    
+**Post-mortem analysis** on errors is crucial. However, in the real-time context of nowcasting challenges, having a track record of past residuals before the start of the challenge is not always straightforward. Economic variables availability can move throughout the month, making it difficult to establish a true track record. 
+    
+Depending on the model, taking into account the **impact of COVID-19** on estimation is relevant. Otherwise, coefficients could be strongly biased, with the variance of COVID-19 points dominating the total series variance.
+    
+Our approach is mainly neutral regarding the choice of variables, with an **automatic selection** procedure and a focus on treating all countries. This mainly neutral approach is partially due to a lack of time, but fine-tuning country by country can also be a useful approach.
+    
+**"Soft" data**, such as Google Trends, appears to provide some information for the tourism challenge, but less so for production prices and production, at least during a "stationary" period.
+    
+Using nowcasting techniques on disaggregated variables is an interesting option, particularly for prices that have exhibited distinct dynamics across different products in recent times. However, implementing this approach can be expensive as it necessitates the use of different models for each disaggregated level and appropriate re-aggregation for obtaining the final nowcast value. Given our constraints with respect to time, we were unable to explore this approach thoroughly.
+    
+For most of our models, the **last available value** of the indicator often has a very big influence, more than we would have thought. Because of this, even in our most recent results we may observe a lag between the true value of the indicators and our predictions based on past data. This shows that we were not able to identify all the external factors influencing the indicators. With more resources and a larger time window, we would still be able to identify some more explicative variables to improve the predictions.
