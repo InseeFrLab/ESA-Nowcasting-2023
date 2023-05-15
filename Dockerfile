@@ -27,9 +27,11 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Reconfigure Java support 
-RUN sudo R CMD javareconf
+RUN R CMD javareconf
 
 # Install R dependencies
+    
 RUN install2.r --error renv && \
+    # Configure renv to use RSPM to download packages by default
+    echo "options(repos = c(CRAN = '${CRAN}'))" >>"${R_HOME}/etc/Rprofile.site" && \
     Rscript -e "renv::restore()"
-  
