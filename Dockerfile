@@ -21,13 +21,13 @@ RUN git clone --branch R4.2.2 --depth 1 https://github.com/rocker-org/rocker-ver
 # Install Python
 RUN /rocker_scripts/install_python.sh
 
+COPY . .
+
 # Install python dependencies
 RUN pip install -r requirements.txt
 
 # Reconfigure Java support 
 RUN sudo R CMD javareconf
-
-COPY . .
 
 # Install R dependencies
 RUN install2.r --error renv && \
