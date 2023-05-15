@@ -20,9 +20,9 @@ create_table_past_submissions <- function(submitted_models = yaml::read_yaml("su
 
     for (entry in names(list_df_entries)) {
       if (length(list_df_entries[[entry]]) > 0) {
-        df_entry <- as.data.frame(unlist(list_df_entries[[entry]])) %>%
-          rename(value = 1) %>%
-          rownames_to_column(var = "Country") %>%
+        df_entry <- as.data.frame(unlist(list_df_entries[[entry]])) |>
+          rename(value = 1) |>
+          rownames_to_column(var = "Country") |>
           mutate(
             Date = date,
             value = as.numeric(value),
@@ -31,10 +31,10 @@ create_table_past_submissions <- function(submitted_models = yaml::read_yaml("su
               entry,
               submitted_models[[challenge]][[month]][[entry]]
             )
-          ) %>%
+          ) |>
           relocate(Country, Date, value, Entries)
 
-        df_submissions <- df_submissions %>%
+        df_submissions <- df_submissions |>
           rbind(df_entry)
       }
     }
@@ -50,12 +50,12 @@ get_recent_data <- function(data = get_data(
                             config_env = yaml::read_yaml("challenges.yaml"),
                             submitted_models = yaml::read_yaml("submitted_models.yaml"),
                             challenge = "PPI") {
-  recent_data <- data[[challenge]]$data %>%
+  recent_data <- data[[challenge]]$data |>
     filter(
       nace_r2 == config_env[[challenge]]$principal_nace,
       time >= as.Date(submitted_models$START_DATE)
-    ) %>%
-    select(geo, time, nace_r2, values) %>%
+    ) |>
+    select(geo, time, nace_r2, values) |>
     drop_na(values)
 
   return(recent_data)
@@ -64,21 +64,21 @@ get_recent_data <- function(data = get_data(
 
 get_residuals_past_months <- function(df_submissions = create_table_past_submissions(),
                                       recent_data = get_recent_data()) {
-  df_residuals <- df_submissions %>%
-    rename(Prediction = value) %>%
-    left_join(recent_data %>%
-      select(-nace_r2) %>%
+  df_residuals <- df_submissions |>
+    rename(Prediction = value) |>
+    left_join(recent_data |>
+      select(-nace_r2) |>
       rename(
         Date = time,
         Country = geo,
         TrueValue = values
-      )) %>%
+      )) |>
     mutate(
       Error = Prediction - TrueValue,
       AbsoluteError = abs(Error),
       SquaredError = Error**2
-    ) %>%
-    filter(!is.na(Error)) %>%
+    ) |>
+    filter(!is.na(Error)) |>
     arrange(Country, Date)
 
   return(df_residuals)

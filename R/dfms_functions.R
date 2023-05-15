@@ -17,12 +17,12 @@ build_data_dfms <- function(challenge, challenges_info, data_info, models_info, 
     data_list <- c(data_list, list(reshape_daily_data(selected_data, "Destatis")))
   }
 
-  DB <- data_list %>%
-    purrr::reduce(full_join, by = "time") %>%
-    filter(time > as.Date("2000-01-01")) %>% # Max 2004-09 # 2003 ok BG
+  DB <- data_list |>
+    purrr::reduce(full_join, by = "time") |>
+    filter(time > as.Date("2000-01-01")) |> # Max 2004-09 # 2003 ok BG
     arrange(time)
 
-  DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] %>%
+  DB <- xts(as.data.frame(DB[, -1]), order.by = as.Date(DB[, 1] |>
     pull()))
 
   # replacing - by . in column names to avoid conflicts
@@ -259,7 +259,7 @@ run_DFMs <- function(challenge, challenges_info, data_info, models_info) {
     #########################################
     # Storing the predictions
     #########################################
-    preds_dfm <- preds_dfm %>%
+    preds_dfm <- preds_dfm |>
       add_row(Country = country, Date = date_to_pred, value = round(pred, 1))
 
 
@@ -277,13 +277,13 @@ run_DFMs <- function(challenge, challenges_info, data_info, models_info) {
 
     resid_dfm <- rbind(
       resid_dfm,
-      resids %>%
-        as_tibble() %>%
+      resids |>
+        as_tibble() |>
         mutate(
           Date = zoo::index(resids),
           Country = country
-        ) %>%
-        rename(value = paste(var_to_predict)) %>%
+        ) |>
+        rename(value = paste(var_to_predict)) |>
         select(Country, Date, value)
     )
   }
@@ -293,13 +293,13 @@ run_DFMs <- function(challenge, challenges_info, data_info, models_info) {
   #########################################
   missing_countries <- setdiff(countries, preds_dfm$Country)
   for (country in missing_countries) {
-    preds_dfm <- preds_dfm %>%
+    preds_dfm <- preds_dfm |>
       add_row(Country = country, Date = date_to_pred)
   }
 
   # Re-arranging countries
-  preds_dfm <- preds_dfm %>%
-    mutate(Country = factor(Country, levels = countries)) %>%
+  preds_dfm <- preds_dfm |>
+    mutate(Country = factor(Country, levels = countries)) |>
     arrange(Country)
 
   return(list(

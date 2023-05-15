@@ -27,8 +27,8 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model = "LSTM
   # Filter the country
   #########################################
 
-  df <- df %>%
-    filter(geo == country) %>%
+  df <- df |>
+    filter(geo == country) |>
     select(-geo)
 
   #########################################
@@ -40,17 +40,17 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model = "LSTM
   challenge_minus_1_month <- paste(challenge, "minus_1_months", sep = "_")
   challenge_minus_1_year <- paste(challenge, "minus_1_years", sep = "_")
 
-  df <- df %>%
+  df <- df |>
     select(-c(
       month, year,
       !!challenge_to_predict, !!challenge_minus_1_month
     ))
   if (challenge == "TOURISM") {
-    df <- df %>% select(-!!challenge_minus_1_year)
+    df <- df |> select(-!!challenge_minus_1_year)
   }
 
   # Variables absent for the last month
-  df_current_date <- df %>%
+  df_current_date <- df |>
     filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
     rep(TRUE, 2),
@@ -72,8 +72,8 @@ build_data_lstm_one_country <- function(large_data = build_data_ml(model = "LSTM
   df <- df[!is.na(cols_with_diversity) & cols_with_diversity]
 
   # Actually add one row for the prediction
-  df <- df %>%
-    add_row(time = ymd(config_env$DATES$date_to_pred)) %>%
+  df <- df |>
+    add_row(time = ymd(config_env$DATES$date_to_pred)) |>
     rename(date = time)
 
   #########################################
@@ -101,7 +101,7 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   #########################################
 
   # Scale all the series
-  df_scaled <- df %>% mutate_at(c(2:length(colnames(df))), ~ (scale(.) %>% as.vector()))
+  df_scaled <- df |> mutate_at(c(2:length(colnames(df))), ~ (scale(.) |> as.vector()))
   # rag = ragged_preds(mod, pub_lags=c(1,4), lag = -2, df_scaled)
   # df_scaled <- df_scaled[, colSums(is.na(df_scaled)) < nrow(df_scaled)] # Remove rows with NA only
 
@@ -114,10 +114,10 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   #########################################
 
   # Split the data in train and prediction sets
-  df_train <- df_scaled %>%
+  df_train <- df_scaled |>
     filter(date < config_env$DATES$current_date)
 
-  df_pred <- df_scaled %>%
+  df_pred <- df_scaled |>
     filter(date == config_env$DATES$current_date)
 
   #########################################
@@ -148,12 +148,12 @@ train_pred_lstm_one_country <- function(data_lstm = build_data_lstm_one_country(
   predictions <- nowcastLSTM::predict(mod, df_scaled, only_actuals_obs = F)
 
   # Store and get the predictions in level
-  df_pred_next_month <- predictions %>%
+  df_pred_next_month <- predictions |>
     filter(date == config_env$DATES$date_to_pred)
   y_pred_next_month <- df_pred_next_month$predictions * std_challenge + mean_challenge
 
   # Compute residuals
-  residuals <- predictions %>%
+  residuals <- predictions |>
     transmute(
       Country = country,
       Date = date,
@@ -181,14 +181,14 @@ train_pred_lstm_per_country <- function(large_data = build_data_ml(model = "LSTM
   #########################################
 
   # get data by country
-  countries <- large_data %>%
-    select(geo) %>%
+  countries <- large_data |>
+    select(geo) |>
     unique()
 
   # Create prediction tables
-  preds_lstm_per_country <- countries %>%
-    select(geo) %>%
-    rename(Country = geo) %>%
+  preds_lstm_per_country <- countries |>
+    select(geo) |>
+    rename(Country = geo) |>
     mutate(
       Date = ymd(config_env$DATES$date_to_pred),
       value = 0
@@ -206,7 +206,7 @@ train_pred_lstm_per_country <- function(large_data = build_data_ml(model = "LSTM
   i <- 1
 
   # Build data set for each country
-  for (country in countries %>% pull()) {
+  for (country in countries |> pull()) {
     df_country <- build_data_lstm_one_country(
       large_data = large_data,
       config_env = config_env,
@@ -229,7 +229,7 @@ train_pred_lstm_per_country <- function(large_data = build_data_ml(model = "LSTM
     ), 1)
 
     # Store the residuals
-    residuals_lstm_per_country <- residuals_lstm_per_country %>%
+    residuals_lstm_per_country <- residuals_lstm_per_country |>
       rbind(data.frame(list_results_country["residuals"]))
 
     print(i)

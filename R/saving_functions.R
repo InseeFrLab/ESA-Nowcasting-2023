@@ -2,8 +2,8 @@ save_entries <- function(challenge, entries, challenges_info, save_s3) {
   entries <- lapply(entries, function(x) {
     lapply(
       split(
-        x$preds %>% pull(value, Country),
-        names(x$preds %>% pull(value, Country))
+        x$preds |> pull(value, Country),
+        names(x$preds |> pull(value, Country))
       ),
       unname
     )

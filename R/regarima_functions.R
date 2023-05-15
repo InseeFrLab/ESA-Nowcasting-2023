@@ -9,8 +9,8 @@ build_data_regarima <- function(challenge, challenges_info, data, models, countr
   date_to_pred <- ymd(challenges_info$DATES$date_to_pred)
 
   # Target variable
-  y <- data[[challenge]]$data %>%
-    dplyr::filter((nace_r2 %in% code_variable_interest) & (geo == country)) %>%
+  y <- data[[challenge]]$data |>
+    dplyr::filter((nace_r2 %in% code_variable_interest) & (geo == country)) |>
     tsbox::ts_ts()
 
   if (challenge == "TOURISM") {
@@ -61,9 +61,9 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
 
   # Defining regressors for PPI challenge
   if (challenge == "PPI") {
-    brent <- reshape_daily_data(data, "Yahoo") %>%
-      mutate(BRENT = BRENT.Adjusted / EUR_USD.Adjusted) %>%
-      select(time, BRENT) %>%
+    brent <- reshape_daily_data(data, "Yahoo") |>
+      mutate(BRENT = BRENT.Adjusted / EUR_USD.Adjusted) |>
+      select(time, BRENT) |>
       tsbox::ts_ts()
 
     brent_1 <- stats::lag(brent, -1)
@@ -84,9 +84,9 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
     )
 
     if (!purrr::is_empty(dispo) & country != "HR") {
-      ipi <- reshape_eurostat_data(data, country) %>%
-        select(time, paste(country, "IPI", "CPA_B-D", sep = "_")) %>%
-        tidyr::drop_na() %>%
+      ipi <- reshape_eurostat_data(data, country) |>
+        select(time, paste(country, "IPI", "CPA_B-D", sep = "_")) |>
+        tidyr::drop_na() |>
         tsbox::ts_ts()
 
       dlipi <- log(ipi) - stats::lag(log(ipi), -1)
@@ -111,14 +111,14 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
   }
   # Defining regressors for PVI challenge
   else if (challenge == "PVI") {
-    IS <- reshape_eurostat_data(data, country) %>%
-      select(time, paste(country, "PSURVEY", "BS-ICI", sep = "_")) %>%
-      tidyr::drop_na() %>%
+    IS <- reshape_eurostat_data(data, country) |>
+      select(time, paste(country, "PSURVEY", "BS-ICI", sep = "_")) |>
+      tidyr::drop_na() |>
       tsbox::ts_ts() / 100
 
-    IPT <- reshape_eurostat_data(data, country) %>%
-      select(time, paste(country, "PSURVEY", "BS-IPT", sep = "_")) %>%
-      tidyr::drop_na() %>%
+    IPT <- reshape_eurostat_data(data, country) |>
+      select(time, paste(country, "PSURVEY", "BS-IPT", sep = "_")) |>
+      tidyr::drop_na() |>
       tsbox::ts_ts() / 100
 
     dIPT <- diff(IPT)
@@ -134,37 +134,37 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
       toll <- data$TOLL_DE$data
       # Transform daily to monthly data
       # Only using for each month the number of days available in the last month (termporal homogeneity)
-      last_day <- day((toll %>% dplyr::arrange(desc(time)))$time[1])
-      toll_m <- toll %>%
-        dplyr::filter(day(time) <= last_day) %>%
+      last_day <- day((toll |> dplyr::arrange(desc(time)))$time[1])
+      toll_m <- toll |>
+        dplyr::filter(day(time) <= last_day) |>
         dplyr::mutate(
           month = month(time),
           year = year(time)
-        ) %>%
-        dplyr::group_by(year, month) %>%
+        ) |>
+        dplyr::group_by(year, month) |>
         dplyr::summarise(
           across(-c(time, geo), ~ mean(.x, na.rm = TRUE))
-        ) %>%
-        dplyr::ungroup() %>%
-        dplyr::mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
-        dplyr::select(-c(year, month)) %>%
-        dplyr::mutate(values = toll) %>%
+        ) |>
+        dplyr::ungroup() |>
+        dplyr::mutate(time = ymd(paste(year, month, "01", sep = "-"))) |>
+        dplyr::select(-c(year, month)) |>
+        dplyr::mutate(values = toll) |>
         dplyr::select(-toll)
 
-      tolls <- toll_m %>%
-        tidyr::drop_na() %>%
+      tolls <- toll_m |>
+        tidyr::drop_na() |>
         tsbox::ts_ts() / 100
       dtolls <- diff(tolls)
 
       X <- ts.union(dIS, IPT, dIPT, dtolls)
     }
     if (country %in% c("AT")) {
-      ind_wifo <- data$WEEKLY_INDEX_AT$data %>%
-        tidyr::drop_na() %>%
-        mutate(time = ymd(paste(year(time), month(time), "01"))) %>%
-        group_by(time) %>%
-        summarize(wifo_ind = mean(wifo_ind)) %>%
-        ungroup() %>%
+      ind_wifo <- data$WEEKLY_INDEX_AT$data |>
+        tidyr::drop_na() |>
+        mutate(time = ymd(paste(year(time), month(time), "01"))) |>
+        group_by(time) |>
+        summarize(wifo_ind = mean(wifo_ind)) |>
+        ungroup() |>
         tsbox::ts_ts()
 
       dind_wifo <- ind_wifo - stats::lag(ind_wifo, -1)
@@ -196,9 +196,9 @@ create_regressors <- function(challenge, challenges_info, data, models, country)
     gtrendh <- reshape_gtrends_data(data, country)
 
     if (paste(country, "GTRENDS", "HOTELS", sep = "_") %in% names(gtrendh)) {
-      gtrendh <- gtrendh %>%
-        select(time, paste(country, "GTRENDS", "HOTELS", sep = "_")) %>%
-        tidyr::drop_na() %>%
+      gtrendh <- gtrendh |>
+        select(time, paste(country, "GTRENDS", "HOTELS", sep = "_")) |>
+        tidyr::drop_na() |>
         tsbox::ts_ts() / 100
       gtrendh_sa <- desaiso(gtrendh, challenge, models)$final$series[, "sa"]
       dgtrendh_sa <- gtrendh_sa - stats::lag(gtrendh_sa, -1)
@@ -299,7 +299,7 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     }
 
     # Storing the predictions
-    preds_regarima <- preds_regarima %>%
+    preds_regarima <- preds_regarima |>
       add_row(
         Country = country,
         Date = date_to_pred,
@@ -309,12 +309,12 @@ run_regarima <- function(challenge, challenges_info, data, models) {
     # Storing the residuals
     resid_regarima <- rbind(
       resid_regarima,
-      tsbox::ts_xts(DB$Historical - exp(DB$y - resid(regarima)) * (stats::lag(DB$Historical, -1))) %>%
-        as_tibble() %>%
+      tsbox::ts_xts(DB$Historical - exp(DB$y - resid(regarima)) * (stats::lag(DB$Historical, -1))) |>
+        as_tibble() |>
         mutate(
           Date = zoo::index(tsbox::ts_xts(resid(regarima))),
           Country = country
-        ) %>%
+        ) |>
         select(Country, Date, value)
     )
   }

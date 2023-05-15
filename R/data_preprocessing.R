@@ -6,9 +6,9 @@ get_latest_dates <- function(data, var) {
 }
 
 to_tsibble <- function(x) {
-  x %>%
-    mutate(time = tsibble::yearmonth(time)) %>%
-    tidyr::drop_na() %>%
+  x |>
+    mutate(time = tsibble::yearmonth(time)) |>
+    tidyr::drop_na() |>
     tsibble::as_tsibble(key = c(geo), index = time)
 }
 
@@ -21,9 +21,9 @@ reshape_eurostat_data <- function(data, country) {
 
   # Reshape each data frame using pivot_wider and join the results together
   reshaped_data <- mapply(function(x, name) {
-    x$data %>%
-      dplyr::mutate(var = name) %>%
-      dplyr::filter(geo %in% country) %>%
+    x$data |>
+      dplyr::mutate(var = name) |>
+      dplyr::filter(geo %in% country) |>
       tidyr::pivot_wider(names_from = c(geo, var, names(x$filters)[3]), values_from = values)
   }, subset_lists, names(subset_lists), SIMPLIFY = FALSE) |>
     purrr::reduce(full_join, by = "time")
@@ -37,17 +37,17 @@ reshape_daily_data <- function(data, source) {
 
   # Reshape the daily data by taking monthly means
   reshaped_data <- lapply(subset_lists, function(x) {
-    x$data %>%
+    x$data |>
       mutate(
         month = month(time),
         year = year(time)
-      ) %>%
-      group_by(year, month) %>%
+      ) |>
+      group_by(year, month) |>
       summarise(
         across(-time, ~ mean(.x, na.rm = TRUE))
-      ) %>%
-      ungroup() %>%
-      mutate(time = ymd(paste(year, month, "01", sep = "-"))) %>%
+      ) |>
+      ungroup() |>
+      mutate(time = ymd(paste(year, month, "01", sep = "-"))) |>
       select(-c(year, month))
   }) |>
     purrr::reduce(full_join, by = "time")
@@ -64,12 +64,12 @@ reshape_gtrends_data <- function(data, country) {
 
   # Reshape each data frame using pivot_wider and join the results together
   reshaped_data <- mapply(function(x, name) {
-    x$data %>%
+    x$data |>
       dplyr::mutate(
         var = name,
         time = as.Date(time)
-      ) %>%
-      dplyr::filter(geo %in% country) %>%
+      ) |>
+      dplyr::filter(geo %in% country) |>
       tidyr::pivot_wider(names_from = c(geo, var), values_from = x$short_name)
   }, subset_lists, names(subset_lists), SIMPLIFY = FALSE) |>
     purrr::reduce(full_join, by = "time")
@@ -86,7 +86,7 @@ pivot_eurostat_data <- function(data) {
 
   # Reshape each data frame using pivot_wider and join the results together
   pivoted_data <- mapply(function(x) {
-    x$data %>% pivot_wider(
+    x$data |> pivot_wider(
       id_cols = c(geo, time),
       names_from = setdiff(
         colnames(x$data),
@@ -111,13 +111,13 @@ format_yahoo_data <- function(data) {
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
-    daily_x <- x$data %>%
+    daily_x <- x$data |>
       mutate(
         time = time - months(1), # We are interested in the next month values
         day = day(time),
         month = month(time),
         year = year(time)
-      ) %>%
+      ) |>
       group_by(month, year)
 
     # Convert it to weekly data
@@ -139,11 +139,11 @@ format_yahoo_data <- function(data) {
         sep = "_"
       )
 
-      weekly_x <- daily_x %>%
+      weekly_x <- daily_x |>
         filter(
           day > 7 * (i - 1),
           day < max_day
-        ) %>%
+        ) |>
         summarise(
           !!mean_adjusted_string := mean((!!rlang::sym(adjusted_string)),
             na.rm = TRUE
@@ -173,12 +173,12 @@ format_other_daily_data <- function(data) {
 
   formatted_data <- mapply(function(x) {
     # Format the daily data
-    daily_x <- x$data %>%
+    daily_x <- x$data |>
       mutate(
         day = day(time),
         month = month(time),
         year = year(time)
-      ) %>%
+      ) |>
       group_by(geo, month, year)
 
     # Convert it to weekly data
@@ -194,11 +194,11 @@ format_other_daily_data <- function(data) {
         sep = "_"
       )
 
-      weekly_x <- daily_x %>%
+      weekly_x <- daily_x |>
         filter(
           day > 7 * (i - 1),
           day < max_day
-        ) %>%
+        ) |>
         summarise(
           !!mean_string := mean((!!rlang::sym(x$short_name)),
             na.rm = TRUE
@@ -220,8 +220,8 @@ format_gtrends_data <- function(data) {
   data_with_lead <- mapply(function(x) {
     variable_name_previous_month <- paste0(x$short_name, "_previous_month")
     variable_name_next_month <- paste0(x$short_name, "_next_month")
-    x$data %>%
-      group_by(geo) %>%
+    x$data |>
+      group_by(geo) |>
       mutate(
         time = ymd(time),
         !!variable_name_previous_month := lag(!!rlang::sym(x$short_name)),
@@ -258,59 +258,59 @@ build_data_ml <- function(data = get_data(
   ### A) Initialize table
 
   # Table of countries
-  countries <- selected_data[[challenge]]$data %>%
-    select(geo) %>%
-    unique() %>%
-    filter(geo %in% config_env[[challenge]]$countries) %>%
+  countries <- selected_data[[challenge]]$data |>
+    select(geo) |>
+    unique() |>
+    filter(geo %in% config_env[[challenge]]$countries) |>
     mutate(dummy = 1)
 
   # Table of dates
-  dates <- selected_data[[challenge]]$data %>%
-    select(time) %>%
-    add_row(time = ymd(config_env$DATES$current_date)) %>%
-    unique() %>%
+  dates <- selected_data[[challenge]]$data |>
+    select(time) |>
+    add_row(time = ymd(config_env$DATES$current_date)) |>
+    unique() |>
     filter(
       year(time) >= config_models[[model]]$init_year,
       day(time) == 1
-    ) %>%
+    ) |>
     mutate(dummy = 1)
 
   # Table of countries x dates
-  df <- dates %>%
-    full_join(countries) %>%
-    select(-dummy) %>%
+  df <- dates |>
+    full_join(countries) |>
+    select(-dummy) |>
     arrange(geo, time)
 
   # Create a history table of the challenge's main variable
-  df_challenge <- selected_data[[challenge]]$data %>%
-    filter(nace_r2 == config_env[[challenge]]$principal_nace) %>%
-    select(-nace_r2) %>%
-    full_join(df) %>%
-    rename(!!challenge := values) %>%
-    group_by(geo) %>%
+  df_challenge <- selected_data[[challenge]]$data |>
+    filter(nace_r2 == config_env[[challenge]]$principal_nace) |>
+    select(-nace_r2) |>
+    full_join(df) |>
+    rename(!!challenge := values) |>
+    group_by(geo) |>
     mutate(!!challenge_to_predict := lead(!!rlang::sym(challenge)))
   for (i in 1:(config_models[[model]][[challenge]]$nb_months_past_to_use)) {
     variable <- paste(challenge, "minus", i, "months", sep = "_")
-    df_challenge <- df_challenge %>%
+    df_challenge <- df_challenge |>
       mutate(!!variable := lag(!!rlang::sym(challenge), n = i))
   }
   if (challenge == "TOURISM") {
     for (i in 1:(config_models[[model]][[challenge]]$nb_years_past_to_use)) {
       variable <- paste(challenge, "minus", i, "years", sep = "_")
-      df_challenge <- df_challenge %>%
+      df_challenge <- df_challenge |>
         mutate(!!variable := lag(!!rlang::sym(challenge), n = 12 * i - 1))
     }
   }
-  df_challenge <- df_challenge %>%
+  df_challenge <- df_challenge |>
     ungroup()
 
   # Merge countries x dates and our history table
-  df <- df %>%
-    left_join(df_challenge) %>%
+  df <- df |>
+    left_join(df_challenge) |>
     mutate(
       month = month(time),
       year = year(time)
-    ) %>%
+    ) |>
     relocate(time, geo, !!rlang::sym(challenge_to_predict))
 
   ### B) Add Eurostat data
@@ -322,10 +322,10 @@ build_data_ml <- function(data = get_data(
   )
 
   # Add all the other variables
-  df <- df %>%
+  df <- df |>
     left_join(pivot_eurostat_data(selected_data),
       by = c("geo", "time")
-    ) %>%
+    ) |>
     select(-!!rlang::sym(variable_with_main_nace))
 
   # If available, let's use the history of these other variables as well
@@ -339,30 +339,30 @@ build_data_ml <- function(data = get_data(
   for (other_variable in list_other_variables_eurostat) {
     for (i in 1:(config_models[[model]][[challenge]]$nb_months_past_to_use_others)) {
       variable <- paste(other_variable, "minus", i, "months", sep = "_")
-      df <- df %>%
+      df <- df |>
         mutate(!!variable := lag(!!rlang::sym(other_variable), n = i))
     }
   }
-  df <- df %>%
+  df <- df |>
     ungroup()
 
   ### C) Add Yahoo Finance data
 
-  df <- df %>%
+  df <- df |>
     left_join(format_yahoo_data(selected_data),
       by = c("month", "year")
     )
 
   ### D) Add electricity data & Germany truck data
 
-  df <- df %>%
+  df <- df |>
     left_join(format_other_daily_data(selected_data),
       by = c("geo", "month", "year")
     )
 
   ### E) Add Google Trends data
 
-  df <- df %>%
+  df <- df |>
     left_join(format_gtrends_data(selected_data),
       by = c("geo", "time")
     )

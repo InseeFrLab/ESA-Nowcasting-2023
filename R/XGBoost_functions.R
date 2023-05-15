@@ -27,7 +27,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(model = "XGBOOS
   # Delete variables absent for the last month in at least 2/3 of the countries
   #########################################
 
-  df_current_date <- df %>%
+  df_current_date <- df |>
     filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
     rep(TRUE, 3),
@@ -40,7 +40,7 @@ build_data_xgboost_europe <- function(large_data = build_data_ml(model = "XGBOOS
   # "Remove" the country variable for experimentations
   #########################################
 
-  df <- as.data.table(df %>% mutate(geo = "Europe"))
+  df <- as.data.table(df |> mutate(geo = "Europe"))
 
   #########################################
   # One-hot encoding of categorical variables
@@ -69,15 +69,15 @@ build_data_xgboost_one_country <- function(large_data = build_data_ml(model = "X
   # Filter the country
   #########################################
 
-  df <- df %>%
-    filter(geo == country) %>%
+  df <- df |>
+    filter(geo == country) |>
     select(-geo)
 
   #########################################
   # Delete variables absent for the last month and dummy ones
   #########################################
 
-  df_current_date <- df %>%
+  df_current_date <- df |>
     filter(time == ymd(config_env$DATES$current_date))
   df <- df[c(
     rep(TRUE, 2),
@@ -129,7 +129,7 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
   # Scale the variables
   #########################################
 
-  df <- df %>%
+  df <- df |>
     mutate(across(c(where(is.numeric)), scale))
 
   mean_to_predict <- attr(df[[challenge_to_predict]], "scaled:center")
@@ -139,24 +139,24 @@ grid_search_xgboost <- function(data_xgboost = build_data_xgboost_europe(), # Ca
   # Train-test split
   #########################################
 
-  df_to_use <- df %>%
-    filter(time < ymd(config_env$DATES$current_date)) %>%
+  df_to_use <- df |>
+    filter(time < ymd(config_env$DATES$current_date)) |>
     drop_na(!!challenge_to_predict)
 
-  df_to_predict <- df %>%
+  df_to_predict <- df |>
     filter(time == ymd(config_env$DATES$current_date))
 
-  df_train <- df_to_use %>%
+  df_train <- df_to_use |>
     sample_frac(4 / 5)
 
-  df_valid <- df_to_use %>%
+  df_valid <- df_to_use |>
     anti_join((df_train))
 
-  X_train <- as.matrix(df_train %>%
+  X_train <- as.matrix(df_train |>
     select(-c(!!challenge_to_predict, time)))
   y_train <- df_train[[challenge_to_predict]]
 
-  X_valid <- as.matrix(df_valid %>%
+  X_valid <- as.matrix(df_valid |>
     select(-c(!!challenge_to_predict, time)))
   y_valid <- df_valid[[challenge_to_predict]]
 
@@ -232,7 +232,7 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   # Scale the variables
   #########################################
 
-  df <- df %>%
+  df <- df |>
     mutate(across(c(where(is.numeric)), scale))
 
   mean_to_predict <- attr(df[[challenge_to_predict]], "scaled:center")
@@ -242,18 +242,18 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   # Train-pred split
   #########################################
 
-  df_train <- df %>%
-    filter(time < ymd(config_env$DATES$current_date)) %>%
+  df_train <- df |>
+    filter(time < ymd(config_env$DATES$current_date)) |>
     drop_na(!!challenge_to_predict)
 
-  df_to_predict <- df %>%
+  df_to_predict <- df |>
     filter(time == ymd(config_env$DATES$current_date))
 
-  X_train <- as.matrix(df_train %>%
+  X_train <- as.matrix(df_train |>
     select(-c(!!challenge_to_predict, time)))
   y_train <- df_train[[challenge_to_predict]]
 
-  X_pred <- as.matrix(df_to_predict %>%
+  X_pred <- as.matrix(df_to_predict |>
     select(-c(!!challenge_to_predict, time)))
 
   gb_train <- xgboost::xgb.DMatrix(data = X_train, label = y_train)
@@ -288,13 +288,13 @@ train_pred_xgboost_europe <- function(data_xgboost = build_data_xgboost_europe()
   # Gather predictions
   #########################################
 
-  countries <- large_data %>%
-    select(geo) %>%
+  countries <- large_data |>
+    select(geo) |>
     unique()
 
-  preds_xgboost_europe <- countries %>%
-    mutate(Date = ymd(config_env$DATES$date_to_pred)) %>%
-    bind_cols(round(as.numeric(y_pred), 1)) %>%
+  preds_xgboost_europe <- countries |>
+    mutate(Date = ymd(config_env$DATES$date_to_pred)) |>
+    bind_cols(round(as.numeric(y_pred), 1)) |>
     rename(
       Country = geo,
       value = ...3
@@ -327,7 +327,7 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   # Scale the variables
   #########################################
 
-  df <- df %>%
+  df <- df |>
     mutate(across(c(where(is.numeric)), scale))
 
   mean_to_predict <- attr(df[[challenge_to_predict]], "scaled:center")
@@ -337,18 +337,18 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   # Train-pred split
   #########################################
 
-  df_train <- df %>%
-    filter(time < ymd(config_env$DATES$current_date)) %>%
+  df_train <- df |>
+    filter(time < ymd(config_env$DATES$current_date)) |>
     drop_na(!!challenge_to_predict)
 
-  df_to_predict <- df %>%
+  df_to_predict <- df |>
     filter(time == ymd(config_env$DATES$current_date))
 
-  X_train <- as.matrix(df_train %>%
+  X_train <- as.matrix(df_train |>
     select(-c(!!challenge_to_predict, time)))
   y_train <- df_train[[challenge_to_predict]]
 
-  X_pred <- as.matrix(df_to_predict %>%
+  X_pred <- as.matrix(df_to_predict |>
     select(-c(!!challenge_to_predict, time)))
 
   gb_train <- xgboost::xgb.DMatrix(data = X_train, label = y_train)
@@ -380,12 +380,12 @@ train_pred_xgboost_one_country <- function(data_xgboost = build_data_xgboost_one
   y_pred_residuals <- y_pred_residuals * scale_to_predict +
     mean_to_predict
 
-  y_pred_residuals_with_index <- df_train %>%
-    select(time) %>%
+  y_pred_residuals_with_index <- df_train |>
+    select(time) |>
     mutate(
       geo = country,
       time = time %m+% months(1)
-    ) %>%
+    ) |>
     relocate(geo, time)
   y_pred_residuals_with_index[[challenge_pred_residuals]] <- round(y_pred_residuals, 1)
 
@@ -411,13 +411,13 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(model = "X
   # Initialize tables
   #########################################
 
-  countries <- large_data %>%
-    select(geo) %>%
+  countries <- large_data |>
+    select(geo) |>
     unique()
 
-  preds_xgboost_per_country <- countries %>%
-    select(geo) %>%
-    rename(Country = geo) %>%
+  preds_xgboost_per_country <- countries |>
+    select(geo) |>
+    rename(Country = geo) |>
     mutate(
       Date = ymd(config_env$DATES$date_to_pred),
       value = 0
@@ -433,7 +433,7 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(model = "X
 
   i <- 1
 
-  for (country in countries %>% pull()) {
+  for (country in countries |> pull()) {
     df_country <- build_data_xgboost_one_country(
       large_data = large_data,
       config_env = config_env,
@@ -453,7 +453,7 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(model = "X
       list_results_country["pred_next_month"]
     ), 1)
 
-    preds_residuals_xgboost_per_country <- preds_residuals_xgboost_per_country %>%
+    preds_residuals_xgboost_per_country <- preds_residuals_xgboost_per_country |>
       rbind(data.frame(list_results_country["pred_residuals"]))
 
     print(i)
@@ -466,11 +466,11 @@ train_pred_xgboost_per_country <- function(large_data = build_data_ml(model = "X
 
   colnames(preds_residuals_xgboost_per_country) <- x
 
-  residuals_xgboost_per_country <- preds_residuals_xgboost_per_country %>%
-    left_join(large_data %>%
-      select(time, geo, !!challenge)) %>%
-    mutate(value := !!rlang::sym(challenge_pred_residuals) - !!rlang::sym(challenge)) %>%
-    rename(Country = geo, Date = time) %>%
+  residuals_xgboost_per_country <- preds_residuals_xgboost_per_country |>
+    left_join(large_data |>
+      select(time, geo, !!challenge)) |>
+    mutate(value := !!rlang::sym(challenge_pred_residuals) - !!rlang::sym(challenge)) |>
+    rename(Country = geo, Date = time) |>
     select(Country, Date, value)
 
   return(list(
