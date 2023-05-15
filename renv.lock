@@ -103,10 +103,10 @@
     },
     "RJDemetra": {
       "Package": "RJDemetra",
-      "Version": "0.2.1",
+      "Version": "0.2.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a74145cb5fe00671d965cc4d2f9c78e2",
+      "Hash": "8832d74eeb29e1937d9b6396aa49aee0",
       "Requirements": [
         "rJava"
       ]
