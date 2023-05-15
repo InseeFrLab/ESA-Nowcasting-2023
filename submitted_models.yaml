@@ -114,7 +114,7 @@ PVI:
     entry_1: REGARIMA
     entry_2: DFM
     entry_3: ETS
-    entry_4: XGBOOST
+    entry_4: XGBOOST  # Top performer
     entry_5: LSTM
   april:
     entry_1: REGARIMA
@@ -163,7 +163,7 @@ TOURISM:
   february:
     entry_1: REGARIMA
     entry_2: DFM
-    entry_3: ETS
+    entry_3: ETS  # Top performer
     entry_4: XGBOOST
     entry_5: LSTM
   march:
