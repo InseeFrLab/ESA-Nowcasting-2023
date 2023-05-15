@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>European Statistics Awards for Nowcasting - The challenge</title>
+<title>European Statistics Awards for Nowcasting - Reproductibility</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -81,12 +115,10 @@ div.csl-indent {
 <script src="https://kit.fontawesome.com/78ddb093ea.js" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="European Statistics Awards for Nowcasting - The challenge">
+<meta property="og:title" content="European Statistics Awards for Nowcasting - Reproductibility">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://inseefrlab.github.io/ESA-Nowcasting-2023/images/logo-INSEE.png">
+<meta property="og:image" content="https://img.shields.io/badge/Launch-Datalab-orange?logo=R.png">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
-<meta property="og:image:height" content="1387">
-<meta property="og:image:width" content="1200">
 </head>
 
 <body class="nav-fixed">
@@ -107,7 +139,7 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
@@ -135,7 +167,7 @@ div.csl-indent {
  <span class="menu-text">Lessons Learned</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./reproductibility.html" rel="" target="">
+    <a class="nav-link active" href="./reproductibility.html" rel="" target="" aria-current="page">
  <span class="menu-text">Reproductibility</span></a>
   </li>  
 </ul>
@@ -161,18 +193,23 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#our-team" id="toc-our-team" class="nav-link active" data-scroll-target="#our-team">Our team</a></li>
-  <li><a href="#licence" id="toc-licence" class="nav-link" data-scroll-target="#licence">Licence</a></li>
-  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting started <img src="https://img.shields.io/badge/Launch-Datalab-orange?logo=R.png" class="img-fluid"></a></li>
+  <li><a href="#codes" id="toc-codes" class="nav-link" data-scroll-target="#codes">Codes</a>
+  <ul class="collapse">
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#configuration-files" id="toc-configuration-files" class="nav-link" data-scroll-target="#configuration-files">Configuration files</a></li>
+  <li><a href="#pipelines" id="toc-pipelines" class="nav-link" data-scroll-target="#pipelines">Pipelines</a></li>
+  </ul></li>
+  <li><a href="#replicating-past-results" id="toc-replicating-past-results" class="nav-link" data-scroll-target="#replicating-past-results">Replicating past results</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/reproductibility.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The challenge</h1>
+<h1 class="title">Reproductibility</h1>
 </div>
 
 
@@ -187,42 +224,101 @@ div.csl-indent {
 
 </header>
 
-<p><img src="images/logo-INSEE.png" class="img-fluid" style="float: right;" data-fig-align="right" width="125"> <img src="images/logo-ESA.png" class="img-fluid" style="float: right;" data-fig-align="right" width="125"></p>
-<p>In the area of nowcasting, the European Statistics Awards Programme aims to discover promising methodologies and potential external data sources that could, now or in the future, be used to improve the timeliness of key EU economic indicators. Better timeliness is a recurring demand for official statistics so there are obvious benefits to developing new approaches which obtain more accurate estimates within a shorter interval. Even where a satisfactorily accurate point estimate is already available, alternative methodologies carry significant potential secondary benefits like reduced cost, improved robustness and applicability in cases where a developed statistical system is still not established.</p>
-<p>The 2022 round of the Nowcasting awards is divided into 3 separate competitions, each focusing on the nowcasting of one economic indicator:</p>
+<p>At the INSEE Innovation Team, we greatly value the concept of reproducibility in scientific research. We understand that reproducibility is crucial for ensuring the credibility and trustworthiness of scientific findings. That’s why we prioritize documenting our research methodologies, data analyses, and experimental processes in a transparent and accessible manner. Our commitment to reproducibility is driven by a desire to contribute to the advancement of scientific knowledge and promote rigorous research practices.</p>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting started <a href="https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&amp;service.image.custom.enabled=true&amp;service.image.pullPolicy=%C2%ABAlways%C2%BB&amp;service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av7.0.0%C2%BB&amp;init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB&amp;onyxia.friendlyName=%C2%ABesa-nowcasting%C2%BB"><img src="https://img.shields.io/badge/Launch-Datalab-orange?logo=R.png" class="img-fluid"></a></h2>
+<p>To ensure full reproducibility of the results, the project is accompanied by a <a href="https://hub.docker.com/r/inseefrlab/esa-nowcasting-2023">Docker image</a> that contains all the necessary packages and dependencies. You can pull the Docker image using the following command in your terminal after installing <a href="https://www.docker.com/">Docker</a> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull inseefrlab/esa-nowcasting-2023:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alternatively, you can use the <a href="https://github.com/InseeFrLab/onyxia-web">Onyxia instance SSPCloud</a> (<span class="citation" data-cites="comte2022sspcloud">Comte, Degorre, and Lesur (<a href="#ref-comte2022sspcloud" role="doc-biblioref">2022</a>)</span>), a datalab developed by the French National Institute of Statistics and Economic Studies (<a href="https://www.insee.fr/fr/accueil">INSEE</a>) that provides an easy-to-use interface for running the Docker image.</p>
+<p>To get started with SSPCloud:</p>
 <ul>
-<li><strong>PPI</strong>: Producer prices in industry (domestic market)</li>
-<li><strong>PVI</strong>: Production volume in industry</li>
-<li><strong>TOURISM</strong>: Number of nights spent at tourist accommodation establishments</li>
+<li><ins>
+<strong>Step 0</strong>
+</ins>
+: Go to <a href="https://datalab.sspcloud.fr/home">https://datalab.sspcloud.fr/home</a>. Click on <strong>Sign In</strong> and then <strong>Create an account</strong> with your academic or institutional email address.</li>
+<li><ins>
+<strong>Step 1</strong>
+</ins>
+: Click <a href="https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&amp;service.image.custom.enabled=true&amp;service.image.pullPolicy=%C2%ABAlways%C2%BB&amp;service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av7.0.0%C2%BB&amp;init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB&amp;onyxia.friendlyName=%C2%ABesa-nowcasting%C2%BB">here</a> or on the orange badge on top of the page.</li>
+<li><ins>
+<strong>Step 2</strong>
+</ins>
+: <strong>Open</strong> the service and follow the instructions regarding <em>username</em> and <em>credentials</em>.</li>
+<li><ins>
+<strong>Step 3</strong>
+</ins>
+: <strong>Open a new project</strong> by clicking the following file: <code>~/work/ESA-Nowcasting-2023/ESA-Nowcasting-2023.Rproj</code>.</li>
+<li><ins>
+<strong>Step 4</strong>
+</ins>
+: Ensure all necessary packages are installed by executing the <code>renv::restore()</code> command in the console. If prompted to proceed with the installation, enter <code>y</code>.</li>
 </ul>
-<section id="our-team" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="our-team">Our team</h2>
-<p>We represent INSEE, the French National Institute of Statistics and Economic Studies, for this challenge. Our team is composed of 5 members:</p>
-<ul>
-<li><a href="https://www.linkedin.com/in/thomas-faria-606238150/">Thomas Faria</a>, Data Scientist in the Innovation Lab in Data Science</li>
-<li><a href="https://www.linkedin.com/in/pierre-leblanc-7a91a931/">Pierre Leblanc</a>, Head of Division in the Short-term Statistics Department</li>
-<li><a href="https://github.com/imoutachaker">Inès Moutachaker</a>, Research Analyst in the Department of Economic Studies</li>
-<li><a href="https://www.linkedin.com/in/antoine-palazzolo/">Antoine Palazzolo</a>, Data Scientist in the Innovation Lab in Data Science</li>
-<li><a href="https://www.linkedin.com/in/alainqlt/">Alain Quartier-La-Tente</a>, Research analyst in the Department of Economic Studies</li>
-</ul>
+<p>You are all set!</p>
 </section>
-<section id="licence" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="licence">Licence</h2>
-<p>This work is licensed under the <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12">European Union Public Licence 1.2</a>.</p>
-<p>See the code on <a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/">Github</a>.</p>
+<section id="codes" class="level2">
+<h2 class="anchored" data-anchor-id="codes">Codes</h2>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<p>All functions used in the project are organized by theme in the <code>R/</code> folder :</p>
+<pre><code>ESA-Nowcasting-2023
+└─── R
+     │ data_preprocessing.R
+     │ data_retrieval.R
+     │ dfms_functions.R
+     │ ets_functions.R
+     │ lstm_functions.R
+     │ post_mortem_functions.R
+     │ regarima_functions.R
+     │ saving_functions.R
+     │ XGBoost_functions.R
+</code></pre>
 </section>
-<section id="acknowledgements" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
-<p>On behalf of our team, we would like to express our gratitude to:</p>
-<ul>
-<li>INSEE and our hierarchy for providing us with the time and resources to participate in this challenge and supporting our research efforts.</li>
-<li>The IT innovation team at INSEE for providing us with the <a href="https://datalab.sspcloud.fr/home">SSPCloud</a> (<span class="citation" data-cites="comte2022sspcloud">Comte, Degorre, and Lesur (<a href="#ref-comte2022sspcloud" role="doc-biblioref">2022</a>)</span>) platform, which not only enabled us to perform our data science analysis with ease but also provided us with an efficient computing environment.</li>
-<li>The various teams at INSEE whom we reached out to for their invaluable advice and guidance throughout the competition.</li>
-<li>The organizers of this challenge for creating a stimulating and engaging platform to showcase our skills.</li>
-<li>The creators of the <a href="https://github.com/jdemetra/rjdemetra">RJDemetra</a> package (<span class="citation" data-cites="rjdemetra">Quartier-la-Tente et al. (<a href="#ref-rjdemetra" role="doc-biblioref">2023</a>)</span> and <span class="citation" data-cites="smyk2021r">Smyk and Tchang (<a href="#ref-smyk2021r" role="doc-biblioref">2021</a>)</span>), which provided us with powerful tools for seasonal adjustment of time series data, enhancing the accuracy of our models.</li>
-<li>Sebastian Krantz, the creator of the <a href="https://github.com/SebKrantz/dfms">dfms</a> package (<span class="citation" data-cites="dfms">Krantz and Bagdziunas (<a href="#ref-dfms" role="doc-biblioref">2022</a>)</span>), for openly sharing this valuable resource and providing a user-friendly and efficient tool for estimating Dynamics Factor Models (DFM) in R, which significantly facilitated our nowcasting analysis.</li>
-</ul>
-<p>Thank you all for your support and contributions to our success in this endeavor.</p>
+<section id="configuration-files" class="level3">
+<h3 class="anchored" data-anchor-id="configuration-files">Configuration files</h3>
+<p>The project is composed of three configuration files that enable the operation of the models and the challenges as a whole. The first file, <code>challenges.yaml</code>, contains information about the challenges themselves, including the countries used for each challenge and the current dates.</p>
+<p>The second file, <code>models.yaml</code>, is the backbone of the project as it contains all of the parameters used for all the models and challenges. This file is responsible for ensuring that the models are appropriately tuned. Any adjustments made to this file can have a significant impact on the accuracy of the models, and thus it is vital that the parameters are fine-tuned carefully.</p>
+<p>Finally, the <code>data.yaml</code> configuration file is responsible for specifying all the relevant information about the data sources used in the challenge. It is essential that this file is accurately updated as changes to data sources or updates can have a significant impact on the accuracy of the models.</p>
+</section>
+<section id="pipelines" class="level3">
+<h3 class="anchored" data-anchor-id="pipelines">Pipelines</h3>
+<p>The project is deeply relying on the <a href="https://books.ropensci.org/targets/">target package</a>, which is a tool for creating and running reproducible pipelines in R. <code>target</code> is particularly useful for managing large or complex data sets, as it allows you to define each task in a pipeline as a separate function, and then run the pipeline by calling the <code>targets::tar_make()</code> function. This ensures that tasks are run in the correct order, and can save time by only running tasks that are out of date or have not been run before.</p>
+<p>The project is decomposed into four different pipelines specified in the targets_yaml file:</p>
+<pre><code>- data: `run_data.R`
+- ppi: `run_ppi.R`
+- pvi: `run_pvi.R`
+- tourism: `run_tourism.R`</code></pre>
+<p>The first pipeline retrieves all the data necessary for the different challenges, while the other three run the five models for each challenge independently. Each pipeline can be run using the following command: <code>targets::tar_make(script = "run_***.R")</code>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Saving to s3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that the data used for the challenges is stored in a private bucket, and writing permissions are required to run the pipeline as is. Hence, if you don’t have access to our private bucket you have to run all 4 pipelines with the parameter <code>SAVE_TO_S3</code> equals to <code>False</code>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="replicating-past-results" class="level2">
+<h2 class="anchored" data-anchor-id="replicating-past-results">Replicating past results</h2>
+<p>We have made it a priority to ensure the full reproducibility of all our past submissions. In order to achieve this, we have taken the necessary steps to automatically save the data used for each specific submission in a publicly accessible S3 bucket. This allows anyone to easily access the exact datasets that were utilized in our analyses. In the event that there have been changes to the model codes, it is simply a matter of checking out the commit corresponding to the submission date and adjusting the relevant date variables in the <code>challenges.yaml</code> configuration file. By combining the code retrieval with the availability of the specific datasets, we have established a robust framework that enables the replication and verification of our past results. This commitment to transparency and reproducibility ensures that the findings and outcomes of our submissions can be reliably validated and built upon by anyone.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Any issues?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you encounter any difficulties or require assistance in replicating our past results, please do not hesitate to reach out to us. We understand that the replication process can sometimes be challenging, and we are here to provide support and guidance. Our team is available to answer any questions, clarify any uncertainties, and offer further explanations regarding the methodologies, data, or code used in our previous submissions.</p>
+</div>
+</div>
 
 
 
@@ -231,15 +327,6 @@ div.csl-indent {
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-comte2022sspcloud" class="csl-entry" role="listitem">
 Comte, F., A. Degorre, and R. Lesur. 2022. <span>“Le SSPCloud : Une Fabrique Créative Pour Accompagner Les Expérimentations Des Statisticiens Publics.”</span> <em>Courrier Des Statistiques</em>.
-</div>
-<div id="ref-dfms" class="csl-entry" role="listitem">
-Krantz, Sebastian, and Rytis Bagdziunas. 2022. <em>Dfms: Dynamic Factor Models</em>. <a href="https://sebkrantz.github.io/dfms/">https://sebkrantz.github.io/dfms/</a>.
-</div>
-<div id="ref-rjdemetra" class="csl-entry" role="listitem">
-Quartier-la-Tente, Alain, Anna Michalek, Jean Palate, and Raf Baeyens. 2023. <em>RJDemetra: Interface to ’JDemetra+’ Seasonal Adjustment Software</em>. <a href="https://CRAN.R-project.org/package=RJDemetra">https://CRAN.R-project.org/package=RJDemetra</a>.
-</div>
-<div id="ref-smyk2021r" class="csl-entry" role="listitem">
-Smyk, Anna, and Alice Tchang. 2021. <span>“<span class="nocase">R Tools for JDemetra+</span>: Seasonal Adjustment Made Easier.”</span> Working Paper M2021/01. Insee.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

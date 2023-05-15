@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>European Statistics Awards for Nowcasting - The challenge</title>
+<title>European Statistics Awards for Nowcasting - Lessons Learned</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -81,12 +62,8 @@ div.csl-indent {
 <script src="https://kit.fontawesome.com/78ddb093ea.js" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="European Statistics Awards for Nowcasting - The challenge">
-<meta property="og:description" content="">
-<meta property="og:image" content="https://inseefrlab.github.io/ESA-Nowcasting-2023/images/logo-INSEE.png">
+<meta property="og:title" content="European Statistics Awards for Nowcasting - Lessons Learned">
 <meta property="og:site-name" content="European Statistics Awards for Nowcasting">
-<meta property="og:image:height" content="1387">
-<meta property="og:image:width" content="1200">
 </head>
 
 <body class="nav-fixed">
@@ -107,7 +84,7 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
@@ -131,7 +108,7 @@ div.csl-indent {
  <span class="menu-text">TOURISM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./lessons-learned.html" rel="" target="">
+    <a class="nav-link active" href="./lessons-learned.html" rel="" target="" aria-current="page">
  <span class="menu-text">Lessons Learned</span></a>
   </li>  
   <li class="nav-item">
@@ -157,22 +134,14 @@ div.csl-indent {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#our-team" id="toc-our-team" class="nav-link active" data-scroll-target="#our-team">Our team</a></li>
-  <li><a href="#licence" id="toc-licence" class="nav-link" data-scroll-target="#licence">Licence</a></li>
-  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The challenge</h1>
+<h1 class="title">Lessons Learned</h1>
 </div>
 
 
@@ -187,61 +156,19 @@ div.csl-indent {
 
 </header>
 
-<p><img src="images/logo-INSEE.png" class="img-fluid" style="float: right;" data-fig-align="right" width="125"> <img src="images/logo-ESA.png" class="img-fluid" style="float: right;" data-fig-align="right" width="125"></p>
-<p>In the area of nowcasting, the European Statistics Awards Programme aims to discover promising methodologies and potential external data sources that could, now or in the future, be used to improve the timeliness of key EU economic indicators. Better timeliness is a recurring demand for official statistics so there are obvious benefits to developing new approaches which obtain more accurate estimates within a shorter interval. Even where a satisfactorily accurate point estimate is already available, alternative methodologies carry significant potential secondary benefits like reduced cost, improved robustness and applicability in cases where a developed statistical system is still not established.</p>
-<p>The 2022 round of the Nowcasting awards is divided into 3 separate competitions, each focusing on the nowcasting of one economic indicator:</p>
-<ul>
-<li><strong>PPI</strong>: Producer prices in industry (domestic market)</li>
-<li><strong>PVI</strong>: Production volume in industry</li>
-<li><strong>TOURISM</strong>: Number of nights spent at tourist accommodation establishments</li>
-</ul>
-<section id="our-team" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="our-team">Our team</h2>
-<p>We represent INSEE, the French National Institute of Statistics and Economic Studies, for this challenge. Our team is composed of 5 members:</p>
-<ul>
-<li><a href="https://www.linkedin.com/in/thomas-faria-606238150/">Thomas Faria</a>, Data Scientist in the Innovation Lab in Data Science</li>
-<li><a href="https://www.linkedin.com/in/pierre-leblanc-7a91a931/">Pierre Leblanc</a>, Head of Division in the Short-term Statistics Department</li>
-<li><a href="https://github.com/imoutachaker">Inès Moutachaker</a>, Research Analyst in the Department of Economic Studies</li>
-<li><a href="https://www.linkedin.com/in/antoine-palazzolo/">Antoine Palazzolo</a>, Data Scientist in the Innovation Lab in Data Science</li>
-<li><a href="https://www.linkedin.com/in/alainqlt/">Alain Quartier-La-Tente</a>, Research analyst in the Department of Economic Studies</li>
-</ul>
-</section>
-<section id="licence" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="licence">Licence</h2>
-<p>This work is licensed under the <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12">European Union Public Licence 1.2</a>.</p>
-<p>See the code on <a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/">Github</a>.</p>
-</section>
-<section id="acknowledgements" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
-<p>On behalf of our team, we would like to express our gratitude to:</p>
-<ul>
-<li>INSEE and our hierarchy for providing us with the time and resources to participate in this challenge and supporting our research efforts.</li>
-<li>The IT innovation team at INSEE for providing us with the <a href="https://datalab.sspcloud.fr/home">SSPCloud</a> (<span class="citation" data-cites="comte2022sspcloud">Comte, Degorre, and Lesur (<a href="#ref-comte2022sspcloud" role="doc-biblioref">2022</a>)</span>) platform, which not only enabled us to perform our data science analysis with ease but also provided us with an efficient computing environment.</li>
-<li>The various teams at INSEE whom we reached out to for their invaluable advice and guidance throughout the competition.</li>
-<li>The organizers of this challenge for creating a stimulating and engaging platform to showcase our skills.</li>
-<li>The creators of the <a href="https://github.com/jdemetra/rjdemetra">RJDemetra</a> package (<span class="citation" data-cites="rjdemetra">Quartier-la-Tente et al. (<a href="#ref-rjdemetra" role="doc-biblioref">2023</a>)</span> and <span class="citation" data-cites="smyk2021r">Smyk and Tchang (<a href="#ref-smyk2021r" role="doc-biblioref">2021</a>)</span>), which provided us with powerful tools for seasonal adjustment of time series data, enhancing the accuracy of our models.</li>
-<li>Sebastian Krantz, the creator of the <a href="https://github.com/SebKrantz/dfms">dfms</a> package (<span class="citation" data-cites="dfms">Krantz and Bagdziunas (<a href="#ref-dfms" role="doc-biblioref">2022</a>)</span>), for openly sharing this valuable resource and providing a user-friendly and efficient tool for estimating Dynamics Factor Models (DFM) in R, which significantly facilitated our nowcasting analysis.</li>
-</ul>
-<p>Thank you all for your support and contributions to our success in this endeavor.</p>
+<ol type="1">
+<li><p><strong>Retrieving data</strong> is a costly task, as we exclusively use open data sources and avoid non-free data aggregators. In addition to classic macroeconomic indicators that are common to most European countries, identifying interesting indicators specific to certain countries can be expensive. Unfortunately, the short duration of the competition limited our ability to acquire new data sources, such as payment card data, which could have been useful for the tourism challenge. Moreover, for a goal of reproducibility, we decided to exclude non open source data from our scope.</p></li>
+<li><p><strong>Post-mortem analysis</strong> on errors is crucial. However, in the real-time context of nowcasting challenges, having a track record of past residuals before the start of the challenge is not always straightforward. Economic variables availability can move throughout the month, making it difficult to establish a true track record.</p></li>
+<li><p>Depending on the model, taking into account the <strong>impact of COVID-19</strong> on estimation is relevant. Otherwise, coefficients could be strongly biased, with the variance of COVID-19 points dominating the total series variance.</p></li>
+<li><p>Our approach is mainly neutral regarding the choice of variables, with an <strong>automatic selection</strong> procedure and a focus on treating all countries. This mainly neutral approach is partially due to a lack of time, but fine-tuning country by country can also be a useful approach.</p></li>
+<li><p><strong>“Soft” data</strong>, such as Google Trends, appears to provide some information for the tourism challenge, but less so for production prices and production, at least during a “stationary” period.</p></li>
+<li><p>Using nowcasting techniques on disaggregated variables is an interesting option, particularly for prices that have exhibited distinct dynamics across different products in recent times. However, implementing this approach can be expensive as it necessitates the use of different models for each disaggregated level and appropriate re-aggregation for obtaining the final nowcast value. Given our constraints with respect to time, we were unable to explore this approach thoroughly.</p></li>
+<li><p>For most of our models, the <strong>last available value</strong> of the indicator often has a very big influence, more than we would have thought. Because of this, even in our most recent results we may observe a lag between the true value of the indicators and our predictions based on past data. This shows that we were not able to identify all the external factors influencing the indicators. With more resources and a larger time window, we would still be able to identify some more explicative variables to improve the predictions.</p></li>
+</ol>
 
 
 
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-comte2022sspcloud" class="csl-entry" role="listitem">
-Comte, F., A. Degorre, and R. Lesur. 2022. <span>“Le SSPCloud : Une Fabrique Créative Pour Accompagner Les Expérimentations Des Statisticiens Publics.”</span> <em>Courrier Des Statistiques</em>.
-</div>
-<div id="ref-dfms" class="csl-entry" role="listitem">
-Krantz, Sebastian, and Rytis Bagdziunas. 2022. <em>Dfms: Dynamic Factor Models</em>. <a href="https://sebkrantz.github.io/dfms/">https://sebkrantz.github.io/dfms/</a>.
-</div>
-<div id="ref-rjdemetra" class="csl-entry" role="listitem">
-Quartier-la-Tente, Alain, Anna Michalek, Jean Palate, and Raf Baeyens. 2023. <em>RJDemetra: Interface to ’JDemetra+’ Seasonal Adjustment Software</em>. <a href="https://CRAN.R-project.org/package=RJDemetra">https://CRAN.R-project.org/package=RJDemetra</a>.
-</div>
-<div id="ref-smyk2021r" class="csl-entry" role="listitem">
-Smyk, Anna, and Alice Tchang. 2021. <span>“<span class="nocase">R Tools for JDemetra+</span>: Seasonal Adjustment Made Easier.”</span> Working Paper M2021/01. Insee.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -481,7 +408,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/lessons-learned.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

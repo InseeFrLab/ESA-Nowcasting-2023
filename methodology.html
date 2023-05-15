@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.340">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,7 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -113,6 +132,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./tourism.html" rel="" target="">
  <span class="menu-text">TOURISM</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./lessons-learned.html" rel="" target="">
+ <span class="menu-text">Lessons Learned</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./reproductibility.html" rel="" target="">
+ <span class="menu-text">Reproductibility</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -157,7 +184,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#grid-search-for-hyperparameters" id="toc-grid-search-for-hyperparameters" class="nav-link" data-scroll-target="#grid-search-for-hyperparameters">Grid Search for Hyperparameters</a></li>
   <li><a href="#training-xgboost-for-nowcasting" id="toc-training-xgboost-for-nowcasting" class="nav-link" data-scroll-target="#training-xgboost-for-nowcasting">Training XGBoost for Nowcasting</a></li>
   </ul></li>
-  <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">LSTM</a></li>
+  <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">LSTM</a>
+  <ul class="collapse">
+  <li><a href="#introduction-3" id="toc-introduction-3" class="nav-link" data-scroll-target="#introduction-3">Introduction</a></li>
+  <li><a href="#ltsm-model" id="toc-ltsm-model" class="nav-link" data-scroll-target="#ltsm-model">LTSM model</a></li>
+  <li><a href="#data-and-estimation" id="toc-data-and-estimation" class="nav-link" data-scroll-target="#data-and-estimation">Data and estimation</a></li>
+  </ul></li>
+  <li><a href="#similarities-and-differences-to-state-of-the-art-techniques" id="toc-similarities-and-differences-to-state-of-the-art-techniques" class="nav-link" data-scroll-target="#similarities-and-differences-to-state-of-the-art-techniques">Similarities and differences to State-of-the-Art techniques</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/edit/main/methodology.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/InseeFrLab/ESA-Nowcasting-2023/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -186,7 +219,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="regarima">Regarima</h2>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>ARIMA modelling is a common type of time models used to capture internal information of a series, wether is is stationary or non stationary. ARIMA models offer some advantages in this exercise: they are relatively simple, easy to interpret, and therefore provide a useful benchmark for more complex models. As standard ARIMA models do not include external information, we use the extended version RegARIMA with external regressors (regression model with ARIMA errors):</p>
+<p>ARIMA modelling is a common type of time models used to capture internal information of a series, wether is is stationary or non stationary. ARIMA models offer some advantages in this exercise: they are relatively simple, easy to interpret, and therefore provide a useful benchmark for more complex models. As standard ARIMA models do not include external information, we use the extended version RegARIMA with external regressors (regression model with ARIMA errors, see <span class="citation" data-cites="chatfield1973box">Chatfield and Prothero (<a href="#ref-chatfield1973box" role="doc-biblioref">1973</a>)</span>):</p>
 <p><span class="math display">\[
 y_t = c + \sum_{i=1}^{p}\alpha_i x^i_{t}+u_t
 \]</span> <span class="math display">\[
@@ -290,10 +323,10 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 <section id="data-used-and-estimation" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="data-used-and-estimation">Data used and estimation</h3>
 <div class="page-columns page-full"><p>For the estimation of our Dynamics Factor Models (DFM), we utilized three main sources of data to capture different aspects of the economic and financial activity. These data sources include Eurostat data for economic activity, financial data obtained using the Yahoo API for financial activity, and Google Trends data for capturing more recent evolutions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. By incorporating these three main sources of data, we aim to capture different aspects of the economic and financial activity, ranging from long-term trends to short-term fluctuations and recent evolutions. This multi-source data approach allows us to build a more comprehensive and robust DFM model, which can provide more accurate and timely nowcasting predictions for the variables of interest.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;You can refer to the <a href="./data.html#sec-data-eurostat">Data</a> section for more extensive details on the data that has been used.</p></li></div></div>
-<p>For the estimation of our various Dynamics Factor Models (DFM), we relied on the “dfms” package in R, a powerful and user-friendly tool for estimating DFMs from time series data. The “dfms” package provides convenient and efficient methods for DFM estimation, making it an invaluable resource for our nowcasting project. Its user-friendly interface and optimized algorithms make it easy to implement and customize DFM models, while its efficient computational capabilities enable us to handle large datasets with ease. We really want to thanks Sebastian Krantz, the creator of this package.</p>
+<p>For the estimation of our various Dynamics Factor Models (DFM), we relied on the “dfms” package in R, a powerful and user-friendly tool for estimating DFMs from time series data. The “dfms” package provides convenient and efficient methods for DFM estimation, making it an invaluable resource for our nowcasting project. Its user-friendly interface and optimized algorithms make it easy to implement and customize DFM models, while its efficient computational capabilities enable us to handle large datasets with ease. It allows different type of estimations (see <span class="citation" data-cites="doz2011two">Doz, Giannone, and Reichlin (<a href="#ref-doz2011two" role="doc-biblioref">2011</a>)</span>, <span class="citation" data-cites="doz2012quasi">Doz, Giannone, and Reichlin (<a href="#ref-doz2012quasi" role="doc-biblioref">2012</a>)</span> and <span class="citation" data-cites="banbura2014maximum">Banbura and Modugno (<a href="#ref-banbura2014maximum" role="doc-biblioref">2014</a>)</span>). We really want to thanks Sebastian Krantz, the creator of this package.</p>
 <p>To ensure the robustness and accuracy of our DFM estimation, we took several steps beforehand the estimation pipeline of the “dfms” package. Since there are no trend or intercept terms in <a href="#eq-factor-equation">Equation&nbsp;1</a> and <a href="#eq-measurement-equation">Equation&nbsp;2</a>, we made <span class="math inline">\(X_t\)</span> stationary by taking a first difference. Note that <span class="math inline">\(X_t\)</span> is also standardized (scaled and centered) automatically by the “dfms” package.</p>
 <p>We also pay attention to the availability of the data to ensure that each observed series have sufficient data for estimation. If any series have inadequate data, it is removed from the estimation process to prevent biased results. We also account for potential collinearities that could occur among several economic variables. Highly correlated series (<span class="math inline">\(\rho \geq 0.9999\)</span>) are removed to mitigate multicollinearity issues and improve estimation accuracy.</p>
-<p>To determine the optimal values for the number of lags and factors in our DFM models, we use the Bai and Ng (2002) criteria, which provides statistical guidelines for selecting these parameters. We set a maximum limit of 4 lags and 2 factors for computational efficiency reasons.</p>
+<p>To determine the optimal values for the number of lags and factors in our DFM models, we use the <span class="citation" data-cites="bai2002determining">Bai and Ng (<a href="#ref-bai2002determining" role="doc-biblioref">2002</a>)</span> criteria, which provides statistical guidelines for selecting these parameters. We set a maximum limit of 4 lags and 2 factors for computational efficiency reasons.</p>
 <p>We initiate the estimation process from February 2005 for all challenges, and for the TOURISM challenge, we performed a seasonal adjustment on the target series prior to estimation in order to account for any seasonal patterns in the data.</p>
 </section>
 <section id="nowcasting" class="level3">
@@ -303,7 +336,7 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 </section>
 <section id="ets" class="level2">
 <h2 class="anchored" data-anchor-id="ets">ETS</h2>
-<p>Exponential smoothing models are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Therefore, the more recent the observation is, the higher the associated weight is. Moreover, exponential smoothing models do not require any external data.</p>
+<p>Exponential smoothing models (<span class="citation" data-cites="hyndman2008forecasting">Hyndman et al. (<a href="#ref-hyndman2008forecasting" role="doc-biblioref">2008</a>)</span>) are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older. Therefore, the more recent the observation is, the higher the associated weight is. Moreover, exponential smoothing models do not require any external data.</p>
 <p>The exponential smoothing models used are a combination of three components:</p>
 <ol type="1">
 <li><p>An error: additive (<span class="math inline">\(A\)</span>) or multiplicative (<span class="math inline">\(M\)</span>).</p></li>
@@ -335,13 +368,13 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 </div>
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><em>Source: Hyndman, R.J., &amp; Athanasopoulos, G. (2018).</em></p>
+<p><em>Source: <span class="citation" data-cites="hyndman2018forecasting">Hyndman and Athanasopoulos (<a href="#ref-hyndman2018forecasting" role="doc-biblioref">2018</a>)</span> </em></p>
 </div>
 </div>
 <p></p><figcaption class="figure-caption">Figure&nbsp;1: Exponential smoothing models.</figcaption><p></p>
 </figure>
 </div>
-<p>For each series, the model is selected minimising the Akaike’s Information Criterion (AIC) and parameters are estimated maximising the likelihood.</p>
+<p>For each series, the model is selected minimising the Akaike’s Information Criterion (<span class="citation" data-cites="akaike1974new">Akaike (<a href="#ref-akaike1974new" role="doc-biblioref">1974</a>)</span>) and parameters are estimated maximising the likelihood.</p>
 </section>
 <section id="xgboost" class="level2">
 <h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
@@ -351,7 +384,7 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 </section>
 <section id="xgboost-algorithm" class="level3">
 <h3 class="anchored" data-anchor-id="xgboost-algorithm">XGBoost Algorithm</h3>
-<p>XGBoost is a gradient boosting algorithm that is particularly well suited for regression and classification problems. It works by building a sequence of decision trees, each tree trying to correct the errors of the previous tree. During the training process, the algorithm iteratively adds decision trees to the model, where each new tree is fit on the residuals (i.e., the errors) of the previous trees. The final prediction is made by adding the output of all the trees.</p>
+<p>XGBoost (<span class="citation" data-cites="chen2016xgboost">Chen and Guestrin (<a href="#ref-chen2016xgboost" role="doc-biblioref">2016</a>)</span>) is a gradient boosting algorithm that is particularly well suited for regression and classification problems. It works by building a sequence of decision trees, each tree trying to correct the errors of the previous tree. During the training process, the algorithm iteratively adds decision trees to the model, where each new tree is fit on the residuals (i.e., the errors) of the previous trees. The final prediction is made by adding the output of all the trees.</p>
 <p>To control for overfitting, XGBoost uses a combination of L1 and L2 regularization, also known as “lasso” and “ridge” regularization, respectively. These regularization methods add a penalty term to the loss function, which forces the algorithm to find simpler models. L1 regularization shrinks the less important features’ coefficients to zero, while L2 regularization encourages the coefficients to be small, but does not set them to zero. By using both methods, XGBoost is able to produce models that are both accurate and interpretable.</p>
 <p>Another key feature of XGBoost is its ability to handle missing values. Rather than imputing missing values with a fixed value or mean, XGBoost assigns them a default direction in the split, allowing the algorithm to learn how to handle missing values during the training process.</p>
 <p>Overall, the XGBoost algorithm has proven to be a powerful tool in the field of machine learning, and its ability to handle large datasets and complex interactions between variables make it well-suited for nowcasting problems like the Eurostat competition.</p>
@@ -371,18 +404,68 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 </section>
 <section id="lstm" class="level2">
 <h2 class="anchored" data-anchor-id="lstm">LSTM</h2>
-<p>LSTM, or Long Short-Term Memory, is a type of recurrent neural network that is particularly well-suited for modeling time series data. Unlike traditional feedforward neural networks, which process input data in a single pass, recurrent neural networks can maintain a “memory” of previous inputs and use this information to make better predictions.</p>
-<p>LSTM takes this a step further by introducing “gates” that can selectively remember or forget previous inputs based on their importance to the current prediction. These gates allow the model to capture longer-term dependencies in the data, making it especially effective for time series forecasting tasks.</p>
+<section id="introduction-3" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-3">Introduction</h3>
+<p>Long Short Term Memory (LTSM) networks (<span class="citation" data-cites="hochreiter1997long">Hochreiter and Schmidhuber (<a href="#ref-hochreiter1997long" role="doc-biblioref">1997</a>)</span>) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure <span class="citation" data-cites="StructureLTSM">(<a href="#ref-StructureLTSM" role="doc-biblioref"><strong>StructureLTSM?</strong></a>)</span>).</p>
+<div id="fig-StructureLTSM" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/lstm.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Architecture of a LSTM Unit (Credits: <a href="https://d2l.ai/chapter_recurrent-modern/lstm.html">https://d2l.ai/chapter_recurrent-modern/lstm.html</a>)</figcaption>
+</figure>
+</div>
+</section>
+<section id="ltsm-model" class="level3">
+<h3 class="anchored" data-anchor-id="ltsm-model">LTSM model</h3>
 <p>During the training process, the LSTM model is fed a sequence of inputs, with each input representing a timestep in the time series. The model then generates a corresponding output for each timestep, which is compared to the actual value to compute a loss function. The weights of the model are updated through backpropagation, where the gradient of the loss function is propagated backwards through the network.</p>
 <p>One of the challenges of using LSTMs for time series forecasting is selecting an appropriate window size, or the number of previous timesteps that the model should consider when making each prediction. A larger window size can capture longer-term trends in the data, but may also introduce more noise and complicate the training process. A smaller window size, on the other hand, may be more sensitive to short-term fluctuations in the data, but may not capture longer-term trends as effectively.</p>
-<p>In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.</p>
-<p>The LSTM model was trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall, the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.</p>
+<p>In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer prices in industry, the Producer volume in industry and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.</p>
+</section>
+<section id="data-and-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="data-and-estimation">Data and estimation</h3>
+<p>We gathered indicators of the macroeconomic environment from different sources. These data include hard : macro variables, financial indicators, economic surveys, prices and soft indicators. The data is transformed into a large dataset, we included macroeconomic series and their lags. The series are all scaled. The LSTM model is trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall, the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.</p>
+</section>
+</section>
+<section id="similarities-and-differences-to-state-of-the-art-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="similarities-and-differences-to-state-of-the-art-techniques">Similarities and differences to State-of-the-Art techniques</h2>
+<p>A few specificities of our work: - A significant portion of our database comprises classic macroeconomic indicators, including prices, surveys, and Brent. All of them are open source. - For low-dimensional methods, we ensure minimal control over the consistency of selected variables or signs of estimated coefficients. - We have compared different methods and included traditional methods in our analysis, but our research also incorporates methods that rely on recent developments. - We exclusively use open data sources, avoiding non-free data aggregators, which ensures high reproducibility. However, data retrieval can be more expensive, and some non-free data cannot be utilized. - We made a conscious effort to identify new data sources or indicators. We also incorporate soft data such as Google Trends in our analysis. - The methods we use combine data with diverse frequencies, up to weekly indicators (created from daily data), allowing us to improve the precision of our predictions up until the last day of each month.</p>
+
 
 
 </section>
 
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-akaike1974new" class="csl-entry" role="listitem">
+Akaike, Hirotsugu. 1974. <span>“A New Look at the Statistical Model Identification.”</span> <em>IEEE Transactions on Automatic Control</em> 19 (6): 716–23. <a href="https://doi.org/10.1109/TAC.1974.1100705">https://doi.org/10.1109/TAC.1974.1100705</a>.
+</div>
+<div id="ref-bai2002determining" class="csl-entry" role="listitem">
+Bai, Jushan, and Serena Ng. 2002. <span>“Determining the Number of Factors in Approximate Factor Models.”</span> <em>Econometrica</em> 70 (1): 191–221. <a href="https://doi.org/10.1111/1468-0262.00273">https://doi.org/10.1111/1468-0262.00273</a>.
+</div>
+<div id="ref-banbura2014maximum" class="csl-entry" role="listitem">
+Banbura, Marta, and Michele Modugno. 2014. <span>“Maximum Likelihood Estimation of Factor Models on Datasets with Arbitrary Pattern of Missing Data.”</span> <em>Journal of Applied Econometrics</em> 29 (1): 133–60. <a href="https://doi.org/10.1002/jae.2306">https://doi.org/10.1002/jae.2306</a>.
+</div>
+<div id="ref-chatfield1973box" class="csl-entry" role="listitem">
+Chatfield, C., and D. Prothero. 1973. <span>“Box–Jenkins Seasonal Forecasting: Problems in Model Identification.”</span> <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 22 (3): 280–92. <a href="https://doi.org/10.2307/2346460">https://doi.org/10.2307/2346460</a>.
+</div>
+<div id="ref-chen2016xgboost" class="csl-entry" role="listitem">
+Chen, Tianqi, and Carlos Guestrin. 2016. <span>“XGBoost: A Scalable Tree Boosting System.”</span> In <em>Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 785–94. <a href="https://doi.org/10.1145/2939672.2939785">https://doi.org/10.1145/2939672.2939785</a>.
+</div>
+<div id="ref-doz2011two" class="csl-entry" role="listitem">
+Doz, Catherine, Domenico Giannone, and Lucrezia Reichlin. 2011. <span>“A Two-Step Estimator for Large Approximate Dynamic Factor Models Based on Kalman Filtering.”</span> <em>Journal of Econometrics</em> 164 (1): 188–205. <a href="https://doi.org/10.1016/j.jeconom.2011.02.012">https://doi.org/10.1016/j.jeconom.2011.02.012</a>.
+</div>
+<div id="ref-doz2012quasi" class="csl-entry" role="listitem">
+———. 2012. <span>“A Quasi-Maximum Likelihood Approach for Large, Approximate Dynamic Factor Models.”</span> <em>Review of Economics and Statistics</em> 94 (4): 1014–24. <a href="https://doi.org/10.1162/REST_a_00225">https://doi.org/10.1162/REST_a_00225</a>.
+</div>
+<div id="ref-hochreiter1997long" class="csl-entry" role="listitem">
+Hochreiter, Sepp, and Jürgen Schmidhuber. 1997. <span>“Long Short-Term Memory.”</span> <em>Neural Computation</em> 9 (8): 1735–80. <a href="https://doi.org/10.1162/neco.1997.9.8.1735">https://doi.org/10.1162/neco.1997.9.8.1735</a>.
+</div>
+<div id="ref-hyndman2018forecasting" class="csl-entry" role="listitem">
+Hyndman, Rob J., and George Athanasopoulos. 2018. <em>Forecasting: Principles and Practice</em>. OTexts. <a href="https://otexts.com/fpp2/">https://otexts.com/fpp2/</a>.
+</div>
+<div id="ref-hyndman2008forecasting" class="csl-entry" role="listitem">
+Hyndman, Rob J., Anne B. Koehler, J. Keith Ord, and Ralph D. Snyder. 2008. <span>“Forecasting with Exponential Smoothing: The State Space Approach.”</span> <em>Journal of the American Statistical Association</em> 103 (484): 679–88. <a href="https://doi.org/10.1198/016214508000000269">https://doi.org/10.1198/016214508000000269</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

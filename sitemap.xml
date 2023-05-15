@@ -2,46 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-ppi.html</loc>
-    <lastmod>2023-05-12T13:10:17.558Z</lastmod>
+    <lastmod>2023-05-15T19:25:37.385Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/ppi.html</loc>
-    <lastmod>2023-05-12T13:10:20.706Z</lastmod>
+    <lastmod>2023-05-15T19:25:40.622Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/utils/utils.html</loc>
-    <lastmod>2023-05-12T13:10:21.470Z</lastmod>
+    <lastmod>2023-05-15T19:25:41.770Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-tourism.html</loc>
-    <lastmod>2023-05-12T13:10:23.942Z</lastmod>
+    <lastmod>2023-05-15T19:25:44.437Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/methodology.html</loc>
-    <lastmod>2023-05-12T13:10:24.758Z</lastmod>
+    <lastmod>2023-05-15T19:25:45.421Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/reproductibility.html</loc>
+    <lastmod>2023-05-15T19:25:45.969Z</lastmod>
+  </url>
+  <url>
+    <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/lessons-learned.html</loc>
+    <lastmod>2023-05-15T19:25:46.353Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/tourism.html</loc>
-    <lastmod>2023-05-12T13:10:27.534Z</lastmod>
+    <lastmod>2023-05-15T19:25:49.258Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/post-mortem-pvi.html</loc>
-    <lastmod>2023-05-12T13:10:29.986Z</lastmod>
+    <lastmod>2023-05-15T19:25:51.902Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/LICENCE.html</loc>
-    <lastmod>2023-05-12T13:10:30.738Z</lastmod>
+    <lastmod>2023-05-15T19:25:52.674Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/index.html</loc>
-    <lastmod>2023-05-12T13:10:31.138Z</lastmod>
+    <lastmod>2023-05-15T19:25:53.206Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/pvi.html</loc>
-    <lastmod>2023-05-12T13:10:33.882Z</lastmod>
+    <lastmod>2023-05-15T19:25:56.086Z</lastmod>
   </url>
   <url>
     <loc>https://inseefrlab.github.io/ESA-Nowcasting-2023/data.html</loc>
-    <lastmod>2023-05-12T13:10:34.530Z</lastmod>
+    <lastmod>2023-05-15T19:25:56.770Z</lastmod>
   </url>
 </urlset>
