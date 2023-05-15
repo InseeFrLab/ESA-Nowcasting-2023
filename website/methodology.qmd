@@ -11,7 +11,7 @@ Our team employed a comprehensive methodology utilizing both standard econometri
 ### Introduction
 
 ARIMA modelling is a common type of time models used to capture internal information of a series, wether is is stationary or non stationary. ARIMA models offer some advantages in this exercise: they are relatively
-simple, easy to interpret, and therefore provide a useful benchmark for more complex models. As standard ARIMA models do not include external information, we use the extended version RegARIMA with external regressors (regression model with ARIMA errors):
+simple, easy to interpret, and therefore provide a useful benchmark for more complex models. As standard ARIMA models do not include external information, we use the extended version RegARIMA with external regressors (regression model with ARIMA errors, see @chatfield1973box):
 
 $$
 y_t = c + \sum_{i=1}^{p}\alpha_i x^i_{t}+u_t
@@ -88,13 +88,13 @@ For the estimation of our Dynamics Factor Models (DFM), we utilized three main s
 
 [^Data]: You can refer to the [Data](data.qmd#sec-data-eurostat) section for more extensive details on the data that has been used.
 
-For the estimation of our various Dynamics Factor Models (DFM), we relied on the "dfms" package in R, a powerful and user-friendly tool for estimating DFMs from time series data. The "dfms" package provides convenient and efficient methods for DFM estimation, making it an invaluable resource for our nowcasting project. Its user-friendly interface and optimized algorithms make it easy to implement and customize DFM models, while its efficient computational capabilities enable us to handle large datasets with ease. We really want to thanks Sebastian Krantz, the creator of this package.
+For the estimation of our various Dynamics Factor Models (DFM), we relied on the "dfms" package in R, a powerful and user-friendly tool for estimating DFMs from time series data. The "dfms" package provides convenient and efficient methods for DFM estimation, making it an invaluable resource for our nowcasting project. Its user-friendly interface and optimized algorithms make it easy to implement and customize DFM models, while its efficient computational capabilities enable us to handle large datasets with ease. It allows different type of estimations (see @doz2011two, @doz2012quasi and @banbura2014maximum). We really want to thanks Sebastian Krantz, the creator of this package.
 
 To ensure the robustness and accuracy of our DFM estimation, we took several steps beforehand the estimation pipeline of the "dfms" package. Since there are no trend or intercept terms in @eq-factor-equation and @eq-measurement-equation, we made $X_t$ stationary by taking a first difference. Note that $X_t$ is also standardized (scaled and centered) automatically by the "dfms" package. 
 
 We also pay attention to the availability of the data to ensure that each observed series have sufficient data for estimation. If any series have inadequate data, it is removed from the estimation process to prevent biased results. We also account for potential collinearities that could occur among several economic variables. Highly correlated series ($\rho \geq 0.9999$) are removed to mitigate multicollinearity issues and improve estimation accuracy.
 
-To determine the optimal values for the number of lags and factors in our DFM models, we use the Bai and Ng (2002) criteria, which provides statistical guidelines for selecting these parameters. We set a maximum limit of 4 lags and 2 factors for computational efficiency reasons.
+To determine the optimal values for the number of lags and factors in our DFM models, we use the @bai2002determining criteria, which provides statistical guidelines for selecting these parameters. We set a maximum limit of 4 lags and 2 factors for computational efficiency reasons.
 
 We initiate the estimation process from February 2005 for all challenges, and for the TOURISM challenge, we performed a seasonal adjustment on the target series prior to estimation in order to account for any seasonal patterns in the data.
 
@@ -105,7 +105,7 @@ Once the DFM is estimated ($A_j$, $\Sigma_0$, $\Lambda$, $R$), it can be used fo
 
 ## ETS
 
-Exponential smoothing models are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older.
+Exponential smoothing models (@hyndman2008forecasting) are a class of models where forecasts are linear combinations of past values, with the weights decaying exponentially as the observations get older.
 Therefore, the more recent the observation is, the higher the associated weight is.
 Moreover, exponential smoothing models do not require any external data.
 
@@ -126,13 +126,13 @@ See @fig-ets for the description of the model.
 
 ![Multiplicative error](images/ets_multi.png){#fig-ets-multi}
 
-*Source: Hyndman, R.J., & Athanasopoulos, G. (2018).*
+*Source: @hyndman2018forecasting *
 
 Exponential smoothing models.
 :::
 
 
-For each series, the model is selected minimising the Akaike’s Information Criterion (AIC) and parameters are estimated maximising the likelihood.
+For each series, the model is selected minimising the Akaike’s Information Criterion (@akaike1974new) and parameters are estimated maximising the likelihood.
 
 
 ## XGBoost
@@ -215,36 +215,25 @@ metrics such as mean squared error and mean absolute error.
 
 ### Introduction 
 
-Long Short Term Memory (LTSM) networks are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure \ref{fig:StructureLTSM}).
+Long Short Term Memory (LTSM) networks (@hochreiter1997long) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure \ref{fig:StructureLTSM}).
 
 ### LTSM model 
 
-During the training process, the LSTM model is fed a sequence of inputs,
-with each input representing a timestep in the time series. The model
-then generates a corresponding output for each timestep, which is
-compared to the actual value to compute a loss function. The weights of
-the model are updated through backpropagation, where the gradient of the
-loss function is propagated backwards through the network.
+During the training process, the LSTM model is fed a sequence of inputs, with each input representing a timestep in the time series. The model then generates a corresponding output for each timestep, which is compared to the actual value to compute a loss function. The weights of the model are updated through backpropagation, where the gradient of the loss function is propagated backwards through the network.
 
-One of the challenges of using LSTMs for time series forecasting is
-selecting an appropriate window size, or the number of previous
-timesteps that the model should consider when making each prediction. A
-larger window size can capture longer-term trends in the data, but may
-also introduce more noise and complicate the training process. A smaller
-window size, on the other hand, may be more sensitive to short-term
-fluctuations in the data, but may not capture longer-term trends as
-effectively.
+One of the challenges of using LSTMs for time series forecasting is selecting an appropriate window size, or the number of previous timesteps that the model should consider when making each prediction. A larger window size can capture longer-term trends in the data, but may also introduce more noise and complicate the training process. A smaller window size, on the other hand, may be more sensitive to short-term fluctuations in the data, but may not capture longer-term trends as effectively.
 
-In the context of the Eurostat competition, the LSTM approach was used
-to predict the value of several economic indicators, including the
-Producer Price Index, the Producer Volume Index and the Number of nights
-spent at tourist accommodation establishments. The time series data for
-each country was transformed into a format that was suitable for LSTM
-training, with each row representing a single timestep in the time
-series and the columns representing the various input features.
+In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.
 
 ### Data and estimation
 
-We gathered indicators of the macroeconomic environement from different sources. These data include hard : macro variables, financial indicators, economic surveys, prices and soft indicators. The data is transformed into a large dataset, we included macroeconomic series and their lags. The series are all scaled. 
-The LSTM model is trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall,
-the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.
+We gathered indicators of the macroeconomic environment from different sources. These data include hard : macro variables, financial indicators, economic surveys, prices and soft indicators. The data is transformed into a large dataset, we included macroeconomic series and their lags. The series are all scaled.  The LSTM model is trained independently for each country, with a grid search used to find the optimal hyperparameters for each model. Overall, the LSTM approach proved to be a powerful tool for time series forecasting, and its ability to capture long-term dependencies in the data made it particularly well-suited for the nowcasting problem at hand.
+
+## Similarities and differences to State-of-the-Art techniques
+A few specificities of our work:
+    - A significant portion of our database comprises classic macroeconomic indicators, including prices, surveys, and Brent. All of them are open source.
+    - For low-dimensional methods, we ensure minimal control over the consistency of selected variables or signs of estimated coefficients. 
+    - We have compared different methods and included traditional methods in our analysis, but our research also incorporates methods that rely on recent developments. 
+    - We exclusively use open data sources, avoiding non-free data aggregators, which ensures high reproducibility. However, data retrieval can be more expensive, and some non-free data cannot be utilized. 
+    - We made a conscious effort to identify new data sources or indicators. We also incorporate soft data such as Google Trends in our analysis.
+    - The methods we use combine data with diverse frequencies, up to weekly indicators (created from daily data), allowing us to improve the precision of our predictions up until the last day of each month.
