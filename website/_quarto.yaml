@@ -48,8 +48,8 @@ website:
         href: tourism.qmd
       - text: "Lessons Learned"
         href: lessons-learned.qmd
-      - text: "Reproductibility"
-        href: reproductibility.qmd
+      - text: "Reproducibility"
+        href: reproducibility.qmd
         
   sidebar:
     - id: ppi

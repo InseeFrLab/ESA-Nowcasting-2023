@@ -1,5 +1,5 @@
 ---
-title: Reproductibility
+title: Reproducibility
 ---
 
 At the INSEE Innovation Team, we greatly value the concept of reproducibility in scientific research. We understand that reproducibility is crucial for ensuring the credibility and trustworthiness of scientific findings. That's why we prioritize documenting our research methodologies, data analyses, and experimental processes in a transparent and accessible manner. Our commitment to reproducibility is driven by a desire to contribute to the advancement of scientific knowledge and promote rigorous research practices.

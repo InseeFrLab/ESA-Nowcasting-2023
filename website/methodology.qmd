@@ -215,9 +215,9 @@ metrics such as mean squared error and mean absolute error.
 
 ### Introduction 
 
-Long Short Term Memory (LTSM) networks (@hochreiter1997long) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure @StructureLTSM).
+Long Short Term Memory (LTSM) networks (@hochreiter1997long) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see@fig-StructureLSTM).
 
-![Architecture of a LSTM Unit (Credits:  [https://d2l.ai/chapter_recurrent-modern/lstm.html](https://d2l.ai/chapter_recurrent-modern/lstm.html))](images/lstm.png){#fig-StructureLTSM}
+![Architecture of a LSTM Unit (Credits:  [https://d2l.ai/chapter_recurrent-modern/lstm.html](https://d2l.ai/chapter_recurrent-modern/lstm.html))](images/lstm.png){#fig-StructureLSTM}
 
 
 ### LTSM model 
@@ -234,9 +234,15 @@ We gathered indicators of the macroeconomic environment from different sources. 
 
 ## Similarities and differences to State-of-the-Art techniques
 A few specificities of our work:
-    - A significant portion of our database comprises classic macroeconomic indicators, including prices, surveys, and Brent. All of them are open source.
-    - For low-dimensional methods, we ensure minimal control over the consistency of selected variables or signs of estimated coefficients. 
-    - We have compared different methods and included traditional methods in our analysis, but our research also incorporates methods that rely on recent developments. 
-    - We exclusively use open data sources, avoiding non-free data aggregators, which ensures high reproducibility. However, data retrieval can be more expensive, and some non-free data cannot be utilized. 
-    - We made a conscious effort to identify new data sources or indicators. We also incorporate soft data such as Google Trends in our analysis.
-    - The methods we use combine data with diverse frequencies, up to weekly indicators (created from daily data), allowing us to improve the precision of our predictions up until the last day of each month.
+
+- A significant portion of our database comprises classic macroeconomic indicators, including prices, surveys, and Brent. All of them are open source.
+    
+- For low-dimensional methods, we ensure minimal control over the consistency of selected variables or signs of estimated coefficients. 
+    
+- We have compared different methods and included traditional methods in our analysis, but our research also incorporates methods that rely on recent developments. 
+    
+- We exclusively use open data sources, avoiding non-free data aggregators, which ensures high reproducibility. However, data retrieval can be more expensive, and some non-free data cannot be utilized. 
+    
+- We made a conscious effort to identify new data sources or indicators. We also incorporate soft data such as Google Trends in our analysis.
+    
+- The methods we use combine data with diverse frequencies, up to weekly indicators (created from daily data), allowing us to improve the precision of our predictions up until the last day of each month.
