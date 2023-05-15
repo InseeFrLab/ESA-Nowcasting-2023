@@ -405,11 +405,11 @@ prepare_url <- function(id, filters) {
 
 read_data_from_s3 <- function(challenges_info, data_info) {
   month <- challenges_info$DATES$month_to_pred
-  
+
   if (!dir.exists(paste0("data/", month))) {
     dir.create(paste0("data/", month))
   }
-  
+
   data <- mapply(function(x, source) {
     url <- paste0("https://minio.lab.sspcloud.fr/projet-esa-nowcasting/data/", month, "/", source, ".parquet")
     destfile <- paste0("data/", month, "/", source, ".parquet")
@@ -418,7 +418,7 @@ read_data_from_s3 <- function(challenges_info, data_info) {
     }
     return(arrow::read_parquet(destfile))
   }, data_info, names(data_info), SIMPLIFY = FALSE)
-  
+
   return(
     get_data(
       data_info[order(names(data_info))],

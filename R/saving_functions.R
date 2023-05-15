@@ -28,7 +28,7 @@ save_entries <- function(challenge, entries, challenges_info, save_s3) {
       bucket = "projet-esa-nowcasting", object = paste0("submissions/", challenge, "/results_", month, ".json"),
       region = ""
     )
-  
+
     #### Save the data in S3 ####
     save(data, file = paste0("data_", challenge, "_", month, ".RData"))
     aws.s3::put_object(
@@ -74,7 +74,6 @@ save_data <- function(data, challenges_info, save_s3) {
         region = ""
       )
     }
-
   }, data, names(data), SIMPLIFY = FALSE)
 
   paste0("data/", month)
