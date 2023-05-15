@@ -137,8 +137,8 @@ div.csl-indent {
  <span class="menu-text">Lessons Learned</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./reproductibility.html" rel="" target="">
- <span class="menu-text">Reproductibility</span></a>
+    <a class="nav-link" href="./reproducibility.html" rel="" target="">
+ <span class="menu-text">Reproducibility</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -406,8 +406,8 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 <h2 class="anchored" data-anchor-id="lstm">LSTM</h2>
 <section id="introduction-3" class="level3">
 <h3 class="anchored" data-anchor-id="introduction-3">Introduction</h3>
-<p>Long Short Term Memory (LTSM) networks (<span class="citation" data-cites="hochreiter1997long">Hochreiter and Schmidhuber (<a href="#ref-hochreiter1997long" role="doc-biblioref">1997</a>)</span>) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure <span class="citation" data-cites="StructureLTSM">(<a href="#ref-StructureLTSM" role="doc-biblioref"><strong>StructureLTSM?</strong></a>)</span>).</p>
-<div id="fig-StructureLTSM" class="quarto-figure quarto-figure-center anchored">
+<p>Long Short Term Memory (LTSM) networks (<span class="citation" data-cites="hochreiter1997long">Hochreiter and Schmidhuber (<a href="#ref-hochreiter1997long" role="doc-biblioref">1997</a>)</span>) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see@fig-StructureLSTM).</p>
+<div id="fig-StructureLSTM" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="images/lstm.png" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">Figure&nbsp;2: Architecture of a LSTM Unit (Credits: <a href="https://d2l.ai/chapter_recurrent-modern/lstm.html">https://d2l.ai/chapter_recurrent-modern/lstm.html</a>)</figcaption>
@@ -427,7 +427,15 @@ X_t = \Lambda F_{t} + \xi_t, \qquad \xi_t \sim N(0, R)
 </section>
 <section id="similarities-and-differences-to-state-of-the-art-techniques" class="level2">
 <h2 class="anchored" data-anchor-id="similarities-and-differences-to-state-of-the-art-techniques">Similarities and differences to State-of-the-Art techniques</h2>
-<p>A few specificities of our work: - A significant portion of our database comprises classic macroeconomic indicators, including prices, surveys, and Brent. All of them are open source. - For low-dimensional methods, we ensure minimal control over the consistency of selected variables or signs of estimated coefficients. - We have compared different methods and included traditional methods in our analysis, but our research also incorporates methods that rely on recent developments. - We exclusively use open data sources, avoiding non-free data aggregators, which ensures high reproducibility. However, data retrieval can be more expensive, and some non-free data cannot be utilized. - We made a conscious effort to identify new data sources or indicators. We also incorporate soft data such as Google Trends in our analysis. - The methods we use combine data with diverse frequencies, up to weekly indicators (created from daily data), allowing us to improve the precision of our predictions up until the last day of each month.</p>
+<p>A few specificities of our work:</p>
+<ul>
+<li><p>A significant portion of our database comprises classic macroeconomic indicators, including prices, surveys, and Brent. All of them are open source.</p></li>
+<li><p>For low-dimensional methods, we ensure minimal control over the consistency of selected variables or signs of estimated coefficients.</p></li>
+<li><p>We have compared different methods and included traditional methods in our analysis, but our research also incorporates methods that rely on recent developments.</p></li>
+<li><p>We exclusively use open data sources, avoiding non-free data aggregators, which ensures high reproducibility. However, data retrieval can be more expensive, and some non-free data cannot be utilized.</p></li>
+<li><p>We made a conscious effort to identify new data sources or indicators. We also incorporate soft data such as Google Trends in our analysis.</p></li>
+<li><p>The methods we use combine data with diverse frequencies, up to weekly indicators (created from daily data), allowing us to improve the precision of our predictions up until the last day of each month.</p></li>
+</ul>
 
 
 
