@@ -19,12 +19,12 @@ RUN git clone --branch R4.2.2 --depth 1 https://github.com/rocker-org/rocker-ver
     chmod -R +x /rocker_scripts/
 
 # Install Python
-# RUN /rocker_scripts/install_python.sh
+RUN /rocker_scripts/install_python.sh
 
 COPY . .
 
 # Install python dependencies
-# RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Reconfigure Java support 
 RUN R CMD javareconf
