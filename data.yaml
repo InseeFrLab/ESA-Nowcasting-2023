@@ -280,7 +280,7 @@ GTRENDS_FUEL_GAS:
   challenge:
     - PPI
     - PVI
-    - DFM
+    - TOURISM
   model:
     - XGBOOST
     - LSTM
