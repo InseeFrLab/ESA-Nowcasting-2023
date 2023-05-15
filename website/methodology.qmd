@@ -151,7 +151,7 @@ tailored it to our specific nowcasting problem.
 
 ### XGBoost Algorithm
 
-XGBoost is a gradient boosting algorithm that is particularly well
+XGBoost (@chen2016xgboost) is a gradient boosting algorithm that is particularly well
 suited for regression and classification problems. It works by building
 a sequence of decision trees, each tree trying to correct the errors of
 the previous tree. During the training process, the algorithm
@@ -215,7 +215,10 @@ metrics such as mean squared error and mean absolute error.
 
 ### Introduction 
 
-Long Short Term Memory (LTSM) networks (@hochreiter1997long) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure \ref{fig:StructureLTSM}).
+Long Short Term Memory (LTSM) networks (@hochreiter1997long) are a particularly interesting kind of recurrent Neural Network (NN) when it comes to time series forecasting. It allows for learning long-term dependencies in the data without losing performances in grasping short term relations. They overcome the main flaw addressed to recurrent NN models which is the unboundedness of the lookback time window that implies limitations in long-term dependencies. LSTM enable to cope with this problem thanks to the incorporation of a cell space that stores long term information that is updated at each step. This update implies incorporating but more importantly getting rid of some information which regulates for the long term dependence. This is done using a particular structure using repeated modules, each of which is composed of four layers that convey information in a particular way (see Figure @StructureLTSM).
+
+![Architecture of a LSTM Unit (Credits:  [https://d2l.ai/chapter_recurrent-modern/lstm.html](https://d2l.ai/chapter_recurrent-modern/lstm.html))](images/lstm.png){#fig-StructureLTSM}
+
 
 ### LTSM model 
 
@@ -223,7 +226,7 @@ During the training process, the LSTM model is fed a sequence of inputs, with ea
 
 One of the challenges of using LSTMs for time series forecasting is selecting an appropriate window size, or the number of previous timesteps that the model should consider when making each prediction. A larger window size can capture longer-term trends in the data, but may also introduce more noise and complicate the training process. A smaller window size, on the other hand, may be more sensitive to short-term fluctuations in the data, but may not capture longer-term trends as effectively.
 
-In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer Price Index, the Producer Volume Index and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.
+In the context of the Eurostat competition, the LSTM approach was used to predict the value of several economic indicators, including the Producer prices in industry, the Producer volume in industry and the Number of nights spent at tourist accommodation establishments. The time series data for each country was transformed into a format that was suitable for LSTM training, with each row representing a single timestep in the time series and the columns representing the various input features.
 
 ### Data and estimation
 

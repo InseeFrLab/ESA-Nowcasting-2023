@@ -1,0 +1,82 @@
+---
+title: Reproductibility
+---
+
+At the INSEE Innovation Team, we greatly value the concept of reproducibility in scientific research. We understand that reproducibility is crucial for ensuring the credibility and trustworthiness of scientific findings. That's why we prioritize documenting our research methodologies, data analyses, and experimental processes in a transparent and accessible manner. Our commitment to reproducibility is driven by a desire to contribute to the advancement of scientific knowledge and promote rigorous research practices.
+
+## Getting started [![](https://img.shields.io/badge/Launch-Datalab-orange?logo=R)](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.pullPolicy=%C2%ABAlways%C2%BB&service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av7.0.0%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB&onyxia.friendlyName=%C2%ABesa-nowcasting%C2%BB)
+
+
+To ensure full reproducibility of the results, the project is accompanied by a [Docker image](https://hub.docker.com/r/inseefrlab/esa-nowcasting-2023) that contains all the necessary packages and dependencies. You can pull the Docker image using the following command in your terminal after installing [Docker](https://www.docker.com/) :
+
+```{.bash}
+docker pull inseefrlab/esa-nowcasting-2023:latest
+```
+
+Alternatively, you can use the [Onyxia instance SSPCloud](https://github.com/InseeFrLab/onyxia-web) (@comte2022sspcloud), a datalab developed by the French National Institute of Statistics and Economic Studies ([INSEE](https://www.insee.fr/fr/accueil)) that provides an easy-to-use interface for running the Docker image.
+
+To get started with SSPCloud:
+
+- <ins>**Step 0**</ins>: Go to [https://datalab.sspcloud.fr/home](https://datalab.sspcloud.fr/home). Click on **Sign In** and then **Create an account** with your academic or institutional email address.
+- <ins>**Step 1**</ins>: Click [here](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.pullPolicy=%C2%ABAlways%C2%BB&service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av7.0.0%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB&onyxia.friendlyName=%C2%ABesa-nowcasting%C2%BB) or on the orange badge on top of the page.
+- <ins>**Step 2**</ins>: **Open** the service and follow the instructions regarding *username* and *credentials*.
+- <ins>**Step 3**</ins>: **Open a new project** by clicking the following file: `~/work/ESA-Nowcasting-2023/ESA-Nowcasting-2023.Rproj`.
+- <ins>**Step 4**</ins>: Ensure all necessary packages are installed by executing the ```renv::restore()``` command in the console. If prompted to proceed with the installation, enter `y`.
+
+You are all set!
+
+## Codes
+
+### Functions
+
+All functions used in the project are organized by theme in the ```R/``` folder :
+
+```
+ESA-Nowcasting-2023
+└─── R
+     │ data_preprocessing.R
+     │ data_retrieval.R
+     │ dfms_functions.R
+     │ ets_functions.R
+     │ lstm_functions.R
+     │ post_mortem_functions.R
+     │ regarima_functions.R
+     │ saving_functions.R
+     │ XGBoost_functions.R
+
+```
+### Configuration files
+
+The project is composed of three configuration files that enable the operation of the models and the challenges as a whole. The first file, `challenges.yaml`, contains information about the challenges themselves, including the countries used for each challenge and the current dates.
+
+The second file, `models.yaml`, is the backbone of the project as it contains all of the parameters used for all the models and challenges. This file is responsible for ensuring that the models are appropriately tuned. Any adjustments made to this file can have a significant impact on the accuracy of the models, and thus it is vital that the parameters are fine-tuned carefully.
+
+Finally, the `data.yaml` configuration file is responsible for specifying all the relevant information about the data sources used in the challenge. It is essential that this file is accurately updated as changes to data sources or updates can have a significant impact on the accuracy of the models.
+
+### Pipelines
+
+The project is deeply relying on the [target package](https://books.ropensci.org/targets/), which is a tool for creating and running reproducible pipelines in R. `target` is particularly useful for managing large or complex data sets, as it allows you to define each task in a pipeline as a separate function, and then run the pipeline by calling the ```targets::tar_make()``` function. This ensures that tasks are run in the correct order, and can save time by only running tasks that are out of date or have not been run before.
+
+The project is decomposed into four different pipelines specified in the targets_yaml file:
+
+    - data: `run_data.R`
+    - ppi: `run_ppi.R`
+    - pvi: `run_pvi.R`
+    - tourism: `run_tourism.R`
+
+The first pipeline retrieves all the data necessary for the different challenges, while the other three run the five models for each challenge independently. Each pipeline can be run using the following command: `targets::tar_make(script = "run_***.R")`.
+
+:::{.callout-important}
+## Saving to s3
+
+Note that the data used for the challenges is stored in a private bucket, and writing permissions are required to run the pipeline as is. Hence, if you don't have access to our private bucket you have to run all 4 pipelines with the parameter `SAVE_TO_S3` equals to `False`. 
+:::
+
+## Replicating past results
+
+We have made it a priority to ensure the full reproducibility of all our past submissions. In order to achieve this, we have taken the necessary steps to automatically save the data used for each specific submission in a publicly accessible S3 bucket. This allows anyone to easily access the exact datasets that were utilized in our analyses. In the event that there have been changes to the model codes, it is simply a matter of checking out the commit corresponding to the submission date and adjusting the relevant date variables in the `challenges.yaml` configuration file. By combining the code retrieval with the availability of the specific datasets, we have established a robust framework that enables the replication and verification of our past results. This commitment to transparency and reproducibility ensures that the findings and outcomes of our submissions can be reliably validated and built upon by anyone.
+
+:::{.callout-note}
+## Any issues?
+If you encounter any difficulties or require assistance in replicating our past results, please do not hesitate to reach out to us. We understand that the replication process can sometimes be challenging, and we are here to provide support and guidance. Our team is available to answer any questions, clarify any uncertainties, and offer further explanations regarding the methodologies, data, or code used in our previous submissions.
+:::
