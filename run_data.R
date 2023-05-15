@@ -1,4 +1,8 @@
-# Load packages required to define the pipeline:
+#' Pipeline for Data Retrieval
+#'
+#' This pipeline performs data retrieval from various data sources.
+#' Data can be saved in a s3 bucket if `SAVE_TO_S3` is set to TRUE.
+
 library(targets)
 
 # Set target options:
@@ -14,8 +18,10 @@ options(dplyr.summarise.inform = FALSE)
 
 tar_source(files = "R")
 
+# Saving flag to S3 (TOKEN NEEDED)
 SAVE_TO_S3 <- TRUE
 
+# Pipeline
 list(
   tar_target(
     name = data_info_file,
