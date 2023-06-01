@@ -1,7 +1,7 @@
 # Repository of the Insee team competing for the [European Statistics Awards for Nowcasting](https://statistics-awards.eu/)
 
 [![Licence](https://img.shields.io/badge/Licence-EUPL--1.2-001489)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)
-[![Onyxia](https://img.shields.io/badge/Launch-Datalab-orange?logo=R)](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av7.0.0%C2%BB&onyxia.friendlyName=%C2%ABesa_nowcasting%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB)
+[![Onyxia](https://img.shields.io/badge/Launch-Datalab-orange?logo=R)](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av8.0.0%C2%BB&onyxia.friendlyName=%C2%ABesa_nowcasting%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB)
 [![Run ESA Challenge](https://github.com/InseeFrLab/ESA-Nowcasting-2023/actions/workflows/workflow-esa-challenge.yaml/badge.svg)](https://github.com/InseeFrLab/ESA-Nowcasting-2023/actions/workflows/workflow-esa-challenge.yaml)
 
 ## Getting Started
@@ -17,7 +17,7 @@ Alternatively, you can use the [Onyxia instance SSPCloud](https://github.com/Ins
 To get started with SSPCloud:
 
 - Step 0: Go to [https://datalab.sspcloud.fr/home](https://datalab.sspcloud.fr/home). Click on **Sign In** and then **Create an account** with your academic or institutional email address.
-- Step 1: Click [here](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av5.0.2%C2%BB&onyxia.friendlyName=%C2%ABesa_nowcasting%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB) or on the orange badge on top of the page.
+- Step 1: Click [here](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=false&service.image.custom.enabled=true&service.image.custom.version=%C2%ABinseefrlab%2Fesa-nowcasting-2023%3Av8.0.0%C2%BB&onyxia.friendlyName=%C2%ABesa_nowcasting%C2%BB&init.personalInit=%C2%ABhttps%3A%2F%2Fraw.githubusercontent.com%2FInseeFrLab%2FESA-Nowcasting-2023%2Fmain%2Fsetup.sh%C2%BB) or on the orange badge on top of the page.
 - Step 2: **Open** the service and follow the instructions regarding *username* and *credentials*.
 - Step 3: **Open a new project** by clicking the following file: `~/work/ESA-Nowcasting-2023/ESA-Nowcasting-2023.Rproj`.
 - Step 4: Ensure all necessary packages are installed by executing the ```renv::restore()``` command in the console. If prompted to proceed with the installation, enter `y`.
