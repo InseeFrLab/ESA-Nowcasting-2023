@@ -25,7 +25,6 @@ viewof country = Inputs.select(Object.values(country_map), {
 ```{ojs}
 //| panel: center
 
-addTooltips(
 Plot.plot({
   grid: true,
   y: {
@@ -37,6 +36,7 @@ Plot.plot({
     },
   marks: [
     Plot.line(historical, {
+        tip: true,
         x: "date", 
         y: "values", 
         stroke: "black",
@@ -44,9 +44,10 @@ Plot.plot({
               `${d.date.toLocaleString("en-UK", {
                 month: "long",
                 year: "numeric"
-              })}\n ${d.values} `
+              })}\n${d.values}`
         }),
     Plot.dot(predictions, {
+        tip: true,
         x: "date", 
         y: "values",
         fill: "model",
@@ -59,7 +60,6 @@ Plot.plot({
   ],
   color: {legend: true}
 })
-)
 ```
 
 ```{ojs}
@@ -161,6 +161,9 @@ import {
 
 
 ```{ojs}
-import {addTooltips} from "@mkfreeman/plot-tooltip"
 import {offsetInterval} from '@mootari/offset-slider'
+```
+
+```{ojs}
+Plot = require("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.8/dist/plot.umd.min.js")
 ```
