@@ -15,6 +15,6 @@ TOURISM :
   principal_nace : I551-I553
 
 DATES :
-  current_date : "2023-05-01"
-  date_to_pred : "2023-06-01"
-  month_to_pred : "june"
+  current_date : "2023-06-01"
+  date_to_pred : "2023-07-01"
+  month_to_pred : "july"
