@@ -147,7 +147,7 @@ estimate_dfm <- function(data, country, max_factor, max_lags) {
       converged <- dfm$converged
     }
     # We reduce the number of factor, so that we can resimulate when it has failed
-    if (r > 1) {
+    if (r >= 1) {
       r <- r - 1
       lag <- as.double(names(sort(table(vars::VARselect(ic$F_pca[, 1:r])$selection), decreasing = TRUE)[1]))
       if (lag > max_lags) lag <- max_lags
@@ -155,6 +155,8 @@ estimate_dfm <- function(data, country, max_factor, max_lags) {
       lag <- lag - 1
     }
   }
+  
+  if (!converged & r == 0) cat(paste0("*** WARNING *** Forecast failed for ", country, ", last observation will be used as forecast\n"))
 
   return(dfm)
 }
