@@ -2,10 +2,10 @@ name: Run ESA Challenge
 
 on:
   schedule:
-    # every 16th day of the month at 11am
-    - cron: '00 11 16 * *'
-    # every last week of the month at 1pm
-    - cron: '00 13 25-31 * *'
+    # every 15th day of the month at 3am
+    - cron: '00 15 15 * *'
+    # every last week of the month at 7pm
+    - cron: '00 19 25-31 * *'
   workflow_dispatch:
 
 jobs:
