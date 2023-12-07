@@ -20,7 +20,7 @@ jobs:
           token: ${{ secrets.TOKEN_CI }}
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip' # caching pip dependencies
@@ -90,7 +90,7 @@ jobs:
           git merge --allow-unrelated-histories -X theirs origin/main
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip' # caching pip dependencies
@@ -168,7 +168,7 @@ jobs:
           git merge --allow-unrelated-histories -X theirs origin/main
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip' # caching pip dependencies
@@ -246,7 +246,7 @@ jobs:
           git merge --allow-unrelated-histories -X theirs origin/main
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip' # caching pip dependencies
@@ -314,7 +314,7 @@ jobs:
           token: ${{ secrets.TOKEN_CI }}
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip' # caching pip dependencies
