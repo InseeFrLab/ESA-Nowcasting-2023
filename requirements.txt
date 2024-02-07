@@ -6,7 +6,7 @@ ipywidgets
 nbclient
 nbformat
 nowcast-lstm
-numpy==1.23.5
+numpy==1.26.4
 pandas==1.5.3
 pmdarima
 torch 
