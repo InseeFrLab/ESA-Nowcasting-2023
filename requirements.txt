@@ -7,6 +7,6 @@ nbclient
 nbformat
 nowcast-lstm
 numpy==1.23.5
-pandas==1.5.3
+pandas==2.2.1
 pmdarima
 torch 
